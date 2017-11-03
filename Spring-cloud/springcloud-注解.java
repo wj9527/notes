@@ -1,0 +1,4 @@
+@EnableDiscoveryClient
+@EnableZipkinServer
+@EnableHystrix
+@EnableHystrixDashboard
