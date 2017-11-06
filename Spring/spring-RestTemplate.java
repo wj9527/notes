@@ -7,23 +7,46 @@ RestTemplate				|
 	* 参考资料
 		http://www.jianshu.com/p/c9644755dd5e
 
-
 ----------------------------
-RestTemplate-设置			|
+RestTemplate-实例创建		|
 ----------------------------
-
-	public void setMessageConverters(List<HttpMessageConverter<?>> messageConverters)
-		* 设置HTTP消息解析器
+	# 直接创建
+		new RestTemplate()
 	
-	public List<HttpMessageConverter<?>> getMessageConverters()
-		* 获取默认的HTTP消息解析器
-		* 默认注册
-			org.springframework.http.converter.ByteArrayHttpMessageConverter
-			org.springframework.http.converter.StringHttpMessageConverter
-			org.springframework.http.converter.ResourceHttpMessageConverter
-			org.springframework.http.converter.xml.SourceHttpMessageConverter
-			org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter
-			org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter
-			org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+	# 工厂创建
+		new RestTemplateBuilder().build();
+	
 
+----------------------------
+RestTemplate-api			|
+----------------------------
+	# 属性设置相关
+		public void setMessageConverters(List<HttpMessageConverter<?>> messageConverters)
+			* 设置HTTP消息解析器
+		
+		public List<HttpMessageConverter<?>> getMessageConverters()
+			* 获取默认的HTTP消息解析器
+			* 默认注册
+				org.springframework.http.converter.ByteArrayHttpMessageConverter
+				org.springframework.http.converter.StringHttpMessageConverter
+				org.springframework.http.converter.ResourceHttpMessageConverter
+				org.springframework.http.converter.xml.SourceHttpMessageConverter
+				org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter
+				org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter
+				org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+	
+	# HTTP请求
+		
 
+----------------------------
+RestTemplate-POST			|
+----------------------------
+	RestTemplate restTemplate = new RestTemplate();
+	//请求头
+	HttpHeaders httpHeaders = new HttpHeaders();
+	httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+	//构建请求体
+	HttpEntity<String> httpEntity = new HttpEntity<>("{\"name\":\"KevinBlandy\"}",httpHeaders);
+	//执行REST请求,获取结果
+	ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost/user", httpEntity, String.class);
+	
