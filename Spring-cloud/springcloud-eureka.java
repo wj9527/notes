@@ -14,7 +14,10 @@ eureka					|
 		
 	
 	# 原理
-		
+	
+
+	# wiki
+		https://github.com/Netflix/eureka/wiki
 		
 
 ------------------------
