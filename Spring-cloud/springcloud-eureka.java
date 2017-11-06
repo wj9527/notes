@@ -43,8 +43,8 @@ eureka					|
 			# 以上两项,表示当前eureka仅仅充当注册中心,忽略自己作为服务提供者的注册行为
 			# eureka 作为注册中心(server),本身内部其实还会作为服务提供者进行注册
 
-		eureka.client.service-url.defaultZone=http://localhost:${server.port}/eureka
-			# 服务提供者进行注册的地址
+		eureka.client.serviceUrl.defaultZone=http://localhost:${server.port}/eureka
+			# 服务提供者进行注册的地址,它是具备默认值的
 
 ------------------------
 服务提供者				|
@@ -56,8 +56,26 @@ eureka					|
 			<version>1.3.5.RELEASE</version>
 		</dependency>
 	
+	
+	# 开启服务自动注册到注册中心
+		@SpringBootApplication
+		@EnableEurekaClient		//当前为eureka的客户端
+		public class UserServiceApplication {
+			
+			public static void main(String[] args) {
+				SpringApplication.run(UserServiceApplication.class, args);
+			}
+		}
+		* @EnableEurekaClient 表示了当前微服务是通过 eureka 框架进行服务注册的,不能通过其他的
+		* 可以使用:@EnableDiscoveryClient 注解,该注解是一个接口,可以适用于所有服务治理的框架
 
 	# 配置项
+		spring.application.name=example-user-service
+			# 当前微服务的名称,会以大写的形式出现在 eureka 的控制台
+		eureka.client.serviceUrl.defaultZone=http://localhost:10086/eureka
+			# 注册中心的地址
+		eureka.instance.prefer-ip-address=true
+			# 在eurake管理控制台中,该服务连接的地址以ip的形式出现,默认为主机名
 		
 
 ------------------------
