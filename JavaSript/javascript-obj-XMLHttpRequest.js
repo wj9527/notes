@@ -69,6 +69,7 @@ XMLHttpRequest				|
 
 		withCredentials
 			* 在跨域请求的时候,是否把Cookie值也发送到跨域服务器
+			* 该属性应该在 open() 方法执行之前设置
 		
 		upload
 			* 当提交的表单是文件表单的时候,该属性会存在
