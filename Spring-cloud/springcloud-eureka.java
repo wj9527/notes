@@ -93,6 +93,66 @@ eureka					|
 	
 	# 配置项
 
+
+------------------------
+服务认证				|
+------------------------
+	# 保证只有可信任的服务提供者,才能注册到注册中心
+	# 简单的认证配置
+		security.basic.enabled=true
+			# 开启安全配置
+		security.user.name=root
+			# 配置用户名
+		security.user.password=root
+			# 配置密码
+		eureka.client.service-url.defaultZon=http://${security.user.name}:${security.user.password}@localhost:8761/eureka
+			# 服务注册时候,使用配置的用户名和密码来进行注册
+		
+		* 需要添加依赖					
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-security</artifactId>
+			</dependency>
+		* 该配置成功后,不仅仅是服务实例需要通过账户名密码来进行连接
+			eureka.client.service-url.defaultZon=http://root:root@localhost:8761/eureka
+		* 登录eurake管理控制台也需要该账户名和密码来完成登录
+
+	# 通过组件来完成服务的认证 TODO
+		DiscoveryClientOptionArgs
+
+------------------------
+实例监控接口			|
+------------------------
+	# 该接口会返回JSON格式的实例状态信息
+	# 需要添加依赖
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		
+		* 不多解释,spring-boot的一个适用于生产环境的监控组件
+
+	# 配置项
+		eureka.instance.status-page-url=${management.context-path}/info
+			# 实例状态页面地址
+		eureka.instance.health-check-url=${management.context-path}/health
+			# 运行状况指示器地址
+
+------------------------
+HTTPS					|
+------------------------
+	TODO
+
+------------------------
+健康检查				|
+------------------------
+	# Spring Boot Actuator提供了/health端点,该端点可展示应用程序的健康信息
+	# 只有将服务实例的健康状态传播到Eureka Server就可以了,实现这点很简单
+	# 服务实例配置项
+		eureka.client.healthcheck.enabled=true			
+			# 开启健康检查(需要spring-boot-starter-actuator依赖)
+
+
 ------------------------
 注册中心集群			|
 ------------------------
