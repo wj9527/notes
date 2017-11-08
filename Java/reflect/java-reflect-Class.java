@@ -68,7 +68,9 @@ java.reflect.Class	 |
 	T[] getEnumConstants()
 		* 如果此 Class 对象不表示枚举类型，则返回枚举类的元素或 null。 
 		* 以声明顺序返回一个数组，该数组包含构成此 Class 对象所表示的枚举类的值，或者在此 Class 对象不表示枚举类型时返回 null
-
+	
+	Class<?> getSuperclass();
+		* 获取直接父类类实例
 
 ---------------------
 静态方法			 |
