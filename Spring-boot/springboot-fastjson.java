@@ -27,7 +27,7 @@ Spring boot 方法一			 |
 				super.configureMessageConverters(converters);
 				//定义 Converter 消息转换器
 				FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
-				fastJsonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON));
+				fastJsonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
 				//定义 消息转换器配置对象
 				FastJsonConfig fastJsonConfig = new FastJsonConfig();
 				//进行配置操作
