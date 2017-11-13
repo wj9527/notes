@@ -14,6 +14,12 @@
 				* 把JSON字符串反序列化为List集合
 
 -----------------------------------
+反序列化泛型						|
+-----------------------------------
+	T obj = JSON.parseObject("json str", new TypeReference<T>() {});
+		* 空实现一个 TypeReference 实例对象,该对象的泛型就是最终序列化的泛型结果
+
+-----------------------------------
 Spring 相关							|
 -----------------------------------
 FastJsonHttpMessageConverter
