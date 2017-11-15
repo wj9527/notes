@@ -7,6 +7,11 @@ Spring boot-配置项				|
 
 		server.context-path=/
 			# WEB访问路径
+	
+	//编码处理
+		server.tomcat.uri-encoding=UTF-8
+		spring.http.encoding.charset=UTF-8
+		spring.http.encoding.enabled=true
 		
 	//日志
 
@@ -23,3 +28,4 @@ Spring boot-配置项				|
 
 		mybatis.config-location=classpath:mybatis/mybatis-config.xml
 			# mybatis配置文件地址
+		
