@@ -125,6 +125,20 @@ Spring-boot 跨域支持			|
 					.maxAge(3600);  
 		}  
 	}  
+--------------------------------
+Spring-boot 自定义参数类型转换器|
+--------------------------------
+	# 注册组件
+		ConversionServiceFactoryBean 
+		@Bean
+		public ConversionServiceFactoryBean enumConversionService() {
+			ConversionServiceFactoryBean conversionServiceFactoryBean = new ConversionServiceFactoryBean();
+			Set<Converter<?,?>> converters = new HashSet<>();
+			converters.add(new EnumConverter());
+			conversionServiceFactoryBean.setConverters(converters);
+			return conversionServiceFactoryBean;
+		}
+		* Converter 参考springmvc知识点
 
 --------------------------------
 Spring-boot 注册WEB三大组件		|

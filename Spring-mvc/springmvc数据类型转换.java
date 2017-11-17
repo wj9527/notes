@@ -108,6 +108,19 @@
 		{
 			//Âß¼­´úÂë
 		}
+	
+
+	/***
+		Ã¶¾Ù×ª»»
+	**/
+	public class EnumConverter implements Converter<String,Enum<?>>{
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Enum<?> convert(String source) {
+			return Enum.valueOf(Enum.class, source.toUpperCase());
+		}
+	}
 
 
 ============================×¸Êö
