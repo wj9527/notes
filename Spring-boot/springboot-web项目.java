@@ -139,6 +139,7 @@ Spring-boot 自定义参数类型转换器|
 			return conversionServiceFactoryBean;
 		}
 		* Converter 参考springmvc知识点
+		* '如果是Date转换器,记得要配置:spring.mvc.date-format'
 
 --------------------------------
 Spring-boot 注册WEB三大组件		|

@@ -12,9 +12,11 @@ Spring boot-配置项				|
 		server.tomcat.uri-encoding=UTF-8
 		spring.http.encoding.charset=UTF-8
 		spring.http.encoding.enabled=true
-		
-	//日志
 
+	//日期格式处理
+		spring.mvc.date-format=yyyy-MM-dd HH:mm:ss
+
+	//日志
 		logging.config=classpath:community-logback.xml
 			# logback配置文件地址
 	
