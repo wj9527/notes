@@ -8,6 +8,8 @@ Vue-ЦёБо				|
 	v-on
 	v-bind
 	v-model	
+	v-once
+	v-html 
 
 
 ------------------------
