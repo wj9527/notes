@@ -112,9 +112,47 @@ class与style绑定			 |
 		* isActive == true 的时候,渲染 active 属性值到class
 
 -----------------------------
-绑定内联样式				 |
+绑定内联样式-对象语法		 |
 -----------------------------
+	# v-bind:style 的对象语法十分直观——看着非常像 CSS ,其实它是一个 JavaScript 对象
+	# CSS 属性名可以用驼峰式(camelCase)或短横分隔命名(kebab-case)
 
-		
+		<div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+		data: {
+			activeColor: 'red',
+			fontSize: 30
+		}
 
+	# 直接绑定一个样式对象
 		
+		<div v-bind:style="styleObject"></div>
+		data: {
+			styleObject: {
+				color: 'red',
+				fontSize: '13px'
+			}
+		}
+
+	# 对象语法常常结合返回对象的计算属性使用
+
+
+-----------------------------
+绑定内联样式-数组语法		 |
+-----------------------------
+	# v-bind:style 的数组语法可以将'多个样式对象'应用到一个元素上
+		<div v-bind:style="[baseStyles, overridingStyles]">
+
+		data:{
+			baseStyles:{
+				color: 'red',
+				fontSize: '13px'
+			},
+			overridingStyles:{
+				... ...
+			}
+		}
+
+-----------------------------
+绑定内联样式-自动添加前缀	 |
+-----------------------------
+	# 当 v-bind:style 使用需要特定前缀的 CSS 属性时,如 transform ,Vue.js 会自动侦测并添加相应的前缀
