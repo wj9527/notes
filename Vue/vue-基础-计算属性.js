@@ -101,4 +101,22 @@
 	# 虽然计算属性在大多数情况下更合适,但有时也需要一个自定义的 watcher 
 	# Vue 提供一个更通用的方法通过 watch 选项,来响应数据的变化
 	# 当你想要在数据变化响应时,执行异步操作或昂贵操作时,这是很有用的
-	# //TODO 2017年11月28日 22:02:14 睡觉,这个有点长,明天看
+
+		<div id="app">
+			<p>{{ message }}</p>
+		</div>
+
+		var app = new Vue({
+			el:'#app',
+			data:{
+				message :'Hello World',
+			},
+			watch:{
+				//监视 message 属性,该值发生变化的时候会触发这个函数
+				message:function(newValue){
+					console.log("message值改变:" + newValue)
+				}
+			}
+		});
+
+
