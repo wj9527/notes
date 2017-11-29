@@ -113,7 +113,7 @@
 			},
 			watch:{
 				//监视 message 属性,该值发生变化的时候会触发这个函数
-				message:function(newValue){
+				message:function(newValue,oldValue){
 					console.log("message值改变:" + newValue)
 				}
 			}

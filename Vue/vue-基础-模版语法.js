@@ -112,6 +112,7 @@
 			<form v-on:submit.prevent="onSubmit"></form>
 
 		* 之后当我们更深入地了解 v-on 与 v-model时,会看到更多修饰符的使用
+		* 没看懂 TODO
 
 	# 缩写
 		* v- 前缀在模板中是作为一个标示 Vue 特殊属性的明显标识
