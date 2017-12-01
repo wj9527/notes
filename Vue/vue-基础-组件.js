@@ -273,6 +273,7 @@ vue-组件-prop				|
 		1,定义一个局部变量，并用 prop 的值初始化它：
 			props: ['initialCounter'],
 			data: function () {
+				//定义一个临时值 counter,在组件中使用它,修改它不会带来警告
 				return { counter: this.initialCounter }
 			}
 			* 定义一个新的值,来作为预初始值(该值会由父组件传值)
@@ -282,6 +283,7 @@ vue-组件-prop				|
 		2,定义一个计算属性，处理 prop 的值并返回
 			props: ['size'],
 			computed: {
+				//子组件通过父级的值,进行计算后,返回计算属性给子组件使用
 				normalizedSize: function () {
 					return this.size.trim().toLowerCase()
 				}
@@ -430,7 +432,6 @@ Prop 验证					|
                 //在触发当前组件事件的时候,使用 this.$emit('报告事件') 触发一个报告事件(increment)
                 incrementCounter: function () {
                     this.counter += 1
-					//触发子组件的 increment 时间,会调用父级组件的方法进行通知
                     this.$emit('increment')
                 }
             },
@@ -442,7 +443,7 @@ Prop 验证					|
                 total: 0
             },
             methods: {
-                //父级组件定义的事件,其实就是一个函数而已
+                //父级组件定义函数,该函数会被子组件通知调用
                 incrementTotal: function () {
                     this.total += 1
                 }
@@ -451,3 +452,372 @@ Prop 验证					|
 			
 		* 子组件已经和它外部完全解耦了,它所做的只是报告自己的内部事件,因为父组件可能会关心这些事件
 		* 请注意这一点很重要
+
+----------------------------		
+给组件绑定原生事件			|
+----------------------------
+	# 有时候,你可能想在某个组件的根元素上监听一个原生事件,可以使用 v-on 的修饰符 .native
+		<my-component v-on:click.native="doTheThing"></my-component>
+
+----------------------------
+.sync 修饰符				|
+----------------------------
+	# 2.3.0+
+
+	# 在一些情况下,我们可能会需要对一个 prop 进行"双向绑定",事实上,这正是 Vue 1.x 中的 .sync 修饰符所提供的功能
+	# 当一个子组件改变了一个带 .sync 的 prop 的值时,这个变化也会同步到父组件中所绑定的值
+	# 这很方便,但也会导致问题,因为它破坏了单向数据流
+	# 由于子组件改变 prop 的代码和普通的状态改动代码毫无区别,当光看子组件的代码时,你完全不知道它何时悄悄地改变了父组件的状态
+	# 这在 debug 复杂结构的应用时会带来很高的维护成本
+	
+	# 上面所说的正是我们在 2.0 中移除 .sync 的理由。但是在 2.0 发布之后的实际应用中,我们发现 .sync 还是有其适用之处,比如在开发可复用的组件库时
+	# 我们需要做的只是让子组件改变父组件状态的代码更容易被区分
+	# 从 2.3.0 起我们重新引入了 .sync 修饰符,但是这次它只是作为一个编译时的语法糖存在,它会被扩展为一个自动更新父组件属性的 v-on 监听器
+
+		<comp :foo.sync="bar"></comp>
+
+		* 会被扩展为
+			<comp :foo="bar" @update:foo="val => bar = val"></comp>
+
+		当子组件需要更新 foo 的值时，它需要显式地触发一个更新事件
+		this.$emit('update:foo', newValue)
+	
+	# demo
+		 <div id="app">
+            {{ count }}<br/>
+            <el-demo v-bind:num.sync="count"></el-demo>
+            <!--
+                //带有 .sync 后缀的属性,会自动渲染出一个通知事件
+                    @update:[属性名称]="val => count = val" //箭头函数,修改绑定父级组件的(count)值
+                <el-demo v-bind:num.sync="count" v-on:update:num="val => count = val"></el-demo>
+            -->
+        </div>
+
+		Vue.component('el-demo',{
+            props:['num'],
+            template:'<button @click="add">{{ temp }}</button>',
+            data:function () {
+                //子父组件数据单向,我们需要修改,所以用一个中间值过度
+                return {temp:this.num}
+            },
+            methods:{
+                //仅仅修改临时值
+                add : function(){
+                    this.temp += 1;
+                    //显示调用方法,修改父级组件的值
+                    this.$emit('update:num',this.temp);
+                }
+            }
+        });
+
+        var app = new Vue({
+            el:'#app',
+            data:{
+                count:1
+            },
+        });
+
+	# 通俗理解
+		1,在使用组件的时候, v-bin 绑定属性,是来自于父级
+		2,如果在绑定时候,添加 .sync 后缀,则会在组件上渲染出一个通知函数,该函数会主动的去修改父级组件的值,达到子父数据同步的效果
+		3,需要手动的在某个方法里面调用这个通知函数
+			this.$emit('update:[当前组件属性名称]',newVlue);
+
+
+--------------------------------
+使用自定义事件的表单输入组件 !!!|
+--------------------------------
+	# 自定义事件可以用来创建自定义的表单输入组件,使用 v-model 来进行数据双向绑定
+		<input v-model="something">
+
+		* 这不过是以下示例的语法糖
+		<input
+			v-bind:value="something"
+			v-on:input="something = $event.target.value">
+		
+		* 所以在组件中使用时,它相当于下面的简写
+			<custom-input
+				v-bind:value="something"
+				v-on:input="something = arguments[0]">
+			</custom-input>
+
+	# 要让组件的 v-model 生效,它应该 (从 2.2.0 起是可配置的)
+		* 接受一个 value prop
+		* 在有新的值时触发 input 事件并将新值作为参数
+
+	# v-model 指令语法糖
+		
+		<div id="app">
+            {{ name }}<br/>
+            <input :value="name" @input="name = $event.target.value"/>
+        </div>
+		<!--
+			语法糖
+			<input v-model="name"/>
+		-->
+
+		var app = new Vue({
+            el:'#app',
+            data:{
+                name:''
+            }
+        });
+
+	# demo
+		<div id="app">
+            {{ value }}<br/>
+            <el-input v-model="value"></el-input>
+        </div>
+
+		Vue.component('el-input',{
+            //定义 value
+            props:['value'],
+            template:`
+                        <input
+                            :value="value"
+                            @input="updateValue($event.target.value);"		
+                            />
+                    `,
+            methods:{
+                //值发生改变
+                updateValue:function(newValue){
+                    //改变值传递给父级组件
+                    this.$emit('input', newValue);
+                },
+            }
+
+        });
+
+        var app = new Vue({
+            el:'#app',
+            data:{
+                value:''
+            }
+        });
+	
+
+--------------------------------
+自定义组件的 v-model		!!!	|
+--------------------------------
+	# 2.2.0 新增
+	# 默认情况下,一个组件的 v-model 会使用 value prop 和 input 事件
+	# 但是诸如单选框,复选框之类的输入类型可能把 value 用作了别的目的
+	# model 选项可以避免这样的冲突
+		
+		Vue.component('my-checkbox', {
+			model: {
+				prop: 'checked',
+				event: 'change'
+			},
+			props: {
+				checked: Boolean,
+				// 这样就允许拿 `value` 这个 prop 做其它事了
+				value: String
+			},
+			// ...
+		})
+		<my-checkbox v-model="foo" value="some value"></my-checkbox>
+		
+		* 上述代码等价于
+		<my-checkbox
+			:checked="foo"
+			@change="val => { foo = val }"
+			value="some value">
+		</my-checkbox>
+
+		* 注意你仍然需要显式声明 checked 这个 prop
+
+--------------------------------
+非子父组件通信					|
+--------------------------------
+	# 有时候，非父子关系的两个组件之间也需要通信
+	# 在简单的场景下,可以使用一个空的 Vue 实例作为事件总线
+		var bus = new Vue()
+
+		// 在一个组件中创建的钩子中监听事件
+		bus.$on('id-selected', function (id) {
+
+		})
+
+		//在另一个组件中,触发监听事件
+		bus.$emit('id-selected', 1)
+
+		
+
+		* '在复杂的情况下，我们应该考虑使用专门的状态管理模式'
+
+--------------------------------
+使用插槽分发内容				|
+--------------------------------
+	# 在使用组件时，我们常常要像这样组合它们
+		<app>
+			<app-header></app-header>
+			<app-footer></app-footer>
+		</app>
+
+		* 注意两点
+
+			1,<app> 组件不知道它会收到什么内容。这是由使用 <app> 的父组件决定的。
+			2,<app> 组件很可能有它自己的模板。
+			
+			* 为了让组件可以组合,我们需要一种方式来混合父组件的内容与子组件自己的模板
+			* 这个过程被称为内容分发 (即 Angular 用户熟知的"transclusion")
+			* Vue.js 实现了一个内容分发 API,参照了当前 Web Components 规范草案,使用特殊的 <slot> 元素作为原始内容的插槽
+	
+	
+	# 编译作用域
+		* 假定模版
+			<child-component>
+				{{ message }}
+			</child-component>
+		* message 应该是绑定到父组件的数据
+		* 组件作用域简单地说是
+			父组件模板的内容在'父组件作用域内编译'
+			子组件模板的内容在'子组件作用域内编译'
+		* demo
+			<!-- 无效 -->
+			<child-component v-show="someChildProperty"></child-component>
+				* 使用模版的时候,是在父级的作用域被编译,在父级作用域找不到 someChildProperty
+
+
+			Vue.component('child-component', {
+				// 有效，因为是在正确的作用域内
+				template: '<div v-show="someChildProperty">Child</div>',
+				data: function () {
+					return {
+						someChildProperty: true
+					}
+				}
+			})
+	
+	# 单个插槽
+		# 除非子组件模板包含至少一个 <slot> 插口,否则父组件的内容将会被丢弃
+			* 子组件没有写 slot,那么父级组件在子组件标签里面写的东西全部被丢弃
+		# 当子组件模板只有一个没有属性的插槽时,父组件传入的整个内容片段将插入到插槽所在的 DOM 位置,并替换掉插槽标签本身
+			* 子组件只有一个没有属性的solt,父级组件在子组件标签写的内容就会替换它
+		# 最初在 <slot> 标签中的任何内容都被视为备用内容,备用内容在子组件的作用域内编译,并且只有在宿主元素为空,且没有要插入的内容时才显示备用内容
+			* 在子组件的slot中定义的内容,如果父级组件没有覆写,则会作为默认值被渲染
+		
+			* 定义子模版:my-component>
+			<div>
+				<h2>我是子组件的标题</h2>
+				<slot>
+					只有在没有要分发的内容时才会显示。
+				</slot>
+			</div>
+
+			* 定义父模版
+			* 在父级模版中使用子模版,并且覆写掉子模版中 slot 内容
+			<div>
+				<h1>我是父组件的标题</h1>
+				<my-component>
+					<p>这是一些初始内容</p>			//在这里覆写子组件的内容
+					<p>这是更多的初始内容</p>
+				</my-component>
+			</div>
+
+			* 渲染结果：
+			<div>
+				<h1>我是父组件的标题</h1>
+				<div>
+					<h2>我是子组件的标题</h2>
+					<p>这是一些初始内容</p>
+					<p>这是更多的初始内容</p>
+				</div>
+			</div>
+
+	# 具名插槽
+		# <slot> 元素可以用一个特殊的特性 name 来进一步配置如何分发内容
+		# 多个插槽可以有不同的名字,具名插槽将匹配内容片段中有对应 slot 特性的元素
+		# 仍然可以有一个匿名插槽,它是默认插槽,作为找不到匹配的内容片段的备用插槽
+		# 如果没有默认插槽,找不到匹配的内容片段将被抛弃
+
+		# 例如,假定我们有一个 app-layout 组件，它的模板为
+			<div class="container">
+				<header>
+					<slot name="header"></slot>		//定义一个名为 header solt
+				</header>
+				<main>
+					<slot></slot>					//定义默认的 solt
+				</main>
+				<footer>	
+					<slot name="footer"></slot>		//定义一个名为 footer solt
+				</footer>
+			</div>
+		# 父组件模板
+
+			<app-layout>
+				<h1 slot="header">这里可能是一个页面标题</h1>		//填充了 header solt
+				<p>主要内容的一个段落。</p>							//没有指定填充的solt,则填充默认的
+				<p>另一个主要段落。</p>								//没有指定填充的solt,则填充默认的
+				<p slot="footer">这里有一些联系信息</p>				//填充了 footer solt
+				<p>又一个主要段落</p>								//没有指定填充的solt,则填充默认的
+			</app-layout>
+
+		# 渲染结果为
+			<div class="container">
+				<header>
+					<h1>这里可能是一个页面标题</h1>
+				</header>
+				<main>
+					<p>主要内容的一个段落。</p>
+					<p>另一个主要段落。</p>
+					<p>又一个主要段落</p>
+				</main>
+				<footer>
+					<p>这里有一些联系信息</p>
+				</footer>
+			</div>
+		
+		# 作用域插槽
+			* 2.1.0 新增
+			* 作用域插槽是一种特殊类型的插槽,用作一个 (能被传递数据的) 可重用模板,来代替已经渲染好的元素
+			* 在子组件中,只需将数据传递到插槽,就像你将 prop 传递给组件一样
+				<div class="child">
+					<slot text="hello from child"></slot>
+				</div>
+			
+			* 在父级中,具有特殊特性 slot-scope 的 <template> 元素必须存在,表示它是作用域插槽的模板
+			* slot-scope 的值将被用作一个临时变量名,此变量接收从子组件传递过来的 prop 对象
+				<div class="parent">
+					<child>
+						<template slot-scope="props">
+							<span>hello from parent</span>
+							<span>{{ props.text }}</span>
+						</template>
+					</child>
+				</div>
+
+			* 如果我们渲染上述模板,得到的输出会是
+				<div class="parent">
+					<div class="child">
+						<span>hello from parent</span>
+						<span>hello from child</span>
+					</div>
+				</div>
+
+		# 在 2.5.0+，slot-scope 能被用在任意元素或组件中而不再局限于 <template>
+		# 作用域插槽更典型的用例是在列表组件中，允许使用者自定义如何渲染列表的每一项
+		<my-awesome-list :items="items">
+		  <!-- 作用域插槽也可以是具名的 -->
+		  <li
+			slot="item"
+			slot-scope="props"
+			class="my-fancy-item">
+			{{ props.text }}
+		  </li>
+		</my-awesome-list>
+		列表组件的模板：
+		<ul>
+		  <slot name="item"
+			v-for="item in items"
+			:text="item.text">
+			<!-- 这里写入备用内容 -->
+		  </slot>
+		</ul>
+		解构
+
+		slot-scope 的值实际上是一个可以出现在函数签名参数位置的合法的 JavaScript 表达式。这意味着在受支持的环境 (单文件组件或现代浏览器) 中，您还可以在表达式中使用 ES2015 解构：
+		<child>
+		  <span slot-scope="{ text }">{{ text }}</span>
+		</child>
