@@ -647,7 +647,7 @@ Prop 验证					|
 		* '在复杂的情况下，我们应该考虑使用专门的状态管理模式'
 
 --------------------------------
-使用插槽分发内容				|
+使用插槽分发内容	!!!			|
 --------------------------------
 	# 在使用组件时，我们常常要像这样组合它们
 		<app>
@@ -776,6 +776,7 @@ Prop 验证					|
 				<div class="child">
 					<slot text="hello from child"></slot>
 				</div>
+				* 子组件在在 slot 上绑定了一个值为 "hello from child" 的 text 属性
 			
 			* 在父级中,具有特殊特性 slot-scope 的 <template> 元素必须存在,表示它是作用域插槽的模板
 			* slot-scope 的值将被用作一个临时变量名,此变量接收从子组件传递过来的 prop 对象
@@ -787,6 +788,8 @@ Prop 验证					|
 						</template>
 					</child>
 				</div>
+				* 父级组件在 子组件里面声明带有 template="props" 的 template标签
+				* 在标签中使用 props.text 来获取子组件设定的 text 值
 
 			* 如果我们渲染上述模板,得到的输出会是
 				<div class="parent">
@@ -796,28 +799,297 @@ Prop 验证					|
 					</div>
 				</div>
 
-		# 在 2.5.0+，slot-scope 能被用在任意元素或组件中而不再局限于 <template>
+		# 在 2.5.0+,slot-scope 能被用在任意元素或组件中而不再局限于 <template>
 		# 作用域插槽更典型的用例是在列表组件中，允许使用者自定义如何渲染列表的每一项
-		<my-awesome-list :items="items">
-		  <!-- 作用域插槽也可以是具名的 -->
-		  <li
-			slot="item"
-			slot-scope="props"
-			class="my-fancy-item">
-			{{ props.text }}
-		  </li>
-		</my-awesome-list>
-		列表组件的模板：
-		<ul>
-		  <slot name="item"
-			v-for="item in items"
-			:text="item.text">
-			<!-- 这里写入备用内容 -->
-		  </slot>
-		</ul>
-		解构
+			<my-awesome-list :items="items">
+				<!-- 作用域插槽也可以是具名的 -->
+				<li slot="item"
+					slot-scope="props"
+					class="my-fancy-item">
+					{{ props.text }}			//从子组件中读取 text 属性
+				</li>
+			</my-awesome-list>
+		# 列表组件的模板
+			<ul>
+				<slot name="item"
+					v-for="item in items"			//从 items 中开始遍历数据
+					:text="item.text">				//把 items 中遍历的每一项, item 都绑定在属性 text 上
+				<!-- 这里写入备用内容 -->
+				</slot>
+			</ul>
 
-		slot-scope 的值实际上是一个可以出现在函数签名参数位置的合法的 JavaScript 表达式。这意味着在受支持的环境 (单文件组件或现代浏览器) 中，您还可以在表达式中使用 ES2015 解构：
-		<child>
-		  <span slot-scope="{ text }">{{ text }}</span>
-		</child>
+		# 解构
+			* slot-scope 的值实际上是一个可以出现在函数签名参数位置的合法的 JavaScript 表达式
+			* 这意味着在受支持的环境 (单文件组件或现代浏览器) 中,您还可以在表达式中使用 ES2015 解构
+			<child>
+				<span slot-scope="{ text }">{{ text }}</span>
+			</child>
+
+--------------------------------
+动态组件						|
+--------------------------------
+	# 通过使用保留的 <component> 元素,动态地绑定到它的 is 特性
+	# 让多个组件可以使用同一个挂载点,并动态切换:
+		var vm = new Vue({
+			el: '#example',
+			data: {
+				//由该属性控制当前使用的模版
+				currentView: 'home'
+			},
+			//定义n多个模版
+			components: {
+				home: { 
+					template:'<div>home</div>'
+				},
+				posts: { 
+					template:'<div>posts</div>'
+				},
+				archive: { 
+					template:'<div>archive</div>'
+				}
+			}
+		})
+
+		<component v-bind:is="currentView">
+			<!-- 组件在 vm.currentview 变化时改变！ -->
+		</component>
+		* 该标签可以实现动态的切换模版
+		* 使用 :is="",来绑定控制模版切换的变量
+
+	# 也可以直接绑定到组件对象上
+		var Home = {
+			template: '<p>Welcome home!</p>'
+		}
+
+		var vm = new Vue({
+			el: '#example',
+			data: {
+				currentView: Home
+			}
+		})
+
+	# keep-alive
+		* 如果把切换出去的组件保留在内存中,可以保留它的状态或避免重新渲染
+		* 为此可以添加一个 keep-alive 指令参数
+			<keep-alive>
+				<component :is="currentView">
+					<!-- 非活动组件将被缓存！ -->
+				</component>
+			</keep-alive>
+		* 在 API 参考中查看更多 <keep-alive> 的细节
+	
+
+--------------------------------
+杂项						!!	|
+--------------------------------
+	# 编写可复用组件
+		* 在编写组件时,最好考虑好以后是否要进行复用
+		* 一次性组件间有紧密的耦合没关系,但是可复用组件应当定义一个清晰的公开接口,同时也不要对其使用的外层数据作出任何假设
+		* Vue 组件的 API 来自三部分——prop,事件和插槽
+		* Prop 允许外部环境传递数据给组件
+		* 事件允许从组件内触发外部环境的副作用
+		* 插槽允许外部环境将额外的内容组合在组件中
+		* 使用 v-bind 和 v-on 的简写语法,模板的意图会更清楚且简洁
+			<my-component
+				:foo="baz"
+				:bar="qux"
+				@event-a="doThis"
+				@event-b="doThat"
+			>
+			<img slot="icon" src="...">
+				<p slot="main-text">Hello!</p>
+			</my-component>
+	
+	# 子组件引用
+		* 尽管有 prop 和事件,但是有时仍然需要在 JavaScript 中直接访问子组件
+		* 为此可以使用 ref 为子组件指定一个引用 ID
+
+			<div id="parent">
+				<user-profile ref="profile"></user-profile>
+			</div>
+
+			var parent = new Vue({ 
+				el: '#parent' 
+			});
+
+			// 访问子组件实例
+			var child = parent.$refs.profile
+
+			* 当 ref 和 v-for 一起使用时,获取到的引用会是一个数组,包含和循环数据源对应的子组件
+			* $refs 只在组件渲染完成后才填充,并且它是非响应式的,它仅仅是一个直接操作子组件的应急方案——应当避免在模板或计算属性中使用 $refs
+	
+	# 异步组件
+		* 在大型应用中,我们可能需要将应用拆分为多个小模块,按需从服务器下载
+		* 为了进一步简化,Vue.js 允许将组件定义为一个工厂函数,异步地解析组件的定义
+		* Vue.js 只在组件需要渲染时触发工厂函数,并且把结果缓存起来用于后面的再次渲染
+			Vue.component('async-example', function (resolve, reject) {
+				setTimeout(function () {
+					// 将组件定义传入 resolve 回调函数
+					resolve({
+						template: '<div>I am async!</div>'
+					});
+				}, 1000)
+			})
+
+		* 工厂函数接收一个 resolve 回调,在收到从服务器下载的组件定义时调用
+		* 也可以调用 reject(reason) 指示加载失败,这里使用 setTimeout 只是为了演示实际上如何获取组件完全由你决定
+		* 推荐配合 webpack 的代码分割功能 来使用
+			Vue.component('async-webpack-example', function (resolve) {
+				// 这个特殊的 require 语法告诉 webpack
+				// 自动将编译后的代码分割成不同的块，
+				// 这些块将通过 Ajax 请求自动下载。
+				require(['./my-async-component'], resolve)
+			})
+
+			* 你可以在工厂函数中返回一个 Promise,所以当使用 webpack 2 + ES2015 的语法时可以这样
+				Vue.component(
+					'async-webpack-example',
+					// 该 `import` 函数返回一个 `Promise` 对象。
+					() => import('./my-async-component')
+				)
+
+		* 当使用局部注册时，也可以直接提供一个返回 Promise 的函数：
+			new Vue({
+				// ...
+				components: {
+				'my-component': () => import('./my-async-component')
+				}
+			})
+		* 如果你是 Browserify 用户,可能就无法使用异步组件了
+		* 它的作者已经表明 Browserify 将"永远不会支持异步加载"
+		* Browserify 社区发现了一些解决方法,可能会有助于已存在的复杂应用,对于其他场景,我们推荐使用 webpack,因为它对异步加载进行了内置,全面的支持
+
+	# 高级异步组件
+		* 2.3.0 新增
+		* 自 2.3.0 起,异步组件的工厂函数也可以返回一个如下的对象
+			const AsyncComp = () => ({
+				// 需要加载的组件。应当是一个 Promise
+				component: import('./MyComp.vue'),
+				// 加载中应当渲染的组件
+				loading: LoadingComp,
+				// 出错时渲染的组件
+				error: ErrorComp,
+				// 渲染加载中组件前的等待时间。默认：200ms。
+				delay: 200,
+				// 最长等待时间。超出此时间则渲染错误组件。默认：Infinity
+				timeout: 3000
+			})
+		* 注意,当一个异步组件被作为 vue-router 的路由组件使用时
+		* 这些高级选项都是无效的,因为在路由切换前就会提前加载所需要的异步组件
+		* 另外,如果你要在路由组件中使用上述写法需要使用 vue-router 2.4.0 以上的版本
+	
+	# 组件命名约定
+		* 当注册组件 (或者 prop) 时,可以使用 kebab-case (短横线分隔命名),camelCase (驼峰式命名) 或 PascalCase (单词首字母大写命名)
+			// 在组件定义中
+			components: {
+				// 使用 kebab-case 注册
+				'kebab-cased-component': { /* ... */ },
+				// 使用 camelCase 注册
+				'camelCasedComponent': { /* ... */ },
+				// 使用 PascalCase 注册
+				'PascalCasedComponent': { /* ... */ }
+			}
+		* 在 HTML 模板中,请使用 kebab-case
+			<!-- 在 HTML 模板中始终使用 kebab-case -->
+			<kebab-cased-component></kebab-cased-component>
+			<camel-cased-component></camel-cased-component>
+			<pascal-cased-component></pascal-cased-component>
+		* 当使用字符串模式时,可以不受 HTML 大小写不敏感的限制,这意味实际上在模板中,可以使用下面的方式来引用你的组件
+			* kebab-case
+			* camelCase 或 kebab-case (如果组件已经被定义为 camelCase)
+			* kebab-case、camelCase 或 PascalCase (如果组件已经被定义为 PascalCase)
+		
+			components: {
+				'kebab-cased-component': { /* ... */ },
+				camelCasedComponent: { /* ... */ },
+				PascalCasedComponent: { /* ... */ }
+			}
+
+			<kebab-cased-component></kebab-cased-component>
+			<camel-cased-component></camel-cased-component>
+			<camelCasedComponent></camelCasedComponent>
+
+			<pascal-cased-component></pascal-cased-component>
+			<pascalCasedComponent></pascalCasedComponent>
+			<PascalCasedComponent></PascalCasedComponent>
+
+		* 这意味着 PascalCase 是最通用的声明约定而 kebab-case 是最通用的使用约定。
+		* 如果组件未经 slot 元素传入内容，你甚至可以在组件名后使用 / 使其自闭合：
+			<my-component/>
+		* 当然，这只在字符串模板中有效。因为自闭的自定义元素是无效的 HTML，浏览器原生的解析器也无法识别它。
+	
+	# 递归组件
+		* 组件在它的模板内可以递归地调用自己
+		* 不过,'只有当它有 name 选项时才可以这么做'
+			name: 'unique-name-of-my-component'
+		* 当你利用 Vue.component 全局注册了一个组件,全局的 ID 会被自动设置为组件的 name
+			Vue.component('unique-name-of-my-component', {
+				// ...
+			})
+			* 如果稍有不慎，递归组件可能导致死循环：
+			* name: 'stack-overflow',
+			* template: '<div><stack-overflow></stack-overflow></div>'
+			* 上面组件会导致一个"max stack size exceeded"错误,所以要确保递归调用有终止条件 (比如递归调用时使用 v-if 并最终解析为 false)
+	
+	# 组件间的循环引用
+		* 假设你正在构建一个文件目录树,像在 Finder 或资源管理器中你可能有一个 tree-folder 组件
+			<p>
+				<span>{{ folder.name }}</span>
+				<tree-folder-contents :children="folder.children"/>
+			</p>
+		* 以及一个 tree-folder-contents 组件
+			<ul>
+				<li v-for="child in children">
+					<tree-folder v-if="child.children" :folder="child"/>
+					<span v-else>{{ child.name }}</span>
+				</li>
+			</ul>
+		
+		* 当你仔细看时,会发现在渲染树上这两个组件同时为对方的父节点和子节点——这是矛盾的
+		* 当使用 Vue.component 将这两个组件注册为全局组件的时候,框架会自动为你解决这个矛盾
+
+		* 然而.如果你使用诸如 webpack 或者 Browserify 之类的模块化管理工具来 require/import 组件的话,就会报错了
+			Failed to mount component: template or render function not defined.
+		* 为了解释为什么会报错,简单的将上面两个组件称为 A 和 B。模块系统看到它需要 A，但是首先 A 需要 B，但是 B 需要 A，而 A 需要 B，循环往复。因为不知道到底应该先解析哪个，所以将会陷入无限循环。要解决这个问题，我们需要在其中一个组件中告诉模块化管理系统：“A 虽然最后会用到 B，但是不需要优先导入 B”。
+		* 在我们的例子中，可以选择让 tree-folder 组件中来做这件事。我们知道引起矛盾的子组件是 tree-folder-contents，所以我们要等到 beforeCreate 生命周期钩子中才去注册它：
+			beforeCreate: function () {
+				this.$options.components.TreeFolderContents = require('./tree-folder-contents.vue')
+			}
+			* 问题解决了！
+		
+		* 相互依赖的问题
+	
+	# 内联模板
+		* 如果子组件有 inline-template 特性,组件将把它的内容当作它的模板,而不是把它当作分发内容,这让模板编写起来更灵活
+			<my-component inline-template>
+				<div>
+				<p>这些将作为组件自身的模板。</p>
+				<p>而非父组件透传进来的内容。</p>
+				</div>
+			</my-component>
+
+		* 但是 inline-template 让模板的作用域难以理解,使用 template 选项在组件内定义模板或者在 .vue 文件中使用 template 元素才是最佳实践
+
+	
+	# X-Template
+		* 另一种定义模板的方式是在 JavaScript 标签里使用 text/x-template 类型,并且指定一个 id
+			<script type="text/x-template" id="hello-world-template">
+				<p>Hello hello hello</p>
+			</script>
+			Vue.component('hello-world', {
+				template: '#hello-world-template'
+			})
+		* 这在有很多大模板的演示应用或者特别小的应用中可能有用,其它场合应该避免使用,因为这将模板和组件的其它定义分离了
+	
+	# 对低开销的静态组件使用 v-once
+
+		* 尽管在 Vue 中渲染 HTML 很快,不过当组件中包含大量静态内容时.可以考虑使用 v-once 将渲染结果缓存起来
+			Vue.component('terms-of-service', {
+				template: 
+				'\
+				<div v-once>\
+				<h1>Terms of Service</h1>\
+				...很多静态内容...\
+				</div>\
+				'
+			})
