@@ -15,4 +15,30 @@
 	
 
 
+	* 可以通过对象序列化(io),来完成深clone
+		
+		//原始对象
+		Object obj = new Object();
+
+		//创建内存字节流
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+		//创建对象写流,写到内存字节流中
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
+		
+		//写入对象
+		oos.writeObject(obj);
+		
+		//把写入的对象读取为字节
+		byte[] bytes = bos.toByteArray();
+	
+		//根据字节创建内存字节读取流
+		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+
+		//创建对象读取流,从内存字节中读取
+		ObjectInputStream ois = new ObjectInputStream(bis);
+	
+		//从对象流中读取深克隆对象
+		Object cloneObject = ios.readObject();
+
 
