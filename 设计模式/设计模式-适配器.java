@@ -23,4 +23,5 @@
 		OutputStreamWriter(OutputStream out);
 
 		* 转换流就是用的适配器模式
-		
+	
+	* 该写个demo //TODO
