@@ -27,6 +27,8 @@ socketserver				|
 	* BaseServer 的一些属性
 		allow_reuse_address
 			* 默认为 False,是否允许端口复用
+			* 该属性是类属性,踩过坑....
+				socketserver.UDPServer.allow_reuse_address = True
 
 ---------------------------
 tcp							|
