@@ -6,14 +6,15 @@
 
 	
 	* java 实现 Cloneable 接口
+
 	* 原型类覆写 Object 中 clone 方法
 		* 实现的过程只需要调用 return super.clone();
+
 	* 通过调用原型实例的 clone() 方法来获取到一个clone的对象
-		* 浅clone
+		* clone获取的实例为浅clone
 		* 如果要深 clone,需要自己去实现 clone 方法来完成
 
 	
-
 
 	* 可以通过对象序列化(io),来完成深clone
 		
