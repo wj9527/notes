@@ -16,6 +16,24 @@ aio								|
 					tasks = [hello(), hello()]
 					loop.run_until_complete(asyncio.wait(tasks))
 			4,关闭 event_loop 对象 (close())
+			* demo
+				import asyncio
+				@asyncio.coroutine
+				def test(name):
+					print('%s 开始执行'%(name))
+					yield from asyncio.sleep(1)
+					print('%s 执行完毕' % (name))
+
+				loop = asyncio.get_event_loop()
+				loop.run_until_complete(asyncio.wait([test('Kevin'),test('Litch'),test('Rocco')]))
+				loop.close()
+				
+				Kevin 开始执行
+				Litch 开始执行
+				Rocco 开始执行
+				Kevin 执行完毕
+				Litch 执行完毕
+				Rocco 执行完毕
 
 	* 3.5 版本以后
 		* 用asyncio提供的 @asyncio.coroutine 可以把一个generator标记为coroutine类型,然后在coroutine内部用yield from调用另一个 coroutine 实现异步操作
@@ -26,15 +44,22 @@ aio								|
 			2,不使用 yield from 语句,而使用 await 关键字
 		* demo
 			import asyncio
+			async def test(name):
+				print('%s 开始执行'%(name))
+				await asyncio.sleep(1)
+				print('%s 执行完毕' % (name))
 
-			async def demo(name):
-				print('[%s]1'%(name))
-				r = await asyncio.sleep(2)
-				print('[%s]2'%(name))
-				
 			loop = asyncio.get_event_loop()
-			loop.run_until_complete(asyncio.wait([demo('Kevin'),demo('Litch')]))
-		
+			loop.run_until_complete(asyncio.wait([test('Kevin'),test('Litch'),test('Rocco')]))
+			loop.close()
+			
+			Kevin 开始执行
+			Litch 开始执行
+			Rocco 开始执行
+			Kevin 执行完毕
+			Litch 执行完毕
+			Rocco 执行完毕
+
 	* event_loop api
 		create_task()
 		run_until_complete()
@@ -103,7 +128,6 @@ loop = asyncio.get_event_loop()
 
 # 创建 task
 task = asyncio.ensure_future(demo(5))
-
 # task添加监听,在回调函数中调用形参的 result() 获取结果信息
 # task和回调里的x对象,实际上是同一个对象
 task.add_done_callback(lambda x : print('result:%s'%(x.result())))
