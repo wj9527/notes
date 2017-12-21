@@ -3,6 +3,8 @@
 ----------------
 	* 参考学习(贼TM好入门的正则教程,鸣谢作者)
 		http://deerchao.net/tutorials/regex/regex.htm
+
+	* 老男孩python教程第18天 
 	
 --------------------
 元字符				|
