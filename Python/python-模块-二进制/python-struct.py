@@ -65,3 +65,26 @@ struct-fmt对照表			|
 	s		char[]				bytes	 	 
 	p		char[]				bytes	 	 
 	P		void *				integer	 						(6)
+
+
+
+---------------------------
+struct-demo					|
+---------------------------
+import struct
+
+message = '卧槽。。。这个就算是带中文也没问题的哟。。'
+
+bin_message = message.encode(encoding='utf_8', errors='strict')
+# 
+format = 'II%ds'%(len(bin_message))
+
+packager = struct.Struct(format)
+
+package = packager.pack(5,15,bin_message)
+
+unpackage = packager.unpack(package)
+
+print(unpackage)
+
+print(unpackage[2].decode(encoding='utf_8', errors='strict'))
