@@ -42,3 +42,15 @@ Spring-boot 批量上传		|
 		
 		2,第二种方式
 			 @RequestParam("files") MultipartFile[] file
+
+---------------------------
+Spring-boot 文件下载的一种支持|
+---------------------------
+
+	@GetMapping("/files/{filename:.+}")
+	@ResponseBody
+	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+
+		Resource file = storageService.loadAsResource(filename);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + file.getFilename() + "\"").body(file);
+	}
