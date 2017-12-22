@@ -22,6 +22,46 @@ struct-模块方法				|
 				I表示4字节无符号整数
 	
 	unpack(fmt,buff)
+		* 根据所给的fmt描述的格式将bytes反向解析出来,返回一个元组
 		
 	calcsize(fmt)
+		* 根据所给的fmt描述的格式返回该结构的大小
 		
+---------------------------
+struct-Struct				|
+---------------------------
+	* 模块类,提供面向对象的API
+	* demo
+		values = (1, 'abc', 2.7)
+		s = struct.Struct('I3sf')
+		packed_data = s.pack(*values)
+		unpacked_data = s.unpack(packed_data)
+	
+
+---------------------------
+struct-fmt对照表			|
+---------------------------
+	----------------------------------------------------------------------
+	Format	C Type				Python type		Standard size	Notes		
+	----------------------------------------------------------------------
+	x		pad byte			no value	 	 
+	c		char				bytes of length 1				1	 
+	b		signed char			integer			1				(1),(3)
+	B		unsigned char		integer			1				(3)
+	?		_Bool				bool			1				(1)
+	h		short				integer			2				(3)
+	H		unsigned short		integer			2				(3)
+	i		int					integer			4				(3)
+	I		unsigned int		integer			4				(3)
+	l		long				integer			4				(3)
+	L		unsigned long		integer			4				(3)
+	q		long long			integer			8				(2), (3)
+	Q		unsigned long long	integer			8				(2), (3)
+	n		ssize_t				integer	 						(4)
+	N		size_t				integer	 						(4)
+	e		(7)					float			2				(5)
+	f		float				float			4				(5)
+	d		double				float			8				(5)
+	s		char[]				bytes	 	 
+	p		char[]				bytes	 	 
+	P		void *				integer	 						(6)
