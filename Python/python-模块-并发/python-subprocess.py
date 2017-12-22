@@ -40,7 +40,8 @@ subprocess.Popen			|
 			* 参数传递字符串,表示编码类型,不传默认使用系统编码
 	* demo
 		import subprocess
-		popen = subprocess.Popen('dir',shell=True,stdout=subprocess.PIPE)
+		popen = subprocess.Popen('dir',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 		# stdout=subprocess.PIPE 会把子进程执行的结果数据,传递给父进程.最终赋值给执行后的对象.如果没有该参数,会直接打印,而返回对象不能读取到执行结果
-		result = popen.stdout.read()
+		result = popen.stdout.read()	# 读取输出
+		error  = popen.stderr.read()	# 读取异常输出,如果没有异常,该值为None
 		print(str(result,'GBK'))
