@@ -30,6 +30,16 @@ subprocess-函数				|
 
 	tuple getstatusoutput(commond)
 		* 执行shell命令,返回元组,第一个数据是状态int值,第二个数据是执行后的结果
+	
+	check_output()
+		* 父进程等待子进程完成
+		* 如果执行异常会抛出:subprocess.CalledProcessError
+		* 返回子进程向标准输出的输出结果
+		* 关键字参数
+			stderr
+			shell
+		* demo
+			subprocess.check_output('dir',stderr=subprocess.STDOUT,shell=True)
 
 ----------------------------
 subprocess.Popen			|
