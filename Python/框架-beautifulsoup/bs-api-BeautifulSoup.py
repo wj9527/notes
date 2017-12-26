@@ -13,5 +13,14 @@ BeautifulSoup-属性			|
 ----------------------------
 BeautifulSoup-方法			|
 ----------------------------
+	new_tag( name, namespace=None, nsprefix=None, **attrs)
+		* 创建新的标签对象
+		* name属性必须,指定标签的名称
 	
+	new_string()
+		* 创建一个文本节点
+	
+
+	
+
 	

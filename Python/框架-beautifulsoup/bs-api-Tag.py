@@ -77,6 +77,27 @@ beautifulsoup-方法			 	|
 	find_all_previous() 
 	find_previous()
 		
+	
+	clear()
+		* 清除当前标签中的文本节点(就是标签体)
+	
+	extract()
+		* 移除当前节点,并且返回
+		* 返回的节点是一个独立的html文档
+
+	decompose()
+		* 移除当前节点,并且从内存中销毁
+	
+	replace_with(new_tag)
+		* 使用 new_tag 来代替当前tag,返回当前tag
+	
+	wrap(tag)
+		* 使用tag来包装当前tag
+		* 认个亲爸爸
+	
+
+	
+
 
 
 			

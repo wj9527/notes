@@ -63,7 +63,7 @@
 	
 	* 根据文本过滤
 		soup.find_all(string="title")
-		# 检索文档中的字符串内容
+		# ['title']
 	
 		* string 还可以与其它参数混合使用来过滤 
 			soup.find_all("a", string="Elsie")
