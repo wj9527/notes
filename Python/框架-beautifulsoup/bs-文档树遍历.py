@@ -10,7 +10,7 @@
 	* 获取文档中的所有标签,需要使用 find_all(),返回list
 		soup.find_all('a')
 	
-	* 获取属性获取子节点信息
+	* 根据属性获取子节点信息
 		contents 
 			* 返回list,当前标签'所有直接子元素集合',包括文本节点(bs4.element.NavigableString)
 			* '字符串节点没有该属性'
