@@ -28,6 +28,10 @@ urllib-request				|
 			* 关键字参数:
 				data		# 请求体,字节类型
 				timeout		# 超时时间
+		
+		urlretrieve(url,path)
+			* 打开url,并且把响应的数据保存到path
+			* 可以用于下载图片/视频的连接
 				
 
 ----------------------------
