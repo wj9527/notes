@@ -98,6 +98,19 @@ urllib-parse				|
 			('ec', ''),
 			('pagerefer', 'https://passport.weibo.cn/signin/welcome?entry=mweibo&r=http%3A%2F%2Fm.weibo.cn%2F')
 		])
+	
+	* 使用 parse.quote 处理中文url
+
+		r = parse.quote('http://www.javaweb.io/你好我是KevinBlandy/')
+		print(r)
+		# http%3A//www.javaweb.io/%E4%BD%A0%E5%A5%BD%E6%88%91%E6%98%AFKevinBlandy/
+		# 连 http:// 的:也被转义了,这个显然是不行的
+
+		r = parse.quote('http://www.javaweb.io/你好我是KevinBlandy/',safe='://')
+		print(r)
+		# http://www.javaweb.io/%E4%BD%A0%E5%A5%BD%E6%88%91%E6%98%AFKevinBlandy/
+
+		* 通过关键字参数 safe 来指定哪些字符串不用转义
 
 			
 		
