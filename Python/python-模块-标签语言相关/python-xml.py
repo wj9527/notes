@@ -1,7 +1,7 @@
 ------------------------
 xml						|
 ------------------------
-	* 操作xml的api
+	* dom操作xml的api
 	* 内置模块	
 		xml.etree.ElementTree
 
@@ -100,14 +100,15 @@ xml-SAX解析				|
 
 	# 自定义 解析Handler处理里
 	class DefaultSaxHandler(object):
-		# 解析到标签
+		# 标签开始
 		def start_element(self, name, attrs):
 			print('sax:start_element: %s, attrs: %s' % (name, str(attrs)))
 
-		# 
+		# 标签结束
 		def end_element(self, name):
 			print('sax:end_element: %s' % name)
-
+		
+		# 文本信息
 		def char_data(self, text):
 			print('sax:char_data: %s' % text)
 
@@ -120,12 +121,16 @@ xml-SAX解析				|
 	handler = DefaultSaxHandler()
 	# 创建解析器对象
 	parser = ParserCreate()
+
 	# 开始解析标签的事件
 	parser.StartElementHandler = handler.start_element
+
 	# 解析完毕标签事件
 	parser.EndElementHandler = handler.end_element
+
 	# 解析到标签体事件
 	parser.CharacterDataHandler = handler.char_data
+
 	# 开始解析
 	parser.Parse(xml)
 
