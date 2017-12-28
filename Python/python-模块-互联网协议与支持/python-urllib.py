@@ -4,6 +4,7 @@ urllib						|
 	* 它是一个包,具有模块
 		request
 		parse
+
 	* 一系列用于操作URL的功能
 	* 可以非常方便地抓取URL内容
 
@@ -20,7 +21,7 @@ urllib-request				|
 ----------------------------
 	* 用于发起HTTP请求的模块
 	* 方法
-		http.client.HTTPResponse request.urlopen(url, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,*, cafile=None, capath=None, cadefault=False, context=None)
+		urlopen(url, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,*, cafile=None, capath=None, cadefault=False, context=None)
 			* 打开连接,返回实例对象(http.client.HTTPResponse)
 			* 参数是可以一个目标 URL
 			* 或者是一个 Request 对象
@@ -32,12 +33,244 @@ urllib-request				|
 		urlretrieve(url,path)
 			* 打开url,并且把响应的数据保存到path
 			* 可以用于下载图片/视频的连接
-				
+		
+		Request(url)
+			* 创建一个request对象,可以设置请求头等信息
 
+		OpenerDirector()
+			* 创建一个 opener 对象
+
+		install_opener(opener)
+			* 用来创建(全局)默认opener
+			* 调用 urlopen 将使用该api install 的 opener
+
+		build_opener(*handlers)
+			* 创建一个 空的opener
+		
+------------------------------------
+urllib-request-opener & handler		|
+------------------------------------
+	* opener 可以有n多个handler,hander用于处理不同的请求和应用场景
+	* opener 
+		* 创建
+			opener = request.OpenerDirector()
+				* 通过构造函数创建,返回没有任何handler的一个opener
+
+			opener = request.build_opener(*handler)
+				* request 对象直接创建,会默认添加一些handler
+	
+		* 方法
+			add_handler(handler)
+				* 添加handler
+			
+			open(fullurl, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT)
+				* 执行请求
+				* 参数
+					fullurl
+						* 可以是字符串的url,也可以是 Request 实例对象
+					
+	* handler
+		* 系统预定义处理器(request)类
+			AbstractHTTPHandler
+			ProxyDigestAuthHandler
+			HTTPDigestAuthHandler
+			AbstractDigestAuthHandler
+			AbstractBasicAuthHandler
+			HTTPSHandler
+				* https handler
+			HTTPRedirectHandler
+			CacheFTPHandler
+			BaseHandler
+			ProxyHandler({'http':'183.17.123.152:9000'})		
+				* 代理handler,通过代理服务器发送http服务
+				* 参数为dict:(不传递,或者传递空{},表示不代理)
+						key		表示代理的协议
+						value	ip:port
+				* 具备密码的代理服务器
+					ProxyHandler({'http':'kevin:123@183.17.123.152:9000'})
+
+			HTTPDefaultErrorHandler
+			HTTPBasicAuthHandler
+				* tomcat的manager页面,就需要身份验证,就可以用这个
+				* demo
+					# 创建密码管理器
+					realm = request.HTTPPasswordMgrWithDefaultRealm()
+					# 设置域/站点ip/账户/密码 到密码管理器
+					realm.add_password(None,'192.168.21.52','root','123456')
+					# 创建http验证handler
+					handler = request.HTTPBasicAuthHandler(realm)
+					# 创建一个opener
+					opener = request.build_opener(handler)
+					# 打开url
+					with opener.open('http://192.168.21.52/admin') as response:
+						print(response.read())
+
+			ProxyBasicAuthHandler
+				* 代理授权验证,作用就是用来处理需要用户密码验证的代理服务器
+				* 一般不怎么建议使用,直接使用 ProxyHandler 就行了
+				* demo
+					# 创建密码管理器
+					realm = HTTPPasswordMgrWithDefaultRealm()
+					# 密码管理器,设置代理服务器 域/ip:端口/用户名/密码
+					realm.add_password(None,'183.17.123.152:9000','kevin','123')
+					# 添加密码管理器到 ProxyBasicAuthHandler
+					proxyAuthHandler = ProxyBasicAuthHandler(realm)
+					# 创建 opener
+					opener = request.build_opener(proxyAuthHandler)
+					with opener.open('http://javaweb.io') as response:
+						print(response.read())
+
+
+			HTTPHandler
+				* http handler
+			FileHandler
+			FTPHandler
+			CacheFTPHandler
+			DataHandler
+			UnknownHandler
+			HTTPCookieProcessor
+				* BaseHandler 的子类,用于处理服务器端响应的cookie数据
+		
+		* 部分handler通用的构造函数参数
+			debuglevel
+				* 如果该值为1/True,则表示开启DEBUG模式,会打印出一些日志信息
+	
+	* Realm
+		|-HTTPPasswordMgr
+			|-HTTPPasswordMgrWithDefaultRealm
+				* 默认的密码管理对象,用于保存和http请求相关的授权信息
+				* 一般会用在两个地方:
+					* ProxyBasicAuthHandler - 授权代理的处理器
+					* HTTPBasicAuthHandler	- 验证web客户端的授权处理器
+
+	* simple demo
+		# 手动创建opener
+		opener = request.OpenerDirector()
+		#
+		# 手动添加一个 HTTPHandler,可以处理http请求
+		opener.add_handler(request.HTTPHandler())
+
+
+		# 通过request build 一个opener,会有一些默认的handler
+		opener = request.build_opener(request.HTTPHandler(debuglevel=1),request.HTTPSHandler(debuglevel=True))
+
+		# 构建请求信息
+		req = request.Request('http://www.baidu.com')
+
+		# 通过 opener 打开
+		with opener.open(req) as response:
+			print(response.read())
+	
+	* ip代理 demo
+		from urllib import request
+		# 通过request build 一个opener,会有一些默认的handler
+		opener = request.build_opener()
+		# 创建一个代理handler,指定代理的协议,代理服务器的ip与端口
+		proxyHandler = request.ProxyHandler({'http':'112.114.93.39:8118'})
+
+		'''
+			如果代理服务器需要账户名/密码授权:{'协议':'用户名:密码@ip:port'}
+			ProxyHandler({'http':'kevin:123@183.17.123.152:9000'})
+		'''
+
+		# 添加代理handler到opener
+		opener.add_handler(proxyHandler)
+		# 构建请求信息
+		req = request.Request('http://javaweb.io')
+		# 通过 opener 打开
+		with opener.open(req) as response:
+			print(response.read())
+	
+	* 站点身份验证 demo
+		from urllib import request
+		# 创建密码管理器
+		realm = request.HTTPPasswordMgrWithDefaultRealm()
+		# 设置域/站点ip/账户/密码 到密码管理器
+		realm.add_password(None,'192.168.21.52','root','123456')
+		# 创建http验证handler
+		handler = request.HTTPBasicAuthHandler(realm)
+		# 创建一个opener
+		opener = request.build_opener(handler)
+		# 打开url
+		with opener.open('http://192.168.21.52/admin') as response:
+			print(response.read())
+
+-----------------------------------------------
+cookielib & request.HTTPCookieProcessor			|
+------------------------------------------------
+	* cookielib 是独立的库,需要单独道导入,主要作用就是用来保存Cookie
+		* python2.7中模块名: cookielib
+		* python3.x中模块名: http.cookiejar	(from http import cookiejar)
+
+	* cookielib 模块主要的对象
+		CookieJar(常用)
+			* 管理HTTP cookie 值,存储http请求生成的cookie,向发起的http请求添加cookie对象
+			* cookie都存储在内存中,CookieJar 实例被垃圾回收后,cookie也会消失  
+			
+		FileCookieJar(filename,delayload=None,policy=None)
+			* CookieJar 的子类,会把cookie信息持久化到硬盘
+			* 构造参数
+				filename	存储cookie的文件名
+				delayload	bool值,是否支持延迟加载(需要的时候才回去读取cookie文件)
+
+		MozillaCookieJar
+			* FileCookieJar 子类,创建与 Mozilla内核浏览器兼容的 FileCookieJar 实例
+
+		LWPCookieJar
+			* FileCookieJar 子类,创建与 libwww-per 标准的 Set-Cookie3 兼容的 FileCookieJar 实例
+	
+	* HTTPCookieProcessor 是 urllib.request 的对象(Handler系列),作用就是保存服务器响应的cookie
+
+	* cookie处理 demo
+		
+		from urllib import request
+		from http import cookiejar
+		# 创建 cookie 对象,用于保存cookie信息
+		cookie = cookiejar.CookieJar()
+		# 创建 HTTPCookieProcessor 对象(Cookie处理器对象)
+		# 返回的就是一个处理器对象
+		cookieHandler = request.HTTPCookieProcessor(cookie)
+		# 创建opener
+		opener = request.build_opener()
+		# 添加cookie处理器对象到opener
+		opener.add_handler(cookieHandler)
+		with opener.open('http://javaweb.io') as response:
+			print(cookie)
+			# <CookieJar[<Cookie JSESSIONID=121BA7EE1190B9358F80E219F5DD3EEB for javaweb.io/>]>
+		
+		# 此时,该 opener 已经有了该cookie,如果该 opener 再次发起请求,会携带cookie
+
+	* 登录 javaweb.io 实战
+		from urllib import request,parse
+		from http import cookiejar
+		cookie = cookiejar.CookieJar()
+		cookieHandler = request.HTTPCookieProcessor(cookie)
+		opener = request.build_opener()
+		opener.add_handler(cookieHandler)
+		# 打开页面,获取服务器的cookie
+		with opener.open('http://javaweb.io') as response:
+			# 使用该cookie重定向到登录页面(多余操作)
+			with opener.open('http://javaweb.io/login') as response:
+				# 通过该cookie读取验证码数据
+				with opener.open('http://javaweb.io/verifycode') as response:
+					# 输入通过后台日志看到的验证码信息
+					verifyCode = input('验证码:')
+					req = request.Request('http://javaweb.io/login')
+					requestBody = parse.urlencode({
+						'name': 'root',
+						'pass': 'root',
+						'verifyCode': verifyCode,
+					})
+					# 通过该cookie执行登录
+					with opener.open(req,data=bytes(requestBody,'utf_8')) as response:
+						# 登录ok,因为该cookie已经具备登录凭证,可以进入主页
+						with opener.open('http://javaweb.io') as response:
+							print(response.read().decode())
+		
 ----------------------------
 urllib-HTTPResponse			|
 ----------------------------
-	* Http响应对象
+	* Http响应对象,也就是 request.open() 后返回的对象
 	* 实例属性
 		status
 			* HTTP状态码
@@ -103,7 +336,7 @@ urllib-parse				|
 			('pagerefer', 'https://passport.weibo.cn/signin/welcome?entry=mweibo&r=http%3A%2F%2Fm.weibo.cn%2F')
 		])
 	
-	* 使用 parse.quote 处理中文url
+	* 使用 parse.quote 处理中文url(对中文进行url编码)
 
 		r = parse.quote('http://www.javaweb.io/你好我是KevinBlandy/')
 		print(r)
