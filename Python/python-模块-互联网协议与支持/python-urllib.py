@@ -318,13 +318,20 @@ urllib-parse				|
 ----------------------------
 	* 可以把参数解析为URL编码的模块
 	* 方法
-		str urlencode(query, doseq, safe, encoding, errors, quote_via)
+		urlencode(query, doseq, safe, encoding, errors, quote_via)
 			* 把参数解析为URL编码的字符串
 			* query参数可以是[(k,v)],也可以是{k:v}
 		
-		[(,)] parse_qs(qs, keep_blank_values, strict_parsing, encoding, errors)
+		parse_qs(qs, keep_blank_values, strict_parsing, encoding, errors)
 			* 把URL编码的字符解析为[],列表中的每个元素都是一个 tuple
 			* 就是把key value 请求体转换为[(key,value)]
+		
+		quote(string, safe='/', encoding=None, errors=None)
+			* 把一个带汉字的url,进行url编码
+		
+		unquote(string, encoding='utf-8', errors='replace')
+			* 把一个url编码的字符串,转换为汉字url
+
 	* demo
 		parse.urlencode([
 			('username', 'Kevin'),
