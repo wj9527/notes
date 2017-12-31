@@ -45,7 +45,9 @@ json-模块属性			|
 ------------------------
 json-模块函数			|
 ------------------------
-	str dumps(obj)
+	str dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
+			allow_nan=True, cls=None, indent=None, separators=None,
+			default=None, sort_keys=False, **kw)
 		* 把可JSON序列化对象转换为JSON字符串
 		* 关键字参数
 			default
