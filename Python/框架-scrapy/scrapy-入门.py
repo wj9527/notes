@@ -4,6 +4,7 @@ scrapy-入门					|
 	* 学习地址
 		http://www.cnblogs.com/-E6-/p/7211025.html
 
+	* 这东西使用了 Twistid 异步网络通信框架来处理网络连接(主要对手就是:Tornado)
 
 ----------------------------
 scrapy-安装					|
@@ -29,4 +30,56 @@ scrapy-安装					|
 			pip install  scrapy
 
 
+----------------------------
+scrapy-架构组件一览			|
+----------------------------	
+	Scrapy Engine(引擎)
+		* 中央大脑,负责组件之间的调度
+	Spider
+		* 
+	Spiders Middlewares(Spider中间件)
+		* 是一个可以定义扩这操作引擎和Spider中间通信的功能组件
+	ItemPipeline(通道)
+		* 它负责处理Spider中获取的Item,并且进行后期处理(分析,过滤,存储)
+	Downloader Middlewares(下载中间件)
+		* 可以当作是一个可以自定义扩展下载功能的组件
+	Downloader(下载器)
+		* 负责下载引擎发送的所有Requests请求
+		* 病并且把响应结果交还给引擎,由引擎交还给Spider来处理
+	Scheduler(调度器)
+		* 负责接受引擎发送过来的request请求,并且按照一定的方式整理队列:入队
+		* 当引擎需要的时候,还会把request交还给引擎
+
+	* 执行流程
+		1,Spiders把请求丢给引擎
+		2,引擎把请求丢给Scheduler
+		3,Scheduler把请求丢给Dowmloader去执行
+		4,Dowmloader把执行的结果返回给Spiders
+			* 如果返回的是数据,则丢给ItemPipeline去处理数据
+			* 如果返回的是连接,则重复1步骤
+		
+----------------------------
+scrapy-开始四部曲			|
+----------------------------
+	1,新建项目
+		scrapy startproject [name]
+
+		* 创建好的目录结构
+			name
+				|-name
+					|-spiders
+						|-__init__.,py
+					|-__init__.,py
+					|-items.py
+					|-middlewares.py
+					|-pipelines.py
+					|-settings.py
+				|-scrapy.cfg
 	
+	2,明确目标(编写items.py),明确要抓取的目标
+	3,制作爬虫(spiders/xxsipder.py),制作爬虫开始爬取网页
+	4,存储内容(pipelines.py),设计管道存储爬取内容
+
+	
+
+		
