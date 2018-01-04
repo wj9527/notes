@@ -265,8 +265,36 @@ python-类				|
 		'太TM多了...只要是操作符,操作对象,对象都有对应的函数进行处理'
 		
 		
-	# 装饰器
-		* 装饰器也可以标识在类上
-		* 也可以标识在静态方法上
+	# 类装饰器
+		* 把一个类作为函数的增强
+		class Foo():
+			# 在初始化的时候保存被增强函数
+			def __init__(self,func):
+				self.func = func
+
+			# 被增强函数执行的时候,会执行__call__
+			def __call__(self, *args, **kwargs):
+				print('类装饰器前置增强')
+				# 执行被增强函数
+				result = self.func()
+				print('类装饰器后置增强')
+				return result
+
+		# test函数相当于指向了用Foo创建出来的实例对象
+		@Foo
+		def test():
+			print('hahah')
+			return 'ok'
+
+		# 当在使用test()进行调用时,就相当于让这个对象()，因此会调用这个对象的__call__方法
+		print(test())
+		print(test)
+		'''
+		类装饰器前置增强
+		hahah
+		类装饰器后置增强
+		ok
+		<__main__.Foo object at 0x000000000296BBE0>		# 直接打印函数,这个函数就是就是Foo的实例对象 isinstance(test,Foo) ==> True
+		'''
 
 			

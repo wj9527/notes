@@ -75,6 +75,7 @@
 ------------------------
 	* greenlet 是 gevent 下的轻量级协程切换模块
 	* 其实就是通过 switch() 方法来完成线程上任务的切换
+	* 但是这个遇到io要去手动的切换上下文
 	* demo
 		from greenlet import greenlet
 		def fun1():
@@ -99,3 +100,31 @@
 			2
 			b
 		'''
+
+------------------------
+协程-gevent的tcp服务器	|
+------------------------
+import gevent
+
+from gevent import socket,monkey
+monkey.patch_all()
+
+def handle_request(conn):
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            conn.close()
+            break
+        print("recv:", data)
+        conn.send(data)
+
+def server(port):
+    s = socket.socket()
+    s.bind(('0.0.0.0', port))
+    s.listen(5)
+    while True:
+        cli, addr = s.accept()
+        gevent.spawn(handle_request, cli)
+
+if __name__ == '__main__':
+    server(7788)
