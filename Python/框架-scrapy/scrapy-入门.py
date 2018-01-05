@@ -67,13 +67,13 @@ scrapy-开始四部曲			|
 		* 创建好的目录结构
 			name
 				|-name
-					|-spiders
+					|-spiders				# 爬虫存放目录
 						|-__init__.,py
-					|-__init__.,py
-					|-items.py
-					|-middlewares.py
-					|-pipelines.py
-					|-settings.py
+					|-__init__.,py	
+					|-items.py				# 数据模型定义
+					|-middlewares.py		# 
+					|-pipelines.py			# 数据处理管道
+					|-settings.py			# 配置模块
 				|-scrapy.cfg
 	
 	2,明确目标(编写items.py),明确要抓取的目标
