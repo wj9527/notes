@@ -32,5 +32,12 @@ pipelines-方法			|
 		
 		* spider,爬虫实例对象
 	
+	* 在爬虫开启的时候,执行的方法,非必须
+		def open_spider(self, spider):
+			print("爬虫开启:%s"%(spider))
+		
+		* spider,爬虫实例对象
+	
+
 
 	
