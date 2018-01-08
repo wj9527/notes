@@ -68,3 +68,12 @@ settings-模块配置项				|
 	HTTPCACHE_DIR = 'httpcache'
 	HTTPCACHE_IGNORE_HTTP_CODES = []
 	HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+--------------------------------
+settings-在程序中获取配置信息	|
+--------------------------------
+	from scrapy.utils.project import get_project_settings
+	
+	# 通过该方法获取指定名称的配置项
+	get_project_settings().get('BOT_NAME')
+

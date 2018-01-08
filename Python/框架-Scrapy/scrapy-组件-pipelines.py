@@ -41,3 +41,28 @@ pipelines-·½·¨			|
 
 
 	
+------------------------
+scrapy.pipelines.images	|
+------------------------
+	* scrapy.pipelines.images.ImaagePiPeline
+
+	IMAGES_STROE = "/"
+	
+	def get_media_request(self,item,info):
+		yield scray.Request(item['url'])
+	
+	def item_completed(self,result,item,info):
+		image_path = [x['path'] for ok ,x in result if ok ]
+		return item
+
+
+------------------------
+scrapy.pipelines.files	|
+------------------------
+
+
+------------------------
+scrapy.pipelines.media	|
+------------------------
+
+
