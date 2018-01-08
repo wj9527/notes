@@ -1,6 +1,21 @@
 ------------------------
 xml						|
 ------------------------
+	* 该模块提供了大量操作xml的模块与类库
+		xml.etree.ElementTree:树形XML元素API
+
+		xml.dom:XML DOM API
+		xml.dom.minidom:XML DOM最小生成树
+		xml.dom.pulldom:构建部分DOM树的支持
+
+		xml.sax:SAX2解析的支持
+		xml.sax.handler:SAX处理器基类
+		xml.sax.saxutils:SAX工具
+		xml.sax.xmlreader:SAX解析器接口
+
+		xml.parsers.expat:运用Expat快速解析XML
+
+
 	* dom操作xml的api
 	* 内置模块	
 		xml.etree.ElementTree
@@ -54,6 +69,7 @@ xml-模块函数			|
 ------------------------
 xml-xml.etree.ElementTree.ElementTree|
 ------------------------
+	* 树形XML元素API
 	xml.etree.ElementTree.ElementTree parse(file)
 		* 解析xml文件,返回对象
 	
