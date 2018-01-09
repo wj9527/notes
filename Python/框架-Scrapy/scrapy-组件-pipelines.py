@@ -48,7 +48,7 @@ scrapy.pipelines.images	|
 
 	IMAGES_STROE = "/"
 	
-	def get_media_request(self,item,info):
+	def get_media_requests(self,item,info):
 		yield scray.Request(item['url'])
 	
 	def item_completed(self,result,item,info):

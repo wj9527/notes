@@ -45,7 +45,9 @@ spiders-主要的属性和方法	 |
 
 		# 爬取结果处理(self可以访问上面的所有属性,以及自定义的属性)
 		def parse(self, response):	
-			pass
+			response.url				# 爬取时请求的url
+			response.body				# 返回的html
+			response.body_as_unicode()	# 返回的html unicode编码
 		
 		* name,allowed_domains 等属性,都是当前Spider实例对象(可以通过 self 访问)
 		
@@ -97,4 +99,63 @@ Spider-派生类-CrawlSpider	 |
 		* Spider类的设计原则是只爬取start_url列表中的网页
 		* 而CrawlSpider类定义了一些规则(rule)来提供跟进link的方便的机制
 		* 从爬取的网页中获取link并继续爬取的工作更适合
+
+-----------------------------
+LinkExtractor				 |
+-----------------------------
+	* 用于从html结构体中提取出连接
+	* from scrapy.linkextractors import LinkExtractor
+	* 构造函数
+		LinkExtractor(allow=(), deny=(), allow_domains=(), deny_domains=(), restrict_xpaths=(),
+                 tags=('a', 'area'), attrs=('href',), canonicalize=False,
+                 unique=True, process_value=None, deny_extensions=None, restrict_css=(),
+                 strip=True)
+			allow
+				* 表示匹配的规则,是一个或者多个正则表达式(元组)
+				* 如果该值为空,则所有的链接都会被提取
+			deny
+				* 也是一组正则规则,该规则命中的连接,不会被提取
+			allow_domains
+				* 会被提取的链接域
+			deny_domains
+				* 不会被提取的连接域
+			restrict_xpaths
+				* 使用xpath表达式,与allow共同过滤链接
+
+	* 属性 & 方法
+		extract_links(response)
+			* 传入响应对象,进行link解析,返回 Link 对象集合
+	* demo
+		def parse(self, response):
+			# 创建 extrator 对象(匹配规则)
+			extrator = LinkExtractor(allow=('start=\d+',))
+			# 通过 extract_links 来解析 response 对象,获取Link对象集合 
+			links = extrator.extract_links(response)
+			for i in links:
+				print(i)	# Link(url='http://hr.tencent.com/position.php?tid=87&start=10#a', text='2', fragment='', nofollow=False)
+
+-----------------------------
+Rule						 |
+-----------------------------
+	* 用于定义怎么去处理匹配到的连接
+	* 一个 Rule 里面会包含一个匹配规则(LinkExtractor),程序里面可以包含多个 Rules
+	* 如果多个 Rule 匹配了相同的连接,则根据规则在集合中的定义顺序,第一个将会被使用
+	* from scrapy.contrib.spiders import Rule
+	* 构造函数
+		Rule(link_extractor, callback=None, cb_kwargs=None, follow=None, process_links=None, process_request=identity)
+			link_extractor
+				* 表示一个匹配规则(LinkExtractor)
+			callback
+				* 回调函数,每当从link_extractor中获取到连接的时候,都会作为参数传递给该回调函数
+			follow
+				* bool 值,指定了根据该规则提取出来的连接是否要跟进(打开连接,深度提取)
+				* 如果 callback = None,该值默认为 True,否则该值为 False
+			process_links
+				* 指定spider中哪个函数将会被调用,从匹配规则(LinkExtractor)中获取到链接列表时会调用该函数
+
+	* 属性 & 方法
+		
+		
+	* demo
+		
 	
