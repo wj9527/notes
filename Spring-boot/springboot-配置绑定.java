@@ -35,4 +35,4 @@ Spring-boot 绑定到POJO		|
 	
 	* Spring Boot使用宽松的规则用于绑定属性到 @ConfigurationProperties 
 	* 以配置的属性名和bean属性名不需要精确匹配。
-	* 比如，context-path绑定到contextPath，PORT绑定port。
+	* 比如,context-path绑定到contextPath,PORT绑定port。

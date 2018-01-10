@@ -148,6 +148,9 @@ Spring-Boot 外部配置		|
 		* 每个profile的格式固定
 			application-{name}.properties
 
-		* application.properties文件中指定要加载的文件
+		* application.properties文件中激活指定的文件
 			spring.profiles.active={name}
-	
+
+	# 导入多个外部配置文件
+		spring.profiles.include[0]=datasource
+		spring.profiles.include[1]=redis

@@ -20,7 +20,7 @@ Spring boot-配置项				|
 		logging.config=classpath:community-logback.xml
 			# logback配置文件地址
 	
-	//静态文件
+	//静态文件映射
 		spring.mvc.static-path-pattern=/static/**													*/
 			# 用于指定静态文件的目录(在classpath目录下-src/main/resources),允许外界直接访问
 
@@ -30,4 +30,7 @@ Spring boot-配置项				|
 
 		mybatis.config-location=classpath:mybatis/mybatis-config.xml
 			# mybatis配置文件地址
-		
+
+	//导入外部配置文件
+		spring.profiles.include[0]=datasource
+		spring.profiles.include[1]=redis
