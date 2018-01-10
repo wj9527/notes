@@ -8,6 +8,19 @@ settings-模块配置项				|
 
 	BOT_NAME = 'webspider'
 		* 爬虫名称,也就是项目名称
+	
+	LOG_FILE = 'my.log'
+		* 指定日志输出文件
+	
+	LOG_LEVEL = 'WARNING'
+		* 指定日志输出级别
+			'CRITICAL': CRITICAL,
+			'FATAL': FATAL,
+			'ERROR': ERROR,
+			'WARN': WARNING,
+			'WARNING': WARNING,
+			'INFO': INFO,
+			'DEBUG': DEBUG,
 
 	SPIDER_MODULES = ['webspider.spiders']
 
