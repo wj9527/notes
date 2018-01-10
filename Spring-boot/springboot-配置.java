@@ -153,4 +153,6 @@ Spring-Boot 外部配置		|
 
 	# 导入多个外部配置文件
 		spring.profiles.include[0]=datasource
+			|-application-datasource.properties
 		spring.profiles.include[1]=redis
+			|-application-redis.properties
