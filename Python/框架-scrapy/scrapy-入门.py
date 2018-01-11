@@ -30,6 +30,12 @@ scrapy-安装					|
 		3,再次执行安装scrapy
 			pip install  scrapy
 
+----------------------------
+scrapy-安装(Linux)			|
+----------------------------
+	* 各种坑
+	* http://blog.csdn.net/u012949658/article/details/55001179
+
 
 ----------------------------
 scrapy-架构组件一览			|
