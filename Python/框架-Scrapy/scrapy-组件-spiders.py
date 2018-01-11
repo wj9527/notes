@@ -21,7 +21,7 @@ spiders-主要的属性和方法	 |
 
 	start_requests(self)
 		* 该方法必须返回一个 Request 实例的可迭代对象(iterable),该对象包含了spider用于爬取的第一个Request
-		* 其实源码中就是对 start_urls 中的url属性进行迭代
+		* 其实源码中就是对 start_urls 中的url属性进行迭代,并以 parse 为回调函数生成 Request
 
 	parse(self, response)
 		* 当请求url返回网页没有指定回调函数时,默认的Request对象回调函数
@@ -30,6 +30,10 @@ spiders-主要的属性和方法	 |
 	log(self, message[, level, component])
 		* 使用 scrapy.log.msg() 方法记录(log)message
 		* 更多数据请参见 logging
+	
+	closed(reason)
+		* 当spider关闭时,该函数被调用
+		* 该方法提供了一个替代调用 signals.connect()来监听 spider_closed 信号的快捷方式
 
 -----------------------------
 基本spiders	定义			 |
