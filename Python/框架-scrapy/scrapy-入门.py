@@ -4,6 +4,7 @@ scrapy-入门					|
 	* 学习地址
 		http://www.cnblogs.com/-E6-/p/7211025.html
 		http://scrapy-chs.readthedocs.io/zh_CN/latest/index.html#
+		https://docs.scrapy.org/en/latest/index.html				# 官方文档
 
 	* 这东西使用了 Twistid 异步网络通信框架来处理网络连接(主要对手就是:Tornado)
 

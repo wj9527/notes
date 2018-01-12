@@ -38,6 +38,9 @@ pipelines-方法			|
 		
 		* spider,爬虫实例对象
 	
+	* 未知
+		from_crawler(self,crawler)
+	
 
 
 	
