@@ -60,12 +60,12 @@ Rule						 |
 			callback
 				* 回调函数名(str),每当从link_extractor中获取到连接的时候,都会作为参数传递给该回调函数
 				* 注意,该函数名称不能与'parse'冲突
-
 			follow
 				* bool 值,指定了根据该规则提取出来的连接是否要跟进(打开连接,深度提取)
 				* 如果 callback = None,该值默认为 True,否则该值为 False
 			process_links
-				* 指定spider中哪个函数将会被调用,从匹配规则(LinkExtractor)中获取到链接响应时会调用该函数
+				* 以str形式,指定spider中哪个函数将会被调用,从匹配规则(LinkExtractor)中获取到链接列表
+				* 就是处理提取到的连接的方法,处理完毕后返回连接列表
 	
 		
 -----------------------------
