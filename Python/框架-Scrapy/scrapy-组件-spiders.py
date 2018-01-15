@@ -102,13 +102,14 @@ Selectors选择器				 |
 		re()		
 			* 根据传入的正则表达式对数据进行提取,返回Unicode字符串list列表
 		extract_first()
-			* 从 extract() 结果集中获取第一个元素,不用担心数组越界异常
+			* 从 extract() 结果集中获取第一个元素,不用担心数组越界异常,不存在返回 None
 	
 ------------------------------------
-爬虫参数							|
+爬虫命令参数						|
 ------------------------------------
 	* 在运行爬虫时,可以通过 -a 选项为爬虫提供命令行参数
 		scrapy crawl quotes -o quotes-humor.json -a tag=humor
+
 	* 默认情况下,这些参数将传递给 Spider 的 __init__ 方法并成为爬虫的属性
 		 tag = getattr(self, 'tag', None)	# 通过反射获取执行爬虫传递的参数
 
@@ -130,4 +131,13 @@ Response							|
 ------------------------------------
 Request								|
 ------------------------------------
-	
+	* 由自己创建,表示一个http请求对象
+	* 构造函数
+		Request(url, callback=None, method='GET', headers=None, body=None,
+                 cookies=None, meta=None, encoding='utf-8', priority=0,
+                 dont_filter=False, errback=None, flags=None)
+		
+		* 第一个参数,就是目标url
+		* 关键字参数
+			callback
+				* 该连响应后,由谁进行处理(回调函数)
