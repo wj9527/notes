@@ -93,9 +93,41 @@ Selectors选择器				 |
 
 	* Selector有四个基本的方法,最常用的还是xpath
 
-		xpath()		传入xpath表达式,返回该表达式所对应的所有节点的selector list列表
-		extract()	序列化该节点为Unicode字符串并返回list
-		css()		传入CSS表达式,返回该表达式所对应的所有节点的selector list列表,语法同 BeautifulSoup4
-		re()		根据传入的正则表达式对数据进行提取,返回Unicode字符串list列表
+		xpath()		
+			* 传入xpath表达式,返回该表达式所对应的所有节点的selector list列表
+		extract()	
+			* 序列化该节点为Unicode字符串并返回list
+		css()		
+			* 传入CSS表达式,返回该表达式所对应的所有节点的selector list列表,语法同 BeautifulSoup4
+		re()		
+			* 根据传入的正则表达式对数据进行提取,返回Unicode字符串list列表
+		extract_first()
+			* 从 extract() 结果集中获取第一个元素,不用担心数组越界异常
+	
+------------------------------------
+爬虫参数							|
+------------------------------------
+	* 在运行爬虫时,可以通过 -a 选项为爬虫提供命令行参数
+		scrapy crawl quotes -o quotes-humor.json -a tag=humor
+	* 默认情况下,这些参数将传递给 Spider 的 __init__ 方法并成为爬虫的属性
+		 tag = getattr(self, 'tag', None)	# 通过反射获取执行爬虫传递的参数
 
+	
+------------------------------------
+Response							|
+------------------------------------
+	* 由框架构建
+	* 属性
+		url				# 爬取时请求的url
+		body			# 返回http响应体
+
+	* 方法
+		body_as_unicode()	# 返回的html unicode编码
+		urljoin()
+		follow()
+			* 返回一个 Request 实例对象
+
+------------------------------------
+Request								|
+------------------------------------
 	
