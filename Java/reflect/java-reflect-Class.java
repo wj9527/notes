@@ -33,7 +33,7 @@ java.reflect.Class	 |
 	Field[] getFields();
 		* 返回该类所有 public 修饰的字段对象
 
-	Field[] stsgetDeclaredFields()
+	Field[] getDeclaredFields()
 		* 返回该类所有的字段对象
 	
 	Method getMethod(String name, Class<?>... parameterTypes);
@@ -71,6 +71,9 @@ java.reflect.Class	 |
 	
 	Class<?> getSuperclass();
 		* 获取直接父类类实例
+	
+	int getModifiers()
+		* 返回权限修饰的表示数值(public,private,native,final....)
 
 ---------------------
 静态方法			 |

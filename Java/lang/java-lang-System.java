@@ -19,3 +19,9 @@ System-静态方法			|
 		* 从系统环境变量中读取数据
 		* 如果不存在,则使用默认值
 	
+
+------------------------
+System-格式化输出		|
+------------------------
+	System.out.printf(str,Object... fmt)
+		* System.out.printf("你好,我是 %s 今年 %s 岁","KevinBlandy",15);//你好,我是 KevinBlandy 今年 15 岁

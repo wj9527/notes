@@ -24,3 +24,9 @@ java.reflect.Field	 |
 
 	boolean isAnnotationPresent(Class<? extends Annotation> annotationClass);
 		* 判断是否有指定类型的注解标识在该属性
+
+	Class<?> getType()
+		* 返回数量的类型
+	
+	int getModifiers()
+		* 返回权限修饰的表示数值(public,private,native,final....)

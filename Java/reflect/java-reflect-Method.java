@@ -17,3 +17,12 @@ java.reflect.Method	 |
 
 	boolean isAnnotationPresent(Class<? extends Annotation> annotationClass);
 		* 判断是否有指定类型的注解标识在该方法
+	
+	int getModifiers()
+		* 返回权限修饰的表示数值(public,private,native,final....)
+	
+	 Class<?> getReturnType()
+		* 返回 return 的Class类类型
+	
+
+	
