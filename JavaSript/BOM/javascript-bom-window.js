@@ -60,7 +60,7 @@ javascript-方法				|
 	clearInterval(id);				
 		* 清除指定的定时器,传递定时器的id
 
-	setTimeOut(fun,10);		
+	setTimeout(fun,10);		
 		* 在10毫秒后,去执行指定的函数,也可以直接是JS代码,仅仅会执行一次,也会返回一个id
 
 	clearTimeOut(id);				
