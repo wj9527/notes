@@ -31,7 +31,32 @@ Python-征途					|
 		* 唯一注意的是,添加到环境变量(不然得手动的添加)
 	3,安装OK后,打开CMD,输入:python –V
 		* 成功看到版本信息则安装成功
+
+----------------------------
+1,Cetntos环境搭建			|
+----------------------------
+	1,下载
+		https://www.python.org/ftp/python/
+
+	2,解压,创建文件夹
+		tar -zxvf Python-3.6.4.tgz 
+		mkdir /usr/local/python
+
+	3,安装依赖
+		yum -y install zlib
+		yum -y install zlib-devel
+
+	4,进入解压目录,执行编译
+		 ./configure --prefix=/usr/local/python
 	
+	5,编译ok后,执行安装
+		make && make install
+
+	4,创建软连接
+		ln -s /usr/local/python/bin/python3 /usr/bin/python3
+	
+	5,测试
+		python3 -V
 
 ----------------------------
 2,Python-处理文件编码		|
