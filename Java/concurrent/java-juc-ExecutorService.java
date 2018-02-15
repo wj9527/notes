@@ -45,14 +45,18 @@ ExecutorService				|
 
 		ScheduledFuture<?> schedule(Runnable command,long delay, TimeUnit unit);
 			* 在指定延迟后,执行command
+
 		<V> ScheduledFuture<V> schedule(Callable<V> callable,long delay, TimeUnit unit);
 			* 在指定延迟后,执行callable
 
 
 
-	# 关闭线程池
+	# api
 		void shutdown();
 			* 会等到所有任务完成才会关闭
 
 		List<Runnable> shutdownNow();
 			* 立即关闭线程池
+
+		boolean isTerminated();
+			* 如果队列中的所有任务都处理完毕后返回 true

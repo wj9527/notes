@@ -24,6 +24,7 @@ ServerSocket - api	   |
 	 int getSoTimeout()
 	 boolean isBound()
 	 boolean isClosed()
+
 	 void setPerformancePreferences(int connectionTime,int latency,int bandwidth)
 	 void setReceiveBufferSize (int size)
 	 void setReuseAddress(boolean on)
