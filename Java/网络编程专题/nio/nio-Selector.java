@@ -31,4 +31,42 @@ Selector				|
 ------------------------
 Selector-api			|
 ------------------------
+	public static Selector open()
+
+	void close()
+	boolean isOpen()
+		* 判断 Selector 是否处于打开状态
+		* 创建了 Selector 实例后,就是打开状态,调用了 close() 方法,就进入了关闭状态
+
+	Set<SelectionKey> keys()　
+		* 返回 Selector 的 all-keys 集合,包含了 Selector 关联的 SelectionKey 丢下
+
+	SelectorProvider provider()
+	int select()
+	int select(long timeout)
+		* select() 方法才用阻塞的工作方式,返回相关事件已经发生的 SelectionKey 对象数目
+		* 如果一个都没有,则会进入阻塞,直到出现以下情况之一,才用 select() 方法中返回
+			1,至少有一个 SelectionKey 的相关事件已经发生
+			2,其他线程调用了 Selector 的 wakeup() 方法,导致 select() 方法的线程,立即从 select() 方法返回
+			3,当前执行 select()方法的线程,被其他线程中断
+			4,超出了等待时间,单位是毫秒,如果等待超时,就正常返回,不会抛出异常
+			  如果调用了是没有超时参数的select(),该方法的线程就会进入阻塞状态,永远不会因为超时而中断
+
+	Set<SelectionKey> selectedKeys()
+	int selectNow()
+		* 返回相关事件已经发送的  SelectionKey 对象数目
+		* 该方法采用非阻塞的工作方式,返回当前相关事件已经发生的 SelectionKey 对象数目
+		* 如果没有,立即返回0
+	
+
+	Selector wakeup()
+		* 唤醒执行 Selector 的 select() 方法(同样适用于 select(long timeOut))的线程
+		* 线程A执行了 Selector 对象的 wakeup() 方法,如果线程B正在执行同一个 Selector 对象的 select() 方法时
+		  或者B线程过一会儿执行这个 Selector 对象的 select() 方法,那么B线程在执行select() 方法时,会立即从 select() 方法中返回
+		* wakeup() 只能唤醒执行select()方法的线程B一次,如果线程B在执行select()方法时被唤醒,以后再执行select()还会被阻塞
+		  除非线程A再次执行 Selector 对象的 wakeup() 方法
+		 
+
+
+
 	
