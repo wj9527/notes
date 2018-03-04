@@ -32,7 +32,7 @@ MySQL-5.7.x 安装			|
 			-DWITH_PARTITION_STORAGE_ENGINE=1  \				
 			
 			-DWITH_READLINE=1 \                                     [MySQL的readline library]
-			-DMYSQL_UNIX_ADDR=/var/run/mysql/mysql.sock \           [MySQL的通讯目录]
+			-DMYSQL_UNIX_ADDR=/run/mysql/mysql.sock \				[MySQL的通讯目录]
 			-DMYSQL_TCP_PORT=1124 \                                 [MySQL的监听端口]
 			-DENABLED_LOCAL_INFILE=1 \                              [启用加载本地数据]
 			-DENABLE_DOWNLOADS=1 \                                  [编译时允许自主下载相关文件]
@@ -59,7 +59,7 @@ cmake \
 -DWITH_MEMORY_STORAGE_ENGINE=1 \
 -DWITH_PARTITION_STORAGE_ENGINE=1 \
 -DWITH_READLINE=1 \
--DMYSQL_UNIX_ADDR=/var/run/mysql/mysql.sock \
+-DMYSQL_UNIX_ADDR=/run/mysql/mysql.sock \
 -DMYSQL_TCP_PORT=1124 \
 -DENABLED_LOCAL_INFILE=1 \
 -DENABLE_DOWNLOADS=1 \
@@ -72,7 +72,7 @@ cmake \
 -DWITH_ZLIB:STRING=bundled \
 -DDOWNLOAD_BOOST=1 \
 -DWITH_BOOST=/usr/local/mysql/boost_1_59_0
-	
+
 	4,配置OK后,执行编译安装	
 		make && make install
 	
@@ -109,7 +109,7 @@ cmake \
 			datadir = /usr/local/mysql/data
 			port = 1124
 			server_id = 1
-			socket = /var/run/mysql/mysql.sock 
+			socket = /run/mysql/mysql.sock 
 
 	9,执行授权操作
 		chown mysql /usr/local/mysql -R
