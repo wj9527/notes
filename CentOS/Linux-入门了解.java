@@ -153,6 +153,7 @@ Linux-常规配置文件地址	|
 	/etc/hosts						--> 本地HOST文件
 	/etc/sysconfig/iptables			--> 防火墙
 	/etc/sysconfig/network			--> 主机名
+	/etc/motd						--> 登录欢迎语
 
 -----------------------
 Linux-常规日志文件地址	|

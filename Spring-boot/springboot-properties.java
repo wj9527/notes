@@ -23,6 +23,10 @@ Spring boot-配置项				|
 	//静态文件映射
 		spring.mvc.static-path-pattern=/static/**													*/
 			# 用于指定静态文件的目录(在classpath目录下-src/main/resources),允许外界直接访问
+		
+		spring.resources.static-locations[0]=
+			# 也是静态资源的映射处理,是一个数组,支持多个
+			# 支持 classpath:/ ,支持 file:/
 
 	//MyBatis
 		mybatis.mapper-locations[0]=classpath*:mapper/**/Mapper.xml
