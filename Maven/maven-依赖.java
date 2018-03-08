@@ -113,4 +113,26 @@
 	
 
 
-排除依赖
+------------------------
+2,本地依赖				|
+------------------------
+	<!-- 在pom文件中顶一个一个本地仓库(file://) -->
+	<repositories>
+		<repository>
+		    <id>in-project</id>
+		    <name>In Project Repo</name>
+		    <url>file://${project.basedir}/lib</url>
+		</repository>
+	</repositories>
+	
+	<!-- 
+		<scope>system</scope>
+		<systemPath>${basedir}/lib/icbcClient-1.0.jar</systemPath> 
+	-->
+	<dependency>
+		<groupId>icbcClient</groupId>
+		<artifactId>icbcClient</artifactId>
+		<version>1.0</version>
+		<scope>system</scope>
+		<systemPath>${basedir}/lib/icbcClient-1.0.jar</systemPath> 
+	</dependency>
