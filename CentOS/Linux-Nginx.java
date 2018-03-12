@@ -26,14 +26,14 @@ Linux-Nginx源码安装		|
 		 the HTTP rewrite module requires the PCRE library
 			* 缺少正则表达[PCRE]的库
 			* 解决方案,直接安装依赖就是了
-					yum install pcre
-					yum install pcre-devel
+					yum -y install pcre
+					yum -y install pcre-devel
 		
 		 the HTTP gzip module requires the zlib library.
 			* 缺少:zlib依赖
 			* 解决方案,直接安装就是了
-					yum install zlib
-					yum install zlib-devel
+					yum -y install zlib
+					yum -y install zlib-devel
 
 
 	# rpm安装方式我就不说了,那东西简单.而且.可以用service 命令来进行维护

@@ -57,28 +57,37 @@ Spring-boot 静态资源			|
 		* /public
 		* /resources
 		* /META-INF/resources
-	# 以上文件夹中的静态文件,直接可以映射为静态文件夹目录,来进行访问
+	# 以上文件夹中的静态文件,通过配置静态资源pattern,来进行访问
+		spring.mvc.static-path-pattern=/static/**	*/
 	
 	# webjar,的静态资源映射
 		* webjar,就是jar中有jar.
 		* /META-INF/resources/webjars/ 下的静态文件映射为: /web/jar/**						*/
 
-	# 静态资源访问失败
+	# 静态资源配置
 
 		* 解决方案一
 			* 自定义配置类,实现 WebMvcConfigurerAdapter ,覆写方法
-			@Override
-			public void addResourceHandlers(ResourceHandlerRegistry registry) {
-				registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-				super.addResourceHandlers(registry);
-			}
-			* 该方法还可以访问外部文件(使用"file:"开头))
-				registry.addResourceHandler("/upload/**").addResourceLocations("file:"+ TaleUtils.getUplodFilePath()+"upload/");
+				@Override
+				public void addResourceHandlers(ResourceHandlerRegistry registry) {
+					//static 静态资源目录
+					registry.addResourceHandler("/static/**")
+					//src/main/resources/static
+					.addResourceLocations("classpath:/static/")		
+					//本地d盘下的pic,
+					.addResourceLocations("file:D:/pic/");
+				}
+			* 一个 ResourceHandler 映射了多个 ResourceLocations,如果出现相同路径,相同文件,则谁先映射谁优先
+			* 上面代码:static/index.js 要优先于 pic/index.js 加载
 
 		* 解决方案二
-			* 在application.properties 添加配置
+			* 在application.properties 添加配置,设置静态资源的访问路径
 				spring.mvc.static-path-pattern=/static/**								*/
 				*  '注意,后面不能有空格,这里完全是为了处理掉 /** Java的注释冲突'
+			
+			* 在application.properties 添加配置,指定静态资源的位置
+				spring.resources.static-locations[0]=classpath:/static/
+				spring.resources.static-locations[1]=file:${local.image.folder}
 
 --------------------------------
 Spring-boot 视图映射			|

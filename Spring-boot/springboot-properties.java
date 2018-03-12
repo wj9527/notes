@@ -22,6 +22,12 @@ Spring boot-配置项				|
 	
 	//静态文件映射
 		spring.mvc.static-path-pattern=/static/**													*/
+			# 设置静态资源的访问前缀,默认情况下,静态资源目录有
+				* /static 
+				* /public
+				* /resources
+				* /META-INF/resources
+
 			# 用于指定静态文件的目录(在classpath目录下-src/main/resources),允许外界直接访问
 		
 		spring.resources.static-locations[0]=

@@ -140,3 +140,123 @@ cmake \
 	14,开启访问端口
 		firewall-cmd --add-port=1124/tcp --permanent 
 		firewall-cmd --reload  
+
+
+
+c++: internal compiler error: Killed (program cc1plus)
+Please submit a full bug report,
+with preprocessed source if appropriate.
+See <http://bugzilla.redhat.com/bugzilla> for instructions.
+make[2]: *** [unittest/gunit/CMakeFiles/merge_small_tests-t.dir/merge_small_tests.cc.o] Error 4
+make[1]: *** [unittest/gunit/CMakeFiles/merge_small_tests-t.dir/all] Error 2
+make: *** [all] Error 2
+
+------------------------ yum安装	
+http://blog.csdn.net/xyang81/article/details/51759200
+
+1,下载
+	https://dev.mysql.com/downloads/repo/yum/
+	Red Hat Enterprise Linux 7 / Oracle Linux 7 (Architecture Independent), RPM Package		25.1K	
+	(mysql57-community-release-el7-11.noarch.rpm)	
+
+2,安装yum源
+	yum localinstall mysql57-community-release-el7-11.noarch.rpm
+
+	* 查看yum源是否安装成功/etc/yum.repos.d/mysql-community.repo
+		yum repolist enabled | grep "mysql.*-community.*"
+
+		mysql-connectors-community/x86_64    MySQL Connectors Community               45
+		mysql-tools-community/x86_64         MySQL Tools Community                    59
+		mysql57-community/x86_64             MySQL 5.7 Community Server              247
+
+	* 修改默认安装的mysql版本
+		vim /etc/yum.repos.d/mysql-community.repo
+
+		# Enable to use MySQL 5.5
+		[mysql55-community]
+		enabled=0					# 不安装5.5
+
+		# Enable to use MySQL 5.6
+		[mysql56-community]
+		enabled=0					# 不安装5.6
+
+		# Enable to use MySQL 5.7
+		[mysql57-community]
+		enabled=1					# 安装5.7
+		
+		enabled=1		//表示安装
+		enabled=0		//表示不安装
+
+3,安装mysql服务器
+	yum install mysql-community-server
+
+4,启动mysql服务
+	systemctl start mysqld
+	
+	* 查看mysql服务状态
+		systemctl status mysqld
+	
+	* 设置开机启动
+		systemctl enable mysqld
+		systemctl daemon-reload
+
+
+5,修改root本地登录密码
+	* 查看临时密码
+		less /var/log/mysqld.log | grep 'temporary password'
+	
+	* 使用临时密码进行登录
+		mysql -uroot -p
+	
+	* 执行修改密码方式1
+		ALTER USER 'root'@'localhost' IDENTIFIED BY 'new pass'; 
+	
+	* 执行修改密码方式2
+		set password for 'root'@'localhost' = password('new pass'); 
+	
+	* 注意
+		mysql5.7默认安装了密码安全检查插件(validate_password),默认密码检查策略要求密码必须包含:大小写字母,数字和特殊符号,并且长度不能少于8位
+		否则会提示ERROR 1819 (HY000):Your password does not satisfy the current policy requirements
+
+6,授权用户在远程登录
+	GRANT ALL PRIVILEGES ON *.* TO 'KevinBlandy'@'%' IDENTIFIED BY 'pass' WITH GRANT OPTION; 
+	
+	*.*			任意数据库下的任意数据表
+	KevinBlandy 用户名
+	%			任意ip
+	pass		密码
+
+7,设置默认编码
+	* 编辑:vim /etc/my.cnf,在 [mysqld] 配置项中添加配置
+		character_set_server=utf8
+		init_connect='SET NAMES utf8'
+	
+	* 重启mysql服务
+		systemctl restart mysqld
+
+	* 登录,查看编码
+		show variables like '%character%';
+
+
+8,默认配置文件路径
+	配置文件:	/etc/my.cnf 
+	日志文件:	/var/log//var/log/mysqld.log 
+	服务启动脚本:	/usr/lib/systemd/system/mysqld.service 
+	socket文件:		/var/run/mysqld/mysqld.pid
+
+9,维护命令
+	* 启动服务
+		systemctl start mysqld
+
+	* 停止服务
+		systemctl stop mysqld
+
+	* 重启服务
+		systemctl restart mysqld
+	
+	* 查看mysql服务状态
+		systemctl status mysqld
+	
+	* 设置开机启动
+		systemctl enable mysqld
+		systemctl daemon-reload
