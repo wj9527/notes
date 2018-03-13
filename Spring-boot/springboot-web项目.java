@@ -86,6 +86,7 @@ Spring-boot 静态资源			|
 				*  '注意,后面不能有空格,这里完全是为了处理掉 /** Java的注释冲突'
 			
 			* 在application.properties 添加配置,指定静态资源的位置
+				local.image.folder=d:/pic/
 				spring.resources.static-locations[0]=classpath:/static/
 				spring.resources.static-locations[1]=file:${local.image.folder}
 
