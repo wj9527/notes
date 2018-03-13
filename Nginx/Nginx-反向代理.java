@@ -86,7 +86,11 @@ Nginx-WebSocket			|
 	 proxy_set_header Connection "upgrade";
 
 ------------------------
-Nginx-变量				|
+Nginx-域名重定向		|
 ------------------------
-
-
+	# 把 springboot.io 和 www.springboot.io 重定向到 www.javaweb.io
+		server{
+				listen 80;
+				server_name www.springboot.io springboot.io;
+				rewrite ^/(.*)$ http://www.javaweb.io/$1 permanent;  
+		}
