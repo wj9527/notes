@@ -105,6 +105,26 @@ Object						|
 			* 不能检测从原型继承的属性
 			* Object.getOwnPropertyDescriptor(user,"name")
 		
+		freeze(obj);
+			* 冻结一个对象,冻结了之后,该对象的属性值不能进行修改
+				'use strict';
+				const foo = Object.freeze({name:'Kevin'});
+				foo.name = 'Litch'	//Uncaught TypeError: Cannot assign to read only property 'name' of object '#<Object>'
+				foo.age = 23;		//Uncaught TypeError: Cannot add property age, object is not extensible
+			* 但是对象的属性对象是允许被修改的
+				const foo = Object.freeze({user:{name:'Kevin'}});
+				foo.user.name = 'Litch';
+			
+			* 冻结对象的所有属性
+				var constantize = (obj) => {
+					Object.freeze(obj);
+					Object.keys(obj).forEach( (key, i) => {
+						if ( typeof obj[key] === 'object' ) {
+							constantize( obj[key] );
+						}
+					});
+				};
+
 
 				
 
