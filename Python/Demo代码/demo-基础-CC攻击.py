@@ -2,7 +2,7 @@ import threading
 import sys
 from urllib import request
 
-target_url = "http://www.javaweb.io"
+target_url = "http://www.baidu.com"
 
 def do_request(url):
     while True:
