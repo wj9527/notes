@@ -368,5 +368,158 @@
 ------------------------------------
 圆括号的问题						|
 ------------------------------------
-	//TODO
+	# 解构赋值虽然很方便,但是解析起来并不容易,对于编译器来说,一个式子到底是模式,还是表达式,
+	  没有办法从一开始就知道,必须解析到(或解析不到)等号才能知道
+
+	# 由此带来的问题是,如果模式中出现圆括号怎么处理,ES6 的规则是,只要有可能导致解构的歧义,就不得使用圆括号
+
+	# 但是,这条规则实际上不那么容易辨别,处理起来相当麻烦,因此,建议只要有可能,就不要在模式中放置圆括号
+
+	# 不能使用圆括号的情况
+		1,变量声明语句
+			let [(a)] = [1];
+
+			let {x: (c)} = {};
+			let ({x: c}) = {};
+			let {(x: c)} = {};
+			let {(x): c} = {};
+
+			let { o: ({ p: p }) } = { o: { p: 2 } };
+
+			* 上面 6 个语句都会报错,因为它们都是变量声明语句,模式不能使用圆括号
 	
+		2,参数函数
+			// 报错
+			function f([(z)]) { return z; }
+			// 报错
+			function f([z,(x)]) { return x; }
+
+			* 函数参数也属于变量声明,因此不能带有圆括号
+	
+		3,赋值语句模式
+			// 全部报错
+			({ p: a }) = { p: 42 };
+			([a]) = [5];
+
+			* 将整个模式放在圆括号之中，导致报错
+
+			// 报错
+			[({ p: a }), { x: c }] = [{}, {}];
+			* 将一部分模式放在圆括号之中,导致报错
+	
+	# 可以使用圆括号的情况
+
+		* 可以使用圆括号的情况只有一种:赋值语句的非模式部分,可以使用圆括号
+
+		[(b)] = [3];				// 正确
+		({ p: (d) } = {});			// 正确
+		[(parseInt.prop)] = [3];	// 正确
+
+		* 上面三行语句都可以正确执行,因为首先它们都是赋值语句,而不是声明语句
+		* 其次它们的圆括号都不属于模式的一部分
+			第一行语句中,模式是取数组的第一个成员,跟圆括号无关
+			第二行语句中,模式是p,而不是d
+			第三行语句与第一行语句的性质一致
+
+
+------------------------------------
+用途								|
+------------------------------------
+	1,变量值快速交换
+		let x = 1;
+		let y = 1;
+
+		[x,y] = [y,x]
+	
+	2,从函数返回多个值
+		function example() {
+		  return [1, 2, 3];
+		}
+		let [a, b, c] = example();
+
+		// 返回一个对象
+		function example() {
+			return {
+				foo: 1,
+				bar: 2
+			};
+		}
+		let { foo, bar } = example();
+
+		* 函数只能返回一个值,如果要返回多个值,只能将它们放在数组或对象里返回
+		* 有了解构赋值,取出这些值就非常方便
+	
+	3,函数参数的定义
+		// 参数是一组有次序的值
+		function f([x, y, z]) { ... }
+		f([1, 2, 3]);
+
+		// 参数是一组无次序的值
+		function f({x, y, z}) { ... }
+		f({z: 3, y: 2, x: 1});
+
+		* 解构赋值可以方便地将一组参数与变量名对应起来
+	
+	4,提取json数据
+		
+		let jsonData = {
+		  id: 42,
+		  status: "OK",
+		  data: [867, 5309]
+		};
+
+		let { id, status, data: number } = jsonData;
+		console.log(id, status, number);	// 42, "OK", [867, 5309]
+
+		* 解构赋值对提取 JSON 对象中的数据,尤其有用
+	
+	5,函数参数的默认值
+		jQuery.ajax = function (url, {
+			async = true,
+			beforeSend = function () {},
+			cache = true,
+			complete = function () {},
+			crossDomain = false,
+			global = true,
+			// ... more config
+		}) {
+			// ... do stuff
+		};
+
+		* 预定义函数的一些默认值
+		* 指定参数的默认值,就避免了在函数体内部再写var foo = config.foo || 'default foo';这样的语句
+	
+	6,遍历Map结构
+		const map = new Map();
+		map.set('first', 'hello');
+		map.set('second', 'world');
+		for (let entry of map) {
+		  console.log(entry);
+		}
+		// ["first", "hello"]
+		// ["second", "world"]
+		for (let [key, value] of map) {
+		  console.log(key + " is " + value);
+		}
+		//first is hello
+		//index.html:20 second is world
+
+		* 任何部署了 Iterator 接口的对象,都可以用for...of循环遍历
+		* Map 结构原生支持 Iterator 接口,配合变量的解构赋值,获取键名和键值就非常方便
+		* 如果只想获取键名,或者只想获取键值,可以写成下面这样
+			// 获取键名
+			for (let [key] of map) {
+			  // ...
+			}
+
+			// 获取键值
+			for (let [,value] of map) {
+			  // ...
+			}
+
+	7,输入模块的指定方法
+
+		const { SourceMapConsumer, SourceNode } = require("source-map");
+
+		* 加载模块时,往往需要指定输入哪些方法
+		* 解构赋值使得输入语句非常清晰
