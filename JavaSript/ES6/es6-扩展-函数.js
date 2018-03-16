@@ -190,4 +190,162 @@ rest参数					|
 ----------------------------
 name属性					|
 ----------------------------
+	# name属性,返回该函数的函数名,
+		* 浏览器早就支持这个属性了,但在ES6才被写入规范
 	
+	# 如果将一个匿名函数赋值给一个变量,ES5 的name属性,会返回空字符串.而 ES6 的name属性会返回实际的函数名
+		let foo = function(){}
+		console.log(foo.name);		//foo
+	
+	# 将一个具名函数赋值给一个变量,则 ES5 和 ES6 的name属性都返回这个具名函数原本的名字
+
+		const bar = function baz() {};
+
+		// ES5
+		bar.name // "baz"
+
+		// ES6
+		bar.name // "baz"
+	
+	# Function构造函数返回的函数实例,name属性的值为anonymous
+
+		(new Function).name // "anonymous"
+	
+	# bind返回的函数,name属性值会加上bound前缀
+
+		function foo() {};
+
+		foo.bind({}).name // "bound foo"
+		(function(){}).bind({}).name // "bound "
+
+----------------------------
+箭头函数					|
+----------------------------
+	# ES6的箭头函数,有点像java中的 lambda 表达式
+		let foo = x => x;
+		let foo = function(x){return x}
+		console.log(foo(1))
+	
+	# 如果有多个参数,使用()包含	
+		let foo = (x,y) => x + y;
+		console.log(foo(1,2))
+	
+	# 如果箭头函数的代码有几句,就要使用大括号将它们括起来,并且码块部分多于一条语使用return语句返回
+		let foo = (x,y) => {
+			let r = x + y;
+			return r;
+		};
+		console.log(foo(1,2))
+	
+	# 如果箭头函数直接返回的数据是个对象,那么必须使用()进行包裹
+		let foo = () => ({name:'Kevin'});
+		console.log(foo())
+	
+	# 如果箭头函数只有一行语句,且不需要返回值,可以省略大括号
+
+		let fn = () => void doesNotReturn();
+		let foo = () => void console.log('没有返回值,仅仅用于执行一行代码');
+	
+	# 箭头函数与解构赋值
+		const full = ({ first, last }) => first + ' ' + last;
+	
+		// 等同于
+		function full(person) {
+		  return person.first + ' ' + person.last;
+		}
+	
+	# rest 参数与箭头函数结合
+
+		const numbers = (...nums) => nums;
+
+		numbers(1, 2, 3, 4, 5)
+		// [1,2,3,4,5]
+
+		const headAndTail = (head, ...tail) => [head, tail];
+
+		headAndTail(1, 2, 3, 4, 5)
+		// [1,[2,3,4,5]]
+	
+	# 箭头函数需要注意的问题
+		1,函数体内的this对象,就是定义时所在的对象,而不是使用时所在的对象('箭头函数里面根本没有自己的this,而是引用外层的this')
+			* 由于箭头函数没有自己的this,所以当然也就不能用call(),apply(),bind()这些方法去改变this的指向
+			
+
+		2,不可以当作构造函数,也就是说,不可以使用new命令,否则会抛出一个错误
+		3,不可以使用arguments对象,该对象在函数体内不存在,如果要用,可以用 rest 参数代替
+		4,不可以使用yield命令,因此箭头函数不能用作 Generator 函数
+					
+		
+		* 第一点尤其值得注意,this 对象的指向是可变的,但是在箭头函数中它是固定的
+			var id = 21;
+	
+			function foo() {
+				window.setTimeout(() => {
+					console.log('id:', this.id);
+				}, 100);
+			}
+		
+			* setTimeout的参数是一个箭头函数,这个箭头函数的定义生效是在foo函数生成时
+			* 而它的真正执行要等到 100 毫秒后,如果是普通函数,执行时this应该指向全局对象window,这时应该输出21
+			* 但是,箭头函数导致this总是指向函数定义生效时所在的对象(本例是{id: 42}),所以输出的是42
+		
+		* 箭头函数可以让setTimeout里面的this,绑定定义时所在的作用域,而不是指向运行时所在的作用域
+			function Timer() {
+				this.s1 = 0;
+				this.s2 = 0;
+				// 箭头函数,this指向定义时所在的作用,也就是 Timer
+				setInterval(() => this.s1++, 1000);
+				// 普通函数
+				setInterval(function () {
+					//指向运行时的作用域,setInterval 是windows的属性,它是由window调用,所以,这个this指向windows
+					this.s2++;
+				}, 1000);
+			}
+
+			var timer = new Timer();
+
+			setTimeout(() => console.log('s1: ', timer.s1), 3100);
+			setTimeout(() => console.log('s2: ', timer.s2), 3100);
+			
+			// s1: 3
+			// s2: 0
+			// id: 42
+			
+			* Timer函数内部设置了两个定时器,分别使用了箭头函数和普通函数
+			* 前者的this绑定定义时所在的作用域(即Timer函数),后者的this指向运行时所在的作用域(即全局对象)
+			* 所以,3100 毫秒之后,timer.s1被更新了 3 次，而timer.s2一次都没更新
+		
+		
+		* 箭头函数可以让 this 指向固定化,这种特性很有利于封装回调函数
+			var handler = {
+				id: '123456',
+				init: function() {
+					//如果不使用箭头函数,那么箭头函数里面的this,在事件中指向发生事件的document对象
+					document.addEventListener('click',event => this.doSomething(event.type), false);
+				},
+				
+				doSomething: function(type) {
+					console.log('Handling ' + type  + ' for ' + this.id);
+				}
+			};
+			
+			* init方法中,使用了箭头函数,这导致这个箭头函数里面的this,总是指向handler对象,否则,回调函数运行时,this.doSomething 这一行会报错,因为此时this指向document对象
+			* this指向的固定化,不是因为箭头函数内部有绑定this的机制,实际原因是箭头函数根本没有自己的this,导致内部的this就是外层代码块的this,正是因为它没有this,所以也就不能用作构造函数
+		
+		* 箭头函数转换为ES5代码
+			// ES6
+			function foo() {
+			  setTimeout(() => {
+				console.log('id:', this.id);
+			  }, 100);
+			}
+
+			// ES5
+			function foo() {
+			  var _this = this;
+			
+			  setTimeout(function () {
+				console.log('id:', _this.id);		//箭头函数的this,就是上级作用域的this
+			  }, 100);
+			}
+		
