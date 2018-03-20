@@ -639,4 +639,159 @@ Object.keys(),Object.values(),Object.entries()|
 --------------------------------
 对象的扩展运算符				|
 --------------------------------
+	# 解构赋值
+		* 对象的解构赋值用于从一个对象取值,相当于将目标对象自身的所有可遍历的(enumerable)但尚未被读取的属性,分配到指定的对象上面,所有的键和它们的值,都会拷贝到新对象上面
+			let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
+			console.log(x); // 1
+			console.log(y) // 2
+			console.log(z) // { a: 3, b: 4 }
+			
+
+			* x和y都能成功的被赋值
+			* 当z没有的与之匹配的数据项的时候,会把所有的数据都匹配到z里面,形成一个对象(解构赋值)
+			
+		* 解构赋值要求等号右边是一个对象,所以如果等号右边是undefined或null,就会报错,因为它们无法转为对象
+		* 解构赋值必须是最后一个参数,否则会报错
+		* 解构赋值的拷贝是浅拷贝,即如果一个键的值是复合类型的值(数组,对象,函数),a那么解构赋值拷贝的是这个值的引用,而不是这个值的副本
+		* 扩展运算符的解构赋值,不能复制继承自原型对象的属性('原型对象,不能被解构赋值')
+			let o1 = { a: 1 };
+			let o2 = { b: 2 };
+			//设置o2的原型对象为o1
+			o2.__proto__ = o1;
+			//把o2解构赋值到o3
+			let { ...o3 } = o2;
+			//打印o3,没有o1(原型对象)的属性
+			log(o3)         // { b: 2 }
+			//打印o3原型对象里面的a,不存在
+			log(o3.a)    
+			--------------------------------------
+			//创建一个对象,并且设置原型对象
+			const o = Object.create({ x: 1, y: 2 });
+			//设置对象的z属性
+			o.z = 3;
+			//把对象解构赋值
+			let { x, ...{ y, z } } = o;
+
+			x // 1
+			y // undefined      原型对象的数据未解构赋值成功
+			z // 3
+			
+			'浏览器抛出异常	Uncaught SyntaxError: `...` must be followed by an identifier in declaration contexts'
+		
+		* 解构赋值的一个用处,是扩展某个函数的参数,引入其他操作
+			function baseFunction({ a, b }) {
+				console.log(a);
+				console.log(b);
+			}
+			function wrapperFunction({ x, y, ...restConfig }) {
+				// 使用 x 和 y 参数进行操作
+				// 其余参数传给原始函数
+				return baseFunction(restConfig);
+			}
+
+	# 扩展运算符
+		 * 对象的扩展运算符(...)用于取出参数对象的所有可遍历属性,拷贝到当前对象之中
+			let z = { a: 3, b: 4 };
+			let n = { ...z };		//把z对象,解构赋值解析为一个个的属性,赋值给了n
+			n // { a: 3, b: 4 }
+
+			* 这等同于使用Object.assign方法
+			let aClone = { ...a };
+			// 等同于
+			let aClone = Object.assign({}, a);
+
+		* 上面的例子只是拷贝了对象实例的属性,如果想完整克隆一个对象,还拷贝对象原型的属性,可以采用下面的写法
+			 // 写法一
+			const clone1 = {
+				//设置当前对象的prototype为obj的prototype
+				__proto__: Object.getPrototypeOf(obj),
+				...obj
+			};
+
+			// 写法二
+			const clone2 = Object.assign(
+				//创建一个对象,该对象的原型对象就是obj的prototype
+				Object.create(Object.getPrototypeOf(obj)),
+				obj
+			);
+
+			// 写法三
+			const clone3 = Object.create(
+				//创建一个对象,原型对象继承自obj的原型对象,然后属性来自于obj
+				Object.getPrototypeOf(obj),
+				Object.getOwnPropertyDescriptors(obj)
+			)
+			
+			* 上面代码中,写法一的__proto__属性在非浏览器的环境不一定部署,因此'推荐使用写法二和写法三'
 	
+			* 扩展运算符可以用于合并两个对象
+				let a = {name:'Kevin'}
+				let b = {age:23}
+
+				let ab = { ...a, ...b };
+				let ab = Object.assign({}, a, b);
+				//{name: "Kevin", age: 23}
+	
+			* 如果用户自定义的属性,放在扩展运算符后面,则扩展运算符内部的同名属性会被覆盖掉
+				let a = {x:'x的值'}
+				let aWithOverrides1 = { ...a, x: 1, y: 2 };		//如果a对象里有x/y的属性值,那么会被后面的x/y覆盖
+				// 等同于
+				 let aWithOverrides2 = { ...a, ...{ x: 1, y: 2 } };
+				 // 等同于
+				 let x = 1, y = 2, aWithOverrides3 = { ...a, x, y };
+				 // 等同于
+				 let aWithOverrides4 = Object.assign({}, a, { x: 1, y: 2 });
+				//a对象的x属性和y属性,拷贝到新对象后会被覆盖掉
+				console.log(aWithOverrides1);       //{x: 1, y: 2}
+			
+			* 用来修改现有对象部分的属性就很方便了
+				let newVersion = {
+					//旧对象
+					...previousVersion,
+					//覆盖旧对象里面的name属性
+					name: 'New Name' // Override the name property
+				};
+			
+			* 如果把自定义属性放在扩展运算符前面,就变成了设置新对象的默认属性值('反正后面的属性,会覆盖前面的属性')
+				 let a = {x:6}
+				let aWithDefaults1 = { x: 1, y: 2, ...a };		//a对象里面的x属性会覆盖前面的x属性
+				// 等同even if property keys don’t clash, because objects record insertion order:
+
+				let aWithDefaults2 = Object.assign({}, { x: 1, y: 2 }, a);
+				// 等同于
+				let aWithDefaults3 = Object.assign({ x: 1, y: 2 }, a);
+
+				console.log(aWithDefaults1);
+				console.log(aWithDefaults2);
+				console.log(aWithDefaults3);
+			
+			* 与数组的扩展运算符一样,对象的扩展运算符后面可以跟表达式
+				const obj = {
+					...(x > 1 ? {a: 1} : {}),
+					b: 2,
+				};
+			
+			* 如果扩展运算符后面是一个空对象,则没有任何效果
+				 let {...x} = {...{}, a: 1}
+				console.log(x);		//{a: 1}
+			
+			* 如果扩展运算符的参数是null或undefined,这两个值会被忽略,不会报错
+				let emptyObject = { ...null, ...undefined }; // 不报错
+			
+			* 扩展运算符的参数对象之中,如果有取值函数get,这个函数是会执行的
+				// 并不会抛出错误，因为 x 属性只是被定义，但没执行
+				let aWithXGetter = {
+					...a,
+					get x() {
+						throw new Error('not throw yet');
+					}
+				};
+				// 会抛出错误，因为 x 属性被执行了
+				let runtimeError = {
+					...a,
+					...{
+						get x() {
+							throw new Error('throw now');
+						}
+					}
+				};
