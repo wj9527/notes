@@ -102,6 +102,13 @@ Array				|
 		isArray();
 			* 判断指定的对象是否是数组类型
 		
+		from()
+			* 把指定的数据转换为[],数据可以是类数组对象,也可以是 Ierator 子类
+		
+		of()
+			* 相当于是构造方法,可以把一个或者多个参数,组成一个数组返回
+			
+		
 	# 实例方法
 		concat()	
 			* 连接一个或更多的数组,/返回新的数组
@@ -408,8 +415,17 @@ Array				|
 			* Demo
 				var fruits = ["Banana", "Orange", "Apple", "Mango"];
 				var v = fruits.valueOf();	//fruits.valueOf()与 fruits返回值一样,v输出结果为：Banana,Orange,Apple,Mango
+		
 
+		entries()
+		keys()
+		values()
+			* 这仨方法返回的都是迭代器,一看就懂
 
+		includes()
+			* 返回一个布尔值,表示某个数组是否包含给定的值
+			* 的第二个参数表示搜索的起始位置,默认为0
+		
 --------------------
 Array-注意的地方	|
 --------------------
