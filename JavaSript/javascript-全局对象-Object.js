@@ -42,7 +42,7 @@ Object						|
 			* 第二个参数,用于对对象属性进行更详细的描述(可选)
 				writable		:是否可任意写
 				configurable	:是否能够删除，是否能够被修改
-				enumerable		:是否能用 for in 枚举
+				enumerable		:是否可枚举,默认为 false
 				value			:值,'当设置后不能设置get和set'	
 				get				:访问属性的时候触发,记住千万不能使用 this.当前属性名称
 				set				:设置属性的时候触发,记住千万不能使用 this.当前属性名称
@@ -73,6 +73,10 @@ Object						|
 			* 自身的属性就OK,不论是否可以枚举
 			* 返回的属性不包含原型对象的属性
 		
+		getOwnPropertySymbols(obj);
+			* 返回一个数组,包含对象自身的所有 Symbol 属性的键名
+			
+
 		defineProperty(); 
 			* 给指定的对象设置属性
 			* 三个参数
@@ -81,6 +85,11 @@ Object						|
 				3,Options配置项({})
 						configurable	属性能否被删除或者重新定义	
 						enumerable		遍历对象的时候属性是否可见	
+							* 目前,有四个操作会忽略enumerable为false的属性
+								for...in循环	:只遍历对象自身的和继承的可枚举的属性
+								Object.keys()	:返回对象自身的所有可枚举的属性的键名
+								JSON.stringify():只串行化对象自身的可枚举的属性
+								Object.assign()	:忽略enumerable为false的属性，只拷贝对象自身的可枚举
 						value			属性值，'当设置后不能设置get和set'	
 						writable		属性能否改变	
 						get				当获取属性的时候触发,记住千万不能使用 this.当前属性名称	
@@ -98,12 +107,23 @@ Object						|
 						value:2
 					}
 				});
-			
+		
 		getOwnPropertyDescriptor(obj,prop);		
 			* 获取指定对象,指定属性的...属性
 			* 就是参数1这个对象的参数2的属性的一些属性(只读...等等)
 			* 不能检测从原型继承的属性
 			* Object.getOwnPropertyDescriptor(user,"name")
+		
+		getOwnPropertyDescriptors(obj)
+			* 返回一个对象,所有原对象的属性名都是该对象的属性名,对应的属性值就是该属性的描述对象
+			* 自己实现
+				function getOwnPropertyDescriptors(obj) {
+					const result = {};
+					for (let key of Reflect.ownKeys(obj)) {
+						result[key] = Object.getOwnPropertyDescriptor(obj, key);
+					}
+					return result;
+				}
 		
 		freeze(obj);
 			* 冻结一个对象,冻结了之后,该对象的属性值不能进行修改
@@ -126,11 +146,31 @@ Object						|
 				};
 
 		is(t,o);
-			* 判断o是否是t
-			* 其实就是判断他们是否指向同一内存
-		
+			* 其实就是 ==== 判断
+			* 与 === 不同之处只有两个:一是+0不等于-0,二是NaN等于自身
+				+0 === -0 		//true
+				NaN === NaN 	// false
+			
+				Object.is(+0, -0) 	// false
+				Object.is(NaN, NaN) // true
 
-		
+		assign(target,...source)
+			* 将源对象(source)的所有可枚举属性,复制到目标对象(target)
+
+		setPrototypeOf(obj,prototype)
+			* 设置指定对象的原型对象
+
+		getPrototypeOf(obj)
+			* 获取指定对象的原型对象
+
+		keys()
+			* 
+
+		values()
+			* 
+
+		entries()
+			* 
 
 				
 
