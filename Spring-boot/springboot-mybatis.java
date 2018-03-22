@@ -34,7 +34,10 @@ Spring boot 第一种方式		|
 			* mapper文件地址,可以有多个,支持使用通配符
 		mybatis.config-location=classpath:mybatis/mybatis-config.xml
 			* mybatis配置文件地址
-		
+		-----------------------------------------------------------
+		mybatis.mapper-locations[0]=classpath:mapper/**/*-mapper.xml
+		mybatis.mapper-locations[1]=classpath:mapper/**/*-mapper-ext.xml
+		mybatis.config-location=classpath:mybatis/mybatis-config.xml
 
 	
 	
