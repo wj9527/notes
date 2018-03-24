@@ -116,23 +116,29 @@
 ------------------------
 2,本地依赖				|
 ------------------------
-	<!-- 在pom文件中顶一个一个本地仓库(file://) -->
-	<repositories>
-		<repository>
-		    <id>in-project</id>
-		    <name>In Project Repo</name>
-		    <url>file://${project.basedir}/lib</url>
-		</repository>
-	</repositories>
-	
-	<!-- 
-		<scope>system</scope>
-		<systemPath>${basedir}/lib/icbcClient-1.0.jar</systemPath> 
-	-->
-	<dependency>
-		<groupId>icbcClient</groupId>
-		<artifactId>icbcClient</artifactId>
-		<version>1.0</version>
-		<scope>system</scope>
-		<systemPath>${basedir}/lib/icbcClient-1.0.jar</systemPath> 
-	</dependency>
+	1,在项目路径下新建 lib 目录(用于存放第三方依赖)
+		application
+			lib
+			src/main/...
+			src/test/...
+
+	2,添加依赖
+		<dependency>
+			<groupId>icbcClient</groupId>
+			<artifactId>icbcClient</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/icbcClient-1.0.jar</systemPath> 
+		</dependency>
+
+	3,添加资源打包配置
+		* <scope>system</scope> 默认不会打包到jar
+		<resources>
+	        <resource>
+	            <directory>${basedir}/lib</directory>
+	            <targetPath>/BOOT-INF/lib/</targetPath>
+	            <includes>
+	                <include>**/*.jar</include>			**/
+	            </includes>
+	        </resource>
+	    </resources>
