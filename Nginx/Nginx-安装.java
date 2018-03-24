@@ -13,7 +13,7 @@ Linux-源码安装				|
 		tar zxvf nginx-1.10.1.tar.gz
 	3,进入源码包目录
 		* 指定安装目录,检查安装
-			./configure --prefix=/usr/local/nginx 
+			./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module
 	4,确定无误后直接安装
 		make && make install
 	

@@ -15,23 +15,23 @@ Nginx-具体配置			|
 		//监听域名
 		server_name manager.kevinblandy.com;
 
-		//日志文件配置
-		#access_log  logs/kevinblandy.com.access.log  main;
-		
-		//错误日志文件
-		#error_log  logs/kevinblandy.com.error.log;
-		
+	//日志文件配置
+	#access_log  logs/kevinblandy.com.access.log  main;
+	
+	//错误日志文件
+	#error_log  logs/kevinblandy.com.error.log;
+	
 
-		//转发客户端请求的时候携带的域名
-		proxy_set_header Host $host;
+	//转发客户端请求的时候携带的域名
+	proxy_set_header Host $host;
 
-		proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Server $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		
-		//转发客户端真实IP(通过 request.getHeader("X-Requested-For")获取)
-		proxy_set_header X-Requested-For $remote_addr;
-		proxy_set_header REMOTE-HOST $remote_addr;
+	proxy_set_header X-Forwarded-Host $host;
+	proxy_set_header X-Forwarded-Server $host;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	
+	//转发客户端真实IP(通过 request.getHeader("X-Requested-For")获取)
+	proxy_set_header X-Requested-For $remote_addr;
+	proxy_set_header REMOTE-HOST $remote_addr;
 
 		//映射
 		location / {
@@ -94,3 +94,46 @@ Nginx-域名重定向		|
 				server_name www.springboot.io springboot.io;
 				rewrite ^/(.*)$ http://www.javaweb.io/$1 permanent;  
 		}
+
+
+
+
+------------------------
+Nginx-https				|
+------------------------
+server {
+	listen 443;
+	server_name springboot.io www.springboot.io;
+
+	ssl on;
+	ssl_certificate      /usr/local/ssl/springboot/springboot.pem;
+	ssl_certificate_key  /usr/local/ssl/springboot/springboot.key;
+
+	access_log  logs/springboot.io.log  main;
+	error_log  logs/springboot.io.error.log;
+
+	proxy_set_header Host $host;
+	proxy_set_header X-Forwarded-Host $host;
+	proxy_set_header X-Forwarded-Server $host;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header X-Requested-For $remote_addr;
+	proxy_set_header REMOTE-HOST $remote_addr;
+
+	proxy_http_version 1.1;
+	proxy_set_header Upgrade $http_upgrade;
+	proxy_set_header Connection "upgrade";
+
+	location / {
+		proxy_pass http://127.0.0.1:1024;
+		proxy_connect_timeout 600;
+		proxy_read_timeout 600;
+
+	}
+}
+
+# http重定向到https
+server {
+	listen       80;
+	server_name  springboot.io www.springboot.io;
+	return  301 https://springboot.io$request_uri;
+}
