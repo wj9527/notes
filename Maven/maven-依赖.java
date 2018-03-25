@@ -133,12 +133,17 @@
 
 	3,添加资源打包配置
 		* <scope>system</scope> 默认不会打包到jar
-		<resources>
-	        <resource>
-	            <directory>${basedir}/lib</directory>
-	            <targetPath>/BOOT-INF/lib/</targetPath>
-	            <includes>
-	                <include>**/*.jar</include>			**/
-	            </includes>
-	        </resource>
-	    </resources>
+		<!-- 本地 jar -->
+            <resource>
+                <directory>${basedir}/lib</directory>
+                <targetPath>BOOT-INF/lib/</targetPath>
+                <includes>	
+                    <include>**/*.jar</include>					**/
+                </includes>
+            </resource>
+            <resource>
+                 <directory>src/main/resources</directory>
+                 <includes>
+                     <include>**/*</include>					**/
+                 </includes>
+            </resource>
