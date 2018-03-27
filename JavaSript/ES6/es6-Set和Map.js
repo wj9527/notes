@@ -173,11 +173,272 @@ WeakSet							|
 		* 而垃圾回收机制何时运行是不可预测的,因此 ES6 规定 WeakSet 不可遍历
 	
 	# 语法
-		//TODO
-	
+		* WeakSet 是一个构造函数,可以使用new命令,创建 WeakSet 数据结构
+			const ws = new WeakSet();
+		
+		* WeakSet 可以接受一个数组或类似数组的对象作为参数
+			* 实际上,任何具有 Iterable 接口的对象,都可以作为 WeakSet 的参数
+			* 该数组的所有成员,都会自动成为 WeakSet 实例对象的成员
+			const a = [[1, 2], [3, 4]];
+			const ws = new WeakSet(a);
+			// WeakSet {[1, 2], [3, 4]}
+
+			* '是数组的成员成为 WeakSet 的成员,而不是数组本身,这意味着,数组的成员只能是对象'
+			const b = [3, 4];		//数据成员非对象,报错
+			const ws = new WeakSet(b);
+			// Uncaught TypeError: Invalid value used in weak set(…)
+
+		* WeakSet 结构有以下三个方法
+			WeakSet.prototype.add(value)
+				* 向 WeakSet 实例添加一个新成员
+
+			WeakSet.prototype.delete(value)
+				* 清除 WeakSet 实例的指定成员
+
+			WeakSet.prototype.has(value)
+				* 返回一个布尔值,表示某个值是否在 WeakSet 实例之中
+			
+		* WeakSet 没有size属性,没有办法遍历它的成员
 
 	
+	# WeakSet 的一个用处,是储存 DOM 节点,而不用担心这些节点从文档移除时,会引发内存泄漏
+	# demo
+		const foos = new WeakSet()
 		
+		class Foo {
+			constructor() {
+				foos.add(this)
+			}
+			method () {
+				if (!foos.has(this)) {
+					throw new TypeError('Foo.prototype.method 只能在Foo的实例上调用！');
+				}
+			}
+		}
+
+		* 上面代码保证了Foo的实例方法,只能在Foo的实例上调用
+		* 这里使用 WeakSet 的好处是,foos对实例的引用,不会被计入内存回收机制,所以删除实例的时候,不用考虑foos,也不会出现内存泄漏
+	
+
+--------------------------------
+Map								|
+--------------------------------
+	# JavaScript 的对象(Object),本质上是键值对的集合(Hash 结构),但是传统上只能用字符串当作键,这给它的使用带来了很大的限制
+		const data = {};
+		const element = document.getElementById('myDiv');
+		
+		//本意是使用 dom 节点对象作为键
+		data[element] = 'metadata';
+		//实际上会被转换为字符串
+		data['[object HTMLDivElement]'] // "metadata"
+	
+	# ES6 提供了 Map 数据结构
+		* 它类似于对象,也是键值对的集合
+		* "键"的范围不限于字符串,各种类型的值(包括对象)都可以当作键
+		* Object 结构提供了"字符串—值"的对应,Map 结构提供了"值—值"的对应,是一种更完善的 Hash 结构实现
+		* 如果需要"键值对"的数据结构,Map 比 Object 更合适
+		* 如果对同一个键多次赋值,后面的值将覆盖前面的值
+		* 如果读取一个不存在的键,返回undefined
+		* Map 的键实际上是跟内存地址绑定的,只要内存地址不一样,就视为两个键
+		* 如果 Map 的键是一个简单类型的值(数字,字符串,布尔值),则只要两个值严格相等,Map 将其视为一个键
+			* 0和-0就是一个键
+			* 布尔值true和字符串true则是两个不同的键
+			* undefined和null也是两个不同的键,虽然NaN不严格相等于自身,但 Map 将其视为同一个键(null和undefined也可以作为键)
+
+		const m = new Map();
+		const o = {p: 'Hello World'};
+		m.set(o, 'content');
+		m.get(o); 		// "content"
+		m.has(o);		// true
+		m.delete(o);	// true
+		m.has(o);		// false
+	
+	# Map的构造,支持key-value的数据格式
+		const map = new Map([
+			['name', '张三'],
+			['title', 'Author']
+		]);
+
+		map.size // 2
+		map.has('name') // true
+		map.get('name') // "张三"
+		map.has('title') // true
+		map.get('title') // "Author"
+
+		* 实际上执行的是下面的算法
+
+		[['name', '张三'],['title', 'Author']].forEach(i => void map.set(i[0],i[1]));
+
+	
+	# 事实上,不仅仅是数组,任何具有 Iterator 接口,且每个成员都是一个双元素的数组的数据结构(详见《Iterator》一章)都可以当作Map构造函数的参数
+		* 这就是说,Set和Map都可以用来生成新的 Map
+		const set = new Set([
+			['foo', 1],
+			['bar', 2]
+		]);
+		//使用值为kv结构的set来构建map
+		const m1 = new Map(set);
+		m1.get('foo') // 1
+		
+		//使用已经存在的map来构建map
+		const m2 = new Map([['baz', 3]]);
+		const m3 = new Map(m2);
+		m3.get('baz') // 3
+	
+	# 实例的属性和操作方法
+		size
+			* 返回成员数量
+	
+		set(k,v)
+			* 添加一个键值
+			* 该方法返回 this,所以可以使用链式调用
+				let map = new Map()
+				.set(1, 'a')
+				.set(2, 'b')
+				.set(3, 'c');
+		
+		get(k)
+			* get方法读取key对应的键值,如果找不到key,返回undefined
+		
+		has(k)
+			* 判断是否有key
+		
+		delete(k)
+			* 删除指定的Key,删除成功返回 true,删除失败返回 false
+		
+		clear()
+			* 清空
+		
+		keys()
+			* 返回键名的遍历器
+		values()
+			* 返回键值的遍历器
+		entries()
+			* 返回所有成员的遍历器
+				for (let item of map.entries()) {
+					console.log(item[0], item[1]);
+				}
+			* Map 结构的默认遍历器接口(Symbol.iterator属性)就是entries方法
+				for (let [key, value] of map) {
+					console.log(key, value);
+				}
+		forEach()
+			* 遍历 Map 的所有成员
+			* Map 的遍历顺序就是插入顺序
+				map.forEach(function(value, key, map) {
+				  console.log("Key: %s, Value: %s", key, value);
+				});
+		
+	
+	# Map 结构转为数组结构,比较快速的方法是使用扩展运算符(...)
+		const map = new Map([
+			[1, 'one'],
+			[2, 'two'],
+			[3, 'three'],
+		]);
+		[...map.keys()]
+		// [1, 2, 3]
+		[...map.values()]
+		// ['one', 'two', 'three']
+		[...map.entries()]
+		// [[1,'one'], [2, 'two'], [3, 'three']]
+		[...map]
+		// [[1,'one'], [2, 'two'], [3, 'three']]
+	
+	# 结合数组的map方法,filter方法,可以实现 Map 的遍历和过滤(Map 本身没有map和filter方法)
+		const map0 = new Map()
+			.set(1, 'a')
+			.set(2, 'b')
+			.set(3, 'c');
+
+		const map1 = new Map(
+			[...map0].filter(([k, v]) => k < 3)
+		);
+		// 产生 Map 结构 {1 => 'a', 2 => 'b'}
+
+		const map2 = new Map(
+			[...map0].map(([k, v]) => [k * 2, '_' + v])
+		);
+		// 产生 Map 结构 {2 => '_a', 4 => '_b', 6 => '_c'}
+	
+	# 与其他数据结构的互相转换
+		* Map 转为数组,扩展运算符
+			const myMap = new Map()
+			  .set(true, 7)
+			  .set({foo: 3}, ['abc']);
+			[...myMap]
+			// [ [ true, 7 ], [ { foo: 3 }, [ 'abc' ] 
+		
+		* 数组 转为 Map
+			new Map([
+			  [true, 7],
+			  [{foo: 3}, ['abc']]
+			])
+		
+		* Map 转为对象
+			* 如果所有 Map 的键都是字符串,它可以无损地转为对象
+			function strMapToObj(strMap) {
+				let obj = Object.create(null);
+				for (let [k,v] of strMap) {
+					obj[k] = v;
+				}
+				return obj;
+			}
+			const myMap = new Map()
+			.set('yes', true)
+			.set('no', false);
+			strMapToObj(myMap)
+		// { yes: true, no: false }
+	
+		* 对象转为map
+			function objToStrMap(obj) {
+				let strMap = new Map();
+				for (let k of Object.keys(obj)) {
+					strMap.set(k, obj[k]);
+				}
+				return strMap;
+			}
+			objToStrMap({yes: true, no: false})
+			// Map {"yes" => true, "no" => false}
+		
+		* Map 转为 JSON
+			* Map 转为 JSON 要区分两种情况
+			* 一种情况是,Map 的键名都是字符串,这时可以选择转为对象 JSON
+				function strMapToJson(strMap) {
+					return JSON.stringify(strMapToObj(strMap));
+				}
+				let myMap = new Map().set('yes', true).set('no', false);
+				strMapToJson(myMap)
+				// '{"yes":true,"no":false}'
+			* 另一种情况是,Map 的键名有非字符串,这时可以选择转为数组 JSON
+				function mapToArrayJson(map) {
+					return JSON.stringify([...map]);
+				}
+				let myMap = new Map().set(true, 7).set({foo: 3}, ['abc']);
+				mapToArrayJson(myMap)
+				// '[[true,7],[{"foo":3},["abc"]]]'
+		
+		* JSON 转为 Map
+			* JSON 转为 Map,正常情况下,所有键名都是字符串
+				function jsonToStrMap(jsonStr) {
+					return objToStrMap(JSON.parse(jsonStr));
+				}
+				jsonToStrMap('{"yes": true, "no": false}')
+				// Map {'yes' => true, 'no' => false}
+			
+			* 有一种特殊情况,整个 JSON 就是一个数组,且每个数组成员本身,又是一个有两个成员的数组
+			* 这时,它可以一一对应地转为 Map,这往往是 Map 转为数组 JSON 的逆操作
+				function jsonToMap(jsonStr) {
+					return new Map(JSON.parse(jsonStr));
+				}
+				jsonToMap('[[true,7],[{"foo":3},["abc"]]]')
+				// Map {true => 7, Object {foo: 3} => ['abc']}
+		
+------------------------------------
+WeakMap								|
+------------------------------------
+	
+				
 
 
 		
