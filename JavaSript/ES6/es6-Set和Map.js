@@ -437,7 +437,95 @@ Map								|
 ------------------------------------
 WeakMap								|
 ------------------------------------
+	# WeakMap结构与Map结构类似,也是用于生成键值对的集合
+	# WeakMap与Map的区别有两点
+		1,WeakMap只接受对象作为键名(null除外),不接受其他类型的值作为键名
+			const map = new WeakMap();
+			map.set(1, 2)
+			// TypeError: 1 is not an object!					使用数字,报错
+			map.set(Symbol(), 2)	
+			// TypeError: Invalid value used as weak map key	使用 Symbol, 报错
+			map.set(null, 2)
+			// TypeError: Invalid value used as weak map key	使用null,报错
+		
+		2,WeakMap的键名所指向的对象,不计入垃圾回收机制
+			* 如果你要往对象上添加数据,又不想干扰垃圾回收机制,就可以使用 WeakMap
+			* 一个典型应用场景是,在网页的 DOM 元素上添加数据,就可以使用WeakMap结构,当该 DOM 元素被清除,其所对应的WeakMap记录就会自动被移除
+				const wm = new WeakMap();
+				const element = document.getElementById('example');
+				wm.set(element, 'some information');
+				wm.get(element) // "some information"
+			
 	
+	# WeakMap的专用场合就是,它的键所对应的对象m可能会在将来消失,WeakMap结构有助于防止内存泄漏
+	# 注意,WeakMap 弱引用的只是键名,而不是键值,键值依然是正常引用
+		const wm = new WeakMap();
+        let key = {};
+        let obj = {foo: 1};
+
+        wm.set(key, obj);
+        obj = null;
+        wm.get(key)
+        // Object {foo: 1}
+        //键值obj是正常引用,所以,即使在 WeakMap 外部消除了obj的引用,WeakMap 内部的引用依然存在
+	
+
+	# WeakMap 的语法
+		* WeakMap 与 Map 在 API 上的区别主要是两个
+			* 一是没有遍历操作(即没有key(),values()和entries()方法),也没有size属性
+			* 二是无法清空,即不支持clear方法
+		
+		* 因此,WeakMap只有四个方法可用:get(),set(),has(),delete()
+	
+	# WeakMap 的示例
+		..
+	
+	# 用途
+		* WeakMap 应用的典型场合就是 DOM 节点作为键名
+
+			let myElement = document.getElementById('logo');
+
+			let myWeakmap = new WeakMap();
+
+			myWeakmap.set(myElement, {timesClicked: 0});
+
+			myElement.addEventListener('click', function() {
+				let logoData = myWeakmap.get(myElement);
+				logoData.timesClicked++;
+			}, false);
+					
+			/**
+				myElement是一个 DOM 节点,每当发生click事件,就更新一下状态
+				我们将这个状态作为键值放在 WeakMap 里,对应的键名就是myElement,一旦这个 DOM 节点删除,该状态就会自动消失,不存在内存泄漏风险
+			**/
+		
+		* WeakMap 的另一个用处是部署私有属性
+			const _counter = new WeakMap();
+			const _action = new WeakMap();
+
+			class Countdown {
+				constructor(counter, action) {
+					_counter.set(this, counter);
+					_action.set(this, action);
+				}
+				dec() {
+					let counter = _counter.get(this);
+					if (counter < 1) return;
+					counter--;
+					_counter.set(this, counter);
+					if (counter === 0) {
+						_action.get(this)();
+					}
+				}
+			}
+
+			const c = new Countdown(2, () => console.log('DONE'));
+
+			c.dec()
+			c.dec()
+			// DONE
+
+			//Countdown类的两个内部属性_counter和_action,是实例的弱引用,所以如果删除实例,它们也就随之消失,不会造成内存泄漏。
 				
 
 
