@@ -60,8 +60,9 @@ javascript-方法				|
 	clearInterval(id);				
 		* 清除指定的定时器,传递定时器的id
 
-	setTimeout(fun,10);		
+	setTimeout(fun,10,param);		
 		* 在10毫秒后,去执行指定的函数,也可以直接是JS代码,仅仅会执行一次,也会返回一个id
+		* 最后一个参数(param),是执行fun时传递的参数,可以省略
 
 	clearTimeOut(id);				
 		* 清除指定的单次定时器,传递定时器的id

@@ -78,6 +78,9 @@ XMLHttpRequest				|
 					total;		//获取上传文件的总(所有)大小
 					loaded;		//获取已经上传的文件大小
 	
+		statusText
+			* http状态的描述文字
+	
 	# 事件
 		onreadyStatechange
 			* 当异步对象的状态发生改变的时候调用
