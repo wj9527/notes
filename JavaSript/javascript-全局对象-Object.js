@@ -83,7 +83,7 @@ Object						|
 				1,要设置属性的对象
 				2,设置什么属性(以字符串表示属性的名称)
 				3,Options配置项({})
-						configurable	属性能否被删除或者重新定义	
+						configurable	属性能否被删除或者重新定义,默认 false	
 						enumerable		遍历对象的时候属性是否可见	
 							* 目前,有四个操作会忽略enumerable为false的属性
 								for...in循环	:只遍历对象自身的和继承的可枚举的属性
@@ -164,13 +164,18 @@ Object						|
 			* 获取指定对象的原型对象
 
 		keys()
-			* 
+			* 返回所有属性名的集合
 
 		values()
-			* 
+			* 返回所有的值的集合
 
 		entries()
-			* 
+			* 返回键值对的集合[[k,v],[k,v]]
+		
+		preventExtensions()
+		isExtensible()
+			
+
 
 				
 
