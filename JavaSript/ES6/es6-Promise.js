@@ -213,15 +213,105 @@ Promise.prototype.finally()	|
 
 
 
+----------------------------
+Promise.all					|
+----------------------------
+	# Promise.all方法用于将多个 Promise 实例,包装成一个新的 Promise 实例
+		* 所有实例都完成,才完成,最终结果以[]形式传递给形参
+		* 任何实例异常,都会触发 Promise.all 实例的 rejected,此时第一个被reject的实例的返回值,会传递给Promise.all的回调函数
 
+		// 生成一个Promise对象的数组
+		const promises = [2, 3, 5, 7, 11, 13].map(function (id) {
+			return getJSON('/post/' + id + ".json");
+		});
+		
+		Promise.all(promises).then(function (posts) {
+			// ...
+		}).catch(function(reason){
+			// ...
+		});
 
+		const p = Promise.all([p1, p2, p3]);
 
+		* Promise.all方法的参数可以不是数组,但必须具有 Iterator 接口,且返回的每个成员都是 Promise 实例
+		* 只有p1,p2,p3的状态都变成 fulfilled,p的状态才会变成fulfilled,此时p1,p2,p3的返回值组成一个数组,传递给p的回调函数
+		* 只要p1,p2,p3之中有一个被 rejected,p的状态就变成rejected,此时第一个被reject的实例的返回值,会传递给p的回调函数
+	
+	# 如果作为参数的 Promise 实例,自己定义了catch方法,那么它一旦被rejected,并不会触发Promise.all()的catch方法
 
+----------------------------
+Promise.race				|
+----------------------------
+	# Promise.race方法同样是将多个 Promise 实例,包装成一个新的 Promise 实例
+		* 任何实例先完成,就会回调 Promise.race 实例的 then
+		* 任何实例异常,都会触发 Promise.all 实例的 rejected,此时第一个被reject的实例的返回值,会传递给Promise.all的回调函数
 
+		const p = Promise.race([p1, p2, p3]);
 
+		* 只要p1,p2,p3之中有一个实例率先改变状态,p的状态就跟着改变
+		* 哪个率先改变的 Promise 实例的返回值,就传递给p的回调函数
+		* Promise.race方法的参数与Promise.all方法一样,如果不是 Promise 实例,就会先调用下面讲到的Promise.resolve方法,将参数转为 Promise 实例再进一步处理
+	
+	# 一个小Demo
+		const p = Promise.race([
+			fetch('/resource-that-may-take-a-while'),
+			new Promise(function (resolve, reject) {
+				setTimeout(() => reject(new Error('request timeout')), 5000)
+			})
+		]);
+		
+		p.then(console.log).catch(console.error);
+		
+		* 如果 5 秒之内fetch方法无法返回结果,变量p的状态就会变为rejected,从而触发catch方法指定的回调函数
 
+----------------------------
+Promise.resolve()			|
+----------------------------
+	# 有时需要将现有对象转为 Promise 对象,Promise.resolve方法就起到这个作用
 
+		const jsPromise = Promise.resolve($.ajax('/user.json'));
+		* 上面代码将 jQuery 生成的deferred对象,转为一个新的 Promise 对象
+	
+	# Promise.resolve等价于下面的写法
+		let promise = Promise.resolve('foo')
+		// 等价于
+		let promise = new Promise(function(resolve){
+			resolve("foo");
+		});
+	
+	# Promise.resolve方法的参数分成四种情况
+		1,参数是一个 Promise 实例
+			* 参数是 Promise 实例,那么Promise.resolve将不做任何修改,原封不动地返回这个实例
 
+		2,参数是一个thenable对象
+			* thenable对象指的是具有then方法的对象,比如下面这个对象	
+			* Promise.resolve方法会将这个对象转为 Promise 对象,然后就立即执行thenable对象的then方法
+				let thenable = {
+					then: function(resolve, reject) {
+						resolve(42);
+					}
+				};
+
+				let p1 = Promise.resolve(thenable);
+				p1.then(function(value) {
+					console.log(value);  // 42
+				});
+				* thenable 对象的 then 方法执行后,对象p1的状态就变为 resolved, 从而立即执行最后那个 then 方法指定的回调函数,输出 42
+
+		3,参数不是具有then方法的对象,或根本就不是对象
+			* 如果参数是一个原始值,或者是一个不具有then方法的对象,则Promise.resolve方法返回一个新的 Promise 对象,状态为resolved
+				const p = Promise.resolve('Hello');
+				p.then(function (s){
+					console.log(s)
+				});
+				//Hello
+
+				* 上面代码生成一个新的 Promise 对象的实例p
+					* 由于字符串Hello不属于异步操作(判断方法是字符串对象不具有 then 方法),返回 Promise 实例的状态从一生成就是resolved,所以回调函数会立即执行
+					* Promise.resolve方法的参数,会同时传给回调函数
+
+		4,不带有任何参数
+			//TODO 
 
 
 
