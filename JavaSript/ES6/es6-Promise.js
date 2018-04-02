@@ -311,8 +311,156 @@ Promise.resolve()			|
 					* Promise.resolve方法的参数,会同时传给回调函数
 
 		4,不带有任何参数
-			//TODO 
+			* Promise.resolve方法允许调用时不带参数,直接返回一个resolved状态的 Promise 对象.
+			* 所以,如果希望得到一个 Promise 对象,比较方便的方法就是直接调用Promise.resolve方法
+				const p = Promise.resolve();
+				p.then(function () {
+					console.log('不带任何参数的 resolve');
+				});
+			
+			* 立即resolve的 Promise 对象,是在本轮"事件循环"(event loop)的结束时,而不是在下一轮"事件循环"的开始时
+				//0s后打印three
+				setTimeout(function () {
+					console.log('three');
+				}, 0);
 
+				//即resolve的 Promise 对象
+				Promise.resolve().then(function () {
+					console.log('two');
+				});
 
+				//代码执行到这里打印
+				console.log('one');
 
+				// one
+				// two
+				// three
 
+				* setTimeout(fn, 0)在下一轮"事件循环"开始时执行.
+				* Promise.resolve()在本轮"事件循环"结束时执行,console.log('one')则是立即执行,因此最先输出
+			
+----------------------------
+Promise.reject()			|
+----------------------------
+	# Promise.reject(reason)方法返回一个新的 Promise 对象,实例的状态为rejected
+		const p = Promise.reject('出错了');
+
+		// 等同于
+		const p = new Promise((resolve, reject) => reject('出错了'))
+
+		p.then(null, function (s) {
+			console.log(s)
+		});
+		// 出错了
+
+		* 生成一个 Promise 对象的实例p,状态为rejected,回调函数会立即执行
+
+	
+	# Promise.reject()方法的参数,会原封不动地作为reject的理由,变成后续方法的参数
+		* 这一点与Promise.resolve方法不一致
+
+		let promise = Promise.reject("reject的参数");
+
+		const thenable = {
+			then(resolve, reject) {
+				//立即执行 reject
+				reject('出错了');
+			}
+		};
+		Promise.reject(thenable)
+		.catch(e => {
+			//该参数,就是thenable对象,而不是"出错了"
+			console.log(e === thenable)
+		})
+		// true
+
+		* Promise.reject方法的参数是一个thenable对象
+		* '执行以后,后面catch方法的参数不是reject抛出的"出错了"这个字符串,而是thenable对象'
+
+----------------------------
+Promise.try()				|
+----------------------------
+	# 还只是一个提案,未实现
+	# 事实上,Promise.try就是模拟try代码块,就像promise.catch模拟的是catch代码块
+
+----------------------------
+应用						|
+----------------------------
+	1,加载图片
+		* 可以把图片加载写为一个 Promise,一旦加载完成,Promise的状态就会发生改变
+		const preloadImage = function (path) {
+            return new Promise(function (resolve, reject) {
+                const image = new Image();
+				//加载ok,执行 resolve
+                image.onload  = resolve;
+				//加载失败,执行 reject
+                image.onerror = reject;
+                image.src = path;
+            });
+        };
+	
+	2,Generator 函数与 Promise 的结合
+		* 使用 Generator 函数管理流程,遇到异步操作的时候,通常返回一个Promise对象
+			function getFoo () {
+				return new Promise(function (resolve, reject){
+					resolve('foo');
+				});
+			}
+			const g = function* () {
+				try {
+					const foo = yield getFoo();
+					console.log(foo);
+				} catch (e) {
+					console.log(e);
+				}
+			};
+			function run (generator) {
+				const it = generator();
+
+				function go(result) {
+					if (result.done) return result.value;
+					return result.value.then(function (value) {
+						return go(it.next(value));
+					}, function (error) {
+						return go(it.throw(error));
+					});
+				}
+				go(it.next());
+			}
+			run(g);
+			
+			* Generator 函数g之中,有一个异步操作getFoo,它返回的就是一个Promise对象
+			* 函数run用来处理这个Promise对象,并调用下一个next方法
+	
+	3,Promise.try()
+		* 实际开发中,经常遇到一种情况:不知道或者不想区分,函数f是同步函数还是异步操作,但是想用 Promise 来处理它
+		* 因为这样就可以不管f是否包含异步操作,都用then方法指定下一步流程,用catch方法处理f抛出的错误,一般就会采用下面的写法
+			...
+		* demo
+			function getUsername(userId) {
+				return database.users.get({id: userId})
+					.then(function(user) {
+						return user.name;
+					});
+			}
+
+			* 上面代码中，database.users.get()返回一个 Promise 对象,如果抛出异步错误,可以用catch方法捕获,就像下面这样写
+			
+				database.users.get({id: userId})
+				.then(...)
+				.catch(...)
+			
+			* 但是database.users.get()可能还会抛出同步错误(比如数据库连接错误,具体要看实现方法)这时你就不得不用try...catch去捕获
+
+				try {
+					database.users.get({id: userId})
+					.then(...)
+					.catch(...)
+				} catch (e) {
+					// ...
+				}
+
+			* 上面这样的写法就很笨拙了,这时就可以统一用promise.catch()捕获所有同步和异步的错误
+				Promise.try(database.users.get({id: userId}))
+				.then(...)
+				.catch(...)
