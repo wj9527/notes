@@ -51,7 +51,7 @@ Reflect	- 方法				|
 	set(target, name, value, receiver)
 		* 设置target对象的name属性等于value
 		* 如果name属性设置了赋值函数,则赋值函数的this绑定receiver
-		* 如果 Proxy 对象和 Reflect 对象联合使用,前者拦截赋值操作,后者完成赋值的默认行为,而且传入了receiver,那么Reflect.set会触发Proxy.defineProperty拦截
+		* 如果 Proxy 对象和 Reflect 对象联合使用,前者拦截赋值操作,后者完成赋值的默认行为,而且传入了 receiver,那么Reflect.set会触发Proxy.defineProperty拦截
 
 	defineProperty(target, name, desc)
 		* 方法基本等同于Object.defineProperty,用来为对象定义属性
