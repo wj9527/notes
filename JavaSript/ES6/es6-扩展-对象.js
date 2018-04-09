@@ -4,7 +4,7 @@ ES6-对象					|
 	1,属性的简洁表示法
 	2,属性名表达式
 	3,方法的 name 属性
-	4,bject.is()
+	4,Object.is()
 	5,Object.assign()
 	6,属性的可枚举性和遍历
 	7,Object.getOwnPropertyDescriptors()
@@ -406,7 +406,7 @@ Object.assign						|
 ------------------------------------
 	# 可枚举
 		* 对象的每个属性都有一个描述对象(Descriptor),用来控制该属性的行为
-		* Object.getOwnPropertyDescriptor方法可以获取该属性的描述对象
+		* Object.getOwnPropertyDescriptor 方法可以获取该属性的描述对象
 		* 描述对象的enumerable属性,称为"可枚举性",如果该属性为false,就表示某些操作会忽略当前属性
 			for...in循环	:只遍历对象自身的和继承的可枚举的属性
 			Object.keys()	:返回对象自身的所有可枚举的属性的键名
