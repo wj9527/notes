@@ -44,3 +44,8 @@ Spring boot-配置项				|
 	//导入外部配置文件
 		spring.profiles.include[0]=datasource
 		spring.profiles.include[1]=redis
+	
+	//上传配置
+		spring.servlet.multipart.max-file-size=30MB
+		spring.servlet.multipart.max-request-size=30MB
+		spring.servlet.multipart.enabled=true
