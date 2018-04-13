@@ -236,3 +236,26 @@ URLSearchParams		|
 				return sheep;
 			});
 		});
+
+--------------------
+Demo				|
+--------------------
+	let requestBody = new URLSearchParams();
+	requestBody.set('account','KevinBlandy');
+	requestBody.set('password','123456');
+	
+	fetch(new Request('/login',{
+		method:'POST',
+		headers:new Headers({
+			'X-Requested-With':'XMLHttpRequest'
+		}),
+		body:requestBody
+	})).then(function(response){
+		if(response.ok){
+			response.json().then(function(rep){
+				console.log(rep);
+			});
+		}
+	}).catch(function(error){
+		console.log(error);
+	});
