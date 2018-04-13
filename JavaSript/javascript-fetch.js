@@ -14,7 +14,7 @@ fetch				|
 			* fetch(url, {credentials: 'include'})
 
 		body
-			* 请求体数据,可以是FormData或者字符串
+			* 请求体数据,可以是FormData,URLSearchParams或者字符串
 
 		method
 			* 以字符串形式指定请求方法
@@ -128,7 +128,7 @@ Request				|
 		headers
 			* 请求头,对象
 		body
-			* 请求体,可以是字符串,formData
+			* 请求体,可以是字符串,formData,URLSearchParams
 		mode
 			* 关于跨域的一些配置
 				"same-origin"	
@@ -196,6 +196,9 @@ URLSearchParams		|
 			* 添加kv,不会覆盖,已经存在,则多添加一个键值对
 		set(k,v)
 			* 添加kv,同名属性会发生覆盖
+	
+	# 实例对象可以直接作为 fetch的options的body属性,或者Request实例的options的body属性
+		* 会自动添加 ContentType头
 
 --------------------
 流和克隆			|
