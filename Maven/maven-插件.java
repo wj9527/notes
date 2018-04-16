@@ -111,3 +111,62 @@
 			</multipart-config>
 
 	# 可以删除ROOT项目
+
+
+
+-------------------------------
+自动添加版权声明				|
+-------------------------------
+<plugin>
+	<groupId>com.mycila.maven-license-plugin</groupId>
+	<artifactId>maven-license-plugin</artifactId>
+	<version>${maven-license-plugin.version}</version>
+	<configuration>
+		<basedir>${basedir}</basedir>
+		<header>src/main/resources/etc/header.txt</header>
+		<quiet>false</quiet>
+		<failIfMissing>true</failIfMissing>
+		<aggregate>true</aggregate>
+		<strictCheck>true</strictCheck>
+		<includes>
+			<include>**/src/*/java/**/*.java</include>
+			<include>**/src/*/webapp/js/*.js</include>
+			<include>**/src/*/webapp/css/*.css</include>
+			<include>**/src/*/webapp/scss/*.scss</include>
+			<include>**/src/*/resources/*.properties</include>
+			<include>**/src/*/webapp/WEB-INF/*.xml</include>
+			<include>**/src/*/webapp/*.xml</include>
+			<include>gulpfile.js</include>
+		</includes>
+		<excludes>
+			<exclude>**/src/main/java/**/package-info.java</exclude>
+			<exclude>**/src/main/java/**/Pangu.java</exclude>
+			<exclude>**/src/*/webapp/js/lib/*.js</exclude>
+			<exclude>**/src/*/webapp/js/*.min.js</exclude>
+			<exclude>**/src/*/webapp/css/*.css</exclude>
+		</excludes>
+
+		<useDefaultExcludes>true</useDefaultExcludes>
+		<mapping>
+			<java>SLASHSTAR_STYLE</java>
+			<scss>SLASHSTAR_STYLE</scss>
+		</mapping>
+		<useDefaultMapping>true</useDefaultMapping>
+		<properties>
+			<year>2012-2018</year>
+			<devTeam>b3log.org &amp; hacpai.com</devTeam>
+		</properties>
+		<encoding>UTF-8</encoding>
+	</configuration>
+	<executions>
+		<!-- 
+		eclipse sucks!!
+		<execution>
+			<phase>generate-resources</phase>
+			<goals>
+				<goal>format</goal>
+			</goals>
+		</execution>
+		-->
+	</executions>
+</plugin>
