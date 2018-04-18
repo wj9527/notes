@@ -96,7 +96,7 @@ socket选项-详解				|
 		* socket api
 			 void setKeepAlive(boolean on)
 			 boolean getKeepAlive()
-		* 如果该属性为true,则底层的tcp会监视该连接是否有效,如果连接处于空闲状态(两端都没有传递火速局)超过了2小时
+		* 如果该属性为true,则底层的tcp会监视该连接是否有效,如果连接处于空闲状态(两端都没有传递数据)超过了2小时
 		  本地的tcp实现会发送一个数据包给远程的socket,如果远程的tcp没有回应,tcp实现就会持续尝试11分钟,直到收到响应为止
 		  如果在12分钟内未收到响应,tcp实现就会自动关闭本地socket,断开连接
 		* 在不同的网络平台上,tcp实现尝试与远程socket对话的时限会有所差别
