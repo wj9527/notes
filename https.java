@@ -84,3 +84,22 @@ https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 		server.ssl.key-store=classpath:ssl/springboot.io.p12
 		server.ssl.key-store-type=PKCS12
 		server.ssl.key-store-password=[key.store的密码]
+
+
+----------------------------------
+
+_add_a_and_b:
+   push   %ebx
+   mov    %eax, [%esp+8] 
+   mov    %ebx, [%esp+12]
+   add    %eax, %ebx 
+   pop    %ebx 
+   ret  
+
+_main:
+   push   3
+   push   2
+   call   _add_a_and_b 
+   add    %esp, 8
+   ret
+
