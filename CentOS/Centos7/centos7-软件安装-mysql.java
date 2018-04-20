@@ -157,7 +157,10 @@ http://blog.csdn.net/xyang81/article/details/51759200
 1,下载
 	https://dev.mysql.com/downloads/repo/yum/
 	Red Hat Enterprise Linux 7 / Oracle Linux 7 (Architecture Independent), RPM Package		25.1K	
-	(mysql57-community-release-el7-11.noarch.rpm)	
+	(mysql57-community-release-el7-11.noarch.rpm)
+
+	* mysql 8
+		https://repo.mysql.com//mysql80-community-release-el7-1.noarch.rpm
 
 2,安装yum源
 	yum localinstall mysql57-community-release-el7-11.noarch.rpm
@@ -221,10 +224,51 @@ http://blog.csdn.net/xyang81/article/details/51759200
 6,授权用户在远程登录
 	GRANT ALL PRIVILEGES ON *.* TO 'KevinBlandy'@'%' IDENTIFIED BY 'pass' WITH GRANT OPTION; 
 	
-	*.*			任意数据库下的任意数据表
-	KevinBlandy 用户名
-	%			任意ip
-	pass		密码
+		*.*			任意数据库下的任意数据表
+		KevinBlandy 用户名
+		%			任意ip
+		pass		密码
+	
+	flush privileges;
+	
+	# mysql 8的需要通过ROLE机制来进行授权
+		1,创建1个或者多个角色
+			CREATE ROLE 'app_developer', 'app_read', 'app_write';
+		
+		2,对创建的角色进行授权
+			* 语法 
+				GRANT [权限] ON [db].[tb] TO [角色]
+			
+			* 权限是枚举,可以有多个,或者直接用 ALL 代替,表示所有权限
+				SELECT,INSERT, UPDATE, DELETE
+			
+			* demo
+				GRANT ALL		ON app_db.* TO 'app_developer';
+				GRANT SELECT	ON app_db.* TO 'app_read';
+				GRANT INSERT, UPDATE, DELETE ON app_db.* TO 'app_write';
+		
+		3,创建用户
+			CREATE USER 'KevinBlandy'@'%' IDENTIFIED BY '123456';
+		
+		4,授权角色到用户
+			* 语法
+				GRANT [角色] TO [用户名]@[ip]
+			
+			* demo
+				GRANT 'app_developer' TO 'dev1'@'localhost';
+					* 授权用户在指定的ip可以使用一个角色
+				GRANT 'app_read' TO 'read_user1'@'localhost', 'read_user2'@'localhost';
+					* 授权用户在不同的IP可以使用不同的角色
+				GRANT 'app_read', 'app_write' TO 'rw_user1'@'localhost';
+					* 授权用户在一个ip可以使用多个角色
+
+		# 通用
+			 CREATE ROLE 'app_developer';
+			 GRANT ALL ON *.* TO 'app_developer';
+			 CREATE USER 'KevinBlandy'@'%' IDENTIFIED BY '123456';
+			 GRANT 'app_developer' TO 'KevinBlandy'@'%';
+
+
 
 7,设置默认编码
 	* 编辑:vim /etc/my.cnf,在 [mysqld] 配置项中添加配置
