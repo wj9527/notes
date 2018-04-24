@@ -147,3 +147,24 @@
                      <include>**/*</include>					**/
                  </includes>
             </resource>
+
+
+	
+	4,war打包方式的本地lib
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-war-plugin</artifactId>
+			<version>3.0.0</version>
+			<configuration>
+				<webResources>
+					<resource>
+						<directory>${project.basedir}/src/main/resources/lib/net/pusuo</directory>
+						<targetPath>WEB-INF/lib</targetPath>
+						<filtering>false</filtering>
+						<includes>
+							<include>**/*.jar</include>
+						</includes>
+					</resource>
+				</webResources>
+			</configuration>
+		</plugin>
