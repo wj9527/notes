@@ -13,6 +13,22 @@
 			List<T>  parseArray(String text, Class<T> clazz); 
 				* 把JSON字符串反序列化为List集合
 
+
+# 构造一个排序的JSONObject 对象
+	new JSONObject(true);
+	//源码
+	public JSONObject(boolean ordered){
+        this(DEFAULT_INITIAL_CAPACITY, ordered);
+    }
+	public JSONObject(int initialCapacity, boolean ordered){
+        if (ordered) {
+			//如果是需要排序的话,创建的就是 LinkedHashMap 对象
+            map = new LinkedHashMap<String, Object>(initialCapacity);
+        } else {
+            map = new HashMap<String, Object>(initialCapacity);
+        }
+    }
+
 -----------------------------------
 反序列化泛型						|
 -----------------------------------
