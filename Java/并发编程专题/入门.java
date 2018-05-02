@@ -26,4 +26,73 @@
 	* 当读取一个非 volatile 的 long 时,读写不在一个线程,那么很可能读到某个值的高32位或者低32位
 	* 在多线程环境下,使用共享且可变的 long,double 都是有安全问题的,应该加锁或者使用 volatile 关键字声明
 
+
+# 同步容器类要遵守同步策略
+	* 支持客户端加锁
+	* 问题
+		public static Object getLast(Vector<String> vector) {
+			int index = vector.size();
+			return vector.get(index - 1);
+		}
+		public static Object removeLast(Vector<String> vector) {
+			int index = vector.size();
+			return vector.remove(index - 1);
+		}
+		A -> size = 10 -> removeLast()  
+		b -> size = 10	-> 失去执行权 ->  getLast();		//异常数组越界
+	* 解决,客户端加锁
+		public static Object getLast(Vector<String> vector) {
+			synchronized (vector){
+				int index = vector.size();
+				return vector.get(index - 1);
+			}
+			
+		}
+		public static Object removeLast(Vector<String> vector) {
+			synchronized (vector){
+				int index = vector.size();
+				return vector.remove(index - 1);
+			}
+		}
 	
+
+# 如果不希望在迭代期间对数据加锁,那么一种替代方法就是克隆容器,并在副本上进行迭代
+	* 由于副本封闭在线程内,因此其他线程不会在迭代期间对其进行修改
+	* 克隆的过程也是需要加锁的
+
+# 容器类的hashCode和equals,toString(),contains....等等也会间接性的执行迭代操作
+	* 这些间接的迭代操作都有可能会抛出 ConcurrentModificationException
+
+# 一些类库
+	Queue
+		BlockingQueue
+			LinkedBlockingDeque
+			ArrayBlockingQueue
+			PriorityBlockingQueue
+			SynchronousQueue
+		ConcurrentLinkedQueue
+		LinkedList
+		PriorityQueue
+
+	Deque
+		BlockingDeque
+			LinkedBlockingDeque
+		ArrayDeque
+	
+	Map
+		ConcurrentHashMap
+		ConcurrentSkipListMap
+	
+	Set
+		ConcurrentSkipListSet
+		CopyOnWriteArraySet
+	
+	List
+		CopyOnWriteArrayList
+	
+	AtomicReference
+	Semaphore
+	CountDownLatch
+	FutureTask
+	CyclicBarrier
+		
