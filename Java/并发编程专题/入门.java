@@ -95,4 +95,11 @@
 	CountDownLatch
 	FutureTask
 	CyclicBarrier
+	CompletionService
+		ExecutorCompletionService
+	Executor
+		ExecutorService
+		ThreadPoolExecutor
+		ScheduledExecutorService
+		ScheduledThreadPoolExecutor
 		
