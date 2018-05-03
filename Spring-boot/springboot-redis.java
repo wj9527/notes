@@ -3,9 +3,9 @@ Redis-整合单机版					|
 ------------------------------------
 	# 依赖
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-redis</artifactId>
-		</dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-data-redis</artifactId>
+    	</dependency>
 	
 	# 配置文件
 		# Redis数据库索引（默认为0）
@@ -25,7 +25,7 @@ Redis-整合单机版					|
 		# 连接池中的最小空闲连接
 		spring.redis.pool.min-idle=0  
 		# 连接超时时间(毫秒)
-		spring.redis.timeout=0  
+		spring.redis.timeout=2000
 	# 使用
 		* StringRedisTemplate
 			* 是RedisTemplate的子类
