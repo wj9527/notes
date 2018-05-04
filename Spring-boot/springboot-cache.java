@@ -12,6 +12,17 @@ springboot-cache	|
 	
 	# 开启
 		@EnableCaching
+			* Spring Boot根据下面的顺序去侦测缓存提供者： 
+				Generic 
+				JCache (JSR-107) 
+				EhCache 2.x 
+				Hazelcast 
+				Infinispan 
+				Redis 
+				Guava 
+				Simple 
+			* 除了按顺序侦测外,也可以通过配置属性spring.cache.type 来强制指定,默认是simple类型
+				
 
 	# spring 缓存支持,抽象出来了一个 CacheManager和Cache接口
 		org.springframework.cache.CacheManager
@@ -27,35 +38,6 @@ springboot-cache	|
 		RedisCacheManager
 			* 使用Redis作为缓存技术
 	
-	# 自定义缓存中的一些配置
-		* 继承:CachingConfigurerSupport,覆写方法
-			import java.lang.reflect.Method;
-			import org.springframework.cache.annotation.CachingConfigurerSupport;
-			import org.springframework.cache.annotation.EnableCaching;
-			import org.springframework.cache.interceptor.KeyGenerator;
-			import org.springframework.context.annotation.Configuration;
-			/**
-			 * 
-			 * @author KevinBlandy
-			 *
-			 */
-			@EnableCaching
-			@Configuration
-			public class RedisCacheConfiguration extends CachingConfigurerSupport{
-
-				//自定义key生成策略
-				@Override
-				public KeyGenerator keyGenerator() {
-					KeyGenerator generator = new KeyGenerator() {
-						@Override
-						public Object generate(Object target, Method method, Object... params) {
-							return target.getClass().getSimpleName() + ":" + method.getName();
-						}
-					};
-					return generator;
-				}
-			}
-	
 --------------------
 声明式注解			|
 --------------------
@@ -70,6 +52,19 @@ springboot-cache	|
 			String[] cacheNames() default {};
 
 			String key() default "";
+				* 默认key生成规则
+					- 如果没有参数,则使用0作为key 
+					- 如果只有一个参数,使用该参数作为key 
+						* 在ehcache中,此时,key-type应该是参数类型
+					- 如果又多个参数,使用包含所有参数的hashCode作为key
+
+				* 支持使用SpringEL表达式
+					@Cacheable(value = "user", key = "#user.id"),使用user的id作为参数
+					public User create(User user)
+
+					@Cacheable(cacheNames="books", key="#map['bookid'].toString()")
+					public Book findBook(Map<String, Object> map)
+
 			String keyGenerator() default "";
 			String cacheManager() default "";
 			String cacheResolver() default "";
@@ -143,16 +138,66 @@ springboot-cache	|
 	        <artifactId>spring-boot-starter-data-redis</artifactId>
     	</dependency>
 
-	# 就这样
+	# 配置
+		spring.cache.type=redis
 	
+	# 注解配置
+		@Cacheable(value = "name")
+			* value 属性,指定了redis 的key名称
+		
 
 --------------------
-Ehcache				|
+Ehcache3			|
 --------------------
 	# 依赖
-		 <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-        </dependency>
+		<dependency>
+		    <groupId>org.ehcache</groupId>
+		    <artifactId>ehcache</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>javax.cache</groupId>
+		    <artifactId>cache-api</artifactId>
+		</dependency>
 
-		
+	# 配置
+		spring.cache.type=jcache
+		spring.cache.jcache.config=classpath:ehcache/ehcache.xml
+	
+	# 注解配置
+		@Cacheable(value = "name")
+			* value属性,便是指定了 ehcache.xml 中的 <cache alias="name">
+	
+
+-----------------------------
+CachingConfigurerSupport	 |
+-----------------------------
+	# 自定义缓存中的一些配置
+		* 继承:CachingConfigurerSupport,覆写方法
+
+			import java.lang.reflect.Method;
+			import org.springframework.cache.annotation.CachingConfigurerSupport;
+			import org.springframework.cache.annotation.EnableCaching;
+			import org.springframework.cache.interceptor.KeyGenerator;
+			import org.springframework.context.annotation.Configuration;
+			/**
+			 * 
+			 * @author KevinBlandy
+			 *
+			 */
+			@EnableCaching
+			@Configuration
+			public class RedisCacheConfiguration extends CachingConfigurerSupport{
+
+				//自定义key生成策略
+				@Override
+				public KeyGenerator keyGenerator() {
+					KeyGenerator generator = new KeyGenerator() {
+						@Override
+						public Object generate(Object target, Method method, Object... params) {
+							return target.getClass().getSimpleName() + ":" + method.getName();
+						}
+					};
+					return generator;
+				}
+			}
+	
