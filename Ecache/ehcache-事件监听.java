@@ -22,4 +22,20 @@
 				LOGGER.info("key={},newValue={},oldValue={},eventType={}",key,newValue,oldValue,eventType);
 			}
 		}
+
 	
+	# xml配置
+
+		<listeners>
+			<!-- 指定一个事件监听 -->
+			<listener>
+				<!-- CacheEventListener 实现 -->
+				<class>com.tedi.door.utils.Li</class>
+				<!-- 处理方式,同步/异步 -->
+				<event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+				<!-- 事件排序策略 -->
+				<event-ordering-mode>UNORDERED</event-ordering-mode>
+				<!-- 在什么事件发生的时候执行触发监听,可以有多个 -->
+				<events-to-fire-on>CREATED</events-to-fire-on>
+			</listener>
+		</listeners>
