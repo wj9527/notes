@@ -70,6 +70,9 @@ springboot-cache	|
 			String cacheResolver() default "";
 			String condition() default "";
 			String unless() default "";
+				* 如果方法返回null,也会被认为是一种返回值,null也会被缓存,有些时候这不是我们希望的
+				* 通过该属性来控制,禁止缓存null,如果结果为null,那么就不缓存
+					@Cacheable(value = "post",unless="#result == null")
 
 			boolean sync() default false;
 
