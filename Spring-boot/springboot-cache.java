@@ -170,6 +170,13 @@ Ehcache3			|
 		@Cacheable(value = "name")
 			* value属性,便是指定了 ehcache.xml 中的 <cache alias="name">
 	
+	# 注入使用 CacheManager
+		@Autowired
+		private CacheManager cacheManager;
+
+		* 注意,该 CacheManager 是:javax.cache.CacheManager 接口
+		* api跟 ehcache3 差不多
+		* 很显然,实现使用的就是 ehcache3
 
 -----------------------------
 CachingConfigurerSupport	 |
