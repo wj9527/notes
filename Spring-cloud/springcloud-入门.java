@@ -20,7 +20,12 @@ Spring-Cloud				|
 		http://www.guan2ye.com/
 	
 	# 征途
-		06
+		Eureka				服务注册与发现
+		Ribbon				负载均衡
+		Feign				负载均衡
+		Hystrix				断路器
+		Zuul				路由网关
+		SpringCloud-Config	分布式配置中心
 
 
 ----------------------------
