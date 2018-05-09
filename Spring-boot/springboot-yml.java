@@ -89,5 +89,6 @@ yml	语法详解				|
 			name: Litch
 			age: 23
 
-
+	# 同样可以使用 @Value 注解
+		@Value("${Person.lastName}")
 
