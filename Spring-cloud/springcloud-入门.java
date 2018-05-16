@@ -26,7 +26,45 @@ Spring-Cloud				|
 		Hystrix				断路器
 		Zuul				路由网关
 		SpringCloud-Config	分布式配置中心
+	
+	# 分布式服务
+		服务治理
+		服务注册
+		服务调用
+		服务负载均衡
+		服务监控
 
+----------------------------
+Spring-Cloud微服务技术栈	|
+----------------------------
+	服务开发
+		* springboot,spring,springmvc
+	配置与管理
+		* Archaius,Diamond
+	注册与发现
+		* Eureka,Consul,Zookeeper
+	调用
+		* Rest,Rpc,Grpc
+	熔断器
+		* Hystrix,Envoy
+	负载均衡
+		* Ribbon,Nginx
+	接口调用(客户端调用服务的简化工具)
+		* Feign
+	消息队列
+		* MQ系列
+	配置中心管理
+		* SpringCloudConfig,Chef
+	服务路由(API网关)
+		* Zuul
+	全链路追踪
+		* Zipkin,Brave,Dapper
+	服务部署
+		* Docker,OpenStack,Kubernetes
+	数据流操作开发包
+		* SpringCloud Stream
+	事件消息总线
+		* SpringCloud Bus
 
 ----------------------------
 Spring-微服务原则			|
