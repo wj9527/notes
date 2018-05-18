@@ -41,10 +41,12 @@ eureka					|
 
 
 	# 配置项
+		
 		eureka.client.fetch-registry=false
+			# 当前eureka 仅仅作为注册中心(server),不会去检索服务
 		eureka.client.register-with-eureka=false
-			# 以上两项,表示当前eureka仅仅充当注册中心,忽略自己作为服务提供者的注册行为
-			# eureka 作为注册中心(server),本身内部其实还会作为服务提供者进行注册
+			# 当前eureka仅仅充当注册中心,忽略自己作为服务提供者的注册行为
+			
 
 		eureka.client.service-url.defaultZone=http://localhost:${server.port}/eureka
 			# 服务提供者进行注册的地址,它是具备默认值的
