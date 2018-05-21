@@ -20,6 +20,8 @@
 
 	# 配置项
 		
+		eureka.instance.name=localhost
+			# eureka服务端的实例名称
 		eureka.client.fetch-registry=false
 			# 当前eureka 仅仅作为注册中心(server),不会去检索服务
 		eureka.client.register-with-eureka=false
