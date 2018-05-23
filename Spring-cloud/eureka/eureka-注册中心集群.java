@@ -29,3 +29,7 @@
 ----------------------------
 服务消费者					|
 ----------------------------
+	# 注册中心地址修改
+		* 服务消费检索服务的地址修改为集群中的所有节点
+
+		eureka.client.service-url.defaultZone=http://localhost10086.com:10086/eureka,http://localhost10087.com:10087/eureka,http://localhost10088.com:10088/eureka
