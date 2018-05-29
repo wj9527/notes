@@ -25,7 +25,7 @@
 		spring.application.name=example-user-service
 			# 当前微服务的名称,会以大写的形式出现在 eureka 的控制台
 
-		eureka.client.service-url.defaultZone=http://localhost:10086/eureka
+		eureka.client.service-url.defaultZone=http://localhost:10086/eureka/
 			# 注册中心的地址
 
 		eureka.instance.prefer-ip-address=true

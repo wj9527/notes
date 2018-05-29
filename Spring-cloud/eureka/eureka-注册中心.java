@@ -28,7 +28,7 @@
 			# 当前eureka仅仅充当注册中心,忽略自己作为服务提供者的注册行为
 			
 
-		eureka.client.service-url.defaultZone=http://localhost:${server.port}/eureka
+		eureka.client.service-url.defaultZone=http://localhost:${server.port}/eureka/
 			# 服务提供者进行注册的地址,它是具备默认值的
 
 
