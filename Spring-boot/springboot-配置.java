@@ -156,3 +156,20 @@ Spring-Boot 外部配置		|
 			|-application-datasource.properties
 		spring.profiles.include[1]=redis
 			|-application-redis.properties
+
+
+
+------------------------
+Environment				|
+------------------------
+	# org.springframework.core.env.Environment
+	# 该对象在IOC,表示当前spring的所有配置信息
+		
+		@Autowired
+		private Environment env;
+		
+		//获取当前激活的的文件名称,也就是:spring.profiles.active 指定的文件
+		String[] profiles = env.getActiveProfiles();
+
+		//可以从配置中获取数据
+		String dbPass = env.getProperty("bbs.dbPassowrd");
