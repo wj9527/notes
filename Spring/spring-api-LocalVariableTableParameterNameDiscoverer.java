@@ -24,3 +24,5 @@ LocalVariableTableParameterNameDiscoverer	|
 			System.out.println(Arrays.asList(names));		//[args]
 		}
 	}
+
+	# jdk8,已经具备了可以直接获取到参数对象的API,但是需要在编译的时候添加参数,让编译器保留参数名称属性

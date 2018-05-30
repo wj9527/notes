@@ -176,3 +176,43 @@ private static String encodeHex(byte[] bytes) {
 	}
 	return buffer.toString();
 }
+
+
+------------------------------------------
+¶Ô×Ö·û´®½øÐÐÉýÐòÅÅÐò					  |
+------------------------------------------
+	public static final Collator collator = Collator.getInstance(java.util.Locale.CHINA);
+	
+	//¶Ô×Ö·û´®½øÐÐÉýÐòÅÅÐò
+	public static void sortedChinese(List<String> collection) {
+		
+		collection.sort(collator::compare);
+		
+//		collection.sort((s1,s2) -> {
+//			return collator.compare(s1, s2);
+//		});
+		
+//		collection.sort(new Comparator<String>() {
+//			@Override
+//			public int compare(String o1, String o2) {
+//				return collator.compare(o1, o2);
+//			}
+//		});
+	}
+	
+	
+	public static void main(String[] args) throws Exception {
+
+		List<String> list = new ArrayList<>();
+
+		list.add("p2");
+		list.add("p1");
+		list.add("method");
+		list.add("pn");
+		
+		sortedChinese(list);
+
+		for (String i : list) {
+			System.out.println(i);
+		}
+	}
