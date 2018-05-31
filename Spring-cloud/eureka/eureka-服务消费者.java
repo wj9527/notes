@@ -32,5 +32,14 @@
 		public ResponseEntity<Void> test(User user){
 			this.restTemplate.postForObject(SERVICE_NAME + "/add",user,JSONObject.class);
 		}
+		
 
+		* 注册 RestTemplate 的时候要添加 @LoadBalanced,表示启动负载均衡
+			@Bean
+			@LoadBalanced
+			public RestTemplate restTemplate() {
+				return new RestTemplate();
+			}
+
+			* 而且我发现如果没有该注解,那么微服务将会调用失败
 
