@@ -9,6 +9,10 @@
 		eureka.instance.name=localhost10086.com
 		eureka.instance.name=localhost10087.com
 		eureka.instance.name=localhost10088.com
+
+	# 允许注册与发现,默认值就是true,其实不用手动声明
+		fetch-registry: true
+		register-with-eureka: true
 	
 	# 注册地址的修改
 		* 在 defaultZone 添加上当前节点以外的所有节点成员的注册地址

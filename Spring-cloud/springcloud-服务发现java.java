@@ -6,12 +6,15 @@
 	# 伪代码
 
 		@Autowired
-		private DiscoveryClient client;
+		private DiscoveryClient discoveryClient;
 		
-		//获取注册中心里面的微服务信息
-		client.getService();
+		//所有服务提供者
+		List<String> services = discoveryClient.getServices();
 		
-		List<ServiceInstance> instances = client.getInstances("USER-SERVICE");
+		services.forEach(System.out::println);
+		
+		//获取指定服务的所有提供者信息
+		List<ServiceInstance> instances = discoveryClient.getInstances("USER-SERVICE");
 
 		for(ServiceInstance serviceInstance : instances){
 			serviceInstance.getServiceId();
