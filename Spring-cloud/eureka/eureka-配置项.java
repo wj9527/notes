@@ -16,6 +16,8 @@ Eureka的配置项				|
 
 	eureka.client.fetch-registry
 		# 是否从注册中心发现服务
+	eureka.client.registry-fetch-interval-seconds
+		# 每隔多少秒从注册中心获取一个服务提供者列表信息,默认30s
 	eureka.client.register-with-eureka
 		# 是否注册服务到注册中心
 	eureka.client.service-url.defaultZone
