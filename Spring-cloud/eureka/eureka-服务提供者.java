@@ -27,6 +27,7 @@
 
 		eureka.client.service-url.defaultZone=http://localhost:10086/eureka/
 			# 注册中心的地址
+			# 如果要同时注册到多个注册中心,那么多个注册中心地址以逗号隔开
 
 		eureka.instance.prefer-ip-address=true
 			# 在eurake管理控制台中,该服务连接的地址以ip的形式出现,默认为主机名
@@ -76,3 +77,13 @@
 		
 	# 在管理控制台,就可以以json的形式来通过 ..../info 来获取到以上配置的info信息
 
+--------------------------------
+服务提供者-服务的续约与失效控制	|
+-------------------------------
+	# 默认服务提供者会跟注册中心保持30s一次的心跳
+	# 如果超过90s都没收到心跳,那么注册中心就会任务该服务凉了
+	# 以上俩属性都可以通过配置来修改
+		eureka.instance.lease-renewal-interval-in-seconds
+			* 服务续约任务的调用时间间隔,默认30s
+		eureka.instance.lease-expiration-duration-in-seconds
+			* 服务时效的时间,默认90s,就是说多少秒没有收到心跳算是服务失效

@@ -20,20 +20,33 @@
 		eureka.client.service-url.defaultZone=http://localhost10086.com:10086/eureka,http://localhost10088.com:10088/eureka
 			* 当前节点为:10087,所以只需要添加 86 和 88 节点
 
-----------------------------
-服务提供者					|
-----------------------------
-	# 注册中心地址修改
-		* 服务提供者的注册地址修改为集群中的所有节点
+	
+	# 配置详情
+		server:
+		 port: 10088
 
-		eureka.client.service-url.defaultZone=http://localhost10086.com:10086/eureka,http://localhost10087.com:10087/eureka,http://localhost10088.com:10088/eureka
+		spring:
+		 application:
+		  # 名称为注册中心
+		  name: register
 
+		eureka:
+		 instance:
+		  # 当前节点的主机名
+		  hostname: register3
+		  # 当前节点的id(在控制台中的名称)
+		  instance-id: ${eureka.instance.hostname}:${server.port} 
+		 client:
+		  service-url:
+		   # 其他的注册中心地址
+		   defaultZone: http://register1:10086/eureka/,http://register2:10087/eureka/
 
-
-----------------------------
-服务消费者					|
-----------------------------
-	# 注册中心地址修改
-		* 服务消费检索服务的地址修改为集群中的所有节点
-
-		eureka.client.service-url.defaultZone=http://localhost10086.com:10086/eureka,http://localhost10087.com:10087/eureka,http://localhost10088.com:10088/eureka
+	 
+	 # 服务提供者与服务消费者
+		* 它们仅仅需要设置集群中的任意节点为defaultZone即可
+			service-url:
+			 defaultZone: http://register3:10088/eureka/
+		
+		* 也可以主动的链接所有注册中心集群节点
+			service-url:
+			 defaultZone: http://register3:10088/eureka/,http://register2:10087/eureka/,http://register1:10086/eureka/
