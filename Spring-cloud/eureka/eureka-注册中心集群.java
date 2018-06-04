@@ -50,3 +50,5 @@
 		* 也可以主动的链接所有注册中心集群节点
 			service-url:
 			 defaultZone: http://register3:10088/eureka/,http://register2:10087/eureka/,http://register1:10086/eureka/
+		
+		* 注册中心集群中的每个节点,会相互的同步数据
