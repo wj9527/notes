@@ -70,12 +70,46 @@
 	
 	# yml
 		info: 
-		 app.name: atguigu-microservicecloud					//应用的名称
-		 company.name: www.atguigu.com							//公司名称
-		 build.artifactId: $project.artifactId$					//artifactId,通过 $xx$ 来读取
-		 build.version: $project.version$						//version,通过 $xx$ 来读取
+		 app.name: javaweb-community
+		 company.name: javaweb
+		 build.artifactId: $project.artifactId$
+		 build.version: $project.version$
 		
-	# 在管理控制台,就可以以json的形式来通过 ..../info 来获取到以上配置的info信息
+		* info 其实就是一个map,可以在其下自定义的kv
+		* 因为maven插件的配置,可以使用 $$ 来获取构建版本等信息
+
+	# 在管理控制台,就可以以json的形式来通过 ..../info 来获取到以上配置的info信息(但是这个演失败了... ...)
+		{"app":{"name":"javaweb-community"},"company":{"name":"javaweb"},"build":{"artifactId":"$project.artifactId$","version":"$project.version$"}}
+	
+	# eurek控制台中 info 的访问地址是可以修改的
+		eureka.instance.statusPageUrlPath=/info
+
+		* 如果服务提供者带有 context-path 属性的话,或者修改了健康检查的地址,就必须要配置它了
+
+------------------------
+服务提供者-健康检查		|
+------------------------
+	# 默认情况下注册到eureka server的服务是通过心跳来告知自己是UP还是DOWN
+	# 默认的方式只能知道服务提供者是否有心跳而已,不能知道服务是否还能正常的提供服务
+
+	# 所以,可以修改健康检查的方式,通过在eureka客户端中配置
+		eureka.client.healthcheck.enabled=true
+
+		* 就可以改变eureka server对客户端健康检测的方式，改用actuator的/health端点来检测。
+		* 必须导入maven依赖
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-actuator</artifactId>
+			</dependency>
+
+	# 修改eureka server访问端点的健康检查地址
+		eureka.instance.healthCheckUrlPath=/health
+
+		* 必须保证该地址可以访问,否则注册中心不会根据端点的健康检查来修改端点的状态
+		* 当然,前提是开启了健康检查:eureka.client.healthcheck.enabled=true
+
+		* 如果服务提供者带有 context-path 属性的话,或者修改了健康检查的地址,就必须要配置它了
+
 
 --------------------------------
 服务提供者-服务的续约与失效控制	|
@@ -87,3 +121,9 @@
 			* 服务续约任务的调用时间间隔,默认30s
 		eureka.instance.lease-expiration-duration-in-seconds
 			* 服务时效的时间,默认90s,就是说多少秒没有收到心跳算是服务失效
+
+------------------------
+服务提供者-服务下线		|
+------------------------
+	# 服务正常的关闭,会发送一个rest请求给注册中心,告知注册中心当前节点下线的信息
+	# 注册中心收到消息后会吧该节点下线,并且把该事件广播出去

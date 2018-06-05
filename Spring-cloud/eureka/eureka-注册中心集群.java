@@ -40,7 +40,8 @@
 		  service-url:
 		   # 其他的注册中心地址
 		   defaultZone: http://register1:10086/eureka/,http://register2:10087/eureka/
-
+		
+		* 重要的一点就是,每个节点的id不能相同,否则会出现只有一个节点能用的情况
 	 
 	 # 服务提供者与服务消费者
 		* 它们仅仅需要设置集群中的任意节点为defaultZone即可

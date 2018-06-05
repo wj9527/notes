@@ -41,6 +41,7 @@
 		* 当Eurake节点在短时间内丢失了过多的客户端(服务提供者)时,那么这个节点就会进入自我保护模式
 		* 进入该模式后,Eurake会保护服务注册表中的信息,不再进行删除表中的数据(也就是说不会注销任何服务)
 		* 在网络故障恢复时,自动退出自我保护模式
+		* eureka服务器,默认每隔60s检查一次微服务的实例是否down掉
 
 	# 在自我保护模式中,Eurake会保护注册表中的信息,不再删除任何服务实例
 		* 当它收到的心跳数重新恢复到阈值以上时,Eurake Server节点就会自动退出自我保护模式
@@ -52,3 +53,34 @@
 
 	# 禁用自我保护模式
 		eureka.server.enable-self-preservation=false
+
+
+
+------------------------
+安全的注册中心			|
+------------------------
+	# 注册中心配置
+		1,添加security依赖
+			<dependency> 
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-security</artifactId>
+			</dependency>
+
+		2,配置用户名和密码
+			security.user.name=KevinBlandy
+			security.user.password=123456
+
+		3,在访问路径上加入用户名密码
+			eureka.client.serviceUrl.defaultZone=http://${security.user.name}:${security.user.password}@localhost:${server.port}/eureka/
+			* 注意格式: 用户名:密码@主机名:端口
+	
+		* 控制台也需要使用该用户名和密码登录
+	
+	# 客户端的配置
+		
+		security.user.name=KevinBlandy
+		security.user.password=123456
+
+		eureka.client.serviceUrl.defaultZone=http://${security.user.name}:${security.user.password}@localhost:10086/eureka/
+
+		* 客户端不用security的依赖,只用在注册中心的地址中添加用户名和密码
