@@ -66,6 +66,21 @@ Springboot-自定义AutoConfiguration |
 				<scope>compile</scope>
 			</dependency>
 
+			* 最佳实践,直接继承:spring-boot-starters
+				<parent>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starters</artifactId>
+					<version>2.0.2.RELEASE</version>
+				</parent>
+				
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-autoconfigure</artifactId>
+						<scope>compile</scope>
+					</dependency>
+				</dependencies>
+
 	2,创建 XxxxAutoConfiguration 类,会通过该类的一些注解来完成是否要注册一些组件
 		* 标识该类是一个配置类 @Configuration
 		* 把 创建的 xxxProperties 加入到IOC EnableConfigurationProperties(xxxProperties.class) ,就可以在页面中 @Autowired 注入使用
