@@ -48,8 +48,37 @@ ribbon						|
 		}
 
 		* 给 RestTemplate 注册Ioc时,添加 @LoadBalance 注解
+		* @LoadBalanced 是Springcloud定义的接口注解
 		
+----------------------------
+LoadBalancerClient			|
+----------------------------
+	# @LoadBalanced 用来给 RestTemplate做标记,以使用 LoadBalancerClient 来配置他
 
-		
+		public interface LoadBalancerClient extends ServiceInstanceChooser {
+			
+			/*
+				来自于ServiceInstanceChooser接口
+				从负载均衡器中挑一个指定名称的服务实例
+			*/
+			ServiceInstance choose(String serviceId);
+			
+			/*
+				使用从负载均衡器中挑出来的实例执行请求
+			*/
+			<T> T execute(String serviceId, LoadBalancerRequest<T> request) throws IOException;
 
-	
+			<T> T execute(String serviceId, ServiceInstance serviceInstance, LoadBalancerRequest<T> request) throws IOException;
+
+			
+			/*
+				为系统构建一个合适的URI:	host:port
+				就是把服务名称翻译为了:		host:port
+			*/
+			URI reconstructURI(ServiceInstance instance, URI original);
+		}
+
+----------------------------
+重试机制					|
+----------------------------
+	//TODO

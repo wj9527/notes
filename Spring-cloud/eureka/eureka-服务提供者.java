@@ -85,14 +85,15 @@
 		eureka.instance.statusPageUrlPath=/info
 
 		* 如果服务提供者带有 context-path 属性的话,或者修改了健康检查的地址,就必须要配置它了
-
+		* 该配置支持绝对路径,也就是说,服务提供者假设以以https提供服务:
+			eureka.instance.statusPageUrlPath=https://localhost/info
 ------------------------
 服务提供者-健康检查		|
 ------------------------
 	# 默认情况下注册到eureka server的服务是通过心跳来告知自己是UP还是DOWN
 	# 默认的方式只能知道服务提供者是否有心跳而已,不能知道服务是否还能正常的提供服务
 
-	# 所以,可以修改健康检查的方式,通过在eureka客户端中配置
+	# 所以,可以修改心跳检查为健康检查的方式,通过在eureka客户端中配置
 		eureka.client.healthcheck.enabled=true
 
 		* 就可以改变eureka server对客户端健康检测的方式，改用actuator的/health端点来检测。
@@ -109,6 +110,8 @@
 		* 当然,前提是开启了健康检查:eureka.client.healthcheck.enabled=true
 
 		* 如果服务提供者带有 context-path 属性的话,或者修改了健康检查的地址,就必须要配置它了
+		* 该配置支持绝对路径,也就是说,服务提供者假设以以https提供服务:
+			eureka.instance.healthCheckUrlPath=https://localhost/info
 
 
 --------------------------------
