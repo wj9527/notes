@@ -21,6 +21,8 @@ hystrix					 |
 	
 	# 默认5秒内,20次调用失败,就会启动熔断机制
 
+	# 默认的超时时间是 2s
+
 -------------------------
 初试					 |
 -------------------------
@@ -50,6 +52,9 @@ hystrix					 |
 		public User processHystrix_Get (@PathVariable("id")Integer id){
 		
 		}
+		
+	# @HystrixCommand
+		
 
 -------------------------
 通用的熔断处理			 |
