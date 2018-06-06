@@ -27,10 +27,14 @@ FastJson			|
 
 	5,把JSON数组转换为JSON对象
 		JSONArray JSONArray.parse(String jsonArray)
+
 --------------------
 FastJson-注解		|
 --------------------
 	@JSONField
+		name
+			* 指定该字段的json key名称
+
 		format
 			* 标注在Bean的字段属性上,以字符串的形式指定格式化形式
 		

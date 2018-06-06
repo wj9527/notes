@@ -63,6 +63,7 @@ FastJsonConfig
 			* 是否输出值为null的字段,默认为false	
 		SerializerFeature.WriteEnumUsingToString	
 			* Enum输出name()或者original,默认为false	
+			* 如果该属性为true,则枚举字段输出 toString() 的返回值
 		SerializerFeature.UseISO8601DateFormat	
 			* Date使用ISO8601格式输出，默认为false	
 		SerializerFeature.WriteNullListAsEmpty	
