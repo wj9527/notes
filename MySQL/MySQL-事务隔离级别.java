@@ -47,3 +47,26 @@
 4、事务隔离级别为可重复读时，如果有索引（包括主键索引）的时候，以索引列为条件更新数据，会存在间隙锁间隙锁、行锁、下一键锁的问题，从而锁住一些行；如果没有索引，更新数据时会锁住整张表。
 5、事务隔离级别为串行化时，读写数据都会锁住整张表
 6、隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大，鱼和熊掌不可兼得啊。对于多数应用程序，可以优先考虑把数据库系统的隔离级别设为Read Committed，它能够避免脏读取，而且具有较好的并发性能。尽管它会导致不可重复读、幻读这些并发问题，在可能出现这类问题的个别场合，可以由应用程序采用悲观锁或乐观锁来控制。
+
+
+
+lock in share mode
+	* 适用于两张表存在业务关系时的一致性要求
+	* 场景,两张表
+		parent
+			paren_id
+			child_id
+
+		child
+			child_id
+		
+		* 直接 insert 一条 child_id=100 记录到child表是存在风险的
+		* 因为刚 insert 的时候可能在 parent 表里删除了这条 child_id=100 的记录,那么业务数据就存在不一致的风险
+		* 正确的打开方式
+
+			select * from parent where child_id = 100 lock in share mode;
+			insert into child(child_id) values(100);
+
+for  update
+	* 适用于操作同一张表时的一致性要求
+	* for update的加锁方式无非是比lock in share mode的方式多阻塞了select...lock in share mode的查询方式,并不会阻塞快照读
