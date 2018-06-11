@@ -34,8 +34,9 @@ zuul-入门体验				|
 	# 驱动注解
 		@EnableZuulProxy
 	
-	# 通过路由进行访问:协议:网关主机:端口:zuul服务名称/接口
-		http://localhost:8081/zuu-service/user/1
+	# 通过路由进行访问
+		* 协议:网关主机:端口:服务名称/接口
+		http://localhost:8081/user-service/user/1
 		
 		
 
