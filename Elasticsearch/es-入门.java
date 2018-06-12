@@ -16,3 +16,17 @@ Elasticsearch			 	 |
 	# 传统关系型数据库的对比
 		Relational DB ->	Databases	-> Tables	-> Rows			-> Columns
 		Elasticsearch ->	Indices		-> Types	-> Documents	-> Fields
+
+
+-----------------------------
+Elasticsearch-目录结构		 |
+-----------------------------
+	bin
+	config
+		|-elasticsearch.yml
+		|-jvm.options
+		|-log4j2.properties
+	lib
+	logs
+	modules
+	plugins
