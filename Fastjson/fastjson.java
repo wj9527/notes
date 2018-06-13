@@ -41,6 +41,11 @@ FastJson-注解		|
 		serialize
 			* true/false,是否序列化该字段
 		
+		ordinal
+			* 排序
+			*  字段越小,则字段排在越前面
+		
+		
 
 	
 
