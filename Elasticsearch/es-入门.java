@@ -23,9 +23,15 @@ Elasticsearch-Ŀ¼�ṹ		 |
 -----------------------------
 	bin
 	config
+		|-elasticsearch.keystore
 		|-elasticsearch.yml
 		|-jvm.options
 		|-log4j2.properties
+		|-role_mapping.yml
+		|-roles.yml
+		|-users
+		|-users_roles
+	data
 	lib
 	logs
 	modules
