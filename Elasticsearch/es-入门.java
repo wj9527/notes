@@ -36,3 +36,25 @@ Elasticsearch-目录结构		 |
 	logs
 	modules
 	plugins
+
+-----------------------------
+Elasticsearch-启动JSON		 |
+-----------------------------
+
+{
+	"name" : "b9yxBCU",								//节点名称
+	"cluster_name" : "elasticsearch",				//集群名称
+	"cluster_uuid" : "V3_diOPVS7m85S_dmijzfw",		//集群uuid
+	"version" : {
+		"number" : "6.3.0",							//版本号
+		"build_flavor" : "default",				
+		"build_type" : "zip",		
+		"build_hash" : "424e937"
+		"build_date" : "2018-06-11T23:38:03.357887Z",
+		"build_snapshot" : false,
+		"lucene_version" : "7.3.1",
+		"minimum_wire_compatibility_version" : "5.6.0",
+		"minimum_index_compatibility_version" : "5.0.0"
+	},
+	"tagline" : "You Know, for Search"
+}
