@@ -30,6 +30,7 @@ Spring-boot 单个文件		|
 	# 通过配置来限制上传大小
 		spring.servlet.multipart.max-file-size=30MB
 		spring.servlet.multipart.max-request-size=30MB
+		spring.servlet.multipart.enabled=true
 
 ---------------------------
 Spring-boot 批量上传		|
