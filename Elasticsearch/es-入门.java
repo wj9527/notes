@@ -18,6 +18,35 @@ Elasticsearch			 	 |
 Elasticsearch-目录结构		 |
 -----------------------------
 	bin
+		|-x-pack
+			|-certgen.bat
+			|-.bat
+			|-certutil.bat
+			|-migrate.bat
+			|-saml-metadata.bat
+			|-setup-passwords.bat
+			|-sql-cli.bat
+			|-syskeygen.bat
+			|-users.bat
+		|-elasticsearch-sql-cli-6.3.0.jar
+		|-elasticsearch.bat
+		|-elasticsearch-certgen.bat
+		|-elasticsearch-certutil.bat
+		|-elasticsearch-croneval.bat
+		|-elasticsearch-env.bat
+		|-elasticsearch-keystore.bat
+		|-elasticsearch-migrate.bat
+		|-elasticsearch-plugin.bat
+		|-elasticsearch-saml-metadata.bat
+		|-elasticsearch-service.bat
+		|-elasticsearch-setup-passwords.bat
+		|-elasticsearch-sql-cli.bat
+		|-elasticsearch-syskeygen.bat
+		|-elasticsearch-translog.bat
+		|-elasticsearch-users.bat
+		|-x-pack-env.bat
+		|-x-pack-security-env.bat
+		|-x-pack-watcher-env.bat
 	config
 		|-elasticsearch.keystore
 		|-elasticsearch.yml
@@ -36,6 +65,8 @@ Elasticsearch-目录结构		 |
 -----------------------------
 Elasticsearch-启动JSON		 |
 -----------------------------
+	# http://127.0.0.1:9200/
+
 	{
 		"name" : "b9yxBCU",								//节点名称
 		"cluster_name" : "elasticsearch",				//集群名称
