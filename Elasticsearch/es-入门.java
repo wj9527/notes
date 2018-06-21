@@ -125,4 +125,9 @@ Elasticsearch-ºËĞÄ¸ÅÄî		 |
 		Relational DB ->	Databases	-> Tables	-> Rows			-> Columns
 		Elasticsearch ->	Indices		-> Types	-> Documents	-> Fields
 
-	
+
+
+-----------------------------
+Elasticsearch-Õ÷Í¾			 |
+-----------------------------
+µ¹ÅÅË÷ÒıÏê½â
