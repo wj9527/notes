@@ -37,6 +37,11 @@
 		"fields":{
 			"key":{}
 		}
+	},
+	"aggs":{
+	},
+	"properties":{
+	
 	}
 }
 

@@ -31,3 +31,6 @@
 		red
 			* 不是所有索引的primary shard都是acvive状态的,部分索引有可能数据丢失
 	
+
+
+/ecommerce/_mapping/{index}

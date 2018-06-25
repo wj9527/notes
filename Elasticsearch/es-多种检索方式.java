@@ -228,3 +228,41 @@ full-highlight search	|
 			}
 		}
 	}
+
+--------------------
+聚合				|
+--------------------
+	{
+		"aggs":{
+			"group_by_tags":{
+				"terms":{
+					"field":"tags"
+				}
+			}
+		}
+	}
+
+	* 根据tags字段进行聚合检索,返回每个tag下的商品数量
+
+	{
+		"aggs":{
+			"group_by_tags":{
+				"terms":{
+					"field":"tags",
+					"order":{
+						"avg_price":"desc"
+					}
+				},
+				"aggs":{
+					"avg_price":{
+						"field":"price"
+					}
+				}
+			}
+		}
+	}
+
+	* 根据tags字段计算分组,然后计算机每组的平均值
+	* 根据 avg_price 来降序排序
+
+	
