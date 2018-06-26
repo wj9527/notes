@@ -65,10 +65,30 @@ Tomcat-搭建HTTPS服务器		|
 			
 
 			
-			
+	3, 导出公钥
+		keytool -export -alias [alias] -file [name].cer -keystore [name].keystore -storepass [密码]
+			alias			:生成证书时使用的别名
+			[name].cer		:导出的公钥文件(包含了公钥和证书)
+			[name].keystore	:key.keystore
+
+	4,导入合作方公钥
+		* 通讯双方假设为A和B,A发布了自己的证书并公开了公钥,B所有经过A的公钥加密的报文发送给A后,A可以正确解密,如果A给B发送报文,A用私钥加密，B可以用公钥解密
+		* 但这里有一个问题就是公钥是公开的,A发送给B的报文,任何有公钥的人都可以解密,不能保证A向B发送信息的安全性
+		* 所以B也需要制作自己的证书,并对A公开自己的公钥,这样A向B发送信息里用B的公钥加密,这样B就可以用私钥解密,而其他截获信息的人因为没有私钥也不能解密
+		* A需要将B的公钥导入自己的证书库
+
+		 keytool -import -file [name].cer -keystore [name].keystore -storepass [密码]
+			* [name].cer 合作方的公钥
+			* [name].keystore 本地的keystore
+			*  [密码] 本地keystore的密码
+
+		 * 提示是否信任这个认证,y
+		 * 回车后即可导入然后查看证书库中的证书条目
+			 keytool -list -v -keystore [name].keystore -storepass [密码]
+		
+
 ----------------------------
 Tomcat-阿里云				|
 ----------------------------
 	
 
-		
