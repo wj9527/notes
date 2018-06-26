@@ -42,6 +42,25 @@ shard & replica机制						|
 	3,只会把三个primary shard分配到仅有的一个node上去,另外3个replica shard无法分配
 	4,集群可以正常工作,但是一旦出现节点宕机,数据全部丢失,而且集群不可用,无法执行任何请求
 
+----------------------------------------
+2个Node环境下的index					|
+----------------------------------------
 
+----------------------------------------
+横向扩容								|
+----------------------------------------
+	1,primary & replica自动负载均衡
+	2,每个node有更少的shard, io/cpu/memory资源给每个shard分配更多,每个shard性能更好
 
+	
+----------------------------------------
+容错机制								|
+----------------------------------------
+	1,master选举
+	2,replica容错
+	3,数据恢复
+
+	master node宕机,自动选举master -> red
+	replica 容错:新master 将replica提升为 primary shard -> yellow
+	重启宕机node,master copy replica到该node,使用原有的shard并同步宕机后的修改 green
 
