@@ -1,9 +1,7 @@
 
 # »ªÎªÔÆ
 	<mirror>
-		<id>nexus-huaweicloud</id>
+		<id>huaweicloud</id>
 		<mirrorOf>*</mirrorOf>
-		<name>Nexus huaweicloud</name>
-		<url>https://mirrors.huaweicloud.com/repository/maven/</url>
+		<url>https://repo.huaweicloud.com/repository/maven/</url>
 	</mirror>
-
