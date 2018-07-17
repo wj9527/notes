@@ -70,5 +70,11 @@
 
 		convert()
 			SELECT CONVERT(12,CHAR(10))
-			SELECT CAST('158' AS UNSIGNED)
+
+	
+---------------------------	
+系统预定义常量				|
+---------------------------	
+	CURRENT_TIMESTAMP
+		* 当前时间戳
 	
