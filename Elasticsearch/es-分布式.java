@@ -28,10 +28,11 @@ shard & replica机制						|
 		* 承载部分数据,lucene实例,完整的建立索引和处理请求的能力
 	3,增减节点,shard会自动在nodes中负载均衡
 	4,primary shard和replica shard,每个document肯定只存在于某一个primary shard以及其对应的replica shard中,不可能存于多个primary shard
-	5,replica shar是primary shard的副本,负责容错,以及承担读请求的负载
+	5,replica shard是primary shard的副本,负责容错,以及承担读请求的负载
 	6,primary shard的数量,在创建索引的时候就固定了,replica shard的数量可以随时修改
 	7,primary shard的默认数量是5,replica默认是1,默认有10个shard,5个primary shard,5个 replica shard
 	8,primary shard 不能和自己的replica shard放在同一个节点上(否则节点宕机,primary shard和副本都丢失,起不到容错的作用),但是可以和其他的primary shard和replica shard放在同一个节点上
+	
 
 
 ----------------------------------------
