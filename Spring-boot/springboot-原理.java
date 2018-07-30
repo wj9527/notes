@@ -97,7 +97,11 @@ Springboot-自定义AutoConfiguration |
 		com...x...,\
 		
 		* 多个以逗号分割
-	
+		
+		org.springframework.context.ApplicationContextInitializer
+			* 配置 ApplicationContextInitializer 的实现,在初始化完成后获取到ApplicatioContext
+
 
 		
-		
+		org.springframework.boot.SpringApplicationRunListener
+			* 配置 SpringApplicationRunListener 的实现,处理事件
