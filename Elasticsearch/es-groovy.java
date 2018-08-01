@@ -2,3 +2,4 @@
 Groovy				|
 --------------------
 	# es有个内置的脚本支持,可以基于Groovy脚本实现各样的复杂操作.
+	# es scripting model
