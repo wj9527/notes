@@ -40,8 +40,10 @@
 	        //initialValue:content,
 	        //markdown的预览样式,tab, vertical
 	        previewStyle: 'vertical',
-			//高度	        
+			//初始化高度,值还可以是:auto	        
 	        height: '500px',
+			//最低高度
+			minHeight: '100px',
 	        //中文
 	        language:'zh_CN',
 	        //是否启用键盘快捷键
