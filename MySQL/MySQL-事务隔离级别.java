@@ -70,3 +70,26 @@ lock in share mode
 for  update
 	* 适用于操作同一张表时的一致性要求
 	* for update的加锁方式无非是比lock in share mode的方式多阻塞了select...lock in share mode的查询方式,并不会阻塞快照读
+
+
+打个比方，你有个账户。里面存着你的钱。你现在有100块钱。
+有两个人同时往你账户打钱
+
+1，用户 A 开启了一个了事务
+	select money from account where name = yang;
+	money = 100
+
+	用户A给你转50块
+	update money = money + 50 where name = yang;
+
+2，用户 B 开启了一个事务
+	select money from account where name = yang;
+	money = 100
+
+	用户B给你转100块钱
+	update money = money + 100 where name = yang;
+
+3，用户B提交事务
+	money = 
+4，用户A提交事务
+    
