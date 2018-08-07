@@ -28,3 +28,21 @@ partial update				|
 			* 当前用户在修改界面,占用时间过长,其实该document已经被其他的用户发生了修改,当前用户执行更新会发生冲突
 	
 
+----------------------------
+partial update 乐观锁并发控制|
+----------------------------
+	# 默认会使用乐观锁的并发控制策略
+		* partial update 提交到shard后,会先去内容读取该document的所有field,以及version
+		* 修改partial update提交的部分field,然后回写,在回写的时候,使用version来处理并发控制
+
+	# retry策略
+		* 在执行修改时,发现version不对
+		* 再一次读取documnet的最新版本号
+		* 基于最新的版本号去更新document
+		* 如果失败,则重复上述俩步骤,重复的次数可以通过 retry_on_conflict 值来控制
+
+		POST /user/coder/1/_update?retry_on_conflict=5
+	
+	# 也可以手动使用 _version 来手动控制,当version不一致时,会给出异常
+
+		
