@@ -105,3 +105,46 @@ end
 		<a href="<c:url value='/CustomerServlet?method=findAll&pc=${requestScope.pb.tp }'/>">尾页</a>
 	</center>
 
+
+======================== js算法
+
+//预定义开始
+var begin = 0;
+
+//预定义结束
+var end = 0;
+
+if(pageInfo.totalPage <= 10){
+	begin = 1;
+	end = pageInfo.totalPage;
+}else{
+	begin = pageInfo.page - 5;
+	end = pageInfo.page + 4;
+	if(begin < 1){
+		begin = 1;
+		end = 10;
+	}
+	if(end > pageInfo.totalPage){
+		begin = pageInfo.totalPage - 9;
+		end = pageInfo.totalPage;
+	}	
+}
+
+if(begin > 1){
+	//生成首页摁钮
+}
+if(pageInfo.page > 1){
+	//生成上一页摁钮
+}
+
+for(let i = begin ; i <= end; i++){
+	//生成页码摁钮
+}
+
+if(pageInfo.totalPage > pageInfo.page){
+	//生成下一页摁钮
+}
+
+if(pageInfo.totalPage > end ){
+	//生成尾页摁钮
+}
