@@ -99,7 +99,17 @@ springboot配置	http2				  |
 	# 必须先配置https
 	# 而且目前好像只有undertow支持
 
-		server.http2.enabled=true    //开启HTTP2  
+		server:
+		  port: 443
+		  servlet:
+			context-path: /
+		  ssl:				//开启http2必须要开启https	
+			enabled: true
+			key-store: classpath:dev_ssl/javaweb.io.keystore
+			key-store-type: PKCS12
+			key-store-password: a12551255
+		  http2:		//开启HTTP2  
+			enabled: true	
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
