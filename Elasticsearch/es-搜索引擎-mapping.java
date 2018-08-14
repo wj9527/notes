@@ -47,7 +47,6 @@ mapping				|
 ²é¿´mapping			|
 --------------------
 	GET /index/_mapping/type
-
 	{
 	  "user": {
 		"mappings": {

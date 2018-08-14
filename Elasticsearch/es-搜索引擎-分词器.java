@@ -33,11 +33,18 @@ query String分词器			 |
 -----------------------------
 分词器的测试				 |
 -----------------------------
-	# 请求
+	# 直接测试分词器
 		GET /_analyze
 		{
 			"analyzer": "standard",			//指定分词器
 			"text":"Hello KevinBlandy"		//指定词句
+		}
+	
+	# 测试指定index下指定字段的分词器
+		GET /index/_analyze
+		{
+		  "field":"desc",					//指定字段
+		  "text":"hhhhh"					//给字段指定值
 		}
 
 	# 响应分词信息
