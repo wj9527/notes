@@ -77,6 +77,7 @@ mapping-核心数据类型|
 		Float,Double
 		Boolean
 		Date
+		KeyWord
 	
 	#  数据类型的推测规则
 		true or false		--> Boolean
@@ -142,7 +143,44 @@ mapping-创建		|
 		* 在url中指定index和type
 		* 通过请求体指定新的字段和其mapping属性
 		
+--------------------------
+mapping-复杂的数据类型转换|
+--------------------------
+	# 数组
+		"tags":["Java","PHP"]
 
+		* 建立索引的时候,跟String是一样的,只是说数据类型不能混,[]里面要么全是字符串,要么全是数字
+	
+	# 空
+		null,[],[null]
+		
+	# Object
+		* 底层的数据结构转换
+			{
+				"name":"Kevin",
+				"skill":{
+					"java":90,
+					"python":70
+				}
+			}	
+			======================
+			{
+				"name":"Kevin",
+				"skill.java":90,
+				"skill.python":70
+			}
 
-
+		* 更为复杂的数据结构
+			{
+				"authors":[
+					{"age":23,"name":"Kevin"},
+					{"age":25,"name":"Litch"},
+					{"age":24,"name":"Rocco"}
+				]
+			}
+			======================
+			{
+				"authors.age":[23,25,24],
+				"authors.name":["Kevin","Litch","Rooc"]
+			}
 	
