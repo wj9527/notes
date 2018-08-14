@@ -98,36 +98,13 @@ DSL	- query							|
 		* 检索 name 属性里面包含了 KevinBlandy 的记录
 		* 一个match只能有一个属性,不支持多个属性
 	
-	# boolean
+	# boolean 属性
 		* boolean 属性是一个或者多个条件
-		* 属性名称枚举固定,属性值可以为 match 数组或者对象
-
+		* 属性名称枚举固定,属性值可以为数组或者对象
 			* must		一个或者多个条件,必须全部满足
 			* should	一个或者多个条件,满足一个即可
 			* must_not	一个或者多个条件,必须全部不满足
 		
-		* 我的理解就是,boolean 可以当做一个函数看,它的属性成员组成了一个条件
-		* demos
-			{
-			 "query":{
-				"bool":{
-				  "must":[
-					{
-					  "match":{
-						"name":"Litch"
-					  }
-					},
-					{
-					  "match":{
-						"gender":"男"
-					  }
-					}
-				  ]
-				}  
-			  } 
-			}
-			* 检索name = Litch 并且 gender = 男 的记录
-
 	
 	#  组合多个条件
 		{
