@@ -6,13 +6,25 @@
 		},
 
 		"match":{
-			"key":"value"
+			"field":"value"
 		},
 
-		"match_phrase":{
-			"key":"value"
+		"term":{
+			"field":"value"		
+		},
+		"terms":{
+			"field":["value1","value2"]	
 		}
-
+		"match_phrase":{
+			"field":"value"
+		}
+		"multi_match":{
+			"query":"value",
+			"fields":["field1,field2"]
+		},
+		"exists":{
+			"field":"field"
+	    },
 		"bool":{
 			"must":{
 				"match":{
@@ -21,7 +33,7 @@
 			},
 			"filter":{
 				"range":{
-					"key":{"gt/lt/le/ge/ne":"value"}
+					"field":{"gt/lt/le/ge/ne":"value"}
 				}
 			}
 		}
@@ -35,7 +47,7 @@
 	"_source":[],
 	"highlight":{
 		"fields":{
-			"key":{}
+			"field":{}
 		}
 	},
 	"aggs":{
@@ -57,6 +69,17 @@ query
 
 	query.match_phrase
 		* 短语检索,跟全文检索相反,必须是全部符合key=value,才符合条件
+	
+	query.multi_match
+		* 等于同一个值的多个字段
+	query.term
+		* 跟 match_phrase ,是全文匹配
+	query.terms
+		* 等一个多个值的一个字段
+		* 允许匹配多个值,任意一个值件满足条即可
+
+	query.exists
+		* 通过field属性指定的属性不能为null
 
 ==============================================================================================
 query.bool
@@ -84,4 +107,25 @@ _source
 highlight.fields
 	* 高亮设置
 
+
+
+--------------------
+组件				|
+--------------------
+match
+match_all
+match_phrase
+multi_match
+term
+terms
+exists
+
+bool
+must
+should
+must_not
+filter
+
+range
+constant_score
 

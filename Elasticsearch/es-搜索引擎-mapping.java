@@ -127,6 +127,7 @@ mapping-创建		|
 			- index		属性指定字段的是否建立索引,boolean 值(在6.x以前,这个值是字符串枚举:analyzed,not_analyzed,no)
 			- analyzer	属性指定字段建立索引时,使用的分词器
 			- type		指定字段的数据类型
+			- filed		...
 
 		
 	# 添加一个字段
