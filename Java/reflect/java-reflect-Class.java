@@ -53,6 +53,11 @@ java.reflect.Class	 |
 	
 	boolean isArray();
 		* 是否是数组
+	
+	boolean isPrimitive();
+		* 判断是否是原始数据类型类对象
+		int.class.isPrimitive() => true
+		Integer.class.isPrimitive() => false
 
 	Class<?>[] getInterfaces()
 		* 获取当前类实现的所有接口
