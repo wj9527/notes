@@ -26,4 +26,13 @@ scanf()
 
 
 getchar()
-	
+	* 读取下一个字符串输入,并且返回,它只处理字符
+	* 等同于
+		char ch;
+		scanf("%c",&ch);
+
+putchar()
+	* 该函数的作用就是,打印该函数的参数,它只处理字符
+	* 等同于
+		char ch = '1';
+		printf("%d",ch)
