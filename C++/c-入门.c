@@ -127,10 +127,12 @@ C语言-printf 转换说明修饰符		|
 	# .数字
 	# 转换
 		h
+			* 转换为短整型 short
 		hh
 		j
 		l
 		ll
+			* 转换为 long long 类型
 		L
 		t
 		z
