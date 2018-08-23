@@ -24,6 +24,9 @@ scanf()
 		scanf("%d %d",&var1,&var2);
 		printf("%d %d",var1,var2);
 
+	* 当用户通过scanf输入字符时,编译器默认先把内容放在缓冲区
+	* scanf自动在缓冲区读取内容
+
 
 getchar()
 	* 读取下一个字符串输入,并且返回,它只处理字符
