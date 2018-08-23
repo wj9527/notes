@@ -31,10 +31,16 @@
 		float
 			* 单精度浮点型
 			* 4字节,7位有效数字
+		
 
 		double
 			* 双精度浮点型
 			* 8字节,15 - 16 位有效数字
+
+		long double
+			* 16字节
+
+	
 
 		unsigned
 		signed
