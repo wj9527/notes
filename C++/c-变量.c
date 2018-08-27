@@ -114,19 +114,20 @@
 	
 
 ----------------------------------------
-变量声明								|
+类型转换								|
 ----------------------------------------
-	# 合法的声明
-		int num,age;
+	# 显式转换
+		* 大转小
+			int num = 255;
+			short s = (short)num;
+		* 使用括号来完成强制转换,可能引发精度丢失的问题
 
-		int num = 1,age = 15;
-	
-		long int x;
-		short int x;
-		long int x;
-		long long x;
-		unsigned long;
-		long double;
+
+	# 隐式转换
+		* 小转大
+			double a;
+			int b = 0;
+			a = b;			//编译器自动把b的值转换为double,在给a赋值
 
 ----------------------------------------
 bool 类型								|
