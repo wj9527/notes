@@ -1,11 +1,20 @@
 ------------------------------------
 Redis-整合单机版					|
 ------------------------------------
+	# 使用lettuce
 	# 依赖
 		<dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-data-redis</artifactId>
     	</dependency>
+		<dependency>
+		    <groupId>io.lettuce</groupId>
+		    <artifactId>lettuce-core</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-pool2</artifactId>
+		</dependency>
 	
 	# 配置文件
 		# Redis数据库索引（默认为0）
@@ -17,15 +26,16 @@ Redis-整合单机版					|
 		# Redis服务器连接密码(默认为空)
 		spring.redis.password=  
 		# 连接池最大连接数(使用负值表示没有限制)
-		spring.redis.pool.max-active=8  
+		spring.redis.lettuce.pool.max-active=8  
 		# 连接池最大阻塞等待时间(使用负值表示没有限制)
-		spring.redis.pool.max-wait=-1  
+		spring.redis.lettuce.pool.max-wait=-1  
 		# 连接池中的最大空闲连接
-		spring.redis.pool.max-idle=8  
+		spring.redis.lettuce.pool.max-idle=8  
 		# 连接池中的最小空闲连接
-		spring.redis.pool.min-idle=0  
+		spring.redis.lettuce.pool.min-idle=0  
 		# 连接超时时间(毫秒)
 		spring.redis.timeout=2000
+
 	# 使用
 		* StringRedisTemplate
 			* 是RedisTemplate的子类
