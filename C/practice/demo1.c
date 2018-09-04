@@ -14,9 +14,6 @@ void sort(int *arr,size_t size){
 		}
 	}
 }
-/**
- * Õ®π˝÷∏’Î√∞≈›≈≈–Ú
- */
 int main(void){
 
 	int arr[SIZE] = {1,9,8,4,7,3,5,2,0,6,};
