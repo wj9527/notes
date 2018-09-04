@@ -71,3 +71,14 @@
 		//123(输入)
 		//input = 123,size = 100
 		
+		* 遇到空格截断
+			char name[100];
+			scanf("%s",name);
+			printf("%s",name);
+			//Hello World
+			//Hello( World没有被输出,因为遇到了空格就被截断了, World被放在了缓冲区)
+		
+
+		
+
+
