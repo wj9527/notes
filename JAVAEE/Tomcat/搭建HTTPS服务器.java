@@ -47,6 +47,12 @@ Tomcat-搭建HTTPS服务器		|
 		
 		* OK,在~目录下,会生成 .keystore 一个证书文件
 			* 至此,证书创建成功
+		
+		*  JKS 密钥库使用专用格式,迁移到行业标准格式 PKCS12
+			keytool -importkeystore -srckeystore [name].keystore -destkeystore [name].keystore -deststoretype pkcs12
+
+输入源密钥库口令:
+已成功导入别名 localhost 的条目。
 	
 	2,配置服务器
 		* 把 .keystore 文件复制到 $TOMCAT_HOME/conf 目录下

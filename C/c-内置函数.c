@@ -9,3 +9,4 @@ sizeof()
 		int num = 4;
 		printf("size = %d",sizeof num);
 
+
