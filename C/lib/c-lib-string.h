@@ -37,6 +37,14 @@ strcat(s1, s2)
 		strcat(s1,s2);
 		printf("%s\n",s1);	//HelloC
 
+strncat(s1,s2,length)
+	* 同上,可以限制追加字符串的长度
+	* 把s2的前length个字符追加到s1
+		char src[] = "Hello";
+		char dst[] = "clang";
+		strncat(src,dst,1);
+		printf("result = %s\n",src);		//result = Helloc
+
 strlen(s1)
 	* 返回字符串的长度(字节大小),不包含结束符,仅仅计算到第一个分割符
 	* 返回 size_t 类型
@@ -52,6 +60,13 @@ strcmp(s1,s2)
 		char s2[11] = "Hi";
 		char s3[11] = "Hello";
 		printf("%d %d %d\n",strcmp(s1,s3),strcmp(s1,s2),strcmp(s2,s1));	//0 -1 1
+	
+strncmp(s1,s2,length)
+	* 同上,也是字符串的比较,该方法可以指定比较的字符串长度
+		char src[] = "HelloC";
+		char dst[] = "HelloJava";
+		int result = strncmp(src,dst,5);
+		printf("result = %d\n",result);	//result = 0
 
 strchr(s1, ch);
 	* 返回一个指针,指向字符串 s1 中字符 ch 的第一次出现的位置

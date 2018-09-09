@@ -85,9 +85,73 @@
 
 			printf("dst = %s\n",dst);                       //Hello
 			printf("dst = %s\n",dst + strlen("Hello") + 1); //
+	
+	# 字符串的比较
+		* 字符串的比较,strcmp(s1,s2)
+		* 如果 s1 和 s2 是相同的,则返回 0
+		* 如果 s1<s2 则返回小于 0,如果 s1 > s2 则返回大于 0
+			char s1[11] = "Hello";
+			char s2[11] = "Hi";
+			char s3[11] = "Hello";
+			printf("%d %d %d\n",strcmp(s1,s3),strcmp(s1,s2),strcmp(s2,s1));	//0 -1 1
+		* 其实是比较字符的ascii码,谁大就是谁大
+		
+		* 可以指定比较的字符串长度使用 strncmp(s1,s2,length);
+		* 仅仅比较 s1,s2的前length个字符
+			char src[] = "HelloC";
+			char dst[] = "HelloJava";
+			int result = strncmp(src,dst,5);
+			printf("result = %d\n",result);	//result = 0
 			
+	
+	# 字符串的追加
+		* strcat(s1, s2)连接字符串 s2 到字符串 s1 的末尾
+			char s1[11] = "Hello";
+			char s2[11] = " C";
+			strcat(s1,s2);
+			printf("%s\n",s1);	//HelloC
+		
+		* 仅仅追加指定的长度可以使用 strncat(s1,s2,length);
+		* 把s2的前length个字符追加到s1
+			char src[] = "Hello";
+			char dst[] = "clang";
+			strncat(src,dst,1);
+			printf("result = %s\n",src);		//result = Helloc
 
 	
+	# 获取格式化后的字符串
+		* sprintf(char dst*, const char *, ...)
+		*  把 字符串格式化后,写入到dst中
+			int x = 10;
+			char y = 'H';
+			char str[] = "Java";
+			char dst[100];
+			sprintf(dst,"x = %d,y = %c,buf = %s",x,y,str);
+			printf("dst = %s\n",dst);	//dst = x = 10,y = H,buf = Java
+	
+	# 预定义从键盘的输入的字符串
+		* sscanf (const char *, const char *, ...)
+		* 把从屏幕读取到的字符串格式化后,写入到dst中
+			//定义一个"输入的字符串"
+			char dst[] = "1 2 3";
+			//定义变量
+			int a,b,c;
+			//使用 cccanf 把 输入的字符,赋值给变量
+			sscanf(dst,"%d %d %d",&a,&b,&c);
+			printf("a=%d,b=%d,c=%d\n",a,b,c);	//a=1,b=2,c=3
+
+		* 从字符串中提取整形变量是最方便的
+			char inputs[] = "a=10,b=20";
+			int a , b;
+			sscanf(inputs,"a=%d,b=%d",&a,&b);
+			printf("a=%d,b=%d\n",a,b);  //a=10,b=20
+
+		* 提取字符串,默认以空格分割
+			char temp[] = "abc def 123";
+			char str1[4],str2[4],str3[4];
+			sscanf(temp,"%s %s %s",str1,str2,str3);
+			printf("str1=%s,str2=%s,str3=%s",str1,str2,str3);//str1=abc,str2=def,str3=123
+
 ------------------------
 字符的输入/输出			|
 ------------------------

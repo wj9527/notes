@@ -18,6 +18,15 @@ printf()
 	* 支持字符串占位符,必须严格按照占位符的数据类型传递参数
 		printf("Hello %d,%d",5,6);
 
+sprintf(char dst*, const char *, ...)
+	* 把 字符串格式化后,写入到dst中
+		int x = 10;
+		char y = 'H';
+		char str[] = "Java";
+		char dst[100];
+		sprintf(dst,"x = %d,y = %c,buf = %s",x,y,str);
+		printf("dst = %s\n",dst);	//dst = x = 10,y = H,buf = Java
+
 puts()
 	* 函数只用来输出字符串,不能使用占位符,自动添加换行
 	* 里面的参数可以直接是字符串或者是存放字符串的字符数组名
@@ -35,6 +44,28 @@ scanf()
 	* 当用户通过scanf输入字符时,编译器默认先把内容放在缓冲区
 	* scanf自动在缓冲区读取内容
 
+sscanf (const char *, const char *, ...)
+	* 使用预定义的字符串,来作为标准输入数据填充模版值
+		//定义一个"输入的字符串"
+		char dst[] = "1 2 3";
+		//定义变量
+		int a,b,c;
+		//使用 cccanf 把 输入的字符,赋值给变量
+		sscanf(dst,"%d %d %d",&a,&b,&c);
+		//成功赋值
+		printf("a=%d,b=%d,c=%d\n",a,b,c);	//a=1,b=2,c=3
+
+	* 提取整形变量是最方便的
+		char inputs[] = "a=10,b=20";
+		int a , b;
+		sscanf(inputs,"a=%d,b=%d",&a,&b);
+		printf("a=%d,b=%d\n",a,b);  //a=10,b=20
+
+	* 提取字符串,默认以空格分割
+		char temp[] = "abc def 123";
+		char str1[4],str2[4],str3[4];
+		sscanf(temp,"%s %s %s",str1,str2,str3);
+		printf("str1=%s,str2=%s,str3=%s",str1,str2,str3);//str1=abc,str2=def,str3=123
 
 getchar()
 	* 读取下一个字符串输入,并且返回,它只处理字符
