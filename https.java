@@ -104,8 +104,10 @@ https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 			
 			CjhdUm0L4oQU0ZHg7F7832FtFweUPlRFJs0LxJGx_qg.-ielpqOUtyZI_Q0f9xYi8-Bj57TsuD5y4mGIMxW9GwM			文本
 			http://[域名]/.well-known/acme-challenge/CjhdUm0L4oQU0ZHg7F7832FtFweUPlRFJs0LxJGx_qg			访问地址
-
-	*  创建成功后会在  /etc/letsencrypt/ 下生成证书文件
+	
+	* 执行期间会与控制台有两次交互,第一次输入A,表示同意协议,第二次输入YES,表示允许他们收集你的邮箱
+	* 创建期间,必须保证80端口不被占用,脚本会在80端口启动http服务来验证域名所属(standalone)
+	* 创建成功后会在  /etc/letsencrypt/ 下生成证书文件
 
 3,证书续约(需要在生成证书的服务器上进行)
 	./letsencrypt-auto renew
