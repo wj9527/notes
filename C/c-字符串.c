@@ -151,7 +151,74 @@
 			char str1[4],str2[4],str3[4];
 			sscanf(temp,"%s %s %s",str1,str2,str3);
 			printf("str1=%s,str2=%s,str3=%s",str1,str2,str3);//str1=abc,str2=def,str3=123
+	
+	# 字符串的查询
+		* 检索字符第一次出现的位置(内存地址) strchr(temp,'x');
+		* 如果查询失败,返回 NULL
 
+		* 检索字符串第一次出现的位置(内存地址) strstr(temp,"def");
+		* 如果查询失败,返回 NULL
+		
+		    char temp[] = "abcdefg";
+
+			char *result = strchr(temp,'a');
+			printf("result = %p,char = %c \n",result,*result);  //result = 0061FF24,char = a
+
+			result = strstr(temp,"def");
+			printf("result = %p,char = %c \n",result,*result);  //result = 0061FF27,char = d
+		
+	
+	# 字符串切割
+		* strtok(char *str,const char *delmi);
+		* 以 delmi 来切割字符串str
+		* 返回值为切割后的字符串
+		* 匹配切割字符串的地方,换成结束符
+		* 可以通过多次调用该方法来获取到字符串中所有被切割的字段
+		* 除了第一次调用,余下的N次调用第一个参数都必须是NULL,当最后一次匹配不出结果返回 NULL
+			char temp[] = "ab-cd-ef";
+			//第一次匹配
+			char *p = strtok(temp,"-");
+			printf("p = %s\n",p);           //ab
+
+			//第二次匹配
+			p = strtok(NULL,"-");
+			printf("p = %s\n",p);           //cd
+
+			//第三次匹配
+			p = strtok(NULL,"-");
+			printf("p = %s\n",p);           //ef
+
+			//第四次匹配
+			p = strtok(NULL,"-");
+			printf("p = %s\n",p);           //NULL 第四次匹配,没有了返回NULL
+
+			printf("原字符串:%s\n",temp);   //被切割的字符串会因为切割操作而被修改(插入了\0)
+		* 读取出所有的分割段
+			char temp[] = "ab-cd-ef-gh-ij";
+			char delmi[] = "-";
+			char *p = strtok(temp,delmi);
+
+			while(p != NULL){
+				printf("find:%s \n",p);
+				p = strtok(NULL,delmi);
+			}
+			/*
+				find:ab
+				find:cd
+				find:ef
+				find:gh
+				find:ij
+			*/
+		
+		# 把字符串转换为数字类型
+			* 转换为整形: atoi(const char *nptr);
+			* 会跳过前面的空格,直到遇到数字或者正负号才开始转换,遇到非数字字符串或者\0就结束转换,并且返回转换结果
+			
+			* 转换为浮点数: stof();
+			* 转换为long: atol();
+
+
+		
 ------------------------
 字符的输入/输出			|
 ------------------------
