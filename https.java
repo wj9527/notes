@@ -159,6 +159,8 @@ https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 2,执行
 	./certbot-auto certonly  -d *.example.com -d example.com --manual --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory
 
+	* 其实就是跟上面的那种方法一样,采用的是,非当前服务器上生成(manual)
+
 3,添加TXT解析记录到dns服务器,添加完成后,等待证书生成,生成后	
 	* 创建成功后会在  /etc/letsencrypt/ 下生成证书文件
 	* 跟手动创建单域名证书一样的
