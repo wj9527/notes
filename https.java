@@ -87,7 +87,7 @@ https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 
 
 ------------------------------------
-手动安装							|
+手动安装单域名证书					|
 ------------------------------------
 	
 1,clone 
@@ -145,3 +145,25 @@ https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 
 		* 如果提示警告,可以考虑复制警告的命令,再执行一波
 				keytool -importkeystore -srckeystore [域名].keystore -destkeystore [域名].keystore -deststoretype pkcs12
+
+------------------------------------
+手动安装泛域名证书					|
+------------------------------------
+1,下载
+	wget https://dl.eff.org/certbot-auto
+	
+	chmod 775 certbot-auto
+
+	* 也可采用certbot官方 yum安装方式
+
+2,执行
+	./certbot-auto certonly  -d *.example.com -d example.com --manual --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory
+
+3,添加TXT解析记录到dns服务器,添加完成后,等待证书生成,生成后	
+	* 创建成功后会在  /etc/letsencrypt/ 下生成证书文件
+	* 跟手动创建单域名证书一样的
+	
+4,更新证书
+	./certbot-auto renew
+
+
