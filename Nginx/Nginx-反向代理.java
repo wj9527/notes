@@ -96,45 +96,75 @@ Nginx-域名重定向		|
 				rewrite ^/(.*)$ http://www.javaweb.io/$1 permanent;  
 		}
 
-
-
-
 ------------------------
 Nginx-https				|
 ------------------------
-server {
-	listen 443;
-	server_name springboot.io www.springboot.io;
+	server {
+		listen 443;
+		server_name springboot.io www.springboot.io;
 
-	ssl on;
-	ssl_certificate      /usr/local/ssl/springboot/springboot.pem;
-	ssl_certificate_key  /usr/local/ssl/springboot/springboot.key;
+		ssl on;
+		ssl_certificate      /usr/local/ssl/springboot/springboot.pem;
+		ssl_certificate_key  /usr/local/ssl/springboot/springboot.key;
 
-	access_log  logs/springboot.io.log  main;
-	error_log  logs/springboot.io.error.log;
+		access_log  logs/springboot.io.log  main;
+		error_log  logs/springboot.io.error.log;
 
-	proxy_set_header Host $host;
-	proxy_set_header X-Forwarded-Host $host;
-	proxy_set_header X-Forwarded-Server $host;
-	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	proxy_set_header X-Requested-For $remote_addr;
-	proxy_set_header REMOTE-HOST $remote_addr;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-Host $host;
+		proxy_set_header X-Forwarded-Server $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Requested-For $remote_addr;
+		proxy_set_header REMOTE-HOST $remote_addr;
 
-	proxy_http_version 1.1;
-	proxy_set_header Upgrade $http_upgrade;
-	proxy_set_header Connection "upgrade";
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
 
-	location / {
-		proxy_pass http://127.0.0.1:1024;
-		proxy_connect_timeout 600;
-		proxy_read_timeout 600;
+		location / {
+			proxy_pass http://127.0.0.1:1024;
+			proxy_connect_timeout 600;
+			proxy_read_timeout 600;
 
+		}
 	}
-}
 
-# http重定向到https
-server {
-	listen       80;
-	server_name  springboot.io www.springboot.io;
-	return  301 https://springboot.io$request_uri;
-}
+	# http重定向到https
+	server {
+		listen       80;
+		server_name  springboot.io www.springboot.io;
+		return  301 https://springboot.io$request_uri;
+	}
+
+------------------------
+Nginx-http2开启			|
+------------------------
+	# 需要依赖模块支持,必须开启https
+	# 核心的配置
+		listen 443 ssl http2;;
+	
+		server{
+				listen 443 ssl http2;
+				server_name *.c-lang.cn;
+				
+				ssl on;
+				ssl_certificate      /etc/letsencrypt/live/c-lang.cn/fullchain.pem;
+				ssl_certificate_key  /etc/letsencrypt/live/c-lang.cn/privkey.pem;
+				
+				proxy_set_header Host $host;
+				proxy_set_header X-Forwarded-Host $host;
+				proxy_set_header X-Forwarded-Server $host;
+				proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+				proxy_set_header X-Requested-For $remote_addr;
+				proxy_set_header REMOTE-HOST $remote_addr;
+				
+				# websocket 非必须
+				proxy_http_version 1.1;
+				proxy_set_header Upgrade $http_upgrade;
+				proxy_set_header Connection "upgrade";
+				
+				location / {
+						root html;
+						index index.html index.htm;
+				}       
+			}
