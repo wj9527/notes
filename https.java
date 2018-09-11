@@ -157,7 +157,7 @@ https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 	* 也可采用certbot官方 yum安装方式
 
 2,执行
-	./certbot-auto certonly  -d *.example.com -d example.com --manual --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory
+	./certbot-auto certonly  -d *.example.com -d example.com --manual --email [邮箱] --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory
 
 	* 其实就是跟上面的那种方法一样,采用的是,非当前服务器上生成(manual)
 
