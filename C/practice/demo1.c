@@ -24,3 +24,18 @@ int main(void){
 		printf("%d\n",arr[x]);
 	}
 }
+
+//一样的排序方法
+void sort_1(int *p,int len){
+    for(int x = 0 ;x < len ; x++){
+        for(int y = x ; y < len ; y++){
+            int *_x = p + x;
+            int *_y = p + y;
+            if(*_x < *_y){
+                *_x = *_x ^ *_y;
+                *_y = *_x ^ *_y;
+                *_x = *_x ^ *_y;
+            }
+        }
+    }
+}
