@@ -163,9 +163,14 @@ bool 类型								|
 typedef 机制							|
 ----------------------------------------
 	# typedef 机制允许开发者为现有的数据类型创建别名
-		typedef int my_int;
-		my_int num = 15;
-		printf("%d",num);
+		typedef char byte;
+		/*
+			1111 1111 源码
+			1000 0000 反码
+			1000 0001 补码
+		*/
+		byte x = 255;
+		printf("%d",x);	//-1
 
 ----------------------------------------
 可移植类型 stdint.h 和 inttypes.h		|
