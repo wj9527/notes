@@ -119,7 +119,7 @@
 			printf("result = %s\n",src);		//result = Helloc
 
 	
-	# 获取格式化后的字符串
+	# 获取格式化后的字符串(序列化)
 		* sprintf(char dst*, const char *, ...)
 		*  把 字符串格式化后,写入到dst中
 			int x = 10;
@@ -129,7 +129,7 @@
 			sprintf(dst,"x = %d,y = %c,buf = %s",x,y,str);
 			printf("dst = %s\n",dst);	//dst = x = 10,y = H,buf = Java
 	
-	# 预定义从键盘的输入的字符串
+	# 预定义从键盘的输入的字符串(反序列化)
 		* sscanf (const char *, const char *, ...)
 		* 把从屏幕读取到的字符串格式化后,写入到dst中
 			//定义一个"输入的字符串"
