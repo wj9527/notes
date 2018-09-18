@@ -64,20 +64,24 @@
 			* 可以把stream替换为 stdout,使str被输出到屏幕
 		
 	
-	# 打印流,也可以输出到文件
-		fprintf(FILE *fp,const char *format, ...)
+
+	# 格式化流输出		fprintf(FILE *fp,const char *format, ...)
+		* 源是变量,目标是文件
 
 		FILE *file = fopen("E:\\c-lang.txt","w+");
 		fprintf(file,"Hello KevinBlany ,Im %s","Java");
 		fclose(file);
+		
 	
-	# 从文件读取一行字符
-		int fscanf(FILE *fp, const char *format, ...) 
-
+	# 格式化流输入		int fscanf(FILE *fp, const char *format, ...) 
+		* 源是文件,目标是变量
 		* 函数来从文件中读取字符串,但是在遇到第一个空格字符时,它会停止读取
-			FILE *file = fopen("E:\\c-lang.txt","r");
-			char buf[1024];
-			fscanf(file,"%s",buf);	//读取到第一行,存入buf
+
+		FILE *file = fopen("E:\\c-lang.txt","r");
+		int x,y,z;
+		fscanf(file,"%d %d %d",&z,&y,&z);
+		printf("z=%d,y=%d,z=%d",z,y,z);		//z=36,y=12,z=36
+		fclose(file);
 
 ----------------------------
 随机io						|

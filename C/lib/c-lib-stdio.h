@@ -44,29 +44,6 @@ scanf()
 	* 当用户通过scanf输入字符时,编译器默认先把内容放在缓冲区
 	* scanf自动在缓冲区读取内容
 
-sscanf (const char *, const char *, ...)
-	* 使用预定义的字符串,来作为标准输入数据填充模版值
-		//定义一个"输入的字符串"
-		char dst[] = "1 2 3";
-		//定义变量
-		int a,b,c;
-		//使用 cccanf 把 输入的字符,赋值给变量
-		sscanf(dst,"%d %d %d",&a,&b,&c);
-		//成功赋值
-		printf("a=%d,b=%d,c=%d\n",a,b,c);	//a=1,b=2,c=3
-
-	* 提取整形变量是最方便的
-		char inputs[] = "a=10,b=20";
-		int a , b;
-		sscanf(inputs,"a=%d,b=%d",&a,&b);
-		printf("a=%d,b=%d\n",a,b);  //a=10,b=20
-
-	* 提取字符串,默认以空格分割
-		char temp[] = "abc def 123";
-		char str1[4],str2[4],str3[4];
-		sscanf(temp,"%s %s %s",str1,str2,str3);
-		printf("str1=%s,str2=%s,str3=%s",str1,str2,str3);//str1=abc,str2=def,str3=123
-
 getchar()
 	* 读取下一个字符串输入,并且返回,它只处理字符
 	* 等同于
@@ -111,6 +88,7 @@ fputs(const char *str,FILE *stream)
 	* 无法输出中文???
 
 fprintf(FILE *fp,const char *format, ...)
+	* '源是多个变量,目标是文件'
 	* 可以把格式化的内容,输出到指定的流
 		FILE *file = fopen("E:\\c-lang.txt","w");
 		fprintf(file,"Hello %s","Java");
@@ -118,15 +96,20 @@ fprintf(FILE *fp,const char *format, ...)
 	* printf("Hello %s","Java") == fprintf(stdout,"Hello %s","Java")
 
 fscanf(FILE *fp, const char *format, ...) 
+	* '源是文件,目标是多个变量'
 	* 函数来从文件中读取字符串,但是在遇到第一个空格/换行字符时,它会停止读取
 		FILE *file = fopen("E:\\c-lang.txt","r");
-		char buf[1024];
-		fscanf(file,"%s",buf);	//读取到第一行,存入buf
+		int x,y,z;
+		fscanf(file,"%d %d %d",&z,&y,&z);
+		printf("z=%d,y=%d,z=%d",z,y,z);		//z=36,y=12,z=36
+		fclose(file);
 
 sprintf(char dst*, const char *, ...)
+	* '源是多个变量,目标是缓冲区'
 	* 把 字符串格式化后,写入到dst中
 
 sscanf (const char *, const char *temp, ...)
+	* '源是缓冲区,目标是多个变量'
 	* 把从dst读取到的字符串,填充到temp模版
 		//定义一个"输入的字符串"
 		char dst[] = "1 2 3";
