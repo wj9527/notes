@@ -119,6 +119,11 @@
 			p = 0xFFFF;		//assignment of read-only variable
 			*p = 15;		//assignment of read-only variable
 	
+	# 只要是合法的内存地址,都可以使用强制转换
+		int x = 1;
+		printf("p = %p\n",&x);		//获取变量x的地址:0061FF2C
+		* ((int *)0x0061FF2C) = 9;	//强制把地址数据0061FF2C,转换为地址,并且操作该地址的内存
+		printf("x = %d\n",x);
 
 --------------------------------
 多级指针						|
