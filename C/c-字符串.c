@@ -264,6 +264,10 @@
 				char buf[100];
 				fgets(buf,sizeof(buf),stdin);
 				printf("你输入的是:%s\n",buf);
+		
+		fgetc( FILE * fp );
+			* fgetc() 函数从 fp 所指向的输入文件中读取一个字符,返回值是读取的字符
+			* 如果发生错误则返回 EOF,(-1)
 
 	# 使用 puts / fputs 来输出字符串
 		puts(const char *s)
@@ -275,11 +279,20 @@
 			* 成功返回 0,失败返回 -1
 			* 可以把stream替换为 stdout,使str被输出到屏幕
 		
-
-		
-
+		fputc( int c, FILE *stream );
+			* 用于把单个字符写入stream指定的文件中
+			* 果写入成功,它会返回写入的字符,如果发生错误,则会返回 EOF
 	
-		
+	# 打印流
+		fprintf(FILE *fp,const char *format, ...)
+			* 可以把格式化的内容,输出到指定的流
+			* printf("Hello %s","Java") == fprintf(stdout,"Hello %s","Java")
+	
+	
+	# 从文件读取一行字符
+		int fscanf(FILE *fp, const char *format, ...) 
+		* 函数来从文件中读取字符串,但是在遇到第一个空格字符时,它会停止读取
+		* 可以从指定的流读取数据,填充模版,序列化到
 
 		
 	

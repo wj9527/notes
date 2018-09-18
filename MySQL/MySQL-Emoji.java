@@ -5,14 +5,14 @@ java.sql.SQLException: Incorrect string value: '\xF0\x9F\x90\x82' for column 'co
 修改 my.cnf或者mysql.ini，重启服务
 
 [client]
-  default-character-set = utf8mb4
+default-character-set = utf8mb4
 
 [mysql]
-  default-character-set = utf8mb4
+default-character-set = utf8mb4
 
 [mysqld]
-  character-set-server = utf8mb4
-  collation-server = utf8mb4_unicode_ci
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
 
 数据库编码也必须为utf8mb4
 

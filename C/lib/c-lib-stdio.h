@@ -109,10 +109,71 @@ puts(const char *s)
 fputs(const char *str,FILE *stream)
 	* 把 str 字符写入到stream指定的文件中,字符串结束符 '\0' 不写入文件
 	* 无法输出中文???
+
+fprintf(FILE *fp,const char *format, ...)
+	* 可以把格式化的内容,输出到指定的流
+		FILE *file = fopen("E:\\c-lang.txt","w");
+		fprintf(file,"Hello %s","Java");
+		fclose(file);
+	* printf("Hello %s","Java") == fprintf(stdout,"Hello %s","Java")
+
+fscanf(FILE *fp, const char *format, ...) 
+	* 函数来从文件中读取字符串,但是在遇到第一个空格/换行字符时,它会停止读取
+		FILE *file = fopen("E:\\c-lang.txt","r");
+		char buf[1024];
+		fscanf(file,"%s",buf);	//读取到第一行,存入buf
+
+sprintf(char dst*, const char *, ...)
+	* 把 字符串格式化后,写入到dst中
+
+sscanf (const char *, const char *temp, ...)
+	* 把从dst读取到的字符串,填充到temp模版
+		//定义一个"输入的字符串"
+		char dst[] = "1 2 3";
+		//定义变量
+		int a,b,c;
+		//使用 cccanf 把 输入的字符,赋值给变量
+		sscanf(dst,"%d %d %d",&a,&b,&c);
+		printf("a=%d,b=%d,c=%d\n",a,b,c);	//a=1,b=2,c=3
+
+	* 从字符串中提取整形变量是最方便的
+		char inputs[] = "a=10,b=20";
+		int a , b;
+		sscanf(inputs,"a=%d,b=%d",&a,&b);
+		printf("a=%d,b=%d\n",a,b);  //a=10,b=20
+
+	* 提取字符串,默认以空格分割
+		char temp[] = "abc def 123";
+		char str1[4],str2[4],str3[4];
+		sscanf(temp,"%s %s %s",str1,str2,str3);
+		printf("str1=%s,str2=%s,str3=%s",str1,str2,str3);//str1=abc,str2=def,str3=123
 	
 
+FILE * fopen (const char *name, const char *model);
+	* 打开一个文件,name指定文件地址,model指定打开的类型
+	* model的枚举字符串
+		r	打开一个已有的文本文件,允许读取文件
 
+		w	打开一个文本文件,允许写入文件,如果文件不存在,则会创建一个新文件
+			在这里,程序会从文件的开头写入内容,如果文件存在,则该会被截断为零长度,重新写入
 
+		a	打开一个文本文件,以追加模式写入文件,如果文件不存在,则会创建一个新文件
+			在这里,程序会在已有的文件内容中追加内容
 
+		r+	打开一个文本文件,允许读写文件
 
+		w+	打开一个文本文件,允许读写文件,如果文件已存在,则文件会被截断为零长度
+			如果文件不存在，则会创建一个新文件
+
+		a+	打开一个文本文件,允许读写文件,如果文件不存在,则会创建一个新文件,读取会从文件的开头开始,写入则只能是追加模式
 	
+	*  处理的是二进制文件,则需使用下面的访问模式来取代上面的访问模式：
+
+		"rb", "wb", "ab", "rb+", "r+b", "wb+", "w+b", "ab+", "a+b"
+
+int fclose (FILE *);
+	* 关闭文件
+
+int fseek (FILE *file, long offset, int whence); 
+	* 随机io
+
