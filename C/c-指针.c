@@ -101,7 +101,24 @@
 				}
 			}
 
+	# const 修饰的指针
+		* const 修饰 * ,只能对指向的内存进行读操作(const 在*号前面)
+			int x = 0;
+			const int *p;
+			p = &x;
+			*p = 100;	// :assignment of read-only location
+
+		* const 修饰指针变量,代表指针变量值为制度(const 在*号后面)
+			int x = 0;
+			int * const p = &x;
+			p = 0xFFFF;		//assignment of read-only variable
 		
+		* const 修饰指针变量 以及 *,啥都改不了(俩 const 在 * 前后)
+			int x = 0;
+			int const * const p = &x;
+			p = 0xFFFF;		//assignment of read-only variable
+			*p = 15;		//assignment of read-only variable
+	
 
 --------------------------------
 多级指针						|
