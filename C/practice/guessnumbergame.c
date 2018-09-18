@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <windows.h>
-
+//猜数字游戏
 int main(void) {
 
     //设置种子为时间戳
