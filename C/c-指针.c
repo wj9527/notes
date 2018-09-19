@@ -124,7 +124,29 @@
 		printf("p = %p\n",&x);		//获取变量x的地址:0061FF2C
 		* ((int *)0x0061FF2C) = 9;	//强制把地址数据0061FF2C,转换为地址,并且操作该地址的内存
 		printf("x = %d\n",x);
+	
+	# 字符串指针
+		//打印数组
+		char buf[] = "Hello Java";
+		printf("%s %p %p %c\n",buf,buf,&buf[0],*buf);	//Hello Java 0028FF2D 0028FF2D H
 
+		//以指针的方式打印
+		int i = 0;
+		while(buf[i] != '\0'){
+			putchar(buf[i]);			//Hello Java
+			i ++;
+		}
+
+		printf("\n");
+
+		//以指针方式打印2
+		int x = 0;
+		while(*(buf + x) != '\0'){
+			putchar(*(buf + x));		//Hello Java
+			x++;
+		}
+
+	
 --------------------------------
 多级指针						|
 --------------------------------
