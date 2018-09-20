@@ -49,3 +49,31 @@
 	
 
 	
+----------------------------------------
+main函数的参数							|
+----------------------------------------
+	# main函数的参数定义
+		int main(int argc,char *argv[]) {
+			return EXIT_SUCCESS;
+		}
+		int main(int argc,char **argv) {
+			return EXIT_SUCCESS;
+		}
+		
+		* argc是第二个数组的元素个数
+		* char *rgv[],表示参数是一个数组,数组的每个元素都是 char 的指针
+		* **argv,表示参数是一个2级指针
+	
+	# 获取main函数的参数
+		int main(int argc,char **argv) {
+			printf("%d\n",argc);
+			for(int x = 0 ;x < argc; x++){
+				//*(argv + x)
+				printf("%s\n",argv[x]);
+			}
+			return EXIT_SUCCESS;
+		}
+		
+		* '第一个参数永远都是当前指向文件的名称,也就是说main函数无论如何都有一个参数'
+		* 参数的传递用","号分割
+			demo.exe 1 2 3

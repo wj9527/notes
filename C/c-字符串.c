@@ -247,6 +247,17 @@
 				char *p = "123456";
 				strcpy(p, "abc");	//error
 			
+			* 文字常量区的生命周期跟程序的生命周期一样，程序结束才释放内存
+		
+		# 字符串常量初始化的问题
+			//p 指针，保存了常量 "KevinBlandy" 的地址
+			//常量不能修改
+			char *p = "KevinBlandy";
+			*p = "123";		//error
+
+			//把"KevinBlandy"保存在buf数组中，内存位置非常量池，数组它是可以修改的
+			char buf[] = "KevinBlandy";
+			buf[0] = 'z';	//ok
 
 ------------------------
 字符的输入/输出			|
