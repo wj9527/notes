@@ -339,3 +339,44 @@
 		
 	
 
+----------------------------
+常用的字符串函数			|
+----------------------------
+	# 去除字符串两边的空格
+		void trim(char *p,char *dst){
+			char *start = p;
+			char *end = p + (strlen(p) - 1);
+			while((*start == ' ' || *start == '	' || *start == '\n') && start != '\0'){
+				start++;
+			}
+			while((*end == ' ' || *end == '	' || *end == '\n') && start != end){
+				end --;
+			}
+			*(end + 1) = '\0';
+			strcpy(dst, start);
+		}
+	
+	# 反转字符串
+		void reversal(char *p) {
+			int start = 0;
+			int end = strlen(p) - 1;
+			while (start < end) {
+				p[start] = p[start] ^ p[end];
+				p[end] = p[start] ^ p[end];
+				p[start] = p[start] ^ p[end];
+
+				start++;
+				end--;
+			}
+		}
+	# 检索字符串中，子串出现的次数
+		int count(const char *p,const char *s){
+			char *temp = strstr(p,s);
+			int count = 0;
+			while(temp != NULL){
+				p = temp + strlen(s);
+				temp = strstr(p,s);
+				count ++;
+			}
+			return count;
+		}
