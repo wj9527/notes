@@ -120,6 +120,11 @@ BufferedReader				|
 	# length,可以设置缓冲区的大小
 	reader.readLine();
 		* 读取一行数据(并不包含回车符),当读到末尾。返回 null.
+	
+	LineNumberReader
+		* BufferedReader 的子类,带有可以读写行号的类
+			getLineNumber()//可以获取读取的行号
+			setLineNumber(num)//设置初始的行号,读取的第一行从num+1开始标记
 
 ----------------------------
 FileWriter					|
@@ -187,6 +192,9 @@ OutputStreamWriter			|
 ----------------------------
 	PipedInputStream	
 	PipedOutputStream
+
+	* 结合线程使用,输入输出直接进行连接,不建议使用单线程,因为读取流先开启,那么流中一旦没有数据,读取流的阻塞式方法就会一直处于等待状态-死锁
+
 
 ----------------------------
 序列化流					|
