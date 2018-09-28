@@ -55,6 +55,9 @@ Spring-Boot »Î√≈			|
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
+						<compilerArgs>
+							<arg>-parameters</arg>
+						</compilerArgs>
 						<source>1.8</source>
 						<target>1.8</target>
 						<encoding>UTF-8</encoding>

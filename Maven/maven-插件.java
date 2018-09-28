@@ -6,11 +6,41 @@
 		<artifactId>maven-compiler-plugin</artifactId>
 		<version>3.7.0</version>
 		<configuration>
+			<!-- 编译参数 -->
+			<compilerArgs>
+				<arg>-parameters</arg>
+			</compilerArgs>
 			<source>1.8</source>
 			<target>1.8</target>
 			<encoding>UTF-8</encoding>
 		</configuration>
 	</plugin>
+
+-------------------------------
+资源处理插件					|
+-------------------------------
+<dependency>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-resources-plugin</artifactId>
+	<version>3.1.0</version>
+</dependency>
+
+# 使用maven中的变量,替换掉配置文件的变量
+	* 在打包时,使用pom里面的变量来替换配置文件中的变量
+	* pom配置
+		<foo.name>Kevin</foo.name>
+		...
+		<configuration>	
+			<outputDirectory>target/classes</outputDirectory>							
+			<useDefaultDelimiters>false</useDefaultDelimiters>							
+			<delimiters>								
+			<delimiter>$</delimiter>
+		</configuration>
+
+	* yum配置
+		name: $foo.name$
+	
+	* 只要是pom里面能使用的变量,都可以替换
 
 -------------------------------
 远程部署插件					|
