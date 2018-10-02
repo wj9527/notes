@@ -160,6 +160,21 @@
 		*p = 'a';
 		printf("%c",*p);		//a
 	
+	
+	# 函数返回堆区的指针
+		void *foo(int size){
+			return malloc(size);
+		}
+
+		int main() {
+			int *p = (int *)foo(4);
+			*p = 4;
+			printf("%d",*p);	//4
+			return EXIT_SUCCESS;
+		}
+		* 允许函数返回堆内存的指针,只要是没有被回收,该内存都可以被操作
+	
+	
 
 	
 	
