@@ -123,3 +123,50 @@ strtok(char *str,const char *delmi);
 			find:gh
 			find:ij
 		*/
+
+void *memset (void *p, int v, size_t s)
+	* 将p所指向的某一块内存中的'每个字节'的内容全部设置为v指定的ASCII值,块的大小由第三个参数s指定
+	* 参数
+		- p 操作的内存首地址
+		- c 填充的数据看起来是整形,其实是当作 ascii 码值,unsigned int,可以是 0 - 255
+			* 其实它的值只有是0 才有意义,或者说p是一个数组
+		- n 填充的数据大小(以p开始填充多少个字节)
+	* 返回 p 的首地址地址
+	* demo
+		int a;
+		memset(&a,0,sizeof(a));		//其实是四个字节每个字节都写入了 97
+		printf("%d\n",a);	//0
+
+		memset(&a,97,sizeof(a));	//其实是四个字节每个字节都写入了 97
+		printf("%c\n",a);			//a(%c仅仅读取一个字节)
+
+		int arr[10];
+		memset(arr,97,sizeof(arr));	//40个字节,每个字节都写入了0
+		printf("%c\n",arr[0]);	//a
+	
+	* 这个函数多用来清空数组
+		int arr[] = {1,2,3,4,5};
+		memset(arr,0,sizeof(arr) * 5);
+	
+
+void *memcpy (void *dst, const void *src, size_t size);
+	* 把src中的size个字节数据copy到dst中
+	* 使用该函数,最好不要出现内存重叠(拷贝源和目的都是一个)
+	* demo
+		int src[] = {1,2,3};
+		int dst[3];
+		//把src的数据拷贝到dst中，拷贝dst大小个字节
+		memcpy(dst,src,sizeof(dst));
+		for(int x = 0 ;x < 3 ;x++){
+			printf("%d\n",dst[x]);	//1 2 3
+		}
+
+void *memmove (void *dst, const void *src, size_t szie);
+	* 同上,从src拷贝szie字节到dest,它的使用场景是'内存重叠cpy'的时候
+	* 它能够保证'src在被覆盖之前将重叠区域的字节拷贝到目标区域中',但复制完成后src内容会被更改
+	* 当目标区域与源区域没有重叠则和memcpy函数功能相同
+
+int memcmp (const void src*, const void dst*, size_t size)
+	* 用来比较俩内存块儿是否相等
+	* 比较src和dst内存块开始的size个字节数据是否相同
+	* 如果相同返回 0,如果 dst > src 返回 1,如果 dst 小于 src 返回 -1

@@ -39,8 +39,21 @@ atol(const char *nptr);
 	* 同上
 	* 把字符串转换为long
 
+void *malloc (size_t)
+	* 参数表示申请的空间是多少
+	* 如果申请成功,返回的数据就是申请的堆空间的首元素地址(指针),申请失败,返回 NULL
+	* 申请的堆空间,如果程序没有结束,那么不会释放,需要程序手动的释放
+	* demo
+		int *p = (int *) malloc(sizeof(int));
+		*p = 15;
+		printf("%d",p[0]);		//15
+
+void free (void *);
+	* 释放堆空间的内存,交还给操作系统
+	* 同一块儿的堆内存,只能执行一次释放操作
+	* 释放掉内存后,执行该内存的指针就是野指针了
+
 fclose()
 fopen()
 freopen()
 fflush()
-
