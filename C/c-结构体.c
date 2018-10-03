@@ -2,6 +2,8 @@
 结构体						|
 ----------------------------
 	# 数组允许定义可存储相同类型数据项的变量,结构是 C 编程中另一种用户自定义的可用的数据类型,它允许存储不同类型的数据项
+	# 结构体的变量,不能在初始化的时候赋值
+		* 结构体只是一个类型,没有定义变量前没有分配空间,没空间就不能赋值
 	# 结构体的声明与定义和值的初始化
 		struct Book {
 			int id;
@@ -20,25 +22,51 @@
 		printf("id=%d,name=%s,author=%s,price=%f",java.id,java.name,java.author,java.price);
 		//id=1,name=Java入门到精通,author=KevinBlandy,price=15.600000
 	
-	# 结构作为函数参数
-		struct Book {
+	# 使用大括号进行初始化也是可以的
+		struct User {
 			int id;
-			char name[50];
-			char *author;
-			double price;
+			char *name;
+			char hobby[20];
 		};
-		void func(struct Book book){
-			printf("id=%d,name=%s,author=%s,price=%f\n",book.id,book.name,book.author,book.price);
-		}
-		int main(){
-			struct Book java;
-			java.id = 1;
-			strcpy(java.name,"Java入门到精通");
-			java.author = "KevinBlandy";
-			java.price = 15.6;
-			func(java);	//id=1,name=Java入门到精通,author=KevinBlandy,price=15.600000
-			return EXIT_SUCCESS;
-		}
+		struct User user = {1,"KevinBlandy"};
+		printf("id=%d,name=%s,hobby=%s",user.id,user.name,"Java & Python",user.hobby);	//id=1,name=KevinBlandy,hobby=Java & Python
+
+		* 使用大括号进行初始化的时候,可以直接对数组类型赋值,底层通过copy完成
+		
+	# 结构作为函数参数
+		* 值传递,这种方式跟普通的变量值传递是一样的
+			struct Book {
+				int id;
+				char name[50];
+				char *author;
+				double price;
+			};
+			void func(struct Book book){
+				book.id = 15;
+				printf("id=%d,name=%s,author=%s,price=%f\n",book.id,book.name,book.author,book.price);
+			}
+			int main(){
+				struct Book java;
+				java.id = 1;
+				strcpy(java.name,"Java入门到精通");
+				java.author = "KevinBlandy";
+				java.price = 15.6;
+
+				//把结构体的值复制给函数的形参使用的,所以这种方式在函数的内部没法修改结构体的数据
+				func(java);	//id=1,name=Java入门到精通,author=KevinBlandy,price=15.600000
+				printf("%d",java.id);	//1
+				return EXIT_SUCCESS;
+			}
+
+		* 指针传递
+			void func(struct Book *p){
+				*p->id = 15;
+			}
+		
+		* 指针传递这种方式也适用于 const 指针的规则
+		* const 修饰指针变量名称,该变量只读
+		* const 修饰指针,该指针指向的内存数据不能修改
+
 	
 	# 指向结构的指针
 		struct Book {
@@ -60,8 +88,22 @@
 	
 			//也可以通过 -> 操作符来赋值
 			p -> id = 255;
+
+			//也可以通过取地址来操作结构体的变量
+			(*p).id = 15;
+			printf("id=%d\n",(*p).id);		//15
+
 			return EXIT_SUCCESS;
 		}
+
+		* 结构体的指针与首元素的位置相同
+			struct User {
+				int id;
+				char *name;
+				char hobby[20];
+			};
+			struct User user = {1,"KevinBlandy"};
+			printf("%p %p",&user,&user.id);	//0061FF14 0061FF14
 	
 	# 结构体内存分配原则
 		* 原则一:结构体中元素按照定义顺序存放到内存中,但并'不是紧密排列'
@@ -88,8 +130,61 @@
 			*/
 			printf("d1 = %d\n",sizeof(data));		//32
 		
-			
 	
+	# 结构体数组
+		struct User {
+			int id;
+			char *name;
+		};
+
+		struct User users[5] = {
+				{1,"KevinBlandy"},
+				{2,"Litch"},
+				{3,"Rooco"},
+		};
+
+		int size = sizeof(users) / sizeof(users[0]);
+
+		printf("size=%d\n",size);		//5
+
+		//通过.操作
+		users[0].id = 1;
+		users[0].name = "KevinBlandy";
+		printf("id=%d,name=%s\n",users[0].id,users[0].name);	//id=1,name=KevinBlandy
+
+		//通过->操作
+		(users+1)->id = 2;
+		(users+1)->name = "Litch";
+		printf("id=%d,name=%s\n",(users+1)->id,(users+1)->name);	//id=2,name=Litch
+
+		//也可以这样操作
+		(*(users + 2)).id = 3;
+		(*(users + 2)).name = "Rocco";
+		printf("id=%d,name=%s\n",(*(users + 2)).id,(*(users + 2)).name);	//id=3,name=Rocco
+	
+	# 结构体的嵌套
+		* 结构体里面的成员还是一个结构体
+			struct Role {
+				int id;
+				char *name;
+			};
+			struct User {
+				int id;
+				char *name;
+				struct Role role;
+			};
+			
+			//直接初始化结构体成员
+			struct User user = {1,"Kevin",{1,"admin"}};
+			printf("id=%d,role=%s",user.id,user.role.name);	//id=1,role=admin
+			
+			//先定义在初始化结构体成员
+			struct User user = {1,"Kevin"};
+			struct Role role = {1,"ADMIN"};
+			user.role = role;
+			printf("%s 的角色是 %s",user.name,user.role.name);//Kevin 的角色是 ADMIN
+
+
 ----------------------------
 合法的结构体定义与声明		|
 ----------------------------
@@ -108,7 +203,7 @@
 			char name[50];
 			char author[50];
 			double price;
-		} java,python;
+		} java,python = {1,"KevinBlandy","Litch"};
 	
 	# 仅仅定义结构体
 		struct Book {
