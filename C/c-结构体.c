@@ -55,10 +55,13 @@
 				//把结构体的值复制给函数的形参使用的,所以这种方式在函数的内部没法修改结构体的数据
 				func(java);	//id=1,name=Java入门到精通,author=KevinBlandy,price=15.600000
 				printf("%d",java.id);	//1
+
+				//引用传递,这种方式,在函数内部可以修改结构体的数据
+				func(&java);
 				return EXIT_SUCCESS;
 			}
 
-		* 指针传递
+		* 指针传递的函数也可以这样定义
 			void func(struct Book *p){
 				*p->id = 15;
 			}
@@ -184,7 +187,47 @@
 			user.role = role;
 			printf("%s 的角色是 %s",user.name,user.role.name);//Kevin 的角色是 ADMIN
 
+	
+	# 指针指向堆空间
+		struct User {
+			int id;
+			char *name;
+		};
+		struct User *p = (struct User *)malloc(sizeof(struct User));
+		p -> id = 1;
+		p -> name = "KevinBlandy";
+		printf("id=%d,name=%s",p[0].id,(*p).name);	//id=1,name=KevinBlandy
+		free(p);		//使用完成之后,记得释放
+	
+	# 成员指针指向堆区空间
+		struct User {
+			int id;
+			char *name;
+		};
+		struct User user;
+		user.name = (char *)malloc(strlen("KevinBlandy") + 1);
+		strcpy(user.name, "KevinBlandy");
+		printf("%s",user.name);
+		free(user.name);
 
+	# 如果结构体与结构体成员都指向了堆内存,那么释放的时候要先小后大,由里到外
+		struct User {
+			char *name;
+		};
+		//申请堆内存,存放结构体
+		struct User *user = (struct User *)malloc(sizeof(struct User));
+		//申请堆内存,存放结构体中的name属性值
+		user -> name = malloc(sizeof("KevinBlandy") + 1);
+		strcpy(user -> name,"KevinBlandy");
+		printf("name=%s",user[0].name);		//name=KevinBlandy
+		//先释放属性的堆内存
+		free(user -> name);
+		//最后释放结构体的堆内存
+		free(user);
+		
+		* 如果先释放掉了结构体,那么 user->name,就找不到地址了,没法儿释放属性值占用的堆内存,导致内存泄漏
+	
+	
 ----------------------------
 合法的结构体定义与声明		|
 ----------------------------
