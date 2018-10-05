@@ -23,10 +23,45 @@
 		
 		*  处理的是二进制文件,则需使用下面的访问模式来取代上面的访问模式：
 			"rb", "wb", "ab", "rb+", "r+b", "wb+", "w+b", "ab+", "a+b"
+		
+		* 注意,该结构体是在堆空间分配的
 
 	# 关闭文件
 		int  fclose (FILE *);
 	
+	# 刷出缓冲区
+		int fflush (FILE *);
+	
+	# 重定向文件
+		FILE * freopen (const char *, const char *, FILE *);
+	
+	# FILE 结构体的属性
+		typedef struct _iobuf
+		{
+		  char	*_ptr;
+		  int	 _cnt;
+		  char	*_base;
+		  int	 _flag;
+		  int	 _file;
+		  int	 _charbuf;
+		  int	 _bufsiz;
+		  char	*_tmpfname;
+		} FILE;
+
+		typedef struct 
+		{
+			short			level;		//缓冲区状态,满或者空
+			unsigned		flags;		//文件状态标识
+			char			fd;			//文件描述符
+			unsigned char	hold;		//如无缓冲区不读取字符
+			short			bsize;		//缓冲区大小
+			unsigned char	*buffer;	//缓冲区数据位置
+			unsigned		ar;			//指针,当前的指向
+			unsigned		istemp;		//临时文件,指示器
+			short			token;		//用于有效性的检查
+		} FILE;
+	
+
 ----------------------------
 文本文件的读写				|
 ----------------------------
