@@ -1,6 +1,10 @@
 ----------------------------
 文件编程					|
 ----------------------------
+	# 文件的类型
+		* 设备文件,设备也可以当做文件,具备io
+		* 磁盘文件
+
 	# 打开文件
 		FILE *fopen( const char * filename, const char * mode );
 		
@@ -24,7 +28,16 @@
 		*  处理的是二进制文件,则需使用下面的访问模式来取代上面的访问模式：
 			"rb", "wb", "ab", "rb+", "r+b", "wb+", "w+b", "ab+", "a+b"
 		
-		* 注意,该结构体是在堆空间分配的
+		* 如果打开失败,返回 NULL
+			FILE *file = fopen("d.txt","r");
+			if (file == NULL){
+				perror("fopen");	//fopen: No such file or directory
+				return EXIT_FAILURE;
+			}
+		* 注意,该结构体是在堆空间分配的,使用完成后要释放
+		* 文件的打开,可以是相对路径,也可以是绝对路径
+			fopen("./d.txt","r");
+
 
 	# 关闭文件
 		int  fclose (FILE *);

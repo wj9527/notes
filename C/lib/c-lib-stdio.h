@@ -18,6 +18,15 @@ printf()
 	* 支持字符串占位符,必须严格按照占位符的数据类型传递参数
 		printf("Hello %d,%d",5,6);
 
+void perror (const char *);
+	* 标注的错误打印流,会在参数字符串后面添异常/正常的提示
+		perror("hi");	//hi: No error
+
+	* 它可以打印'库函数'调用失败的原因
+		fclose(stdout);
+		printf("Hello");
+		perror("hi");	//hi: Bad file descriptor(坏的文件描述符,因为已经关闭了)
+
 sprintf(char dst*, const char *, ...)
 	* 把 字符串格式化后,写入到dst中
 		int x = 10;
