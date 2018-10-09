@@ -85,7 +85,7 @@
 		
 		fputc( int c, FILE *stream );
 			* 用于把单个字符写入stream指定的文件中
-			* 果写入成功,它会返回写入的字符,如果发生错误,则会返回 EOF
+			* 果写入成功,它会返回写入的字符,如果发生错误,或者读取到了末尾,则会返回 EOF(-1)
 		
 	# 读取/写入字符串
 		fgets(char *s,int size,FILE stream)
@@ -108,7 +108,7 @@
 		
 		fputs(const char *str,FILE *stream)
 			* 把 str 字符写入到stream指定的文件中,字符串结束符 '\0' 不写入文件
-			* 成功返回 0,失败返回 -1
+			* 成功返回 0,失败返回 EOF(-1)
 			* 可以把stream替换为 stdout,使str被输出到屏幕
 		
 	
@@ -130,6 +130,24 @@
 		fscanf(file,"%d %d %d",&z,&y,&z);
 		printf("z=%d,y=%d,z=%d",z,y,z);		//z=36,y=12,z=36
 		fclose(file);
+	
+	# 判断文件是否读取到了末尾
+		* 文本文件的末尾会有一个隐藏的-1(EOF),表示文件已经结束
+		* 二进制文件末尾没有-1标识,因为-1可能是文件中的数据,同过 -1 来判断不靠谱
+		* 可以通过 feof() 来判断文件是否读取到了末尾,不论是二进制文件还是文本文件
+		* feof(); 返回 bool
+			FILE *file = fopen("c.txt","r");
+
+			bool end = feof(file);
+			printf("%d",end);		//0
+
+		* 它其实是判断你读取后的数据,是不是末尾标识,也就是说要先读取了末尾标识,所以,一般先读取,再判断
+			fgetc(file);
+			if(feof(file)){
+				break;
+			}
+			....
+	
 
 ----------------------------
 随机io						|
