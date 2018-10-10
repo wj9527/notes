@@ -75,6 +75,7 @@
 			//强制转换后写入内存
 			* ((int *)p) = 20;
 			printf("%d\n",x);               //20       
+		* 按照 ANSI(American National Standards Institute) 标准,不能对 void 指针进行算法操作( + , -)
 	
 	# 指针步长
 		* 其实就是指针的运算,可以通过运算符( +,- )来操作指针
