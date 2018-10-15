@@ -41,9 +41,11 @@
 
 	# 关闭文件
 		int  fclose (FILE *);
+		* 关闭文件会刷出缓冲区
 	
 	# 刷出缓冲区
 		int fflush (FILE *);
+		* 成功返回 0,失败返回 -1
 	
 	# 重定向文件
 		FILE * freopen (const char *, const char *, FILE *);
@@ -170,6 +172,22 @@
 		* 只有用 r+ 模式打开文件才能插入内容,w 或 w+ 模式都会清空掉原来文件的内容再来写
 		* a 或 a+ 模式即总会在文件最尾添加内容,哪怕用 fseek() 移动了文件指针位置
 
+	long ftell(FILE *file);
+		* 获取文件光标的位置
+		* 如果失败返回 -1
+	
+	void rewind(FILE *file);
+		* 把文件光标移动到文件开头(重置指针位置)
+
+	# 通过随机io获取文件的大小
+		//打开文件
+		FILE *file = fopen("D:\\springboot.sql","r+");
+		//移动指针到末尾
+		fseek(file,0,SEEK_END);
+		//获取文件的光标位置,其实就是大小(KB)
+		long size = ftell(file);
+		printf("size=%ld",size);
+
 ----------------------------
 二进制文件的读写			|
 ----------------------------
@@ -257,3 +275,64 @@
 			printf("id=%d,name=%s\n",langs[x].id,langs[x].name);
 		}
 	
+
+----------------------------
+Linux与Window下的文件区别	|
+----------------------------
+	# fopen("c.txt","rb") 第二个参数中的 "b"
+		* "b"表示以2进制模式打开文件,其实在Linux系统下,使用该函数不用加"b",也是可以的
+			fopen("c.txt","r");	//在Linux下同样是以二进制的形式打开文件
+		* 为了系统兼容,一般还是加一个"r"比较好
+	
+	# Unix和Linux下的所有文本文件都是以:"\n"结尾,而Windows下的文本文件以:"\r\n"结尾
+	# 在Windows平台下,读取文本文件的时候,系统会把所有的"\r\n"转换为"\n"
+	# 在Windows平台下,写入文本文件的时候,系统会把所有的"\n"转换为"\r\n"
+	# 判断文件是Linux文件还是Windows文件
+
+----------------------------
+删除与重命名				|
+----------------------------
+	# 删除文件
+		int remove (const char file*);
+		* 成功返回0,失败返回-1
+
+	# 重命名
+		int rename (const char *old, const char *new_);
+		* 成功返回0,失败返回-1
+
+----------------------------
+获取文件的属性				|
+----------------------------
+	# 通过 <sys/stat.h> 下的 int stat (const char *path, struct stat *); 函数
+		* 获取文件的属性,成功返回0,失败返回-1
+		* path 文件的路径,stat 保存状态的结构体
+		* 结构体的定义
+			{ _dev_t	st_dev; 	/* Equivalent to drive number 0=A 1=B ... */ 
+			  _ino_t	st_ino; 	/* Always zero ? */			   
+			  _mode_t	st_mode;	/* See above constants */		     
+			   short 	st_nlink;	/* Number of links. */			     
+			   short 	st_uid; 	/* User: Maybe significant on NT ? */	     
+			   short 	st_gid; 	/* Group: Ditto */			    
+			  _dev_t	st_rdev;	/* Seems useless (not even filled in) */    
+			  __st_off_t	st_size;	/* File size in bytes */		    
+			  __st_time_t	st_atime;	/* Access time (always 00:00 on FAT) */	    
+			  __st_time_t	st_mtime;	/* Modified time */			    
+			  __st_time_t	st_ctime;	/* Creation time */			    
+			}
+
+	# 通过该方法获取文件的大小
+		#include <stdlib.h>
+		#include <stdio.h>
+		#include <sys/stat.h>
+
+		int main(int argc, char **argv) {
+			struct stat st;
+			int result = stat("D:\\springboot.sql",&st);
+			printf("size=%d\n",st.st_size);
+			return EXIT_SUCCESS;
+		}
+
+----------------------------
+关于文件缓冲区				|
+----------------------------
+	# ANSI C标准采用"缓冲区文件系统"
