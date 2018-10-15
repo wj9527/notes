@@ -174,8 +174,86 @@
 二进制文件的读写			|
 ----------------------------
 	
-	size_t fread(void *ptr, size_t size_of_elements, size_t number_of_elements, FILE *a_file);
-				  
-	size_t fwrite(const void *ptr, size_t size_of_elements,size_t number_of_elements, FILE *a_file);
+	# 读取二进制文件
+		* size_t fread(void *ptr, size_t size_of_elements, size_t number_of_elements, FILE *a_file);
+			* ptr 存放读取数据的内存空间
+			* size_of_elements 指定读取文件内容的块数据大小(unsigned int)
+			* number_of_elements 读取文件的块数,读取文件数据总大小为: size_of_elements * number_of_elements
+			* a_file 已经打开的文件指针
+		* 成功返回，number_of_elements(读取到的文件块数),如果该值比number_of_elements小,但是大于0,则表示读取到了文件末尾
+		* 如果用户指定读取的块儿大小,大于了文件可读的大小,返回可能为0
+			* 读取1块儿(一块儿设置为了10个字节)
+			* 但是文件只有5个字节了。只能读取0.5块儿。返回0.5，因为结果是int。被类型转换最终为 0
+			* '建议块大小永远设置为1,则不会出现该问题'
+		* 失败,返回0
+	
+	# 写入二进制数据
+		* size_t fwrite(const void *ptr, size_t size_of_elements,size_t number_of_elements, FILE *a_file);
+			* ptr 准备写入文件的数据
+			* size_of_elements 指定写入文件内容的块数据大小(unsigned int)
+			* number_of_elements 写入文件的块数,写入文件的总大小 = size_of_elements * number_of_elements
+			* a_file 已经打开的文件指针
+		* 成功返回，number_of_elements(成功写入文件数据的块数目),失败返回 0
+		
 
-	# 这两个函数都是用于存储块的读写 - 通常是数组或结构体
+
+
+	# 这两个函数都是用于存储块的读写 (写入和读取的通常是数组或结构体)
+
+	# 简单的copy
+		FILE *source = fopen("D:\\20181009153347.jpg","rb");
+		FILE *target = fopen("D:\\cp.jpg","wb");
+
+		char buf[1024];
+
+		int result = fread(buf,1,1024,source);
+		while(result > 0){
+			printf("读取到了:%d\n",result);
+			fwrite(buf,1,result,target);
+			fflush(target);
+			result = fread(buf,1,1024,source);
+		}
+
+		fclose(target);
+		fclose(source);
+	
+	# struct 的读写
+		struct Lang {
+			unsigned int id;
+			char name[10];
+		};
+		struct Lang lang = {2,"Python"};
+
+		FILE *file = fopen("D:\\lang.d","wb");
+		fwrite(&lang,sizeof(struct Lang),1,file);
+		fflush(file);
+		fclose(file);
+
+		file = fopen("D:\\lang.d","rb");
+		fread(&lang,sizeof(struct Lang),1,file);
+		printf("lang=%d,name=%s\n",lang.id,lang.name);
+	
+	# struct 数组的读写
+		struct Lang {
+			unsigned int id;
+			char name[11];
+		};
+
+		struct Lang langs[] = {
+			{1,"Java"},
+			{2,"Python"},
+			{3,"C"},
+			{4,"Javascript"}
+		};
+
+		FILE *file = fopen("D:\\langs.d","wb");
+		fwrite(langs,sizeof(langs),1,file);
+		fflush(file);
+		fclose(file);
+
+		file = fopen("D:\\langs.d","rb");
+		fread(langs,sizeof(langs),1,file);
+		for(int x = 0 ;x < 4 ; x++){
+			printf("id=%d,name=%s\n",langs[x].id,langs[x].name);
+		}
+	
