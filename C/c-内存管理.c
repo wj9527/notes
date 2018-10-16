@@ -141,6 +141,11 @@
 			int *p = (int *) malloc(sizeof(int));
 			*p = 15;
 			printf("%d",p[0]);		//15
+
+		void *calloc(int num, int size);
+		* 在内存中动态地分配 num 个长度为 size 的连续空间,并将每一个字节都初始化为 0
+		* 所以它的结果是分配了 num*size 个字节长度的内存空间,并且每个字节的值都是0
+		* 与 malloc() 除了参数不同,它会出申请的内存进行初始化(设置为0)操作,malloc不会,在申请后可能内存存在遗留数据
 	
 	# 释放堆空间内存
 		void free (void *);
@@ -153,6 +158,12 @@
 				p = NULL;
 			}
 	
+
+	# 重新分配内存
+		void *realloc(void *address, int newsize);
+		* 该函数重新分配内存,把内存扩展到 newsize
+
+
 	# 堆空间的越界
 		* 编译器不会检查堆空间的越界,开发的时候需要注意
 
