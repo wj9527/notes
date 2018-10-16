@@ -57,6 +57,13 @@
 		* 使用 va_arg 宏和 va_list 变量来访问参数列表中的每个项。
 		* 使用宏 va_end 来清理赋予 va_list 变量的内存。
 	
+	# 几个方法
+		va_list			声明一个变量
+		va_copy()		复制
+		va_start()		初始化变量
+		va_arg();		开始获取变量
+		va_end()		释放保存数据的内存
+
 	# Demo
 		void foo(char *p, int num, ...) {
 			//定义变长变量本质是一个集合
@@ -80,6 +87,7 @@
 		int main(int argc, char **argv) {
 			foo("Hello",4,1,2,3,4);		//Hello:[1][2][3][4]
 		}
+	
 	
 ----------------------------------------
 main函数的参数							|
