@@ -34,7 +34,8 @@
 			<outputDirectory>target/classes</outputDirectory>							
 			<useDefaultDelimiters>false</useDefaultDelimiters>							
 			<delimiters>								
-			<delimiter>$</delimiter>
+				<delimiter>$</delimiter>
+			</delimiters>
 		</configuration>
 
 	* yumÅäÖÃ
