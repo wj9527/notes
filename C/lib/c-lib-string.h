@@ -170,3 +170,7 @@ int memcmp (const void src*, const void dst*, size_t size)
 	* 用来比较俩内存块儿是否相等
 	* 比较src和dst内存块开始的size个字节数据是否相同
 	* 如果相同返回 0,如果 dst > src 返回 1,如果 dst 小于 src 返回 -1
+
+
+char *strerror (int)
+	* 根据int(异常码)返回其文字描述

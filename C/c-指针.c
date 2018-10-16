@@ -242,3 +242,16 @@
 	# 回调函数 
 		* 函数指针作为某个函数的参数
 		* 函数指针变量可以作为某个函数的参数来使用的,回调函数就是一个通过函数指针调用的函数
+	
+			#include <stdio.h>
+			#include <stdlib.h>
+
+			void foo(int value,int (*printf)(const char *, ...)){
+				printf("%d\n",value);
+			}
+
+			int main(int argc, char **argv) {
+				foo(15,&printf);		//15
+				return EXIT_SUCCESS;
+			}
+		
