@@ -356,6 +356,19 @@
 			strcpy(dst, start);
 			//strcpy(p,start); 可以在原字符串上修改,但是原字符串不能是字符串常量
 		}
+
+		void trim(char *str){
+			char *start = str;
+			char *end = str + (strlen(str) - 1);
+			while((*start == ' ' || *start == '\n' || *start == '	') && start < end){
+				start ++;
+			}
+			while((*end == ' ' || *end == '\n' || *end == '	') && end > start){
+				end --;
+			}
+			*(end + 1) = '\0';
+			strcpy(str, start);
+		}
 	
 	# 反转字符串
 		void reversal(char *p) {
@@ -378,6 +391,17 @@
 				p = temp + strlen(s);
 				temp = strstr(p,s);
 				count ++;
+			}
+			return count;
+		}
+
+		int count(char *p, char *sub) {
+			int count = 0;
+			char *index = strstr(p, sub);
+			int position = strlen(sub);
+			while (index != NULL) {
+				index = strstr(index + position, sub);
+				count++;
 			}
 			return count;
 		}

@@ -20,6 +20,11 @@ system()
 	* 执行系统命令
 	* 返回值 int,该值就是程序的返回值,在不同的平台不一样
 
+char *getenv (const char *);
+	* 获取系统环境变量,如果不存在返回NULL
+		char *p = getenv("JAVA_HOME");
+		printf("%s",p);	//C:\Program Files\Java\jdk1.8.0_171
+
 srand(unsigned int)
 	* 设置随机数的种子
 
