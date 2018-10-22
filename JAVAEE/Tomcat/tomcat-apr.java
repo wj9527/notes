@@ -7,8 +7,8 @@ apr					|
 	# 下载依赖
 		* 下载地址:http://apr.apache.org/download.cgi
 			apr-1.6.5.tar.gz
-			apr-util-1.2.2.tar.gz
-			apr-iconv-1.6.1.tar.gz
+			apr-util-1.6.1.tar.gz
+			apr-iconv-1.2.2.tar.gz
 			tomcat-native.tar.gz
 				* 在 ${TOMCAT_HOME}/lib 目录下,不需要下载
 	
@@ -23,6 +23,9 @@ apr					|
 		cd tomcat-native-1.2.17-src/native
 		./configure --with-apr=/usr/local/apr --with-java-home=/usr/local/java/jdk1.8.0_181
 		make && make install
+
+		* --with-apr 是安装apr自动生成的安装目录
+		* --with-java-home 是自己环境的Java目录
 	
 	# 环境变量
 		vim /etc/profile   
