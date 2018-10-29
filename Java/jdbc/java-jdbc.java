@@ -79,6 +79,8 @@ JDBC-API					  |
 								System.out.println(id);
 							}
 						}
+					* 创建 PreparedStatement 的时候需要有个额外的设置:cnnection.prepareStatement("..",Statement.RETURN_GENERATED_KEYS); 否则抛出异常
+
 				void addBatch()
 					* 添加当前编译后的语句到批处理
 					* 执行该方法后，会把当前编译的语句添加到批处理缓冲区。并且重置参数指针
