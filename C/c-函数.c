@@ -132,3 +132,12 @@ main函数的参数							|
 		* '第一个参数永远都是当前指向文件的名称,也就是说main函数无论如何都有一个参数'
 		* 参数的传递用","号分割
 			demo.exe 1 2 3
+	
+	# 使用双引号把多个单词合并为一个字符串
+		//Demo.exe "Hello KevinBlandy" C
+		int main(int argc, char **argv) {
+			puts(argv[1]);		//Hello KevinBlandy
+			puts(argv[2]);		//C
+			return EXIT_SUCCESS;
+		}
+
