@@ -101,6 +101,10 @@
 
 	volatile
 		* 防止编译器优化代码
+	
+	restrict
+		* 允许编译器优化某部分代码,以更好的支持运算,它只能用于指针
+		* 表名该指针是访问数据对象唯一且初始化的方式
 
 	extern
 		* 声明一个变量,extern 生的变量没有建立存储空间
@@ -110,6 +114,8 @@
 	register
 		* 定义寄存器变量,提高效率,register 是建议类型的指令,而不是命令类型的指令
 		* 如果 CPU 有空闲的寄存器,那么 register 生效,反之 register 无效
+		* 这种类型的变量,不能使用取地址符 & ,因为无法获取,该变量在CPU寄存器
+			
 	
 	auto 
 		* 局部变量修饰
@@ -118,6 +124,7 @@
 
 	static
 		* 静态变量修饰
+
 
 ----------------------------------------
 类型转换								|
@@ -266,8 +273,18 @@ typedef 机制							|
 	
 	# extern 还可以用于函数声明(函数声明的 extern 可以省略不写)
 		extern void func(int,char *);
-			
+	
+	
+	# 全局变量只能使用常量初始化
+		int x = 5;
+		size_t size = sizeof(x);
+		int y = x * 5;		// error: initializer element is not constant
+		int main(int argc, char **argv) {
+			return EXIT_SUCCESS;
+		}
 
+		* 只要不是变成数组, sizeof 表达式可以被视为常量
+	
 	# 全局变量分文件
 		* 不同文件,普通全局变量只能定义一次,可以声明多次
 
