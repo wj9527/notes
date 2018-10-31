@@ -48,9 +48,32 @@
 		int fflush (FILE *);
 		* 成功返回 0,失败返回 -1
 	
-	# 重定向文件
-		FILE * freopen (const char *, const char *, FILE *);
+	# 重定向流到文件
+		FILE * freopen (const char *filename, const char *mode, FILE *stream);
+		* filename 需要重定向到的文件名或文件路径
+		* mode 代表文件访问权限的字符串,例如，"r"表示"只读访问","w"表示"只写访问","a"表示"追加写入"
+		* stream 需要被重定向的文件流
+		* 如果成功，则返回该指向该输出流的文件指针，否则返回为NULL
+			if(freopen("D:\\output.txt", "w", stdout) == NULL){
+				fprintf(stderr,"error redirecting stdout\n");
+			}
+			/* this output will go to a file */
+			printf("This will go into a file.\n");
+			/*close the standard output stream*/
+			fclose(stdout);
+		
+	# 设置文件的缓冲区
+		int setvbuf (FILE *file, char *buf, int model, size_t size);
+		* 设置文件的缓冲区,设置成功返回0
+		* file 文件
+		* buf 缓冲区指针
+		* model 枚举值,缓冲器的模式
+			_IOFBF		0x0000	/* 完全缓冲,在缓冲区满的时候刷出 */
+			_IOLBF		0x0040	/* 行缓冲,在缓冲区满或者写入一个换行符时刷出 */
+			_IONBF		0x0004	/* 无缓冲 */
+		* size 缓冲区的大小
 	
+
 	# FILE 结构体的属性
 		typedef struct _iobuf
 		{
@@ -77,6 +100,32 @@
 			short			token;		//用于有效性的检查
 		} FILE;
 	
+	# 把指定的字符放回流中
+		int ungetc (int, FILE *)
+		* 感觉没啥用...
+			ch = getchar();
+			ungetc(cg,stdin);
+	
+	# 异常判断
+		int ferror (FILE *);
+		* 如果文件IO发生了异常,该函数返回非0,否则返回0
+	
+	# 文件结尾判断
+		* 文本文件的末尾会有一个隐藏的-1(EOF),表示文件已经结束
+		* 二进制文件末尾没有-1标识,因为-1可能是文件中的数据,同过 -1 来判断不靠谱
+		* 可以通过 feof() 来判断文件是否读取到了末尾,不论是二进制文件还是文本文件
+		* feof(); 返回 bool
+			FILE *file = fopen("c.txt","r");
+
+			bool end = feof(file);
+			printf("%d",end);		//0
+
+		* 它其实是判断你读取后的数据,是不是末尾标识,也就是说要先读取了末尾标识,所以,一般先读取,再判断
+			fgetc(file);
+			if(feof(file)){
+				break;
+			}
+			....
 
 ----------------------------
 文本文件的读写				|
@@ -134,24 +183,8 @@
 		printf("z=%d,y=%d,z=%d",z,y,z);		//z=36,y=12,z=36
 		fclose(file);
 	
-	# 判断文件是否读取到了末尾
-		* 文本文件的末尾会有一个隐藏的-1(EOF),表示文件已经结束
-		* 二进制文件末尾没有-1标识,因为-1可能是文件中的数据,同过 -1 来判断不靠谱
-		* 可以通过 feof() 来判断文件是否读取到了末尾,不论是二进制文件还是文本文件
-		* feof(); 返回 bool
-			FILE *file = fopen("c.txt","r");
-
-			bool end = feof(file);
-			printf("%d",end);		//0
-
-		* 它其实是判断你读取后的数据,是不是末尾标识,也就是说要先读取了末尾标识,所以,一般先读取,再判断
-			fgetc(file);
-			if(feof(file)){
-				break;
-			}
-			....
 	
-
+	
 ----------------------------
 随机io						|
 ----------------------------
