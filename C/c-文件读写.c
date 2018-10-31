@@ -42,6 +42,7 @@
 	# 关闭文件
 		int  fclose (FILE *);
 		* 关闭文件会刷出缓冲区
+		* 成功返回 0,失败返回 -1
 	
 	# 刷出缓冲区
 		int fflush (FILE *);
@@ -156,6 +157,7 @@
 ----------------------------
 	int fseek (FILE *file, long offset, int whence); 
 		* fseek 设置当前读写点到 offset 处
+		* 如果操作成功返回0,操作失败返回-1(移动的范围超过了文件大小)
 		* whence 可以是 SEEK_SET,SEEK_CUR,SEEK_END 这些值决定是从文件头,当前点,文件尾	计算偏移量 offset
 		* 相对当前位置往后移动一个字节:fseek(fp,1,SEEK_CUR);
 		* 往前移动一个字节.直接改为负值就可以:fseek(fp,-1,SEEK_CUR)
@@ -187,6 +189,17 @@
 		//获取文件的光标位置,其实就是大小(KB)
 		long size = ftell(file);
 		printf("size=%ld",size);
+	
+	# fgetpos(); 和 fsetpos();
+		int fgetpos (FILE *, fpos_t *);
+			* 获取文件指针位置,注意,这里需要给变量的指针,是通过指针赋值的
+		int fsetpos (FILE *, const fpos_t *);
+			* 设置文件指针位置,注意,这里需要给变量的指针,是通过指针读取变量的
+
+		* fseek() 和 fetll() 的问题是,他们都使用 long 这个数据类型,最多表示20亿个字节
+		* 但是现在的文件越来越大,可能超过了 20 亿
+		* 新的自定义数据类型: fpos_t  == typedef long long  fpos_t;
+		* 如果执行成功返回0,失败返回-1
 
 ----------------------------
 二进制文件的读写			|
