@@ -377,6 +377,59 @@ Linux与Window下的文件区别	|
 			printf("size=%d\n",st.st_size);
 			return EXIT_SUCCESS;
 		}
+	
+	# 通过 'st_mode' 属性可以获取到更多关于文件的信息
+		*  以下判断函数都是 <sys/stat.h> 宏定义的,用于判断,返回 bool
+			S_ISDIR(m)	(((m) & S_IFMT) == S_IFDIR)			//是否是目录
+			S_ISFIFO(m)	(((m) & S_IFMT) == S_IFIFO)
+			S_ISCHR(m)	(((m) & S_IFMT) == S_IFCHR)
+			S_ISBLK(m)	(((m) & S_IFMT) == S_IFBLK)
+			S_ISREG(m)	(((m) & S_IFMT) == S_IFREG)			//是否是普通文件
+
+		*  demo
+			S_ISDIR(fileStat.st_mode);		//是否是一个目录
+			S_ISREG(fileStat.st_mode)		//是否是一个普通文件
+		
+-----------------------------
+操作目录(文件夹)			|
+----------------------------
+# <dirent.h> 
+	# 打开一个目录,返回一个目录指针 typedef struct __dirstream_t DIR;
+		DIR * opendir (const char *__dirname)
+	
+	# 读取目录信息,参数是一个目录指针,返回 struct dirent
+		struct dirent*  readdir (DIR *__dir)
+		struct dirent
+		{
+		  long            d_ino;				/* Always zero. */
+		  unsigned short  d_reclen;				/* Always sizeof struct dirent. */
+		  unsigned short  d_namlen;				/* 文件/文件夹名称的字符长度 */
+		  unsigned        d_type;				/* File attributes */
+		  char            d_name[FILENAME_MAX]; /* 文件/文件夹名称 */
+		};
+
+		* 它应该循环调用
+		* 因为每次调用,它会逐渐遍历出目录指针下的所有文件/目录信息,如果遍历到末尾,返回 NULL
+		* 遍历某个目录下的所有文件
+			DIR *dir = opendir("E:\\letsencrypt");
+			struct dirent *dirent = NULL;
+
+			while ((dirent = readdir(dir)) != NULL) {
+				printf("%s\n", dirent->d_name);
+			}
+
+# <io.h>
+	# 创建一个文件夹
+		int mkdir (const char *);
+		* 创建成功返回0,否则返回-1(目录已经存在)
+	
+	# 获取当前执行程序所在的目录
+		char *getcwd (char *buf, int size);
+		
+		* 把当前路径写入buf,最大长度为size
+			char buf[1024] = { 0 };
+			getcwd(buf, 1024);
+			printf("%s", buf);	//D:\workspace\clang-practice
 
 ----------------------------
 关于文件缓冲区				|
