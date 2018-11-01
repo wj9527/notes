@@ -32,7 +32,18 @@
 		printf("id=%d,name=%s,hobby=%s",user.id,user.name,"Java & Python",user.hobby);	//id=1,name=KevinBlandy,hobby=Java & Python
 
 		* 使用大括号进行初始化的时候,可以直接对数组类型赋值,底层通过copy完成
-		
+	
+	# c99和c11新的初始化方式
+		struct Lang {
+			int id;
+			char name[10];
+		};
+		struct Lang java = {		//通过 .属性名 = 值 来初始化
+			.id = 1,
+			.name = "Java"
+		};
+		printf("id=%d,name=%s", java.id, java.name);	//id=1,name=Java
+
 	# 结构作为函数参数
 		* 值传递,这种方式跟普通的变量值传递是一样的
 			struct Book {
@@ -233,7 +244,37 @@
 		
 		* 如果先释放掉了结构体,那么 user->name,就找不到地址了,没法儿释放属性值占用的堆内存,导致内存泄漏
 	
+	# 结构体字面量
+		struct Lang {
+			int id;
+			char name[10];
+		};
+		struct Lang lang;
+		lang = (struct Lang ) { 1, "Java" };				//字面量，相当于一个匿名的结构体
+		printf("id=%d,name=%s", lang.id, lang.name);		//id=1,name=Java
+		return EXIT_SUCCESS;
 	
+	# 伸缩形数组成员
+		* c99特性,利用这个特性,结构体的最后一个数组成员具备一些特性
+		* 这个特性的意图不是让你声明一个结构体变量,而是声明一个指针,通过 malloc()来 分配足够的空间
+		* 伸缩形数组成员的规则
+			- 伸缩形数组成员必须是结构体的最后一个成员
+			- 结构体中至少有一个其他的成员
+			- 伸缩数组类似于普通数组,只是不声明长度
+		* 合法的声明
+			struct Lang {
+				int id;
+				char name[];		//伸缩型数组成员
+			};
+
+			struct Lang * lang;
+			lang = (struct Lang *) calloc(1, sizeof(struct Lang) + 5 * sizeof(char));//为伸缩数组开辟5字节内存
+
+			//复制四个字符串到该数组
+			strncpy(lang->name, "Java", 4);
+
+			printf("id=%d,name=%s", lang->id, lang->name);		//id=0,name=Java
+
 ----------------------------
 合法的结构体定义与声明		|
 ----------------------------
