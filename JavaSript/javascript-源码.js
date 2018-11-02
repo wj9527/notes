@@ -120,3 +120,20 @@ doucment-获取所有的Cookie				|
 		}
 		return cookie;
 	}
+
+----------------------------------------
+监听文字复制事件,并且添加自己的数据		|
+----------------------------------------
+document.addEventListener('copy', function (event) {
+    var clipboardData = event.clipboardData || window.clipboardData;
+    if (!clipboardData) { 
+		return; 
+	}
+	//复制到的文字信息
+    var text = window.getSelection().toString();
+    if (text) {
+        event.preventDefault();
+		//修改原来的文字信息
+        clipboardData.setData('text/plain', text + '\n\njavaweb开发者社区版权所有');
+    }
+});
