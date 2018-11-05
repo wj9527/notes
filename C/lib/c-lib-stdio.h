@@ -5,6 +5,9 @@ stdio							|
 EOF
 	* -1,表示文件结尾
 
+BUFSIZ
+	* 缓冲区大小
+
 stdin
 	* 标准输入流指针
 stdout
