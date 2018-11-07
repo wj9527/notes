@@ -11,11 +11,11 @@
 	{
 		"server":"0.0.0.0",
 		"port_password":{
-			"123456" : "----"			# 端口和密码，shadowsocks不需要账号，真要说有，账号就是你的ip了
+			"123456" : "----"			# 端口和密码，shadowsocks不需要账号，真要说有，账号就是你的ip了。可以配置多个
 		},
 		"timeout":300,                 	# 超时时间 这个不用修改
 		"method":"aes-256-cfb",     	# 加密方式，不用修改，想改的自行了解各种加密算法吧
-		"fast_open": false,             # true 或者 false 开启后能降低延迟
+		"fast_open": false,             # 如果你的服务器 Linux 内核在3.7+，可以开启 true 以降低延迟
 		"workers": 1					# 默认一个工作者
 	}
 
