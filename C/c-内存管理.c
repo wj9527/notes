@@ -74,6 +74,27 @@
 				* 一个用户最大的进程数量
 			virtual memory          (kbytes, -v) unlimited
 			file locks                      (-x) unlimited
+		
+		* 栈的生长方向以及存放方向
+			int a;
+			int b;
+			int arr[2] = { };
+			printf("%p\n", &a);			//0028FF3C
+			printf("%p\n", &b);			//0028FF38
+			printf("%p\n", &arr[0]);	//0028FF30
+			printf("%p\n", &arr[1]);	//0028FF34
+
+			/* 栈内存
+				 -----------
+				 a			0028FF3C
+				 -----------	
+				 b			0028FF38
+				 -----------
+				 arr[1]		0028FF34
+				 -----------
+				 arr[0]		0028FF30
+				 -----------
+			 */
 
 			
 -------------------------------
