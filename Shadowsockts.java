@@ -14,7 +14,11 @@
 			"123456" : "----"			# 端口和密码，shadowsocks不需要账号，真要说有，账号就是你的ip了。可以配置多个
 		},
 		"timeout":300,                 	# 超时时间 这个不用修改
-		"method":"aes-256-cfb",     	# 加密方式，不用修改，想改的自行了解各种加密算法吧
+		"method":"rc4-md5",     		# 加密方式，不用修改，想改的自行了解各种加密算法吧
+		"protocol" : "auth_aes128_md5",	# 协议插件
+		"protocol_param": "",			# 协议参数
+		"obfs" : "http_simple",			# 混淆插件
+		"obfs_param": "",				# 混淆参数
 		"fast_open": false,             # 如果你的服务器 Linux 内核在3.7+，可以开启 true 以降低延迟
 		"workers": 1					# 默认一个工作者
 	}
@@ -43,3 +47,6 @@
 
 # windows客户端下载
 	https://github.com/shadowsocks/shadowsocks-windows/releases
+
+
+# shadowsocks服务会被阿里云之类的服务商检测到,建议使用 shadowsocksR
