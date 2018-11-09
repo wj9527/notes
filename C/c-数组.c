@@ -183,16 +183,7 @@
 	# 二维数组与指针
 		int (*p)[2];
 			* p是一个 int 指针,指向了一个具有2个 int 元素的数组 -> int arr[1][2]	-> [[1,2]]
-			* demo代码
-				int (*p)[2];
 
-				p[0][0] = 1;
-				p[0][1] = 2;
-
-				p[1][0] = 3;
-				p[1][1] = 4;
-
-				printf("%d\n", p[1][0]);		//3
 		int (*p)[2][2]
 			* p是一个 int 指针,执行了一个具有2个 int[2] 元素的数组 -> int arr[1][2][2]	-> [[[1,2],[3,4]]]
 
@@ -276,24 +267,23 @@
 --------------------------------
 
 	# 定义一个数组
-		typedef int (Array)[5];
-			int main(int argc, char **argv) {
-			Array arr;		//int arr[5];
-			arr[0] = 1;
-			printf("%d", arr[0]);
-			return EXIT_SUCCESS;
-		}
+		typedef int (Array)[5];		//定义一个数组,长度为5
+
+			Array in;
+			in[0] = 1;
+			printf("%d\n", in[0]);		//1
 
 	# 定义数组指针
-		typedef int (*Array)[5];
+		typedef int (*IntArray)[2];	//执行一个数组的指针
 
-		int main(int argc, char **argv) {
-			//指向  int arr[5] 的指针
-			Array arr;
-			(*arr)[0] = 1;
-			printf("%d", (*arr)[0]);
-			return EXIT_SUCCESS;
-		}
+		int arr[][2] = { { 1, 2 } };
+
+		IntArray intArray = arr;
+
+		intArray[0][1] = 15;
+		printf("%d\n", arr[0][1]);		//15
+
+
 
 --------------------------------
 vla变长数组						|
