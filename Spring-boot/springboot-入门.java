@@ -56,11 +56,14 @@ Spring-Boot 入门			|
 					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
 						<compilerArgs>
+							<!-- 编译参数 -->
 							<arg>-parameters</arg>
 						</compilerArgs>
 						<source>1.8</source>
 						<target>1.8</target>
 						<encoding>UTF-8</encoding>
+						<!-- 打包时,一起打包本地jar(scope=system) -->
+						<includeSystemScope>true</includeSystemScope>
 					</configuration>
 				</plugin>
 			</plugins>

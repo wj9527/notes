@@ -147,7 +147,16 @@
                      <include>**/*</include>					**/
                  </includes>
             </resource>
-
+		
+		* springboot项目打包本地资源配置
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<!-- 不加这个的话，打包时本地jar打不进去 -->
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
+			</plugin>
 
 	
 	4,war打包方式的本地lib
