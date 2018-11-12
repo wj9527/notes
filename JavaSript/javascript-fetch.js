@@ -7,9 +7,9 @@ fetch				|
 	# options 
 		credentials
 			* 默认仨值
-				"omit",
-				"same-origin"
-				"include"
+				"omit",			//不发送
+				"same-origin"	//同域发送
+				"include"		//总是发送
 			* Fetch 请求默认是不带 cookie 的,需要设置 credentials: 'include' 
 			* fetch(url, {credentials: 'include'})
 
@@ -34,8 +34,17 @@ fetch				|
 					* 目前这种模式是无法执行的。
 			
 		cache
-			
-	
+			* 表示处理缓存的策略
+
+		redirect
+			* 表示发生重定向时,有三个选项
+			follow		跟随
+			error:		发生错误
+			manual		需要用户手动跟随
+
+		integrity	
+			*  包含一个用于验证资资源完整性的字符串
+				
 	# 返回对象是 Promise 对象
 		fetch('/login') instanceof Promise
 
@@ -143,7 +152,9 @@ Request				|
 	# 属性
 		method
 		url
-
+	
+	# 构造函数接受的参数与fetch方法一致，这里就不展开介绍了
+	# 可以这么理解，事实上fetch方法在调用时，会将传入的参数构造出一个 Request 对象并执行。
 --------------------
 Response			|
 --------------------
