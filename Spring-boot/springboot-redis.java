@@ -60,4 +60,18 @@ Redis-整合集群						|
 ------------------------------------	
 	
 	
-	
+
+------------------------------------
+Redis- scan 代替 keys *				|
+------------------------------------
+	public void scan(String pattern, Consumer<byte[]> consumer) {
+		this.stringRedisTemplate.execute((RedisConnection connection) -> {
+			try (Cursor<byte[]> cursor = connection.scan(ScanOptions.scanOptions().count(Long.MAX_VALUE).match(pattern).build())) {
+				cursor.forEachRemaining(consumer);
+				return null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		});
+	}
