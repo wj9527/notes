@@ -231,3 +231,25 @@ private static String encodeHex(byte[] bytes) {
 			pw.close();
 		}
 	}
+
+------------------------------------------
+校验用户名是否合法						  |
+------------------------------------------
+	/**
+	 * 校验用户名是否合法
+			只能是数字 汉字 英文 下划线
+			1 - 14长度
+				一个汉字占2个长度
+			不能为存下划线
+			不能是纯数字
+	 * @param name
+	 * @return
+	 */
+	public boolean nameValidate(String name) {
+		return name.replaceAll("[\\u4e00-\\u9fa5]", "aa").matches("^(?!\\d+$)(?!_+$)\\w{1,14}$");
+	}
+
+	
+	function checkUserName(name){
+		return /^(?!\d+$)(?!_+$)\w{1,14}$/.test(name.replace(/[\u4e00-\u9fa5]/g,"aa"));
+	}
