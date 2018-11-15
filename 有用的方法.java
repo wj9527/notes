@@ -240,7 +240,7 @@ private static String encodeHex(byte[] bytes) {
 			只能是数字 汉字 英文 下划线
 			1 - 14长度
 				一个汉字占2个长度
-			不能为存下划线
+			不能为纯下划线
 			不能是纯数字
 	 * @param name
 	 * @return
