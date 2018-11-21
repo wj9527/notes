@@ -168,6 +168,7 @@ https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 4,更新证书
 	./certbot-auto renew
 
+	* ??失败了,可以尝试重新执行生成操作
 
 
 ------------------------------------

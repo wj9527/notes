@@ -75,3 +75,57 @@ Redis- scan 代替 keys *				|
 			}
 		});
 	}
+
+------------------------------------
+Redis- 过期key的监听				|
+------------------------------------
+	# redis必须开启配置
+		 notify-keyspace-events="Ex"  # 监听key的过期事件
+
+	# configuration的配置
+		@Configuration
+		public class RedisConfiguration {
+		 
+			@Autowired 
+			private RedisConnectionFactory redisConnectionFactory;
+			
+			@Bean
+			public RedisMessageListenerContainer redisMessageListenerContainer() {
+				//创建监听容器
+				RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
+				//设置连接工厂
+				redisMessageListenerContainer.setConnectionFactory(redisConnectionFactory);
+				return redisMessageListenerContainer;
+			}
+			
+			@Bean
+			public KeyExpiredListener keyExpiredListener() {
+				return new KeyExpiredListener(this.redisMessageListenerContainer());
+			}
+		}
+	
+	# KeyExpiredListener 监听器
+		import java.nio.charset.StandardCharsets;
+
+		import org.slf4j.Logger;
+		import org.slf4j.LoggerFactory;
+		import org.springframework.data.redis.connection.Message;
+		import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
+		import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+
+		public class KeyExpiredListener extends KeyExpirationEventMessageListener {
+
+			private static final Logger LOGGER = LoggerFactory.getLogger(KeyExpiredListener.class);
+
+			public KeyExpiredListener(RedisMessageListenerContainer listenerContainer) {
+				super(listenerContainer);
+			}
+
+			@Override
+			public void onMessage(Message message, byte[] pattern) {
+				String channel = new String(message.getChannel(),StandardCharsets.UTF_8);
+				//过期的key
+				String key = new String(message.getBody(),StandardCharsets.UTF_8);
+				LOGGER.debug("pattern = {},chanel = {},key = {}",new String(pattern),channel,key);
+			}
+		}
