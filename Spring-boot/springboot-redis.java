@@ -122,10 +122,9 @@ Redis- 过期key的监听				|
 			}
 
 			@Override
-			public void onMessage(Message message, byte[] pattern) {
-				String channel = new String(message.getChannel(),StandardCharsets.UTF_8);
-				//过期的key
-				String key = new String(message.getBody(),StandardCharsets.UTF_8);
-				LOGGER.debug("pattern = {},chanel = {},key = {}",new String(pattern),channel,key);
+			protected void doHandleMessage(Message message) {
+				String channel = new String(message.getChannel(), StandardCharsets.UTF_8);
+				String key = new String(message.getBody(), StandardCharsets.UTF_8);
+				LOGGER.info("redis key 过期：channel={},key={}", channel, key);
 			}
 		}
