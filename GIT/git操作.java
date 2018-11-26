@@ -101,6 +101,17 @@
 		6eb36af HEAD@{10}: commit: 2
 		333e9a8 HEAD@{11}: commit (initial): first
 
+中文处理
+	git config --global core.quotepath false
+		* 解决在 git bash 中,中文以编码形式出现的问题
+	
+	git config --global gui.encoding utf-8
+		* 设置 gui 的编码
+
+	git config --global i18n.commitencoding utf-8
+		* 设置提交时用的编码,必须与服务器保持一致
+
+
 ---------------------------------
 远程仓库						 |
 ---------------------------------
