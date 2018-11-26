@@ -23,3 +23,11 @@ python 3.6.5后pip丢失的问题		|
 		
 		* 该命令执行成功后会在 script 目录生成pip3等文件
 		* 使用 pip3 代替原来的pip
+
+
+--------------------------------
+python-whl文件安装				|
+--------------------------------
+	* 把whl文件下载到本地
+	* 使用pip去执行
+		pip install D:\Download\VideoCapture-0.9.5-cp27-none-win_amd64.whl	
