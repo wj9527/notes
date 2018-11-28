@@ -54,6 +54,7 @@ Python-征途					|
 
 	4,创建软连接
 		ln -s /usr/local/python/bin/python3 /usr/bin/python3
+		ln -s /usr/local/python/bin/pip3 /usr/bin/pip3
 	
 	5,测试
 		python3 -V

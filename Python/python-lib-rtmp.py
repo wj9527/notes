@@ -52,3 +52,6 @@ windows 安装依赖		|
 
 		* 先在本机安装: visualcppbuildtools_full.exe
 
+	
+	# 编译失败:
+		Can not open include file: 'librtmp/rtmp.h': No such file or directory
