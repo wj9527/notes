@@ -80,7 +80,7 @@ Redis- scan 代替 keys *				|
 Redis- 过期key的监听				|
 ------------------------------------
 	# redis必须开启配置
-		 notify-keyspace-events="Ex"  # 监听key的过期事件
+		 notify-keyspace-events "Ex"  # 监听key的过期事件
 
 	# configuration的配置
 		@Configuration
@@ -127,4 +127,41 @@ Redis- 过期key的监听				|
 				String key = new String(message.getBody(), StandardCharsets.UTF_8);
 				LOGGER.info("redis key 过期：channel={},key={}", channel, key);
 			}
+		}
+
+------------------------------------
+Redis - 自定义Template序列化		|
+------------------------------------
+	# 自定义 Templete 类,实现 RedisTemplate,泛型为key和Value
+	# 实例化该类
+		- 设置连接工厂
+		- key的序列化类
+		- value的序列化列
+		- 其他redis数据结构的k/v序列化类
+
+	# 简单的fastjson序列化
+		public class JsonRedisTemplate extends RedisTemplate<String, JSONObject> {
+		}
+
+		@Bean
+		public JsonRedisTemplate jsonRedisTemplate() {
+			JsonRedisTemplate jsonRedisTemplate = new JsonRedisTemplate();
+			jsonRedisTemplate.setConnectionFactory(this.redisConnectionFactory);
+			jsonRedisTemplate.setKeySerializer(StringRedisSerializer.UTF_8);
+			jsonRedisTemplate.setValueSerializer(new RedisSerializer<JSONObject>() {
+				@Override
+				public byte[] serialize(JSONObject t) throws SerializationException {
+					return t.toJSONString().getBytes(StandardCharsets.UTF_8);
+				}
+				@Override
+				public JSONObject deserialize(byte[] bytes) throws SerializationException {
+					if(bytes == null) {
+						return null;
+					}
+					return JSON.parseObject(new String(bytes, StandardCharsets.UTF_8));
+				}
+			});
+			// jsonRedisTemplate.setHashKeySerializer(hashKeySerializer);
+			// jsonRedisTemplate.setHashValueSerializer();
+			return jsonRedisTemplate;
 		}
