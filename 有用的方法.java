@@ -253,3 +253,24 @@ private static String encodeHex(byte[] bytes) {
 	function checkUserName(name){
 		return /^(?!\d+$)(?!_+$)\w{1,14}$/.test(name.replace(/[\u4e00-\u9fa5]/g,"aa"));
 	}
+
+------------------------------------------
+重用 InputStream 流						  |
+------------------------------------------
+//获取流
+InputStream inputStream = Files.newInputStream(Paths.get("E:\\404.jpg"));
+//在内存定义输出流
+ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+byte[] buffer = new byte[1024];
+int length = 0;
+while((length = inputStream.read(buffer)) != -1) {
+    //把需要可重用的流,写入到内存输出流
+    byteArrayOutputStream.write(buffer,0,length);
+    byteArrayOutputStream.flush();
+}
+inputStream.close();
+//根据内存输出流创建N多个内存输入流,从而实现流的重用
+ByteArrayInputStream byteArrayInputStream1 = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+ByteArrayInputStream byteArrayInputStream2 = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+System.out.println(byteArrayInputStream1.available());        //105335
+System.out.println(byteArrayInputStream2.available());        //105335
