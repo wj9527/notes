@@ -115,3 +115,46 @@ void qsort(void *arr, size_t length, size_t size, int (*)(const void *, const vo
 
 			return EXIT_SUCCESS;
 		}
+
+void *bsearch(const void *key, const void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *))
+	* 二分查找的实现,如果找到元素,则返回该元素的指针,否则返回空指针
+	* key 查找元素的指针
+	* base 数组
+	* nitems 数组元素个数
+	* size 数组元素的字节大小
+	* compar 指针函数,用于对比元素
+		int comparable(const void *arg1, const void *arg2) {
+			int v1 = *(int *) arg1;
+			int v2 = *(int *) arg2;
+			if(v1 > v2){
+				return 1;
+			}else if(v1 < v2){
+				return -1;
+			}else{
+				return 0;
+			}
+		}
+	* demo
+		int comparable(const void *arg1, const void *arg2) {
+			int v1 = *(int *) arg1;
+			int v2 = *(int *) arg2;
+			if(v1 > v2){
+				return 1;
+			}else if(v1 < v2){
+				return -1;
+			}else{
+				return 0;
+			}
+		}
+
+		int main(int argc, char **argv) {
+			int arr[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+			size_t itemSize = sizeof(arr[0]);
+			size_t arrLeng = sizeof(arr) / itemSize;
+			int number = 6;
+			int * index = (int *) bsearch(&number, arr, arrLeng, itemSize, &comparable);
+			printf("index = %p\n", index);		//index = 0028FF24
+			return EXIT_SUCCESS;
+		}
+
+		

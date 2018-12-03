@@ -47,7 +47,7 @@ Python-征途					|
 		yum -y install zlib-devel
 
 	4,进入解压目录,执行编译
-		 ./configure --prefix=/usr/local/python
+		 ./configure --prefix=/usr/local/python --enable-optimizations --with-ssl
 	
 	5,编译ok后,执行安装
 		make && make install
@@ -58,6 +58,9 @@ Python-征途					|
 	
 	5,测试
 		python3 -V
+	
+	# Python3.7的安装需要一个依赖
+		yum install libffi-devel -y
 
 ----------------------------
 2,Python-处理文件编码		|
