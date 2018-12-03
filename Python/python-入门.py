@@ -39,15 +39,17 @@ Python-征途					|
 		https://www.python.org/ftp/python/
 
 	2,解压,创建文件夹
-		tar -zxvf Python-3.6.4.tgz 
+		tar -zxvf Python-3.7.1.tgz
 		mkdir /usr/local/python
 
 	3,安装依赖
 		yum -y install zlib
 		yum -y install zlib-devel
+		yum install -y libffi-devel
+		yum install -y openssl-devel
 
 	4,进入解压目录,执行编译
-		 ./configure --prefix=/usr/local/python --enable-optimizations --with-ssl
+		 ./configure --prefix=/usr/local/python
 	
 	5,编译ok后,执行安装
 		make && make install
@@ -59,8 +61,7 @@ Python-征途					|
 	5,测试
 		python3 -V
 	
-	# Python3.7的安装需要一个依赖
-		yum install libffi-devel -y
+		
 
 ----------------------------
 2,Python-处理文件编码		|
