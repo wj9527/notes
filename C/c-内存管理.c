@@ -183,6 +183,15 @@
 	# 重新分配内存
 		void *realloc(void *address, int newsize);
 		* 该函数重新分配内存,把内存扩展到 newsize
+		* demo
+			char *p = (char *) calloc(1, 1);
+			*p = 'a';
+
+			char *p1 = (char *)realloc(p,2);
+			printf("%p %p\n", p, p1);			//009F2128 009F2128
+
+			*(p1 + 1) = 'b';
+			printf("%c %c", *p, *(p + 1));		//a b
 
 
 	# 堆空间的越界
