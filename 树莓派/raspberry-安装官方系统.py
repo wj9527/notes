@@ -53,6 +53,10 @@
 	timedatectl 
 	Time zone: Asia/Shanghai (CST, +0800)
 
+# 设置wifi
+	Localisaion Options
+	Change Wi-fi Country
+	CN China
 
 # 更换国内镜像源
 	cp /etc/apt/sources.list /etc/apt/sources.list.bak
@@ -66,6 +70,8 @@
 	vim /etc/apt/sources.list.d/raspi.list
 		deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ jessie main non-free contrib
 		deb-src http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ jessie main non-free contrib
-# 操作
-	https://blog.csdn.net/watfe/article/details/53139179
-		
+
+# 更新源,升级已经安装的包,升级系统
+	apt-get update
+	apt-get upgrade
+	apt-get dist-upgrade
