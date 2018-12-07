@@ -46,3 +46,9 @@
 	* 在root用户家目录有个 README 文件,里面提供命令的方式自动扩展空间
 		/user/bin/rootfs-expand
 	
+
+# 安装基本的软件
+	yum -y install vim
+	yum -y install git
+	yum -y install gcc automake autoconf libtool make
+	yum -y install wget
