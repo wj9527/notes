@@ -157,4 +157,12 @@ void *bsearch(const void *key, const void *base, size_t nitems, size_t size, int
 			return EXIT_SUCCESS;
 		}
 
-		
+	* 结构体的指针数组
+		int compareTo(const void *v1, const void *v2) {
+			//该指针实际上是一个二级指针,因为指针数组里面的元素每个都是指针
+			struct User **user1 = (struct User **) v1;
+			struct User **user2 = (struct User **) v2;
+			int height1 = (*user1)->height;
+			int height2 = (*user2)->height;
+			return height1 > height2;
+		}
