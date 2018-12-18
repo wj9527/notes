@@ -17,3 +17,7 @@ BloomFilter					|
 		//是否可能包含
 		boolean result = bloomFilter.mightContain("121");
 		System.out.println(result);
+
+	# 注意
+		* 提高数组长度以及 hash 计算次数可以降低误报率,但相应的 CPU,内存的消耗就会提高
+		
