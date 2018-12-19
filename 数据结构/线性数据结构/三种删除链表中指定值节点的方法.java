@@ -37,7 +37,7 @@ public class Solution01 {
 			}
 		}
 
-		return head;
+		return head;			//返回的是移除节点后的头节点
 	}
 
 	// 使用虚拟头节点,解决方式更加的简洁
@@ -56,7 +56,7 @@ public class Solution01 {
 			}
 		}
 
-		return dummyHead.next;
+		return dummyHead.next;		//返回的是移除节点后的头节点
 	}
 
 	// 使用递归实现
