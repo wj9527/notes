@@ -136,3 +136,175 @@ public class LinkedMap<K, V> {
 		}
 	}
 }
+
+
+------------------------
+基于二分搜索树实现的Map	|
+------------------------
+
+
+import java.util.function.BiConsumer;
+
+public class BinarySearchTreeMap<K extends Comparable<K>, V> {
+	private class Node {
+		K key;
+		V value;
+		private Node left;
+		private Node right;
+
+		public Node(K key, V value, Node left, Node right) {
+			super();
+			this.key = key;
+			this.value = value;
+			this.left = left;
+			this.right = right;
+		}
+
+		public Node(K key, V value) {
+			this(key, value, null, null);
+		}
+	}
+
+	private Node root;
+
+	private int size;
+
+	public int size() {
+		return this.size;
+	}
+
+	public boolean empty() {
+		return this.size == 0;
+	}
+
+	private Node getNode(Node node, K key) {
+		if (node == null) {
+			return node;
+		}
+		int result = node.key.compareTo(key);
+		if (result > 0) {
+			return this.getNode(node.left, key);
+		} else if (result < 0) {
+			return this.getNode(node.right, key);
+		} else {
+			return node;
+		}
+	}
+
+	public boolean contains(K key) {
+		return this.getNode(this.root, key) != null;
+	}
+
+	public V get(K key) {
+		Node node = this.getNode(this.root, key);
+		return node == null ? null : node.value;
+	}
+
+	public V set(K key, V value) {
+		Node node = this.getNode(this.root, key);
+		if (node == null) {
+			throw new IllegalArgumentException("not found key");
+		}
+		V retVallue = node.value;
+		node.value = value;
+		return retVallue;
+	}
+
+	private Node add(Node node, K key, V value) {
+		if (node == null) {
+			this.size++;
+			return new Node(key, value);
+		}
+		int result = node.key.compareTo(key);
+
+		if (result > 0) {
+			node.left = this.add(node.left, key, value);
+		} else if (result < 0) {
+			node.right = this.add(node.right, key, value);
+		} else {
+			node.value = value; // 覆盖
+		}
+		return node;
+	}
+
+	public void add(K key, V value) {
+		this.root = this.add(this.root, key, value);
+	}
+
+	protected Node minNode(Node node) {
+		if (node.left == null) {
+			return node;
+		}
+		return this.minNode(node.left);
+	}
+
+	public Node removeMin(Node node) {
+		if (node.left == null) {
+			Node rightNode = node.right;
+			node.right = null;
+			this.size--;
+			return rightNode;
+		}
+		node.left = removeMin(node.left);
+		return node;
+	}
+
+	protected Node remove(Node node, K key) {
+		if (node == null) {
+			return node;
+		}
+		int result = node.key.compareTo(key);
+		if (result > 0) {// left
+			node.left = remove(node.left, key);
+			return node;
+		} else if (result < 0) { // right
+			node.right = remove(node.right, key);
+			return node;
+		} else {
+			// 删除节点左子树为null
+			if (node.left == null) {
+				Node rightNode = node.right;
+				node.right = null;
+				this.size--;
+				return rightNode;
+			}
+			// 删除节点右子树为null
+			if (node.right == null) {
+				Node leftNode = node.left;
+				node.left = null;
+				this.size--;
+				return leftNode;
+			}
+			// 左右节点都不为空
+
+			// 获取到右边最小的值的节点
+			Node successor = minNode(node.right);
+			successor.right = removeMin(node);
+			successor.left = node.left;
+			node.left = node.right = null;
+			return successor;
+		}
+	}
+
+	public V remove(K key) {
+		Node node = this.getNode(this.root, key);
+		if (node != null) {
+			this.root = remove(this.root, key);
+			return node.value;
+		}
+		throw new IllegalArgumentException("not found key");
+	}
+
+	private void forEach(Node node, BiConsumer<K, V> biConsumer) {
+		if (node == null) {
+			return;
+		}
+		this.forEach(node.left, biConsumer);
+		biConsumer.accept(node.key, node.value);
+		this.forEach(node.right, biConsumer);
+	}
+
+	public void forEach(BiConsumer<K, V> biConsumer) {
+		this.forEach(this.root, biConsumer);
+	}
+}
