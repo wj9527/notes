@@ -24,7 +24,7 @@ freemarker-配置			|
 			normalize_newlines	freemarker.template.utility.NormalizeNewlines
 			xml_escape			freemarker.template.utility.XmlEscape
 	
-	# 配置的设置
+	# 配置信息的设置
 		* 配置信息可以被想象成3层(Configuration, Template,Environment), 级别由低到高,高级别会覆盖低级别的配置
 		* Configuration 的配置
 			* 原则上设置配置信息时使用 Configuration 对象的setter方法
@@ -159,5 +159,5 @@ freemarker-配置			|
 			
 		
 -----------------------
-freemarker-项			|
+freemarker-配置项		|
 -----------------------
