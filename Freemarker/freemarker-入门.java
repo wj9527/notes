@@ -30,6 +30,10 @@ freemarker - 入门	|
 		try {
 			//设置模板引擎变化检测的间隔时间
 			configuration.setSetting(Configuration.TEMPLATE_UPDATE_DELAY_KEY_SNAKE_CASE, "0ms");
+			//Date的datetime默认格式化
+			configuration.setSetting(Configuration.DATETIME_FORMAT_KEY_SNAKE_CASE, "yyyy-MM-dd HH-mm-ss ");
+			//禁用本地化模板查找
+			configuration.setLocalizedLookup(false);
 		} catch (TemplateException e) {
 			e.printStackTrace();
 		}
@@ -46,3 +50,14 @@ freemarker - 入门	|
 		} catch (TemplateException e) {
 			e.printStackTrace();
 		}
+	
+	# 保留关键字
+		true：布尔值"true"
+		false：布尔值"false"
+		gt：比较运算符"大于"
+		gte：比较运算符"大于或等于"
+		lt：比较运算符"小于"
+		lte：比较运算符"小于或等于"
+		as：由少数指令使用
+		in：由少数指令使用
+		using：由少数指令使用
