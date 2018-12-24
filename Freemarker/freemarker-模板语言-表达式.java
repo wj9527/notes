@@ -54,13 +54,15 @@
 
 	
 	# boolean 值
-		* 直接输出boolean值会异常,可以使用内建函数 ?string 来将布尔值转换为字符串形
-			${married?string("yes", "no")}
+		* 直接输出boolean值会异常,可以使用内建函数 ?then 来将布尔值转换为字符串形
+			${married?then("yes", "no")}
 		
 		* 也可以通过 ?c 直接输出'计算机'可以看懂的 true/false
 			${someBoolean?c}	
 
 		* 可以使用设置参数 boolean_format 来为 FreeMarker 配置默认的布尔值格式,这样就可以直接输出 boolean 类型的变量:${married}
+
+		* string("true","false") 也可以用于格式化bool变量,但是已经废弃了。
 	
 
 
