@@ -26,6 +26,75 @@
 
 		${foo(1,2,3,4,5)}		//15
 
+	# 参数类型的转换
+		* 参数类型都是:TemplateModel 子类
+
+		* 字符串参数 func('123');
+			SimpleScalar simpleScalar = ((SimpleScalar)arguments.get(0));
+			simpleScalar.getAsString() //simpleScalar.toString();
+		
+		* 数值参数 func(123);
+			SimpleNumber simpleNumber = ((SimpleNumber)arguments.get(0));
+			simpleNumber.getAsNumber().intValue();
+			simpleNumber.getAsNumber().longValue();
+		
+		* 序列参数 func([1,2,3]);
+			SimpleSequence simpleSequence = ((SimpleSequence)arguments.get(0));
+			TemplateModel value = param.get(0);	//这个value,可能是任意的常量类型(取决于你数组中元素的类型)
+			int size = param.size();			//数组长度
+			param.add(new Object());			//添加新的元素
+
+		*  Hash常量 func({'v1':'51515','v2':[1,2,3,4]})
+			TemplateHashModelEx2 templateHashModelEx2 = (TemplateHashModelEx2)arguments.get(0);
+			TemplateModel templateModel = templateHashModelEx2.get("Key");		//获取key
+			templateHashModelEx2.size();											//Hash长度
+			//迭代
+			KeyValuePairIterator keyValuePairIterator = templateHashModelEx2.keyValuePairIterator();
+			while(keyValuePairIterator.hasNext()) {
+				KeyValuePair keyValuePair = keyValuePairIterator.next();
+				TemplateModel key = keyValuePair.getKey();
+				TemplateModel value = keyValuePair.getValue();
+			}
+		
+		* Map 变量 
+			* 参数是 HashMap
+
+			SimpleHash simpleHash = (SimpleHash)arguments.get(0);
+			TemplateModel templateModel = simpleHash.get("Key");		//获取key
+			simpleHash.size();											//Hash长度
+			simpleHash.containsKey("Key");								//判读key是否存在
+			simpleHash.put("age", 23);									//添加元素到map
+			simpleHash.isEmpty();
+			//迭代
+			KeyValuePairIterator keyValuePairIterator = simpleHash.keyValuePairIterator();
+			while(keyValuePairIterator.hasNext()) {
+				KeyValuePair keyValuePair = keyValuePairIterator.next();
+				TemplateModel key = keyValuePair.getKey();
+				TemplateModel value = keyValuePair.getValue();
+			}
+		
+		*  对象变量
+			* 参数是Java对象
+			StringModel stringModel = (StringModel)arguments.get(0);
+			TemplateModel templateModel = stringModel.get("");
+			TemplateModel templateModel2 = stringModel.getAPI();
+			String string = stringModel.getAsString();
+			TemplateCollectionModel templateCollectionModel = stringModel.keys();
+			int size = stringModel.size();
+
+		*  Date 参数 func(.now);
+			SimpleDate simpleDate = (SimpleDate)arguments.get(0);
+			Date date = simpleDate.getAsDate();		//获取日期
+			int simpleDate.getDateType();			//获取日期的类型
+
+			* dateType 常量
+				TemplateDateModel.UNKNOWN;	
+				TemplateDateModel.TIME;
+				TemplateDateModel.DATE;
+				TemplateDateModel.DATETIME;
+
+		
+		* 这设计感觉咋那么瓜皮???
 
 ----------------------------
 编码实现					|
