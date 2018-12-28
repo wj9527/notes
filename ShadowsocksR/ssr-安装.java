@@ -7,9 +7,9 @@
 	* ./shadowsocksR.sh 2>&1 | tee shadowsocksR.log
 		- 输入密码
 		- 端口
-		- 加密方式
-		- 插件
-		- 混淆
+		- 加密方式(rc4-md5)
+		- 插件(auth_aes128_md5)
+		- 混淆(http_simple)
 
 # 常用命令
 	启动    /etc/init.d/shadowsocks start
