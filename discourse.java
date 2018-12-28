@@ -43,7 +43,6 @@ docker-engine
 			yum remove docker-ce
 			rm -rf /var/lib/docker
 	
-	# 
 
 ---------------------
 launcher Î¬»¤		 |
