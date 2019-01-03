@@ -51,12 +51,12 @@ acl权限管理	- auth		 |
 -------------------------
 	# auth不使用任何 id ,代表任何已确认用户
 	# 在执行授权之前,必须先添加用户
-		addauth digest zookeeper:zookeeper
+		addauth digest user:pass
 
-		* zookeeper:zookeeper 用户名和密码
+		* user:pass 用户名和密码(明文)
 	
 	#  设置auth授权
-		setAcl path auth:::rwadc
+		setAcl path auth::rwadc
 
 		* path 节点
 		* auth 授权方式
@@ -71,15 +71,18 @@ acl权限管理	- auth		 |
 		'digest,'root:qiTlqPLK7XM2ht3HMn02qRpkKIE=
 		: cdrwa
 
-	# 先添加用户到系统,系统帮你进行sha1 和 base64编码
-	# 授权节点,不需要指定用户名和密码
 
 -------------------------
 acl权限管理	- digest	 |
 -------------------------
 	# 跟 auth 差不多
 	# 在设置授权的时候执行设置
+	# 添加用户到ZK
+		addauth digest user:pass
 
+		* user:pass 用户名和密码(明文)
+	
+	#  设置digest授权
 		setAcl path digest:user:pass:rwadc
 
 		* path 节点
@@ -87,9 +90,6 @@ acl权限管理	- digest	 |
 		* auth 授权方式
 		* rwadc 表示权限:read,write,admin,delete,create
 	
-	# 添加到zk
-		addauth digest user:pass
-		* user:pass 用户名和密码
 
 	#  查看acl授权
 		'digest,'zookeeper:4lvlzsipXVaEhXMd+2qMrLc0at8=
@@ -97,5 +97,9 @@ acl权限管理	- digest	 |
 		'digest,'root:qiTlqPLK7XM2ht3HMn02qRpkKIE=
 		: cdrwa
 	
-	# 先执行授权,设置的密码需要自己去经过 sha1 和 base64编码
 	# 再把用户添加到系统
+	# 先执行授权,设置的密码需要自己去经过 sha1 和 base64编码
+	# 可以使用zk提供的客户端工具类来获取到加密后的密码
+		String digest = DigestAuthenticationProvider.generateDigest("kevin:123456");
+		//kevin:GSivD5W51c7Wm5vFWnFp1IYOVTY= 冒号后面就是密码加密后的密文
+	

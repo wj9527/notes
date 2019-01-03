@@ -57,7 +57,7 @@ zookeeper							 |
 		data
 			*  数据
 		acl
-			* ACL权限,Ids 有预定于
+			* ACL权限,ZooDefs.Ids 有预定义一大堆的权限,其中:OPEN_ACL_UNSAFE 表示允许所有权限
 
 		createMode
 			* 数据类型,CreateMode 枚举
@@ -133,7 +133,8 @@ zookeeper							 |
 			private String scheme;
 			private String id;
 		}
-			* 授权类型和对象
+			
+		* 授权类型和对象
 
 		ZooDefs.Perms{
 			int READ = 1 << 0;
@@ -143,13 +144,15 @@ zookeeper							 |
 			int ADMIN = 1 << 4;
 			int ALL = READ | WRITE | CREATE | DELETE | ADMIN;
 		}
-			* 权限常量
+			
+		* 权限常量
 
 		ACL{
 			private int perms;
 			private Id id;
 		}
-			* ACL对象
+		
+		* ACL对象
 			
 	
 	# 当schema为digest时ACL权限的创建
