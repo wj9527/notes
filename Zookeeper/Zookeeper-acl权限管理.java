@@ -49,7 +49,8 @@ acl权限管理				 |
 -------------------------
 acl权限管理	- auth		 |
 -------------------------
-	# auth不使用任何 id ,代表任何已确认用户
+	# 这种授权方式,是把一个节点授权给系统所有认证的用户
+		* 一对多
 	# 在执行授权之前,必须先添加用户
 		addauth digest user:pass
 
@@ -75,9 +76,9 @@ acl权限管理	- auth		 |
 -------------------------
 acl权限管理	- digest	 |
 -------------------------
-	# 跟 auth 差不多
-	# 在设置授权的时候执行设置
-	# 添加用户到ZK
+	# 这种授权方式,是把一个节点授权给系统指定的用户
+		* 一对一
+	# 先把添加用户到ZK
 		addauth digest user:pass
 
 		* user:pass 用户名和密码(明文)
@@ -94,12 +95,16 @@ acl权限管理	- digest	 |
 	#  查看acl授权
 		'digest,'zookeeper:4lvlzsipXVaEhXMd+2qMrLc0at8=
 		: cdrwa
-		'digest,'root:qiTlqPLK7XM2ht3HMn02qRpkKIE=
-		: cdrwa
 	
+	# 这个操作其实就是把系统中已经存在的用户,授权给一个指定的节点
+		* 执行 digest 授权的时候,不用明文密码,更加的安全
+		* 获取用户的密码,如果不知道密码,可以通过:getAcl 去获取用户有权限的节点的权限信息中获取
+		* 如果知道密码,自己可以计算出来
+
 	# 再把用户添加到系统
 	# 先执行授权,设置的密码需要自己去经过 sha1 和 base64编码
 	# 可以使用zk提供的客户端工具类来获取到加密后的密码
 		String digest = DigestAuthenticationProvider.generateDigest("kevin:123456");
-		//kevin:GSivD5W51c7Wm5vFWnFp1IYOVTY= 冒号后面就是密码加密后的密文
+		//kevin:GSivD5W51c7Wm5vFWnFp1IYOVTY= 
+		//冒号后面就是密码加密后的密文
 	
