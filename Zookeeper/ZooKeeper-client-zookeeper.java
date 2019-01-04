@@ -36,14 +36,13 @@ zookeeper							 |
 		* sessionTimeout 超时时间单位为毫秒
 		* Watcher
 			* 是一个事件监听,负责监听处理事件
-		* sessionId
-			* 会话id
-		* sessionPasswd
-			* 会话密钥
 		* canBeReadOnly 
 			* 用于标识当前会话是否支持"read-only"模式
 			* 默认情况下,在ZK集群中,一个机器如果和集群中的半数以及半数以上的机器失去连接,那么这个机器将不再处理客户端请求(读请求+写请求均不处理)
 			* 但是有时候我们希望在发生此类故障时不影响读取请求的处理,这个就是zk的 read-only 模式
+		* sessionId
+		* sessionPasswd
+			* 会话id和会话密钥
 		
 -------------------------------------
 节点的操作							 |

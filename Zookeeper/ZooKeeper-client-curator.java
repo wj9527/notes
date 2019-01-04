@@ -7,3 +7,4 @@ curator								 |
 			<artifactId>curator-framework</artifactId>
 			<version>4.1.0</version>
 		</dependency>
+
