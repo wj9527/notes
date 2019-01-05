@@ -75,7 +75,8 @@ Zookeeper节点属性		|
 
 	cversion
 		* 子节点版本号
-		* 当自节点有变化(cud)的时候,该值+1
+		* 当自节点有变化的时候,该值+1
+		* 仅仅是添加,删除子节点的时候会影响该值,任意子节点本身都数据变化都不会影响它
 
 	aclVersion
 		* CAL版本号
@@ -85,7 +86,7 @@ Zookeeper节点属性		|
 
 	mZxid
 		* Znode被修改时的事务id,也就是每次对Znode的修改都会更新mZxid
-		* 对于ZK来说,每次的变化都会产生一个唯一的事务id - zxid(Zookeeper Transaction Id)
+		* 对于ZK来说,每次的变化(操作)都会产生一个唯一的事务id - zxid(Zookeeper Transaction Id)
 		* 通过zxid可以确定更新操作的先后顺序
 			- 例如 zxid1 < zxid2 说明zxid1的操先于zxid2发生
 		* zxid在集群中全局唯一
@@ -98,7 +99,7 @@ Zookeeper节点属性		|
 		* 节点创建的时间戳
 
 	mtime
-		* 节点最后一次更新发生的时间戳
+		* 节点最后一次数据更新发生的时间戳
 	
 	ephemeralOwner
 		* 如果节点为临时节点,那么该值表示与其绑定的sessionId
