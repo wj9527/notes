@@ -1,15 +1,12 @@
 ----------------------------
 docker 命令					|
 ----------------------------
-	docker ps
-	docker images
-	docker login
+	docker help
+		* 查看所有的命令帮助
 
-	docker tag [image] [username]/[repository]:[tag]
+	docker info
+		* 查看docker的基本配置信息
 	
-	docker push [username]/[repository]:[tag]
-
-
 
 
 docker build -t friendlyname .# 使用此目录的 Dockerfile 创建镜像
