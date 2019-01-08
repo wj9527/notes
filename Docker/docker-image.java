@@ -1,16 +1,40 @@
 -------------------------
 image					 |
 -------------------------
+	# ²éÑ¯¾µÏñ
+		docker search [name]
+			name
+				* ²éÑ¯Ö¸¶¨µÄ¾µÏñ
+		¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª
+		NAME                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+		mysql                                  MySQL is a widely used, open-source relation¡­   7649                [OK]                [ok]
+		¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª
+		NAME Ãû³Æ
+		DESCRIPTION ÃèÊö
+		STARS ÐÇÐÇÊýÁ¿(ÊÜµ½»¶Ó­µÄ³Ì¶È)
+		OFFICIAL ÊÇ·ñÊÇ¹Ù·½¹ÜÀíµÄ
+		AUTOMATED ÊÇ·ñDockerHub×Ô¶¯¹¹½¨µÄ
+
+
 	# ²é¿´±¾µØµÄ¾µÏñ(ÁÐ³ö¾µÏñ)
-		docker images
+		docker images [name]
+			name
+				* ½ö½öÁÐ³ö±¾µØµÄ¾µÏñ
+			
 		--------------------------------------------------------------------------------------
 		REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE
 		hello-world           latest              fce289e99eb9        6 days ago          1.84kB
 		nginx                 latest              7042885a156a        9 days ago          109MB
 		--------------------------------------------------------------------------------------
-
+	
 	# ¾µÏñÀ­È¡
 		docker pull [name]:[tag]
+			name
+				* ¾µÏñÃû³Æ
+			tag
+				* ±êÇ©(°æ±¾ºÅ)
+			-a
+				* ÏÂÔØÖ¸¶¨¾µÏñµÄËùÓÐtag(°æ±¾)µ½±¾µØ
 	
 	# É¾³ý¾µÏñ
 		docker rmi [name]
