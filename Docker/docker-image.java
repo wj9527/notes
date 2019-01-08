@@ -40,6 +40,8 @@ image					 |
 		docker rmi [name]
 			* 仅仅只会删除 last 版本
 			* 也可以把name换成指定的image id
+			* 删除所有的镜像
+				docker rmi `docker images -q`
 
 	
 	# 导出镜像

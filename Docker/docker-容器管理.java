@@ -38,6 +38,10 @@
 			-e
 				* 指定环境变量
 					-e "WEB_PORT=8080"
+			-v
+				* 设置共享卷 -v [宿主机目录]:[虚拟机目录]
+					-v /usr/local/website:/var/www/html/website
+				* 如果目录不存在,docker会自动的创建
 
 			--name
 				* 自定义名称(多个运行的容器名称不能重复)

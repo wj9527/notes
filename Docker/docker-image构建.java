@@ -19,11 +19,9 @@ Commit					|
 		* 再把这个修改过的容器作为新的镜像提交到本地
 	
 
-	docker commit [id] [respository]/[name]:[tag]
+	docker commit [id] [name]:[tag]
 		id
 			* 容器id
-		respository
-			* 仓库名
 		name
 			* 镜像名称
 		tag
@@ -44,11 +42,12 @@ Build					|
 ------------------------
 	# 根据Dockerfile构建
 
-	docker build -t [repository]:[name]:[tag] .
-		repository
-		name
-		tag
-			* 仓库,镜像名称,标签
+	docker build -t [name]:[tag] .
+		-t 
+			* 指定镜像名称,标签
+				-t foo:1
+				-t /res/foo:1
+
 			* 如果未指定标签,则默认会添加一个 last 的标签
 		
 		-f	
@@ -100,3 +99,13 @@ Build					|
 ------------------------
 推送到hub				|
 ------------------------
+	docker push [user]/[image]:[tag]
+		user
+			* 用户名
+		imgae tag
+			* image 和 tag
+		
+		* 会根据image的名称在仓库的跟路径下创建 /image 仓库
+	
+
+		
