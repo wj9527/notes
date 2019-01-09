@@ -46,27 +46,23 @@ Spring boot 方法二			 |
 		 */
 		@Configuration
 		public class HttpMessageConverterConfiguration {
-			/**
-			 * FastJsonpHttpMessageConverter4
-			 * @return
-			 */
+
 			@Bean
-			public HttpMessageConverters httpMessageConverter(){
-				FastJsonpHttpMessageConverter4 fastJsonpHttpMessageConverter4 = new FastJsonpHttpMessageConverter4();
-				fastJsonpHttpMessageConverter4.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+			public HttpMessageConverters fastJsonHttpMessageConverter() {
+
+				FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
+
 				FastJsonConfig fastJsonConfig = new FastJsonConfig();
-				fastJsonConfig.setCharset(StandardCharsets.UTF_8);
-				fastJsonConfig.setSerializerFeatures(
-						SerializerFeature.PrettyFormat,				//格式化
-						SerializerFeature.WriteMapNullValue,		//输出null字段
-						SerializerFeature.QuoteFieldNames,			//使用双引号
-						SerializerFeature.WriteNullListAsEmpty);	//把null集合/数组输出为[]
 				fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-				fastJsonpHttpMessageConverter4.setFastJsonConfig(fastJsonConfig);
-				return new HttpMessageConverters(fastJsonpHttpMessageConverter4);
+				fastJsonConfig.setCharset(StandardCharsets.UTF_8);
+				fastJsonConfig.setSerializerFeatures(SerializerFeature.DisableCircularReferenceDetect);
+
+				fastJsonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+				fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
+
+				return new HttpMessageConverters(fastJsonHttpMessageConverter);
 			}
-			
-			/**
+					/**
 			 * 跨域支持
 			 * @return
 			 */

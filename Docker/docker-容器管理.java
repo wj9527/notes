@@ -42,6 +42,8 @@
 				* 设置共享卷 -v [宿主机目录]:[虚拟机目录]
 					-v /usr/local/website:/var/www/html/website
 				* 如果目录不存在,docker会自动的创建
+				* 还可以添加权限来控制是否只读
+					-v /usr/local/website:/var/www/html/website:ro
 
 			--name
 				* 自定义名称(多个运行的容器名称不能重复)
