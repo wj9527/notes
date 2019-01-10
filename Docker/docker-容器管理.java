@@ -63,6 +63,11 @@
 			--entrypoint
 				* 覆写的是Dockerfile里面的 ENTRYPOINT 指令
 				* 会把 [cmd] 当作参数传递给该命令执行
+			
+			--net
+				* 指定容器运行的网络
+					--net=mynet
+				* 该网络需要先创建
 
 			image
 				* 镜像
