@@ -30,3 +30,13 @@
 	
 	# 重启服务
 		systemctl restart docker
+
+
+------------------------
+私有仓库				|
+------------------------
+	docker run -p5000:5000 registry
+
+	docker push xx.com:8080/kevinblandy/app:1
+	docker pull xx.com:8080/kevinblandy/app:1
+	docker run xx.com:8080/kevinblandy/app:1

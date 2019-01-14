@@ -44,6 +44,19 @@
 				* 如果目录不存在,docker会自动的创建
 				* 还可以添加权限来控制是否只读
 					-v /usr/local/website:/var/www/html/website:ro
+			
+			-h
+				* 指定容器的主机名,默认主机名使用的是容器id
+			
+			--rm
+				* 该参数表示一次性容器,当容器关闭后就会被删除
+
+			--volumes-from
+				* 把指定容器设置的所有卷都加入进创建的容器里面
+					--volumes-from app1
+				* 复用指定容器的卷
+				* 该命令可以执行多次,表示从多个容器复用卷
+					--volumes-from app1 --volumes-from app2
 
 			--name
 				* 自定义名称(多个运行的容器名称不能重复)
@@ -64,10 +77,18 @@
 				* 覆写的是Dockerfile里面的 ENTRYPOINT 指令
 				* 会把 [cmd] 当作参数传递给该命令执行
 			
+			--privileged
+				* 启动Dokcer的特权模式
+				* 这种模式下允许虚拟机以,宿主机具有(几乎)的所有能力来运行容器,包括内核特性和设备访问
+				* 想要在Docker中运行Docker必要的魔法
+
 			--net
 				* 指定容器运行的网络
 					--net=mynet
 				* 该网络需要先创建
+			--cidfile
+				* 可以把容器的id存储到指定的文件
+					--cidfile=/tmp/containerid
 
 			image
 				* 镜像
@@ -186,6 +207,7 @@
 				* 容器name或者id
 			port
 				* 容器的开放的端口
+				* 必须在容器启动状态下才能查看
 	
 			
 		
