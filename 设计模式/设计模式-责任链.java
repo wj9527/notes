@@ -82,3 +82,32 @@ public static void main(String[] args) {
 	contentTypeInterceptor.setNext(new RemoteIpInterceptor());
 	contentTypeInterceptor.chain(new HttpRequest("application/json","120.0.0.1"));
 }
+
+
+
+----------------------------
+python  µœ÷					|
+----------------------------
+
+class ApplicationFilterChain(object):
+    def __init__(self,filters):
+        self.filters = filters
+        self.position = 0
+        self.size = len(filters)
+        
+    def doFilter(self,request,response):
+        while self.position < self.size:
+            self.filters[self.position].doFilter(request,response,self)
+            self.position += 1
+
+class Filter(object):
+    def __init__(self,name):
+        self.name = name
+    def doFilter(self,request,response,chain):
+        print("filter ÷¥––:"+self.name)
+
+filters = [Filter("3"),Filter("2"),Filter("4"),Filter("1")]
+
+chain = ApplicationFilterChain(filters)
+
+chain.doFilter("request", "response")

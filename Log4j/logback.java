@@ -4,7 +4,7 @@ logback					|
 	# log4j作者的又一个力作
 	# logback当前分成三个模块：
 		logback-core
-		logback- classic
+		logback-classic
 		logback-access
 		* logback-core是其它两个模块的基础模块。
 		* logback-classic是log4j的一个 改良版本。

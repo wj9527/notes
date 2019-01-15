@@ -89,6 +89,9 @@
 			--cidfile
 				* 可以把容器的id存储到指定的文件
 					--cidfile=/tmp/containerid
+			
+			--link
+				* ?
 
 			image
 				* 镜像
