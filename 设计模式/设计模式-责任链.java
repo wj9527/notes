@@ -89,6 +89,7 @@ public static void main(String[] args) {
 python 实现					|
 ----------------------------
 
+
 class ApplicationFilterChain(object):
     def __init__(self,filters):
         self.filters = filters
@@ -96,17 +97,21 @@ class ApplicationFilterChain(object):
         self.size = len(filters)
         
     def doFilter(self,request,response):
-        while self.position < self.size:
-            self.filters[self.position].doFilter(request,response,self)
+        if self.position < self.size:
+            position = self.position
             self.position += 1
+            self.filters[position].doFilter(request,response,self)
+            
 
 class Filter(object):
     def __init__(self,name):
         self.name = name
     def doFilter(self,request,response,chain):
-        print("filter 执行:"+self.name)
+        print("%s 执行 %s %s"%(self.name,request,response ));
+        if self.name != '5':
+            chain.doFilter(request, response)
 
-filters = [Filter("3"),Filter("2"),Filter("4"),Filter("1")]
+filters = [Filter("5"),Filter("7"),Filter("9"),Filter("2")]
 
 chain = ApplicationFilterChain(filters)
 
