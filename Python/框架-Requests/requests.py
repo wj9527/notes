@@ -18,6 +18,7 @@ requests	 执行请求		|
 		requests.put()
 		requests.heade()
 		requests.options()
+		requests.patch()
 	
 	# 执行请求的参数
 		第一个参数
@@ -159,7 +160,7 @@ multipart/form-data	请求	|
 		}
 
 		# 执行请求
-		response = requests.post(api, files = requestBody,headers = {'accessKey':accessKey,'sign':sign})
+		response = requests.post('http://xxxx/upload', files = requestBody)
 
 		# 服务器响应JSON
 		print(response.json())
