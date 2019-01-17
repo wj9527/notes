@@ -29,6 +29,7 @@
 		}
 	
 	# ÖØÆô·şÎñ
+		systemctl daemon-reload
 		systemctl restart docker
 
 

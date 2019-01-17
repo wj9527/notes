@@ -20,6 +20,14 @@ image					 |
 		docker images [name]
 			name
 				* 仅仅列出本地的镜像
+			-a
+				* 显示所有的镜像
+
+			--digest
+				* 显示摘要信息
+			
+			--no-trunc
+				* 显示完整信息
 			
 		--------------------------------------------------------------------------------------
 		REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE

@@ -7,6 +7,26 @@ docker 命令					|
 	docker info
 		* 查看docker的基本配置信息
 	
+----------------------------
+其他						|
+----------------------------
+	# 命令可以参数化
+		*  使用 $(cmd)
+			docker rmi $(docker images -q)
+		
+		*  ``也可以
+			docker rm `docker ps -aq`
+
+
+
+
+
+
+
+
+
+
+
 
 
 docker build -t friendlyname .# 使用此目录的 Dockerfile 创建镜像
