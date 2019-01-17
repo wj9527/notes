@@ -83,6 +83,7 @@
 			
 			--privileged
 				* 启动Dokcer的特权模式
+					--privileged=true
 				* 这种模式下允许虚拟机以,宿主机具有(几乎)的所有能力来运行容器,包括内核特性和设备访问
 				* 这是想要在Docker中运行Docker必要的魔法
 
