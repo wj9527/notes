@@ -22,7 +22,7 @@
 		* 修改root的密码,重复输入两次
 
 	sudo passwd --unlock root
-		* 运行root用户登录
+		* 允许root用户登录
 	
 	su root
 		* 切换root用户
@@ -39,16 +39,16 @@
 	
 # 扩展可用空间
 	sudo raspi-config
-	Advanced Options
-	Expand Filesystem
+		Advanced Options
+			Expand Filesystem
 	
 	df -lh
 
 # 更改时区
 	sudo raspi-config
-	Localisaion Options
-	Change Local
-	Change Timezone
+		Localisaion Options
+			Change Local
+			Change Timezone
 
 	timedatectl 
 	Time zone: Asia/Shanghai (CST, +0800)
@@ -64,12 +64,10 @@
 
 	vim /etc/apt/sources.list
 		* 注释所有,添加如下两行
-			deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib
-			deb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib
+			deb http://mirrors.aliyun.com/raspbian/raspbian/ jessie main non-free contrib rpi
+			deb-src http://mirrors.aliyun.com/raspbian/raspbian/ jessie main non-free contrib rpi
 
-	vim /etc/apt/sources.list.d/raspi.list
-		deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ jessie main non-free contrib
-		deb-src http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ jessie main non-free contrib
+
 
 # 更新源,升级已经安装的包,升级系统
 	apt-get update

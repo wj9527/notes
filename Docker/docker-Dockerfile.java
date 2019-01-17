@@ -5,7 +5,6 @@ Dockerfile				|
 	# Docker大体上按照如下流程执行Dockerfile中的命令
 		* Docker 从基础镜像运行一个人容器
 		* 执行一条指令,对容器做出修改
-		* 执行类似于 Docker Commit 的操作,提交一个新的镜像层
 		* Docker再基于刚才提交的镜像运行一个新容器
 		* 执行Dockerfile中的下一条指令直到所有指令都执行完毕
 
@@ -16,14 +15,17 @@ Dockerfile				|
 	# 第一条之类必须是: FROM
 		* 表示基础镜像,它必须指定一个已经存在的镜像
 	
-
+	# 参数可以通过 $ 引用
+		ENV DIR /opt/app
+		WORKDIR $DIR
+	
 ------------------------
 Dockerfile				|
 ------------------------
 	FROM
 		* 基本的镜像
 			FROM centos:7
-
+		
 	MAINTAINER
 		* 作者信息
 			MAINTAINER KevinBlandy "747692844@qq.com"
@@ -113,6 +115,7 @@ Dockerfile				|
 			ADD a.zip /usrl/local/a/
 		
 		* 该指令会让构建缓存失效,如果通过ADD指令向镜添加一个文件或者目录,那么Df文件中的后续指令不能继续使用之前的缓存
+
 	COPY
 		* 跟ADD一样,唯一不同的时候,如果cp的时候压缩文件,不会进行解压操作
 
@@ -157,7 +160,7 @@ Dockerfile				|
 			
 
 
-	
-
-
-	
+------------------------------
+scratch						  |
+------------------------------
+	# 元镜像
