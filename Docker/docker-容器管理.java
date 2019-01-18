@@ -176,6 +176,9 @@
 			* 删除所有容器
 				docker rm `docker ps -a -q`
 	
+	# 删除所有已经停止的容器
+		docker container prune
+
 	# 查看容器内的进程
 		docker top [id]
 			id
@@ -220,7 +223,22 @@
 			port
 				* 容器的开放的端口
 				* 必须在容器启动状态下才能查看
+	
+	# 查看容器的改变记录
+		docker diff [id]
+			id
+				* 容器name或者id
+	
+	# 容器导出
+		docker export [id] > xxxtar
 
+	# 容器导入
+		docker import
+
+		* 可以通过指定 URL 或者某个目录来导入，例如
+			docker import http://example.com/exampleimage.tgz example/imagerepo
+
+			
 ----------------------------
 其它						|
 ----------------------------

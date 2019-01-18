@@ -22,6 +22,7 @@ image					 |
 				* 仅仅列出本地的镜像
 			-a
 				* 显示所有的镜像
+				* 中间层的镜像也会显示出来
 
 			--digest
 				* 显示摘要信息
@@ -59,3 +60,17 @@ image					 |
 		docker load < /[path].image
 	
 	
+
+-------------------
+虚悬镜像			|
+-------------------
+	# 关于
+		这个镜像原本是有镜像名和标签的,原来为 mongo:3.2,随着官方镜像维护,发布了新版本后,重新 docker pull mongo:3.2 时,mongo:3.2 这个镜像名被转移到了新下载的镜像身上
+		而旧的镜像上的这个名称则被取消,从而成为了 <none>
+		除了 docker pull 可能导致这种情况,docker build 也同样可以导致这种现象,由于新旧镜像同名,旧镜像名称被取消,从而出现仓库名,标签均为 <none> 的镜像
+		这类无标签镜像也被称为 虚悬镜像(dangling image) ,可以用下面的命令专门显示这类镜像
+
+			docker image ls -f dangling=true
+
+	# 删除虚悬镜像
+		docker image prune

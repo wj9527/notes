@@ -29,7 +29,7 @@ Commit					|
 		-m
 			* 备注信息
 				-m "这是备注信息"
-		--a
+		-a
 			* 指定作者信息
 				-a "KevinBlandy"
 			
@@ -53,6 +53,13 @@ Build					|
 		-f	
 			*  如果当前目录下没有:Dockerfile文件,那么就要通过该参数指定Dockerfile的路径
 			*  而且,如果是通过该参数指定的文件,非必须命名为:Dockerfile
+		
+		--target
+			* 只构建某一阶段的镜像
+			* 该选项值为 FROM 的别名
+				FROM golang:1.9-alpine as builder
+				docker build --target builder -t username/imagename:tag .
+
 
 		--build-arg
 			* 为Df文件中声明的配置项(ARG)赋值
@@ -93,7 +100,8 @@ Build					|
 			<missing>           4 weeks ago         /bin/sh -c #(nop)  LABEL org.label-schema.sc…   0B                  
 			<missing>           4 weeks ago         /bin/sh -c #(nop) ADD file:6f877549795f4798a…   202MB         
 			————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-				
+		
+		* 也可以查看某个镜像的修改记录
 			
 		
 ------------------------

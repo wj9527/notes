@@ -25,6 +25,12 @@ Dockerfile				|
 	FROM
 		* 基本的镜像
 			FROM centos:7
+		* FROM 其实可以出现多次,表示多个阶段的构建
+		* 可以为某个阶段起别名
+			FROM golang:1.9-alpine as builder
+			docker build --target builder -t username/imagename:tag .
+
+			
 		
 	MAINTAINER
 		* 作者信息
@@ -89,6 +95,7 @@ Dockerfile				|
 	USER
 		* 指镜像会以哪个用户去执行
 			USER root
+		* 用户必须先建立好,可以使用 RUN 指令先创建用户
 		* 可以指定用户名,uid,用户组,gid,以及各种组合
 			USER user
 			USER user:group
@@ -118,7 +125,16 @@ Dockerfile				|
 
 	COPY
 		* 跟ADD一样,唯一不同的时候,如果cp的时候压缩文件,不会进行解压操作
-
+		* 支持通配符,规则要满足 Go 的 filepath.Match 规则
+			COPY hom* /mydir/
+			COPY hom?.txt /mydir/
+		* 不仅仅是从文件目录,还可以从其他的镜像复制文件
+			COPY --from=imgae:tag /source /target
+			COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
+		
+		* 也可以从指定的构建阶段复制
+			COPY --from=buildName /source /target
+	
 
 	LABEL
 		*  为Docker镜像添加元数据信息,k=v形式展示
@@ -134,6 +150,8 @@ Dockerfile				|
 		
 	ARG
 		* 可以在docker build命令运行时候传递构建运行时的变量
+		* 它的作用就是定义一了一堆变量,这些变量可以在df文件中被引用
+		* 但是它们的值,是在执行构建的时候才通过命名来初始化
 		* 在构建时使用 --build-arg,用户只能在构建时指定Df文件中定义过的参数
 			ARG build
 			docker build ... --build-arg build=1234 ....
@@ -154,11 +172,22 @@ Dockerfile				|
 
 		
 		
-					
-		
-		
+	HEALTHCHECK 
+		* 设置检查容器健康状况的命令,告诉 Docker 应该如何进行判断容器的状态是否正常
+			HEALTHCHECK [options] CMD [命令]
+		* 如果基础镜像有健康检查指令,设置为NULL可以屏蔽掉其健康检查指令
+			HEALTHCHECK NONE
+		*  一个镜像指定了 HEALTHCHECK 指令后,用其启动容器,初始状态会为 starting,在 HEALTHCHECK 指令检查成功后变为 healthy,如果连续一定次数失败,则会变为 unhealthy
+		*  支持下列选项：
+			--interval=<间隔>	
+				两次健康检查的间隔，默认为 30 秒
+			--timeout=<时长>	
+				健康检查命令运行超时时间,如果超过这个时间,本次健康检查就被视为失败，默认 30 秒
+			--retries=<次数>
+				当连续失败指定次数后,则将容器状态视为 unhealthy,默认 3 次
+		* 该指令只能出现一次,如果出现多次的话,只有最后一个生效
 			
-
+		
 
 ------------------------------
 scratch						  |
