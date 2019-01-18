@@ -48,6 +48,7 @@
 				* 如果目录不存在,docker会自动的创建
 				* 还可以添加权限来控制是否只读:ro(readOnly)
 					-v /usr/local/website:/var/www/html/website:ro
+				* 可以有多个 -v 参数,来表示要设置多个共享卷
 			
 			-h
 				* 指定容器的主机名,默认主机名使用的是容器id
