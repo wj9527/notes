@@ -29,8 +29,18 @@ Spring-boot 单个文件		|
 	
 	# 通过配置来限制上传大小
 		spring.servlet.multipart.max-file-size=30MB
+			# 最大的单个文件大小
 		spring.servlet.multipart.max-request-size=30MB
+			# 最大的请求大小
 		spring.servlet.multipart.enabled=true
+			# 是否支持文件上传
+		spring.servlet.multipart.location=/temp
+			# 磁盘临时目录
+		spring.servlet.multipart.resolve-lazily=false
+			# 是否延迟解析,默认 false
+		spring.servlet.multipart.file-size-threshold=0
+			# 文件大小阈值,当大于这个阈值时将写入到磁盘(临时目录),否则存在内存中.默认0
+
 
 ---------------------------
 Spring-boot 批量上传		|
