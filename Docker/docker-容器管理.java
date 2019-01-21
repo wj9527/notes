@@ -20,7 +20,7 @@
 				* 端口映射
 					-p [宿主机端口]:[容器端口]
 
-				* 如果一次性启动多个容器,那么只会有一个与宿主机绑定成功
+				* 可以有多个-p参数,表示绑定多个端口
 
 				* 如果存在多块网卡(多个ip),也可以指定
 					-p 127.0.0.1:8081:80
@@ -88,14 +88,20 @@
 				* 这种模式下允许虚拟机以,宿主机具有(几乎)的所有能力来运行容器,包括内核特性和设备访问
 				* 这是想要在Docker中运行Docker必要的魔法
 
-			--net
+			--net/--network
 				* 指定容器运行的网络
 					--net=mynet
 				* 该网络需要先创建
+				
+
 			--cidfile
 				* 可以把容器的id存储到指定的文件
 					--cidfile=/tmp/containerid
-			
+
+			--mount
+				* 挂载数据卷
+					 --mount source=[name],target=[source] [target]
+
 			--link
 				* ?
 
@@ -172,6 +178,9 @@
 			-f
 				* 可以删除运行时的容器
 				* 如果不添加该参数,则只能删除停止状态的容器
+			
+			-v
+				* 同时移除挂载的数据卷
 
 			* 删除所有容器
 				docker rm `docker ps -a -q`
@@ -224,6 +233,20 @@
 				* 容器的开放的端口
 				* 必须在容器启动状态下才能查看
 	
+	# 连接容器到指定的网络
+		docker network connect [net] [container]
+			container
+				* 指定的container容器
+			net
+				* 指定网络
+					
+	# 从指定的网络中断开容器连接
+		docker network connect [net] [container] 
+			container
+				* 指定的container容器
+			net
+				* 指定网络
+
 	# 查看容器的改变记录
 		docker diff [id]
 			id
