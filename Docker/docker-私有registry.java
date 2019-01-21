@@ -1,4 +1,31 @@
 -----------------------------------------
+docker-registry							 |
+-----------------------------------------
+	# 安装
+		docker run -d -p 5000:5000 --restart=always --name registry -v /usr/local/registry:/var/lib/registry registry
+	
+	# 为本地镜像添加标签
+		 docker tag [image] 127.0.0.1:5000/[image]:[tag]
+		
+	# 推送到本地仓库
+		docker push 127.0.0.1:5000/[image]:[tag]
+	
+	# 查看仓库中的镜像
+		curl 127.0.0.1:5000/v2/_catalog
+		{"repositories":["ubuntu"]}
+	
+	# 删除镜像
+		docker image rm 127.0.0.1:5000/[image]:[tag]
+	
+	# 让本网段的其他主机也能把镜像推送到私有仓库
+		* 直接推送会失败,因为Docker 默认不允许非 HTTPS 方式推送镜像
+		* 可以通过 Docker 的配置选项来取消这个限制
+		* 修改配置添加局域网的ip地址:/etc/docker/daemon.json
+			{
+			  "insecure-registries": ["192.168.199.100:5000" ]
+			}
+
+-----------------------------------------
 阿里云									 |
 -----------------------------------------
 	1. 登录阿里云Docker Registry
