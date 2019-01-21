@@ -104,16 +104,37 @@ Build					|
 		* 也可以查看某个镜像的修改记录
 			
 		
-------------------------
-推送到hub				|
-------------------------
-	docker push [user]/[image]:[tag]
-		user
-			* 用户名
-		imgae tag
-			* image 和 tag
-		
-		* 会根据image的名称在仓库的跟路径下创建 /image 仓库
-	
 
 		
+
+------------------------
+多阶段构建				|
+------------------------
+	# 关于多阶段构建
+		* 多个 FROM 指令并不是为了生成多根的层关系
+		* '最后生成的镜像，仍以最后一条 FROM 为准',之前的 FROM 会被抛弃,那么之前的FROM 又有什么意义呢
+		* 每一条 FROM 指令都是一个构建阶段,多条 FROM 就是多阶段构建,虽然最后生成的镜像只能是最后一个阶段的结果,但是,'能够将前置阶段中的文件拷贝到后边的阶段中'
+		* 这就是多阶段构建的最大意义
+
+	# 可以出现多个FROM,表示多个阶段
+		FROM image:1
+		FROM image:2
+		
+		* 可以通过 as 设置阶段的别名
+			FROM image:1 as build1
+	
+	# 复制操作,不仅仅是从文件目录,还可以从其他的镜像/构建阶段复制文件
+		*  从镜像复制
+			COPY --from=imgae:tag /source /target
+			COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
+		
+		* 也可以从指定的构建阶段复制
+			COPY --from=0 /source /target
+			
+			* 0 表示第一个阶段,也可以使用别名
+	
+	# 构建的时候,可以使用 --target 指定要构建的阶段
+		docker build --target builder ....
+	
+
+
