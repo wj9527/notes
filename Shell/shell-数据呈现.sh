@@ -136,4 +136,62 @@
 ----------------------------
 	# 可能不想显示脚本的输出,这在将脚本作为后台进程运行时很常见
 	# 可以把输出重定向到 /dev/null
+		ls > /dev/null
 	
+	# 快速的清空文件
+		cat /dev/null > file
+
+
+----------------------------
+创建临时文件				|
+----------------------------
+	# Linux使用/tmp目录来存放不需要永久保留的文件
+	# 大多数Linux发行版配置了系统在启动时自动删除/tmp目录的所有文件
+	
+	# 有个特殊命令可以用来创建临时文件, mktemp 命令可以在/tmp目录中创建一个唯一的临时文件
+		* shell会创建这个文件,但不用默认的 umask 值
+	
+	# 创建本地临时文件
+		*  mktemp 会在本地目录中创建一个文件
+		* 要用 mktemp 命令在本地目录中创建一个临时文件,只要指定一个文件名模板就行了
+		* 模板可以包含任意文本文件名,在文件名末尾加上6个 X 就行了
+			mktemp testing.XXXXXX
+		
+		* mktemp 命令会用6个字符码替换这6个 X ,从而保证文件名在目录中是唯一的
+	
+	# 在脚本中使用 mktemp 命令时,可能要将文件名保存到变量中,这样就能在后面的脚本中引用了
+		tempfile=$(mktemp test19.XXXXXX)
+		exec 3>$tempfile
+	
+	# 在/tmp 目录创建临时文件
+		* -t 选项会强制 mktemp 命令来在系统的临时目录来创建该文件
+		* mktemp 命令会返回用来创建临时文件的全路径,而不是只有文件名
+
+
+	# 创建临时目录
+		* -d 选项告诉 mktemp 命令来创建一个临时目录而不是临时文件
+	
+----------------------------
+记录消息					|
+----------------------------
+	# 将输出同时发送到显示器和日志文件,这种做法有时候能够派上用场
+	# 你不用将输出重定向两次,只要用特殊的 tee 命令就行
+		tee file
+		
+		* 它就像是一个一个T形的管道,可以同时往STDOUT和文件输出数据
+
+	#  tee 会重定向来自 STDIN 的数据,可以用它配合管道命令来重定向命令输出
+		date | tee testfil	# 会在屏幕输出,还会输出到文件
+
+	
+	#  tee 命令会在每次使用时覆盖输出文件内容
+		* 如果你想将数据追加到文件中,必须用 -a 选项
+		date | tee -a testfile
+	
+	# demo
+		tempfile=/usr/local/temp
+		echo "This is the start of the test" | tee $tempfile
+		echo "This is the second line of the test" | tee -a $tempfile
+		echo "This is the end of the test" | tee -a $tempfile
+
+
