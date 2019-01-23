@@ -173,3 +173,12 @@ multipart/form-data	请求	|
 		requestBody = {
 			'attachment': ('222.mp4',open('C:\\Users\\Administrator\\Desktop\\222.mp4', 'rb'),'audio/mp4', {'Expires': '0'})
 		}
+	
+	# 带多个同名参数(文件)的请求
+		requestBody = [
+			('name',(None,'KevinBlandy0')),
+			('name',(None,'KevinBlandy1')),
+			('name',(None,'KevinBlandy2')),
+			('files',('file1.jpg',open('C:\\Users\\Administrator\\Desktop\\QQ图片20180703102725.jpg', 'rb'))),
+			('files',('file2.jpg',open('C:\\Users\\Administrator\\Desktop\\微信图片_20180716103554.png', 'rb')))
+		]
