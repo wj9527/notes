@@ -46,6 +46,10 @@ Part
 	> getSubmittedFileName()
 		* 获取文件的名称,就是文件在磁盘系统中的名称
 		* servlet3.1新特性
+
+	> delete()
+		* 删除文件,包括删除缓存在磁盘的文件
+
 	
 四,得到Part
 Part p = request.getPart("name属性");
