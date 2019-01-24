@@ -19,6 +19,10 @@ socket选项					|
 		OOBINLINE
 			* 表示是否支持发送一个字节的TCP紧急数据
 
+	StandardSocketOptions 常量
+		* 对于 nio 的定义
+		
+
 ----------------------------
 socket选项-详解				|
 ----------------------------
