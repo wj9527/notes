@@ -185,7 +185,33 @@ OutputStreamWriter			|
 打印流						|
 ----------------------------
 	PrintWriter
+		PrintWriter(File file)
+		PrintWriter(File file, String csn)
+		PrintWriter(OutputStream out)
+		PrintWriter(OutputStream out, boolean autoFlush)
+		PrintWriter(Writer out)
+		PrintWriter(Writer out, boolean autoFlush)
+		PrintWriter(String fileName)
+		PrintWriter(String fileName, String csn)
+
 	PrintStream
+		PrintStream(File file)
+		PrintStream(File file, String csn)
+		PrintStream(OutputStream out)
+		PrintStream(OutputStream out, boolean autoFlush)
+		PrintStream(OutputStream out, boolean autoFlush, String encoding)
+		PrintStream(String fileName)
+		PrintStream(String fileName, String csn)
+
+
+	autoFlush: 是否自动刷新
+
+
+
+	* 此流不负责数据源,只负责数据目的
+	* 为其他输出流添加了功能
+	* 永远不会抛出IOException,但是可能抛出其他异常
+	* 两个打印流方法完全一致
 
 ----------------------------
 管道流						|
