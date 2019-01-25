@@ -15,7 +15,6 @@ ServerSocket - api	   |
 	 void bind(SocketAddress endpoint)
 	 void bind(SocketAddress endpoint, int backlog)
 		* 绑定到地址,backlog指定最大等待链接的数量,超过该数量的客户端连接会抛出异常
-		*                          
 
 	 void close()
 	 ServerSocketChannel getChannel()

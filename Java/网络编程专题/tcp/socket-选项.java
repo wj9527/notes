@@ -56,9 +56,11 @@ socket选项-详解				|
 		* socket api
 			void setSoTimeout(int timeout) 
 			int getSoTimeout()
+
 		* 在 InputStream 执行 read() 数据的时候,如果没有数据就会等待
 		* 如果超过 SO_TIMEOUT 时间还没有数据,就抛出异常
 		* 该api必须在读取数据之前设置才有效,当抛出了:SocketTimeoutException,连接并没有断开,可以尝试再次的读取数据
+		* 包括 accept() Api,超过该时间限制没有新的连接时也会异常
 	
 	SO_LINGER
 		* 控制socket的关闭行为

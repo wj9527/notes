@@ -1,6 +1,7 @@
 -----------------------------
 ¹¹Ôìº¯Êý					 |
 -----------------------------
+	public Socket()
 	Socket(Proxy proxy) 
 	Socket(String host, int port)throws UnknownHostException, IOException
 	Socket(String host, int port, InetAddress localAddr,int localPort) throws IOException
