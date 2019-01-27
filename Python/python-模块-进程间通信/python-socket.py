@@ -39,6 +39,9 @@ socket-模块方法					|
 	
 	str gethostname()
 			* 获取本地主机名
+		
+	None setdefaulttimeout()
+			* 设置全局的连接超时时间
 
 --------------------------------
 socket-socket					|
