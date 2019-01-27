@@ -87,7 +87,10 @@ socket-socket					|
 		None setsockopt()
 			* 设置 socket 的一些属性(例如:端口重用)
 			* demo
-				setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1) # 设置端口可以重用
+				setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1) 
+					# 设置端口可以重用
+				setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST,1)
+					# 设置UDP为广播模式
 
 		int send(bytes)
 			* 发送数据到目标,不一定一次性就把数据发送完毕,应该使用 sendall()
