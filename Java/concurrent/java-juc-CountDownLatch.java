@@ -12,7 +12,12 @@ CountDownLatch				|
 		await();
 			* 阻塞,等待其他线程执行完,直到基数 == 0
 			* 其实本身就是个循环检测
-			
+		
+		boolean await(long timeout, TimeUnit unit)
+			* 设置超时时间
+		
+		long getCount()
+			* 返回count
 
 	# demo
 		
