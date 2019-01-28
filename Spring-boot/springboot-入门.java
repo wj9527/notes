@@ -58,6 +58,20 @@ Spring-Boot 入门			|
 				</plugin>
 			</plugins>
 		</build>
+	
+	# 如果需要自定义 parent模块,但是又想继承springboot的依赖
+		<dependencyManagement>
+			<dependencies>
+				<!-- Spring Boot parent.pom 的父级依赖,该依赖定义了框架依赖的所有版本信息 -->
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-dependencies</artifactId>
+					<version>${spring-boot.version}</version>
+					<type>pom</type>
+					<scope>import</scope>
+				</dependency>
+			</dependencies>
+		</dependencyManagement>
 
 	# 主函数,直接启动代码
 		import org.springframework.boot.SpringApplication;
