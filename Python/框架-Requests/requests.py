@@ -182,3 +182,18 @@ multipart/form-data	请求	|
 			('files',('file1.jpg',open('C:\\Users\\Administrator\\Desktop\\QQ图片20180703102725.jpg', 'rb'))),
 			('files',('file2.jpg',open('C:\\Users\\Administrator\\Desktop\\微信图片_20180716103554.png', 'rb')))
 		]
+
+----------------------------
+文件下载					|
+----------------------------
+import requests
+# 文件下载地址
+url = 'http://xxx.down'
+# 本地文件地址
+file = 'D:\\魔法师.mp4'
+# 最大数据块的大小
+chunkSize = 1024
+with requests.get(url, stream=True) as response:
+    with open(file, 'wb') as file:
+        for chunk in response.iter_content(chunkSize):
+            file.write(chunk)
