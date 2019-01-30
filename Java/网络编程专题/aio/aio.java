@@ -24,7 +24,10 @@ AIO					|
 				void completed(V result, A attachment);
 
 				void failed(Throwable exc, A attachment);
-
+	
+	
+	# 学习,参考资料
+		https://www.ibm.com/developerworks/cn/java/j-lo-nio2/index.html
 
 -------------------
 AIO-Server			|
