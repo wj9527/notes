@@ -7,8 +7,8 @@
 	* ./shadowsocksR.sh 2>&1 | tee shadowsocksR.log
 		- 输入密码
 		- 端口
-		- 加密方式(rc4-md5)
-		- 插件(auth_aes128_md5)
+		- 加密(rc4-md5)
+		- 协议(auth_aes128_md5)
 		- 混淆(http_simple)
 
 # 常用命令
