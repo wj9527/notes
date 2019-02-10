@@ -16,13 +16,26 @@ handler体系			|
 					|-LengthFieldBasedFrameDecoder
 					|-DelimiterBasedFrameDecoder
 					|-FixedLengthFrameDecoder
+				|-MessageToMessageDecoder
+					|-StringDecoder
 				|-ChannelInitializer
 				|-SimpleChannelInboundHandler<I>
+
 		|-ChannelOutboundHandler
 			* 写处理接口
 
 			|-ChannelOutboundHandlerAdapter
 				|-MessageToByteEncoder<I>
+				|-MessageToMessageEncoder<I>
+					|-LengthFieldPrepender
+					|-StringEncoder
+		
+		|-ChannelDuplexHandler
+			* 同时实现了读写处理接口
+
+			|-ChunkedWriteHandler
+
+			
 
 ReferenceCounted
 	|-ByteBuf

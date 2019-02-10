@@ -12,9 +12,11 @@ Netty服务端的配置			|
 		serverBootstrap.group(bossGroup, workerGroup);
 		// 设置io模式
 		serverBootstrap.channel(NioServerSocketChannel.class);
-		// 设置handlder
+		// 设置日志handler
+		serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
+		// 设置客户端handlder
 		serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-			// 添加一个或者多个handler
+			// 初始化信息设置
 			@Override
 			protected void initChannel(SocketChannel ch) throws Exception {
 				ch.pipeline().addLast(new TimeServerHandler());

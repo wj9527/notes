@@ -9,8 +9,11 @@ ServerBootstrap			 |
 -------------------------
 方法					 |
 -------------------------
-	 ServerBootstrap childHandler(ChannelHandler childHandler)
-		* 设置一个或者多个处理器
+	ServerBootstrap handler(ChannelHandler handler)
+		* 添加服务端的handler
+
+	ServerBootstrap childHandler(ChannelHandler childHandler)
+		* 设置一个或者多个客户端处理器
 		* 一般可以设置 ChannelInitializer 实例,添加一个handler处理链
 			serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override		// 唯一的抽象方法
@@ -19,10 +22,10 @@ ServerBootstrap			 |
 				}
 			});
 
-	 <T> ServerBootstrap childOption(ChannelOption<T> childOption, T value)
+	<T> ServerBootstrap childOption(ChannelOption<T> childOption, T value)
 		* 设置客户端连接的配置
 
-	 ServerBootstrap group(EventLoopGroup parentGroup, EventLoopGroup childGroup)
+	ServerBootstrap group(EventLoopGroup parentGroup, EventLoopGroup childGroup)
 		* parentGroup处理连接事件
 		* childGroup 处理IO事件
 	

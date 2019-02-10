@@ -55,7 +55,7 @@ private byte charToByte(char cha) {
 ------------------------------------------
 int 和字节数组的转换(用于网络传输)		  |
 ------------------------------------------
-public static int byteArrayToInt(byte[] b) {
+	public static int byteArrayToInt(byte[] b) {
         return b[3] & 0xFF |
                 (b[2] & 0xFF) << 8 |
                 (b[1] & 0xFF) << 16 |

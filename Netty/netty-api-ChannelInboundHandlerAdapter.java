@@ -19,6 +19,10 @@ ChannelInboundHandlerAdapter	|
 	public void handlerAdded(ChannelHandlerContext ctx) 
 		* handler被添加时调用
 	
-	 public void handlerRemoved(ChannelHandlerContext ctx) 
+	public void handlerRemoved(ChannelHandlerContext ctx) 
 		* handler被移除时调用
 	
+	void channelInactive(ChannelHandlerContext ctx) 
+
+	void channelReadComplete(ChannelHandlerContext ctx)
+		* 在读取完成后调用

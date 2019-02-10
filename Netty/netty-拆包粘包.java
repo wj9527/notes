@@ -55,10 +55,10 @@ LengthFieldBasedFrameDecoder|
 			* 数据长度字段的所占的字节数
 		
 		lengthAdjustment
-			* lengthAdjustment + 数据长度取值 = 数据长度字段之后剩下包的字节数
 			* 添加到长度字段的补偿值(0)
+			* lengthAdjustment + 数据长度取值 = 数据长度字段之后剩下包的字节数
 			* 对于某些协议,长度字段还包含了消息头的长度,在这种应用场景中,往往需要使用lengthAdjustment进行修正
-			* 由于整个消息(包含消息头)的长度往往大于消息体的长度,所以它要设置为负数(数据长度字段的长度取负)
+				由于整个消息(包含消息头)的长度往往大于消息体的长度,所以它要设置为负数(数据长度字段的长度取负)
 
 		initialBytesToStrip
 			* 表示从整个包第一个字节开始,向后忽略的字节数(0)
@@ -138,8 +138,8 @@ LengthFieldBasedFrameDecoder|
 	
 	# 场景7
 		 lengthFieldOffset   =  1
-		 lengthFieldLength   =  2
-		 lengthAdjustment    = -3 (= the length of HDR1 + LEN, negative)
+		 lengthFieldLength   =  2								
+		 lengthAdjustment    = -3 (= the length of HDR1 + LEN, negative)	//长度头表示的是整个消息体的长度
 		 initialBytesToStrip =  3
 
 		 BEFORE DECODE (16 bytes)                       AFTER DECODE (13 bytes)

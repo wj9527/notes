@@ -28,3 +28,10 @@ ChannelFuture					|
 		* 移除多个监听
 
 	ChannelFuture sync()
+	
+	Throwable cause()
+		* 返回异常信息
+	
+	boolean isSuccess();
+		* 是否操作成功
+		
