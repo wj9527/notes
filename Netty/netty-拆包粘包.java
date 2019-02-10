@@ -64,7 +64,7 @@ LengthFieldBasedFrameDecoder|
 			* 表示从整个包第一个字节开始,向后忽略的字节数(0)
 			* 可以设置该参数,来忽略掉包头信息,仅仅留下数据包体,给下一个Handler处理
 	
-	# 场景1
+	# 各种协议
 		lengthFieldOffset   = 0
 		lengthFieldLength   = 2		// 通用的前面2字节表示数据长度
 		lengthAdjustment    = 0
@@ -75,8 +75,7 @@ LengthFieldBasedFrameDecoder|
 		| Length | Actual Content |----->| Length | Actual Content |
 		| 0x000C | "HELLO, WORLD" |      | 0x000C | "HELLO, WORLD" |
 		+--------+----------------+      +--------+----------------+
-	
-	# 场景2
+		
 		 lengthFieldOffset   = 0
 		 lengthFieldLength   = 2
 		 lengthAdjustment    = 0
@@ -88,7 +87,6 @@ LengthFieldBasedFrameDecoder|
 		 | 0x000C | "HELLO, WORLD" |      | "HELLO, WORLD" |
 		 +--------+----------------+      +----------------+
 	
-	# 场景3
 		 lengthFieldOffset   =  0
 		 lengthFieldLength   =  2
 		 lengthAdjustment    = -2 // 长度头表示的长度,包含了自身头部的长度
@@ -100,7 +98,6 @@ LengthFieldBasedFrameDecoder|
 		 | 0x000E | "HELLO, WORLD" |      | 0x000E | "HELLO, WORLD" |
 		 +--------+----------------+      +--------+----------------+
 	
-	# 场景4
 		 lengthFieldOffset   = 2	// 表示消息长度的头,不在首部
 		 lengthFieldLength   = 3
 		 lengthAdjustment    = 0
@@ -112,7 +109,6 @@ LengthFieldBasedFrameDecoder|
 		 |  0xCAFE  | 0x00000C | "HELLO, WORLD" |      |  0xCAFE  | 0x00000C | "HELLO, WORLD" |
 		 +----------+----------+----------------+      +----------+----------+----------------+
 	
-	# 场景5
 		 lengthFieldOffset   = 0
 		 lengthFieldLength   = 3
 		 lengthAdjustment    = 2	// 整个消息体的长度,还要包含一个头部的长度,因为后面还有一个头部
@@ -124,7 +120,6 @@ LengthFieldBasedFrameDecoder|
 		 | 0x00000C |  0xCAFE  | "HELLO, WORLD" |      | 0x00000C |  0xCAFE  | "HELLO, WORLD" |
 		 +----------+----------+----------------+      +----------+----------+----------------+
 
-	# 场景6
 		 lengthFieldOffset   = 1 (= the length of HDR1)			// 第2个字节表示数据长度
 		 lengthFieldLength   = 2								
 		 lengthAdjustment    = 1 (= the length of HDR2)			// 除此之外,还有1个字节的消息头
@@ -136,7 +131,6 @@ LengthFieldBasedFrameDecoder|
 		 | 0xCA | 0x000C | 0xFE | "HELLO, WORLD" |      | 0xFE | "HELLO, WORLD" |
 		 +------+--------+------+----------------+      +------+----------------+
 	
-	# 场景7
 		 lengthFieldOffset   =  1
 		 lengthFieldLength   =  2								
 		 lengthAdjustment    = -3 (= the length of HDR1 + LEN, negative)	//长度头表示的是整个消息体的长度
