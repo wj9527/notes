@@ -28,6 +28,7 @@ ChannelFuture					|
 		* 移除多个监听
 
 	ChannelFuture sync()
+		* 同步,线程阻塞,直到任务完成
 	
 	Throwable cause()
 		* 返回异常信息

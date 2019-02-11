@@ -23,6 +23,13 @@ ChannelInboundHandlerAdapter	|
 		* handler被移除时调用
 	
 	void channelInactive(ChannelHandlerContext ctx) 
+		* 非活跃状态时调用
 
 	void channelReadComplete(ChannelHandlerContext ctx)
 		* 在读取完成后调用
+	
+	void handlerAdded(ChannelHandlerContext ctx)
+		* 在添加到 ChannelPipeline 调用
+	
+	void handlerRemoved(ChannelHandlerContext ctx)
+		* 从 ChannelPipeline 移除时调用
