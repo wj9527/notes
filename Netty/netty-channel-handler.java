@@ -96,17 +96,3 @@ ChannelPromise 机制			 |
 	# 使用 @Sharable 注解共享一个 ChannelHandler 在一些需求中还是有很好的作用的
 		* 如使用一个 ChannelHandler 来统计连接数或来处理一些全局数据等等
 
------------------------------
-Hnalder的总结				 |
------------------------------
-	
-	# 处理数据用ChannelInboundHandler
-	# 响应数据用ChannelOutboundHandler
-
-	# 事件机制
-		* ChannelInboundHandler 可以覆写N多的事件方法
-		* ChannelOutboundHandler 只有基本的 handler 事件,但也是空实现
-		* ChannelHandlerContext 可以主动的调用 fireXxxxx(),触发下一个(右边) ChannelInboundHandler 的事件
-		
-	# 异常机制
-		
