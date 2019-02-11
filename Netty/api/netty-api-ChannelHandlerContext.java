@@ -29,3 +29,5 @@ ChannelHandlerContext			|
 	ChannelHandlerContext fireChannelRead(Object msg)
 		* 触发下一个 ChannelInboundHandler 的 channelRead() 方法,并且给定msg参数
 
+	ChannelHandlerContext fireUserEventTriggered(Object evt);
+		* 主动触发用户自定义的事件

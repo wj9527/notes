@@ -8,7 +8,7 @@ ChannelHandler				 |
 			|-ChannelInboundHandler
 			|-ChannelOutboundHandler
 
-	# Handler的生命周期
+	# Handler的生命周期(基本的事件)
 		handlerAdded	ChannelHandler 添加到 ChannelPipeline
 		handlerRemoved	ChannelHandler 从 ChannelPipeline 移除
 		exceptionCaught	ChannelPipeline 执行抛出异常
@@ -16,12 +16,12 @@ ChannelHandler				 |
 -----------------------------
 ChannelInboundHandler		 |
 -----------------------------
-	# 读取事件
+	# 读取Handler
 	# 类库
 		|-ChannelInboundHandler
 			|-ChannelInboundHandlerAdapter
 				* 它实现了 ChannelInboundHandler 的所有方法
-				* 作用就是处理消息并将消息转发到 ChannelPipeline 中的下一个 ChannelHandler
+				* 默认的作用就是处理消息(事件)并将消息转发到 ChannelPipeline 中的下一个 ChannelHandler
 
 				|-ByteToMessageDecoder
 					|-ReplayingDecoder<S> 
@@ -59,7 +59,7 @@ ChannelInboundHandler		 |
 -----------------------------
 ChannelOutboundHandler		 |
 -----------------------------
-	# 写入事件
+	# 写入Handler
 	# 类库
 		|-ChannelOutboundHandler
 			|-ChannelOutboundHandlerAdapter
@@ -95,3 +95,18 @@ ChannelPromise 机制			 |
 	
 	# 使用 @Sharable 注解共享一个 ChannelHandler 在一些需求中还是有很好的作用的
 		* 如使用一个 ChannelHandler 来统计连接数或来处理一些全局数据等等
+
+-----------------------------
+Hnalder的总结				 |
+-----------------------------
+	
+	# 处理数据用ChannelInboundHandler
+	# 响应数据用ChannelOutboundHandler
+
+	# 事件机制
+		* ChannelInboundHandler 可以覆写N多的事件方法
+		* ChannelOutboundHandler 只有基本的 handler 事件,但也是空实现
+		* ChannelHandlerContext 可以主动的调用 fireXxxxx(),触发下一个(右边) ChannelInboundHandler 的事件
+		
+	# 异常机制
+		

@@ -1,8 +1,7 @@
 ----------------------------
 拆包和粘包的解决方案		|
 ----------------------------
-	# Netty 提供了一个可扩展的类 ByteToMessageDecoder 
-	# 只需要覆写方法
+	# 如果确切知道消息的固定长度,可以简单的使用ByteToMessageDecoder
 		@Override
 		protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) { // (2)
 			if (in.readableBytes() < 4) {
@@ -12,15 +11,8 @@
 			// 可以成功解码了一个消息
 			out.add(in.readBytes(4)); 
 		}
-
-		* 每当有新数据接收的时候,ByteToMessageDecoder 都会调用 decode() 方法来处理内部的累积缓冲
-		* decode() 方法可以决定当累积缓冲里没有足够数据时可以往 out 对象里放任意数据
-		* 当有更多的数据被接收了 ByteToMessageDecoder 会再一次调用 decode() 方法
-		* 如果在 decode() 方法里增加了一个对象到 out 对象里,这意味着解码器解码消息成功
-		* ByteToMessageDecoder 将会丢弃在累积缓冲里已经被读过的数据
-		* 不需要对多条消息调用 decode(),ByteToMessageDecoder 会持续调用 decode() 直到不放任何数据到 out 里
 	
-	# 现成提供的编码器
+	# 也可以使用现成提供的编码器
 		LineBasedFrameDecoder
 			* 回车换行符作为消息结束符的TCP黏包的问题
 
@@ -28,10 +20,10 @@
 			* 固定长度
 
 		DelimiterBasedFrameDecoder
-			* 以指定的符号分割
+			* 以指定的符号分割消息
 				
 		FixedLengthFrameDecoder
-			* 固定头部的长度
+			* 固定长度的消息头
 	
 ----------------------------
 LengthFieldBasedFrameDecoder|

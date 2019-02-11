@@ -33,3 +33,6 @@ ChannelInboundHandlerAdapter	|
 	
 	void handlerRemoved(ChannelHandlerContext ctx)
 		* 从 ChannelPipeline 移除时调用
+	
+	 void userEventTriggered(ChannelHandlerContext ctx, Object evt)
+		* 主动触发用户自定义的事时,调用

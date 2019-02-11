@@ -1,12 +1,9 @@
 ----------------------------
 编码						|
 ----------------------------
+	# 编码就是把对象转换为网络传输的二进制数据(ByteBuf)
 	# 涉及类库
-		|-ByteToMessageDecoder
-			|-ReplayingDecoder<S> 
-			|-LineBasedFrameDecoder
-			|-LengthFieldBasedFrameDecoder
-			|-DelimiterBasedFrameDecoder
-			|-FixedLengthFrameDecoder
-		|-MessageToMessageDecoder
-			|-StringDecoder
+		|-MessageToByteEncoder<I>
+			|-MessageToMessageEncoder<I>
+				|-LengthFieldPrepender
+				|-StringEncoder
