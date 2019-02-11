@@ -25,3 +25,7 @@ ChannelHandlerContext			|
 	ByteBufAllocator alloc();
 		* 得到一个当前的ByteBufAllocator,从而构建一个Buffer
 			ByteBuf intBuf = ctx.alloc().buffer(4);
+
+	ChannelHandlerContext fireChannelRead(Object msg)
+		* 触发下一个 ChannelInboundHandler 的 channelRead() 方法,并且给定msg参数
+

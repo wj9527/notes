@@ -41,4 +41,4 @@ Netty服务端的配置			|
 ----------------------------
 ChannelInitializer			|
 ----------------------------
-	# 初始化机制
+	# ChannelInitializer 自身也是一个ChannelHandler,在添加完其他的 handlers 之后会自动从 ChannelPipeline 中删除自己

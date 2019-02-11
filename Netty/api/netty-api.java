@@ -1,4 +1,4 @@
-
+	
 --------------------
 handler体系			|
 --------------------
@@ -16,6 +16,8 @@ ChannelHandler
 				|-LengthFieldBasedFrameDecoder
 				|-DelimiterBasedFrameDecoder
 				|-FixedLengthFrameDecoder
+				|-SslHandler
+					* 实现了 ChannelOutboundHandler
 			|-MessageToMessageDecoder
 				|-StringDecoder
 			|-ChannelInitializer
@@ -36,6 +38,7 @@ ChannelHandler
 		* 继承:ChannelInboundHandlerAdapter,实现:ChannelOutboundHandler
 
 		|-ChunkedWriteHandler
+		|-CombinedChannelDuplexHandler
 
 			
 --------------------
@@ -45,7 +48,19 @@ ReferenceCounted
 	|-ByteBuf
 		|-CompositeByteBuf
 	|-ByteBufHolder
+	|-FileRegion
+		|-DefaultFileRegion
 ByteBufProcessor
 ByteBufAllocator
 Unpooled
 ByteBufUtil
+
+
+--------------------
+其他				|
+--------------------
+ChunkedInput
+	|-ChunkedFile
+	|-ChunkedNioFile
+	|-ChunkedStream
+	|-ChunkedNioStream	
