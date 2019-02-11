@@ -1,6 +1,7 @@
 ----------------------------
 ChannelPipeline				|
 ---------------------------
+	# 继承:ChannelInboundInvoker ChannelOutboundInvoker
 	# 一个 ChannelPipeline 是用来保存关联到一个 Channel 的ChannelHandler
 		* 可以修改 ChannelPipeline 通过动态添加和删除 ChannelHandler
 		* ChannelPipeline 有着丰富的API调用动作来回应入站和出站事件
