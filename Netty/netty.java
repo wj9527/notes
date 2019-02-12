@@ -23,6 +23,13 @@ Netty-入门					|
 		http://ifeve.com/netty5-user-guide/
 		http://www.cnblogs.com/zou90512/p/3492287.html
 	
+	# 为什么放弃Netty5
+		https://github.com/netty/netty/issues/4466
+
+		* 使用ForkJoinPool极大的增加了复杂性,但是没有明显的性能提升
+
+
+
 
 ----------------------------
 Netty-HelloWorld			|
