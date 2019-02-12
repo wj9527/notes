@@ -2,7 +2,7 @@
 ssl							 |
 -----------------------------
 	#　一个使用 SslHandler 数据流程
-		* 加密的入站数据被 SslHandler 拦截,并被解密为平常数据
+		* 加密的入站数据被拦截,并被解密为平常数据
 		* 平常数据传过 SslHandler
 		* SslHandler 加密数据并它传递出站
 	
@@ -11,3 +11,21 @@ ssl							 |
 	
 	# 涉及类库
 		SslHandler
+
+	#  服务端的Handler创建
+		protected void initChannel(SocketChannel ch) throws Exception {
+			SelfSignedCertificate ssc = new SelfSignedCertificate();
+			SslContext sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey()).build();
+			SslHandler sslHandler = sslCtx.newHandler(ch.alloc());
+			ch.pipeline().addLast(sslHandler); // 把sslHandler添加到第一个
+		}
+	
+	# 客户端的Handler创建
+		String host = "127.0.0.1";	// 服务器地址
+		int port = 1024;			// 服务器端口
+		@Override
+		protected void initChannel(SocketChannel ch) throws Exception {
+			SslContext sslContext = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+			SslHandler sslHandler = sslContext.newHandler(ch.alloc(), host, port);
+			ch.pipeline().addLast(sslHandler);	 // 把sslHandler添加到第一个
+		}

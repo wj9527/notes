@@ -26,6 +26,6 @@ Channel 的总结				 |
 -----------------------------
 		
 	# 几种响应数据的方法和区别
-		* 调用原始 Channel 的write() api,也会从ChannelPipeline 的右边开始处理消息,也是从头开始进入整个输出执行链
-		* 调用 ChannelHandlerContext 的 write() 方法,会从下一个 ChannelOutboundHandler 开始执行
+		* 调用原始 Channel 的write() api,也会从ChannelPipeline 的最右边开始处理消息,也是从头开始进入整个输出执行链
+		* 调用 ChannelHandlerContext 的 write() 方法,会从下一个(左边最近的一个) ChannelOutboundHandler 开始执行
 		* ChannelPipeline 也可以使用 write() api,跟第一种情况一样
