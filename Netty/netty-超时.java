@@ -53,3 +53,10 @@
 		* 要想实现客户端感知服务端的存活情况,需要进行双向的心跳
 		* Netty中的channelInactive()方法是通过Socket连接关闭时挥手数据包触发的,因此可以通过channelInactive()方法感知正常的下线情况,但是因为网络异常等非正常下线则无法感知
 
+	
+	# 还有两个控制超时的组件
+		ReadTimeoutHandler	
+			在指定时间内没有接收到任何数据将抛出	ReadTimeoutException
+
+		WriteTimeoutHandler
+			在指定时间内有写入数据将抛出 WriteTimeoutException

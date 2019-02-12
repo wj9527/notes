@@ -25,6 +25,9 @@
 --------------------
 分段传输			|
 --------------------
+	# 传输文件中指定的数据块
+	# Handler
+		ChunkedWriteHandler
 	# 类库
 		ChunkedInput
 			ChunkedFile
@@ -35,3 +38,14 @@
 				从 InputStream 中一块一块的转移内容
 			ChunkedNioStream
 				从 ReadableByteChannel 中一块一块的转移内容
+	
+	
+	# demo
+		// 初始化设置 ChunkedWriteHandler 和 自己的Handler
+		ChannelPipeline p = ...;
+		p.addLast("streamer", new ChunkedWriteHandler());
+		p.addLast("handler", new MyHandler());
+
+		// 在自己Handler里面完成 ChunkedFile 的输出
+		Channel ch = ...;
+		ch.write(new ChunkedFile(new File("video.mkv"));

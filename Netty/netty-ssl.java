@@ -29,3 +29,21 @@ ssl							 |
 			SslHandler sslHandler = sslContext.newHandler(ch.alloc(), host, port);
 			ch.pipeline().addLast(sslHandler);	 // 把sslHandler添加到第一个
 		}
+	
+	# SslHandler 的一些常用方法
+		void setHandshakeTimeout(long handshakeTimeout, TimeUnit unit)
+			* 设置握手超时时间,ChannelFuture 将得到通知
+		
+		void setHandshakeTimeoutMillis(long handshakeTimeoutMillis)
+			* 设置握手超时时间,ChannelFuture 将得到通知
+		
+		long getHandshakeTimeoutMillis()
+			* 获取握手超时时间值
+
+
+		void setHandshakeTimeoutMillis(long handshakeTimeoutMillis)
+			* 设置关闭通知超时时间,若超时, ChannelFuture 会关闭失败
+
+		Future<Channel> handshakeFuture()
+			* 返回完成握手后的 ChannelFuture
+
