@@ -29,16 +29,18 @@
 	# Handler
 		ChunkedWriteHandler
 	# 类库
-		ChunkedInput
+		ChunkedInput(接口)
 			ChunkedFile
 				平台不支持 zero-copy 或者你需要转换数据,从文件中一块一块的获取数据
+
 			ChunkedNioFile
 				与 ChunkedFile 类似,处理使用了NIOFileChannel
+
 			ChunkedStream
 				从 InputStream 中一块一块的转移内容
+
 			ChunkedNioStream
 				从 ReadableByteChannel 中一块一块的转移内容
-	
 	
 	# demo
 		// 初始化设置 ChunkedWriteHandler 和 自己的Handler
@@ -49,3 +51,19 @@
 		// 在自己Handler里面完成 ChunkedFile 的输出
 		Channel ch = ...;
 		ch.write(new ChunkedFile(new File("video.mkv"));
+
+--------------------
+传输方式的选择		|
+--------------------
+	@Override
+    public void channelRead0(ChannelHandlerContext ctx, String filePath) throws Exception {
+        RandomAccessFile raf  = new RandomAccessFile(filePath, "r");
+        if (ctx.pipeline().get(SslHandler.class) == null) {
+			// 未使用ssl,可以使用零拷贝
+            ctx.write(new DefaultFileRegion(raf.getChannel(), 0, length));
+        } else {
+			// 使用了ssl,不能使用零拷贝,可以使用分段传输中的实现
+            ctx.write(new ChunkedFile(raf));
+        }
+		ctx.flush();
+    }
