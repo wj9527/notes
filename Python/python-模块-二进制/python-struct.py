@@ -41,9 +41,7 @@ struct-Struct				|
 ---------------------------
 struct-fmt对照表			|
 ---------------------------
-	----------------------------------------------------------------------
 	Format	C Type				Python type		Standard size	Notes		
-	----------------------------------------------------------------------
 	x		pad byte			no value	 	 
 	c		char				bytes of length 1				1	 
 	b		signed char			integer			1				(1),(3)
@@ -66,6 +64,14 @@ struct-fmt对照表			|
 	p		char[]				bytes	 	 
 	P		void *				integer	 						(6)
 
+---------------------------
+网络字节序					|
+---------------------------
+	@	本机顺序
+	=	原生顺序
+	<	little-endian,小端
+	>	big-endian,大端
+	!	与>相同
 
 
 ---------------------------
