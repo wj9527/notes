@@ -1,6 +1,7 @@
 ------------------------------
 selectors					  |
 ------------------------------
+	# selectors模块是在python3.4版本中引进的，它封装了IO多路复用中的select和epoll，能够更快，更方便的实现多并发效果
 	# 该模块允许高层高效的 I/O 多路复用
 		https://yiyibooks.cn/xx/python_352/library/selectors.html
 		https://docs.python.org/3/library/selectors.html#module-selectors
@@ -25,6 +26,7 @@ selectors					  |
 		* 读写事件标识
 	DefaultSelector
 		* 默认选择器类使用在当前平台上可用的最有效的实现,大多数用户的默认选择
+		* 默认会用epoll,如果系统中没有epoll(比如windows)则会自动使用select
 
 ------------------------------
 模块类	SelectorKey			  |
@@ -57,7 +59,7 @@ selectors					  |
 		SelectorKey modify(fileobj, events, data=None)
 			* 修改关心的事件或者data
 
-		(SelectorKey, events) select(timeout=None)
+		[(SelectorKey, events)] select(timeout=None)
 			* 开始轮询
 
 		None close()
@@ -67,7 +69,7 @@ selectors					  |
 			*  获取指定fileobj的SelectorKey
 
 		Mapping get_map()
-			* 获取到设置的数据map,其实是一个Mapping实例
+		
 
 	
 ------------------------------
