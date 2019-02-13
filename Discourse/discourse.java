@@ -112,9 +112,16 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 	# 设置分类页面的样式(/categories)
 		设置 -> 基本设置 -> desktop category page style
 	
-	# 设置主页的帖子的显示方式
-		
+	# 设置主页的菜单(帖子布局)
+		设置 -> 基本设置 -> post menu
 	
 	# 帖子审核机制
-
+		设置 -> 发帖 -> approve post count
+		设置 -> 发帖 -> approve unless trust level
+		设置 -> 发帖 -> approve new topics unless trust level
+	
+	# 询问是否允许通知
+		设置 -> 基本设置 -> push notifications prompt
+	# 设置通知图标
+		设置 -> 基本设置 -> push notifications icon
 
