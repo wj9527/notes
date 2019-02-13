@@ -114,7 +114,53 @@ ByteBufUtil					|
 
 	String hexDump(ByteBuf buffer)
 		* 返回buffer的16进制字符串,会根据rindex去读取
+
+----------------------------
+ByteBufAllocator			|
+----------------------------
+	# ByteBuf分派器,它是一个接口,有两个实现(池和非池)
+		PooledByteBufAllocator
+		UnpooledByteBufAllocator
 	
+	ByteBufAllocator DEFAULT = ByteBufUtil.DEFAULT_ALLOCATOR;
+
+    ByteBuf buffer();
+    ByteBuf buffer(int initialCapacity);
+    ByteBuf buffer(int initialCapacity, int maxCapacity);
+		* 分配buffer
+		* 可以指定初始化大小和最大
+
+    ByteBuf ioBuffer();
+    ByteBuf ioBuffer(int initialCapacity);
+    ByteBuf ioBuffer(int initialCapacity, int maxCapacity);
+		* 分配直接内存buffer
+		* 可以指定初始化大小和最大
+
+    ByteBuf heapBuffer();
+    ByteBuf heapBuffer(int initialCapacity);
+    ByteBuf heapBuffer(int initialCapacity, int maxCapacity);
+		* 分配一个heapBuffer
+
+    ByteBuf directBuffer();
+    ByteBuf directBuffer(int initialCapacity);
+    ByteBuf directBuffer(int initialCapacity, int maxCapacity);
+		* 分配一个directBuffer
+
+    CompositeByteBuf compositeBuffer();
+    CompositeByteBuf compositeBuffer(int maxNumComponents);
+    CompositeByteBuf compositeHeapBuffer();
+    CompositeByteBuf compositeHeapBuffer(int maxNumComponents);
+		* 分配组合Buffer
+
+    CompositeByteBuf compositeDirectBuffer();
+    CompositeByteBuf compositeDirectBuffer(int maxNumComponents);
+
+    boolean isDirectBufferPooled();
+		* 是否使用了直接内存
+
+    int calculateNewCapacity(int minNewCapacity, int maxCapacity);
+		
+
 ----------------------------
 Unpooled					|
 ----------------------------
@@ -122,3 +168,7 @@ Unpooled					|
 		* 把指定的string编码为ByteBuff
 
 
+----------------------------
+ByteBufHolder				|
+----------------------------
+	# ByteBufHolder 是 ByteBuf 的容器
