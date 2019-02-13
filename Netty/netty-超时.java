@@ -35,7 +35,11 @@
 		* 可以通过该对象判断是什么超时事件发生了
 		* 该对象是一个枚举对象(非枚举类)
 			IdleStateEvent.FIRST_READER_IDLE_STATE_EVENT
+				* 第一次发生了读超时
+
 			IdleStateEvent.READER_IDLE_STATE_EVENT
+				* 不是第一次发生了读超时,如果出现该状态,就说明channle目前处于连续读超时(起码2次)
+				
 			IdleStateEvent.FIRST_WRITER_IDLE_STATE_EVENT
 			IdleStateEvent.WRITER_IDLE_STATE_EVENT
 			IdleStateEvent.FIRST_ALL_IDLE_STATE_EVENT

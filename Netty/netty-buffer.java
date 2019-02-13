@@ -115,3 +115,10 @@ ByteBufUtil					|
 	String hexDump(ByteBuf buffer)
 		* 返回buffer的16进制字符串,会根据rindex去读取
 	
+----------------------------
+Unpooled					|
+----------------------------
+	ByteBuf copiedBuffer(CharSequence string, Charset charset)
+		* 把指定的string编码为ByteBuff
+
+
