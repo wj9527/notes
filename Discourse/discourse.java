@@ -95,6 +95,9 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 		Kev1nB!andy(happy)=> return happy*2;
 		Kev1nB!andy(name)=>println(name);
 
+---------------------
+杂七杂八			 |
+---------------------
 
 ---------------------
 杂七杂八			 |
@@ -112,7 +115,15 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 		设置 -> 基本设置 -> desktop category page style
 	
 	# 设置主页的菜单(帖子布局)
-		设置 -> 基本设置 -> post menu
+		设置 -> 基本设置 -> top menu
+		categories		分类
+		latest			最新
+		top				热门
+		posted			我的帖子
+		new				
+		red				已读
+		unred			未读
+		bookmarks		收藏
 	
 	# 帖子审核机制
 		设置 -> 发帖 -> approve post count
@@ -131,9 +142,6 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 		* github的回调地址是
 			{site}/auth/github/callback
 	
-	# 自定义html头部信息
-		* 设置统计代码
-		* 设置自己的代码登录
 	
 	# 自动备份
 		设置 -> 备份 -> backup frequency

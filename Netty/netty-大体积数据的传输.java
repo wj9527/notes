@@ -2,6 +2,9 @@
 零拷贝				|
 --------------------
 	# NIO 的"zero-copy(零拷贝)"功能,消除移动一个文件的内容从文件系统到网络堆栈的复制步骤
+	# 类库
+		FileRegion
+			DefaultFileRegion
 
 	# 直接传输一个文件的内容,没有执行的数据应用程序的处理
 		// 获取 FileInputStream
@@ -28,6 +31,7 @@
 	# 传输文件中指定的数据块
 	# Handler
 		ChunkedWriteHandler
+
 	# 类库
 		ChunkedInput(接口)
 			ChunkedFile
