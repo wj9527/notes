@@ -99,7 +99,6 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 ---------------------
 杂七杂八			 |
 ---------------------
-	# 如何把已经备份的数据上传(回滚)到系统
 
 	# 设置顶部全局提示信息
 		设置 -> 未分类 > global notice
@@ -122,6 +121,24 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 	
 	# 询问是否允许通知
 		设置 -> 基本设置 -> push notifications prompt
+
 	# 设置通知图标
 		设置 -> 基本设置 -> push notifications icon
 
+	# Github登录
+		设置 -> 登录 -> github
+
+		* github的回调地址是
+			{site}/auth/github/callback
+	
+	# 自定义html头部信息
+		* 设置统计代码
+		* 设置自己的代码登录
+	
+	# 自动备份
+		设置 -> 备份 -> backup frequency
+			* 多少天备份一次
+		
+		设置 -> 备份 -> allow restore
+			* 允许导入备份的数据,这会替换全站的数据
+		
