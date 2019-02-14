@@ -45,5 +45,5 @@ ssl							 |
 			* 设置关闭通知超时时间,若超时, ChannelFuture 会关闭失败
 
 		Future<Channel> handshakeFuture()
-			* 返回完成握手后的 ChannelFuture
+			* 返回完成握手后的 ChannelFuture(握手结果)
 

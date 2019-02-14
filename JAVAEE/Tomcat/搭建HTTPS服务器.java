@@ -91,7 +91,9 @@ Tomcat-搭建HTTPS服务器		|
 		 * 提示是否信任这个认证,y
 		 * 回车后即可导入然后查看证书库中的证书条目
 			 keytool -list -v -keystore [name].keystore -storepass [密码]
-		
+	
+	5,删除合作方的公钥
+		keytool -delete -alias [公钥] -keystore [keystore文件]
 
 ----------------------------
 Tomcat-阿里云				|

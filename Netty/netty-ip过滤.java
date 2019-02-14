@@ -4,6 +4,8 @@ ip控制							|
 	# 类库
 		IpFilterRuleType
 			* 拦截的结果枚举
+				ACCEPT
+			    REJECT
 
 		IpFilterRule
 			*规则描述
