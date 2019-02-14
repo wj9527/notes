@@ -98,6 +98,12 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 ---------------------
 杂七杂八			 |
 ---------------------
+	Staff 
+		* 系统的模块,里面有固定不能删除的帖子
+			常见问题
+			服务条款
+			隐私
+	
 
 ---------------------
 杂七杂八			 |
@@ -150,6 +156,9 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 		设置 -> 备份 -> allow restore
 			* 允许导入备份的数据,这会替换全站的数据
 	
+	# 固定主页板块分类
+		设置 -> 基本设置 -> fixed category positions
+
 	# 新用户欢迎私信设置
 
 	# 修改模板引擎代码
