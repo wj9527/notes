@@ -12,7 +12,7 @@
 			out.add(in.readBytes(4)); 
 		}
 	
-	# 也可以使用现成提供的编码器
+	# 也可以使用现成提供的解码器
 		LineBasedFrameDecoder
 			* 回车换行符作为消息结束符的TCP黏包的问题
 
@@ -25,6 +25,9 @@
 		FixedLengthFrameDecoder
 			* 固定长度的消息头
 	
+	# 自动添加长度头的编码器
+		LengthFieldPrepender
+
 ----------------------------
 LengthFieldBasedFrameDecoder|
 ----------------------------
@@ -133,3 +136,27 @@ LengthFieldBasedFrameDecoder|
 		 | HDR1 | Length | HDR2 | Actual Content |----->| HDR2 | Actual Content |
 		 | 0xCA | 0x0010 | 0xFE | "HELLO, WORLD" |      | 0xFE | "HELLO, WORLD" |
 		 +------+--------+------+----------------+      +------+----------------+
+
+
+----------------------------
+LengthFieldPrepender		|
+----------------------------
+	# 自动为数据包添加长度头的编码器
+
+		LengthFieldPrepender(int lengthFieldLength)
+		LengthFieldPrepender(int lengthFieldLength, boolean lengthIncludesLengthFieldLength)
+		LengthFieldPrepender(int lengthFieldLength, int lengthAdjustment)
+		LengthFieldPrepender(int lengthFieldLength, int lengthAdjustment, boolean lengthIncludesLengthFieldLength)
+		LengthFieldPrepender(ByteOrder byteOrder, int lengthFieldLength,int lengthAdjustment, boolean lengthIncludesLengthFieldLength)
+		
+		lengthFieldLength
+			* 长度字段的所占的字节数
+			* 只能是:1, 2, 3, 4, 8 
+		
+		lengthIncludesLengthFieldLength
+			* 长度是否包含了消息头的长度
+		
+		lengthAdjustment
+			* 添加到长度字段的补偿值
+			* 可以消息中还有其他的头
+		

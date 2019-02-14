@@ -141,4 +141,7 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 		
 		设置 -> 备份 -> allow restore
 			* 允许导入备份的数据,这会替换全站的数据
-		
+	
+	# 新用户欢迎私信设置
+
+	# 修改模板引擎代码
