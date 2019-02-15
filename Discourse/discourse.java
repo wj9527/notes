@@ -166,3 +166,9 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 	
 	# 删除未分类模块
 		设置 -> 发帖 -> allow uncategorized topics
+	
+	# 不允许使用外部系统的头像
+		设置 -> 文件 -> external system avatars enabled
+		* 如果使用的话,可能导致用户的头像访问失败
+	
+	
