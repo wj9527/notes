@@ -162,3 +162,7 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 	# 新用户欢迎私信设置
 
 	# 修改模板引擎代码
+		定制 -> 主题 -> 自定义 CSS/HTML
+	
+	# 删除未分类模块
+		设置 -> 发帖 -> allow uncategorized topics
