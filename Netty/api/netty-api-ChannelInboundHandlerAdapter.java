@@ -34,5 +34,9 @@ ChannelInboundHandlerAdapter	|
 	void handlerRemoved(ChannelHandlerContext ctx)
 		* 从 ChannelPipeline 移除时调用
 	
-	 void userEventTriggered(ChannelHandlerContext ctx, Object evt)
+	void userEventTriggered(ChannelHandlerContext ctx, Object evt)
 		* 主动触发用户自定义的事时,调用
+	
+	void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception;
+		* 在channel变为可写状态的时候触发
+		* 可以使用 ctx.channel().isWritable(); 来判断

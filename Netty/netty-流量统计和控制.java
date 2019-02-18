@@ -4,8 +4,10 @@
 	# 类库
 		TrafficCounter
 			* 统计的数据
+			|-GlobalChannelTrafficCounter
 
 		AbstractTrafficShapingHandler
+			* 流量整形handler
 			|-ChannelTrafficShapingHandler
 			|-GlobalChannelTrafficShapingHandler
 			|-GlobalTrafficShapingHandler
@@ -14,7 +16,32 @@
 	# 流量整形的原理
 		输入 -> 流量洪峰 -> 队列(令牌桶) -> 输出 -> 平滑流量
 	
+	# AbstractTrafficShapingHandler
+		* 所有handler的抽象父类
 
+		AbstractTrafficShapingHandler()
+		AbstractTrafficShapingHandler(long checkInterval)
+		AbstractTrafficShapingHandler(long writeLimit, long readLimit)
+		AbstractTrafficShapingHandler(long writeLimit, long readLimit, long checkInterval)
+		AbstractTrafficShapingHandler(long writeLimit, long readLimit)
+		AbstractTrafficShapingHandler(long writeLimit, long readLimit, long checkInterval, long maxTime)
+		
+		writeLimit
+			* 限制没秒最多写入多少kb数据
+			* 如果设置为0,表示不限制
+
+		readLimit
+			* 限制没秒最多读取多少kb数据
+			* 如果设置为0,表示不限制
+
+		checkInterval
+			* 两次性能计算之间的延迟,默认1s
+			* 如果设置为0,表示不统计
+			
+		maxTime
+			* 当流量超过时等待的最大延迟,默认15s
+
+		
 ----------------------------
 ChannelTrafficShapingHandler|
 ----------------------------
