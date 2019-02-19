@@ -172,3 +172,5 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 		* 如果使用的话,可能导致用户的头像访问失败
 	
 	
+	# 发送摘要邮件的频率
+		设置 -> 用户设置 -> default email digest frequency
