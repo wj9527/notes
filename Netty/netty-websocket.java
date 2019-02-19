@@ -3,7 +3,7 @@ websocket						 |
 ---------------------------------
 	# 类库
 		WebSocketFrame
-			* ws的数据类型
+			* ws的消息类型
 			|-BinaryWebSocketFrame			
 			*  二进制数据
 			|-CloseWebSocketFrame

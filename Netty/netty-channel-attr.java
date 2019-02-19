@@ -20,7 +20,8 @@ attr					 |
 		Channel.attr() == ChannelHandlerContext.attr()
 
 		* ChannelHandlerContext.attr(),已经废弃,建议使用 Channel 的 attr
-	
+		
+
 
 ------------------------
 AttributeKey			|

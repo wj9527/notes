@@ -38,14 +38,14 @@ ChannelInboundHandler		 |
 	# 事件(接口方法)
 		channelRegistered	channel	注册到一个 EventLoop,该状态可以出现多次,可以重复的注册取消注册
 		channelActive		channel	变为活跃状态(连接到了远程主机),现在可以接收和发送数据了,该状态只会出现一次
-		channelInactive		channel	处于非活跃状态,没有连接到远程主机,该状态只会出现一次
+		channelInactive		channel	处于非活跃状态(连接已经关闭),没有连接到远程主机,该状态只会出现一次
 		channelUnregistered	channel	已创建但未注册到一个 EventLoop	(或者从EventLoop中移除),该状态可以出现多次,可以重复的注册取消注册
 
 		channelReadComplete			channel 读取完成
 		channelRead					channel 可以读取
-		userEventTriggered			
-		channelWritabilityChanged	channle 可写状态改变,可以使用 Channel.isWritable()检查
-		exceptionCaught
+		userEventTriggered			channel 用户自定义事件
+		channelWritabilityChanged	channel 可写状态改变,可以使用 Channel.isWritable()检查
+		exceptionCaught				channel 异常事件
 
 	# SimpleChannelInboundHandler<T>
 		* 抽象类,需要覆写抽象方法: channelRead0(ChannelHandlerContext ctx, T msg)
