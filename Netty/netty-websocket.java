@@ -11,10 +11,11 @@ websocket						 |
 			|-TextWebSocketFrame
 		WebSocketServerProtocolHandler
 		WebSocketServerCompressionHandler
-	
+
 	# WebSocketFrame
 		* ws消息类型的抽象类,提供了N个实现,表示不同的消息类型
 		* 看类名就知道是啥实现了
+	
 
 -------------------------------------
 WebSocketServerProtocolHandler		 |
