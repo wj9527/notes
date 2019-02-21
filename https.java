@@ -102,7 +102,7 @@ https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 			openssl pkcs12 -export -in fullchain.cer -inkey springboot.io.key -out springboot.io.p12
 			
 		* 根据p12 文件生成 keystore 文件
-			keytool -importkeystore -v  -srckeystore springboot.io.p12 -srcstoretype pkcs12 -srcstorepass [p12文件的密码] -destkeystore springboot.io.keystore -deststoretype jks -deststorepass [keytroe的密码]
+			keytool -importkeystore -v  -srckeystore springboot.io.p12 -srcstoretype pkcs12 -srcstorepass 123456 -destkeystore springboot.io.keystore -deststoretype jks -deststorepass 123456
 		
 			* 如果提示警告,可以考虑根据警告的命令,再执行一波
 				keytool -importkeystore -srckeystore springboot.io.keystore -destkeystore springboot.io.keystore -deststoretype pkcs12
