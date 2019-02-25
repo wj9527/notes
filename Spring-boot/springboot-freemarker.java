@@ -27,15 +27,15 @@ spring:
     prefix: /temp
     # 视图后缀 
     suffix: .ftl
-    # 使用指定的属性访问 request 域中的数据
+    # 使用该属性引用到request对象(实质上是:RequestContext 对象)
     request-context-attribute: req
     # 是否把request域的属性添加到模板引擎，默认:false
     expose-request-attributes: true
     # 是否把session域的属性添加到模板引擎，默认:false
     expose-session-attributes: true
-    # request的属性是否可以覆盖controller的model的同名项。默认:false
+    # request的属性是否可以覆盖controller的model的同名项。默认:false,如果发生同名属性覆盖的情况会抛出异常
     allow-request-override: true
-    # session的属性是否可以覆盖controller的model的同名项。默认 false
+    # session的属性是否可以覆盖controller的model的同名项。默认 false,如果发生同名属性覆盖的情况会抛出异常
     allow-session-override: false
     # 默认:true
     expose-spring-macro-helpers: true
@@ -53,25 +53,22 @@ spring:
 spring:
   freemarker:
     enabled: true
-    cache: true
+    cache: false
     content-type: text/html
     charset: utf-8
     suffix: .ftl
-    # 访问 request 域属性的前缀
-    request-context-attribute: reqeust
-    # 添加 request 域的属性到model
+	# 引用request
+    request-context-attribute: request
+	# 暴露request域中的属性
     expose-request-attributes: true
-    # 添加 session 域的属性到model
+	# 暴露session域中的属性
     expose-session-attributes: true
-    # 允许 request 域的属性覆盖model的属性
-    allow-request-override: true
-    # 允许 session 域的属性覆盖model的属性
-    allow-session-override: false
     check-template-location: true
     template-loader-path:
       - classpath:/templates/
     settings:
       datetime_format: yyyy-MM-dd HH:mm:ss
+	
 ----------------------------------
 配置							  |
 ----------------------------------
