@@ -8,34 +8,45 @@ freemarker						  |
 		</dependency> 
 	
 	# 配置项
-		spring.freemarker.allow-request-override=false 
-		spring.freemarker.allow-session-override=false
-		spring.freemarker.cache=false
-			* 是否开启模版引擎缓存
-		spring.freemarker.charset=UTF-8
-			* 模版引擎的编码
-		spring.freemarker.check-template-location=true
-			* 检查目标目录是否存在
-		spring.freemarker.content-type=text/html
-			* Content-Type
-		spring.freemarker.enabled=true
-			* 启用
-		spring.freemarker.expose-request-attributes=false
-			* 是否允许访问request域中的model
-		spring.freemarker.expose-session-attributes=false
-			* 是否允许访问session域中的model
-		spring.freemarker.expose-spring-macro-helpers=true
-		spring.freemarker.prefer-file-system-access=true
-		spring.freemarker.prefix= 
-		spring.freemarker.request-context-attribute= request
-			* 访问request域的别名
-		spring.freemarker.settings.*= # Well-known FreeMarker keys which will be passed to FreeMarker's Configuration.
-		spring.freemarker.suffix
-			* # Suffix that gets appended to view names when building a URL.
-		spring.freemarker.template-loader-path=classpath:/templates/
-			*  一个或者多个模版引擎的路径
-		spring.freemarker.view-names=
-		spring.freemarker.template-encoding=UTF-8
+spring:
+  freemarker:
+    # 是否开启，默认:true
+    enabled: true
+    # 是否开启模版引擎缓存，默认:false
+    cache: true
+    # 默认:text/html
+    content-type: text/html
+    # 编码，默认: urf-8
+    charset: utf-8
+    # 可以解析的视图列表，数组
+    view-names:
+      - views
+    # 是否检查模板引擎目录是否存在，默认:true
+    check-template-location: true
+    # 视图前缀
+    prefix: /temp
+    # 视图后缀 
+    suffix: .ftl
+    # 使用指定的属性访问 request 域中的数据
+    request-context-attribute: req
+    # 默认:false
+    expose-request-attributes: true
+    # 默认:false
+    expose-session-attributes: true
+    # 默认:false
+    allow-request-override: true
+    # 默认:true
+    expose-spring-macro-helpers: true
+    # 默认 false
+    allow-session-override: false
+    # 模板引擎加载目录，默认:classpath:/templates/
+    template-loader-path:
+      - classpath:/templates/
+    # 默认:true
+    prefer-file-system-access: true
+    # freemarker中Configuration设置的配置。也就是定义在:freemarker.coreConfigurable 中的那些静态变量值
+    settings:
+      datetime_format: yyyy-MM-dd HH:mm:ss
 	
 	# 一般设置
 spring:
