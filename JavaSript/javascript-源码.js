@@ -137,3 +137,46 @@ document.addEventListener('copy', function (event) {
         clipboardData.setData('text/plain', text + '\n\njavaweb开发者社区版权所有');
     }
 });
+
+----------------------------------------
+获取到粘贴的图片						|
+----------------------------------------
+document.addEventListener('paste', function(event) {
+	let items = event.clipboardData && event.clipboardData.items;
+	let file = null;
+	if (items && items.length) {
+		// 检索剪切板items
+		for (let i = 0; i < items.length; i++) {
+			if (items[i].type.indexOf('image') !== -1) {
+				file = items[i].getAsFile();
+				if(!file){
+					// 文件读取失败，可能是复制了文件系统的图片
+				}
+				break;
+			}
+		}
+	}
+	// 此时file就是剪切板中的图片文件
+});
+
+----------------------------------------
+获取到拖曳的图片						|
+----------------------------------------
+document.addEventListener('dragenter', function (event) {
+    event.preventDefault();
+});
+document.addEventListener('dragover', function (event) {
+    event.preventDefault();
+});
+document.addEventListener('drop', function (event) {
+    event.preventDefault();
+    let files = event.dataTransfer.files;
+    if (files) {
+    	// 获取到拖曳的图片
+    	console.log(files);
+    }
+});
+document.addEventListener('dragend', function (event) {
+    event.preventDefault();
+});
+
