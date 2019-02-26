@@ -75,3 +75,6 @@ Spring-Boot 注解			|
 	
 		# 通过该注解导入spring的xml配置文件
 	
+	
+	@PropertySource
+		
