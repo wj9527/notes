@@ -53,3 +53,25 @@ Spring-Boot 注解			|
 	
 
 
+	@AutoConfigureAfter
+		# 只有两个属性
+			Class<?>[] value() default {};
+			String[] name() default {};
+		
+		# 用在自动配置类上面,表示该自动配置类需要在另外指定的自动配置类配置完之后
+		# 例如 Mybatis 的自动配置类,需要在数据源自动配置类之后
+			@AutoConfigureAfter(DataSourceAutoConfiguration.class)
+			public class MybatisAutoConfiguration {
+		
+	@AutoConfigureBefore
+		# 同上,通过该注解指定的配置类,应该要在当前类之后配置
+	
+
+	@ImportResource
+		# 属性
+			String[] value() default {};
+			String[] locations() default {};
+			Class<? extends BeanDefinitionReader> reader() default BeanDefinitionReader.class;
+	
+		# 通过该注解导入spring的xml配置文件
+	
