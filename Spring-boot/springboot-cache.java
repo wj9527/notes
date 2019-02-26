@@ -18,9 +18,12 @@ springboot-cache	|
 				EhCache 2.x 
 				Hazelcast 
 				Infinispan 
+				COUCHBASE
 				Redis 
-				Guava 
-				Simple 
+				CAFFEINE
+				Guava (新版本已经移除)
+				Simple
+				NONE
 			* 除了按顺序侦测外,也可以通过配置属性spring.cache.type 来强制指定,默认是simple类型
 				
 
@@ -37,6 +40,9 @@ springboot-cache	|
 			* 使用EhCache作为缓存技术
 		RedisCacheManager
 			* 使用Redis作为缓存技术
+	
+	# SpringBoot的配置类
+		CacheProperties
 	
 --------------------
 声明式注解			|
@@ -165,6 +171,8 @@ Ehcache3			|
 	# 配置
 		spring.cache.type=jcache
 		spring.cache.jcache.config=classpath:ehcache/ehcache.xml
+		# 如果存在多个jcache的实现,需要在这里指定实现类
+		spring.cache.jcache.provider=
 	
 	# 注解配置
 		@Cacheable(value = "name")
