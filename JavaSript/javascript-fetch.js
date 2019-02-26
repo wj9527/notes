@@ -205,8 +205,12 @@ URLSearchParams		|
 	# api
 		append(k,v)
 			* 添加kv,不会覆盖,已经存在,则多添加一个键值对
+
 		set(k,v)
 			* 添加kv,同名属性会发生覆盖
+		
+		toString()
+			* 返回字符串,就是经过了编码后的表单体
 	
 	# 实例对象可以直接作为 fetch的options的body属性,或者Request实例的options的body属性
 		* 会自动添加 ContentType头
