@@ -50,6 +50,7 @@ ChannelInboundHandler		 |
 	# SimpleChannelInboundHandler<T>
 		* 抽象类,需要覆写抽象方法: channelRead0(ChannelHandlerContext ctx, T msg)
 		* 自动强制转换类型,并且自动的释放buf资源
+			 ReferenceCountUtil.release(msg);
 	
 	# 一般使用的和场景
 		ChannelInboundHandlerAdapter	处理其事件或者状态改变
