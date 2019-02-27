@@ -200,3 +200,21 @@ springboot配置	http2				  |
 				}
 			}
 		}
+
+
+--------------------------------------
+springboot配置	ssl双向验证			  |
+--------------------------------------
+	# 配置
+server:
+  ssl:
+    enabled: true
+    key-store: classpath:ssl/localhost.keystore
+    key-store-type: JKS
+    key-store-password: 123456
+    
+    # 需要验证客户端
+    client-auth: NEED
+    trust-store: classpath:ssl/localhost.keystore
+    trust-store-type: JKS
+    trust-store-password: 123456

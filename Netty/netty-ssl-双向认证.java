@@ -45,7 +45,7 @@ ssl双向认证								|
 			keytool -import -trustcacerts -alias client -file client.cer -keystore server.keystore
 		
 		* 客户端从证书删除已经导入的公钥
-			 keytool -delete -alias server -keystore client.keystore
+			keytool -delete -alias server -keystore client.keystore
 			
 		* 服务端从证书删除已经导入的公钥
 			keytool -delete -alias client -keystore server.keystore
