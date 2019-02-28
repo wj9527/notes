@@ -3,6 +3,8 @@
 --------------------
 	* redis.conf
 	* 复制到Server目录	
+	* 可以参考
+		http://download.redis.io/redis-stable/redis.conf
 	
 	
 	daemonize no
@@ -37,3 +39,53 @@
 	requirepass
 		* 设置连接密码
 	
+	maxmemory 
+		* 设置内容淘汰策略
+	
+	save [time] [keys]
+		* RDB持久化设置
+		* time 表示秒, keys 表示时间内发生改变的key数量
+		* 如果在time秒内,有keys个key发生了修改,就发起一次快照
+		* 默认的配置
+			save 900 1			# 900秒内有1个key发生了改变,就发起一次快照
+			save 300 10
+			save 60 10000
+		* 如果需要关闭,可以注释
+		
+	rdbcompression
+		* 是否压缩RBD持久化到硬盘的数据,默认:yes
+		* yes/no
+	
+	appendonly
+		* 是否开启AOF持久化,默认未开启
+		* yes/no
+	
+	appendfilename
+		* 设置AOF持久化日志的文件名称
+	
+	appendfsync
+		* 设置AOF持久化的频率,枚举值
+			always
+				* 有一个写入指令我就备份一次
+				* 性能最差,但是可以保证数据
+
+			everysec
+				* 每秒备份(记录操作命令)一次(推荐,也是默认)
+				* 性能和数据做了折中
+			no
+				* 服务器心情好,就给你备份.心情不好,就等着晚点做!(其实就是根据性能来)
+				* 性能最好,但是数据没保证
+	
+	auto-aof-rewrite-percentage 100
+		* 当AOF文件大小超过上次重写的AOF文件大小的百分之多少时会再次进行重写
+		* 如果之前没有重写过.则以启动时的AOF文件大小为依据
+
+	auto-aof-rewrite-min-size 64mb
+		* 限制了允许重写的最小的AOF文件大小
+		* 通常在AOF文件很小的时候即使其中有些冗余的命令也是可以忽略的
+	
+	aof-use-rdb-preambl yes
+		* 是否开启混合持久化
+		* 如果把混合持久化打开,AOF 重写的时候就直接把 RDB 的内容写到 AOF 文件开头
+		* 这样做的好处是可以结合 RDB 和 AOF 的优点, 快速加载同时避免丢失过多的数据
+		* 当然缺点也是有的, AOF 里面的 RDB 部分是压缩格式不再是 AOF 格式,可读性较差
