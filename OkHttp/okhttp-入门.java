@@ -19,10 +19,18 @@ okhttp-入门					|
 okhttp-client				|
 ---------------------------
 	# 相当于浏览器的配置
-
-		 OkHttpClient client = new OkHttpClient().newBuilder()
+		OkHttpClient client = new OkHttpClient().newBuilder()
 		.followRedirects(false)					//禁制OkHttp的重定向操作,自己处理重定向
 		.followSslRedirects(false)				//进制允许ssl重定向(80 -> 443)
+		.cookieJar(new CookieJar() {			//cookie的序列化与反序列化接口,需要自己实现
+			@Override
+			public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+			}
+			@Override
+			public List<Cookie> loadForRequest(HttpUrl url) {
+				return null;
+			}
+		})
 		.build();
 
 ---------------------------
