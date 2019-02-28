@@ -16,6 +16,16 @@ okhttp-入门					|
 		https://square.github.io/okhttp/3.x/okhttp/
 
 ---------------------------
+okhttp-client				|
+---------------------------
+	# 相当于浏览器的配置
+
+		 OkHttpClient client = new OkHttpClient().newBuilder()
+		.followRedirects(false)					//禁制OkHttp的重定向操作,自己处理重定向
+		.followSslRedirects(false)				//进制允许ssl重定向(80 -> 443)
+		.build();
+
+---------------------------
 okhttp-Request				|
 ---------------------------
 	Request.Builder builder = new Request.Builder();
