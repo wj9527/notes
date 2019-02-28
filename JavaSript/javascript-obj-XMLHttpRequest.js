@@ -76,11 +76,20 @@ XMLHttpRequest				|
 				if(xhr.upload){
 					//监听上传属性的上传事件,每次上传事件都会执行 progressHandlingFunction
 					xhr.upload.addEventListener('progress',progressHandlingFunction, false);
-					//xhr.upload.progress = function(){}			也可以
+					//xhr.upload.onprogress = function(){}			也可以
 				}
 			* Event属性
 					total;		//获取上传文件的总(所有)大小
 					loaded;		//获取已经上传的文件大小
+
+					function progressHandlingFunction(event) {
+						event.total;		//获取上传文件的总大小
+						event.loaded;		//获取已经上传的文件大小
+						//获取进度的百分比值
+						var percent  = (event.loaded / event.total) * 100;
+						//四舍五入保留两位小数
+						percent = percent.toFixed(2);
+					}
 	
 		statusText
 			* http状态的描述文字

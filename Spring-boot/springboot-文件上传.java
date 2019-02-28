@@ -41,7 +41,8 @@ Spring-boot 单个文件		|
 		spring.servlet.multipart.file-size-threshold=0
 			# 文件大小阈值,当大于这个阈值时将写入到磁盘(临时目录),否则存在内存中.默认0
 
-
+		* 配置类:MultipartProperties
+	
 ---------------------------
 Spring-boot 批量上传		|
 ---------------------------
