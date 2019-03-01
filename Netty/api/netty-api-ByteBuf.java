@@ -21,6 +21,9 @@ ByteBuf						 |
 	
 	ByteBuf setIndex(int readerIndex, int writerIndex);
 		* 同时设置读写角标
+	
+	int arrayOffset();
+		* 返回底层数组存储数据的偏移量(一般都是0)
 
 	// 容器的属性操作
 	int capacity();
@@ -28,9 +31,11 @@ ByteBuf						 |
 
 	boolean isReadable();
 		* 是否还有起码1个字节的可读空间
+		* wi > ri
 
 	boolean isReadable(int size);
 		* 是否还有指定长度的可读空间
+		* wi - ri >= size
 	
 	boolean isWritable();
 		* 是否起码还有1个字节的可写空间
@@ -43,18 +48,24 @@ ByteBuf						 |
 
 	ByteBuf clear();
 		* 设置读写标识都为1,但是未清空内容
+	
+	int readableBytes();
+		* 返回可读字节数(写索引 - 读索引)
 
 	
 	// 数据读取
 	long  readUnsignedInt()
 	ByteBuf retainedDuplicate()
 	short readUnsignedByte()
+	CharSequence getCharSequence(int index, int length, Charset charset);
+		*  从指定的角标开始,读取指定长度的数据,使用指定编码后返回
 
 	// 数据丢弃
 	ByteBuf discardReadBytes();
 		* 清空 ByteBuf 中已读取的数据,未读数据往前移动,从而使 ByteBuf 有多余的空间容纳新的数据
 		* 可能会涉及内存复制,因为它需要移动 ByteBuf 中可读的字节到开始位置,这样的操作会影响性能
 		* 一般在需要马上释放内存的时候使用收益会比较大
+	
 	ByteBuf discardSomeReadBytes();
 
 	// 标记操作
