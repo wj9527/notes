@@ -16,7 +16,7 @@ Redis-整合单机版					|
 		    <artifactId>commons-pool2</artifactId>
 		</dependency>
 	
-	# 配置文件
+	# 配置文件(配置类:org.springframework.boot.autoconfigure.data.redis.RedisProperties)
 		# Redis数据库索引（默认为0）
 		spring.redis.database=0  
 		# Redis服务器地址
