@@ -49,12 +49,60 @@ ChannelInboundHandler		 |
 
 	# SimpleChannelInboundHandler<T>
 		* 抽象类,需要覆写抽象方法: channelRead0(ChannelHandlerContext ctx, T msg)
-		* 自动强制转换类型,并且自动的释放buf资源
+		* 自动强制转换类型,并且可以自动的释放buf资源
 			 ReferenceCountUtil.release(msg);
 	
 	# 一般使用的和场景
 		ChannelInboundHandlerAdapter	处理其事件或者状态改变
 		SimpleChannelInboundHandler		处理消息
+
+-----------------------------
+SimpleChannelInboundHandler	 |
+-----------------------------
+	# 继承自:ChannelInboundHandlerAdapter 的泛型抽象类
+	# 构造函数
+		SimpleChannelInboundHandler() 
+		SimpleChannelInboundHandler(boolean autoRelease)
+		SimpleChannelInboundHandler(Class<? extends I> inboundMessageType)
+		
+		* autoRelease 是否自动释放资源,默认 true
+		* inboundMessageType 该处理器会处理的消息类型(必须是泛型或者其子类)
+	
+	# 提供的可覆写的方法
+		abstract void channelRead0(ChannelHandlerContext ctx, I msg)
+			* 唯一的抽象类,必须覆写
+	
+		void channelRead(ChannelHandlerContext ctx, Object msg)
+			* 处理读取事件
+			* 源码
+				@Override
+				public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+					boolean release = true;
+					try {
+						if (acceptInboundMessage(msg)) {
+							@SuppressWarnings("unchecked")
+							I imsg = (I) msg;
+							channelRead0(ctx, imsg);
+						} else {
+							release = false;
+							ctx.fireChannelRead(msg);
+						}
+					} finally {
+						if (autoRelease && release) {
+							ReferenceCountUtil.release(msg);	// 自动释放资源
+						}
+					}
+				}
+		
+		boolean acceptInboundMessage(Object msg)
+			* 执行 channelRead()的时候,会调用该方法
+			* 判断当前Handler是否可以处理该消息对象
+			* 如果返回 true,就进行强制类型转换,并且触抽象方法 channelRead0 
+			* 如果返回 false,就会触发下一个Handler的 channelRead 事件
+			
+
+	# TypeParameterMatcher
+		* 在SimpleChannelInboundHandler内部维护的一个对象
 
 
 -----------------------------

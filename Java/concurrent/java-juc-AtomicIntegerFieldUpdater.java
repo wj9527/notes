@@ -3,13 +3,13 @@ AtomicIntegerFieldUpdater			  |
 --------------------------------------
 	# Integer 字段的原子修改器
 		* 它是一个抽象类
-		* 主要就是通过该修改器去修改指定对象的指定 Integer 字段值(使用反射)
+		* 主要就是通过该修改器去修改指定对象的指定 int 字段值(使用反射)
 		* 在多线程环境下,这种修改是原子性的(CAS算法)
 
 	# 静态的工厂方法
 		<U> AtomicIntegerFieldUpdater<U> newUpdater(Class<U> tclass, String fieldName)
 			* tclass 指定类
-			* fieldName 指定Integer(int)属性字段
+			* fieldName 字段的属性必须是 int,不能是 Integer,而且不能是 static 的
 			* 注意,该字段必须使用 protected 及其以上的权限修饰符,并且必须添加:volatile 修饰符
 
 	# 实例方法
