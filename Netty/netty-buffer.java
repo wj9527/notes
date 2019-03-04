@@ -16,7 +16,13 @@ Buffer				|
 	# Netty 缓冲 API 提供了几个优势
 		* 可以自定义缓冲类型
 		* 通过一个内置的复合缓冲类型实现零拷贝
-		* 扩展性好,比如 StringBuilder
+		* 扩展性好,类似 StringBuilder(可以自动的扩容)
+			ByteBuf byteBuf = Unpooled.buffer(5);	// 初始5个长度
+			for(int x = 0 ;x < 10 ;x ++) {			// 强行写入10个数据
+				byteBuf.writeByte(x);
+			}
+			//UnpooledByteBufAllocator$InstrumentedUnpooledUnsafeHeapByteBuf(ridx: 0, widx: 10, cap: 64)		自动扩容到64
+			System.out.println(byteBuf);
 		* 读取和写入索引分开,不需要调用 flip() 来切换读/写模式
 		* 方法链
 		* 引用计数
@@ -40,7 +46,21 @@ Buffer				|
 					池化的				非池化的
 		直接缓冲		
 		堆缓冲
+		复合缓冲
 		————————————————————————————————————————
+		heap buffer
+			* 存储在jvm堆,可以快速的创建与销毁,并且可以直接访问内部的数组
+			* 每次的数据io,都有一个拷贝数据的过程(把堆中数据复制到直接缓冲区)
+
+		direct buffer
+			* 在堆外直接分配空间,它不会占用堆的空间
+			* 在socket进行io时性能比较好,因为省略了复制这一个步骤
+			* 它不能直接访问内部的数组
+			* 它的内存分配与释放比堆会比较复杂且速度会慢一些(可以通过内存池来解决这个问题)
+
+	# 不同ByeBuf的使用场景
+		* 业务消息的编解码采用HeapByteBuf
+		* IO通信线程在IO缓冲区时,使用DirectByteBuf(0拷贝)
 
 --------------------
 Buffer				|
@@ -74,6 +94,7 @@ Direct Buffer(直接缓冲区)|
 			// 把缓冲区的数据读取到数组
 			directBuf.getBytes(0, arr);
 		}
+
 
 
 

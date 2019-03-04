@@ -2,10 +2,28 @@
 CompositeByteBuf			  |
 ------------------------------
 	# 复合Buffer,它本身也是实现了ByteBuf接口,而且它不会有内存泄漏的问题
-
 		* 其实就是把多个Buffer柔和成一个Buffer
 
 	# CompositeByteBuf.hasArray()总是返回 false,因为它可能包含一些直接或间接的不同类型的 ByteBuf
+	
+	# 构造函数
+		CompositeByteBuf(ByteBufAllocator alloc, boolean direct, int maxNumComponents)
+		CompositeByteBuf(ByteBufAllocator alloc, boolean direct, int maxNumComponents, ByteBuf... buffers) 
+		CompositeByteBuf(ByteBufAllocator alloc, boolean direct, int maxNumComponents, Iterable<ByteBuf> buffers) 
+	
+	# 方法
+		CompositeByteBuf addComponent(boolean increaseWriterIndex, int cIndex, ByteBuf buffer)
+		CompositeByteBuf addComponent(boolean increaseWriterIndex, ByteBuf buffer)
+		CompositeByteBuf addComponent(int cIndex, ByteBuf buffer)
+		CompositeByteBuf addComponent(ByteBuf buffer)
+		CompositeByteBuf addComponents(boolean increaseWriterIndex, ByteBuf... buffers)
+		CompositeByteBuf addComponents(boolean increaseWriterIndex, Iterable<ByteBuf> buffers)
+		CompositeByteBuf addComponents(int cIndex, ByteBuf... buffers)
+		CompositeByteBuf addComponents(int cIndex, Iterable<ByteBuf> buffers) 
+		CompositeByteBuf addComponents(ByteBuf... buffers)
+		CompositeByteBuf addComponents(Iterable<ByteBuf> buffers)
+
+
 
 	# 简单的使用
 		// 创建复合缓冲区
