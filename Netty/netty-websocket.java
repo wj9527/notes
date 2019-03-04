@@ -14,8 +14,13 @@ websocket						 |
 
 	# WebSocketFrame
 		* ws消息类型的抽象类,提供了N个实现,表示不同的消息类型
-		* 看类名就知道是啥实现了
+		* 看子类,类名就知道是啥消息的实现了
 	
+	# WebSocketServerCompressionHandler
+		* 提供了对websocket消息的压缩
+		* 私有化了构造函数,提供了一个全局的静态实例
+			WebSocketServerCompressionHandler.INSTANCE
+		* 使用 @ChannelHandler.Sharable 标识,可以用于多个Channel
 
 -------------------------------------
 WebSocketServerProtocolHandler		 |
