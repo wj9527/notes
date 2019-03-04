@@ -74,3 +74,26 @@
         }
 		ctx.flush();
     }
+
+
+----------------------
+ChunkedInput		  |
+----------------------
+	# 接口抽象方法
+
+	boolean isEndOfInput() throws Exception;
+		*  是否已经读取完毕
+
+	void close() throws Exception;
+		* 关闭
+
+	@Deprecated
+	B readChunk(ChannelHandlerContext ctx) throws Exception;
+	B readChunk(ByteBufAllocator allocator) throws Exception;
+		* 读取数据,返回泛型
+
+	long length();
+		* 可读长度
+
+	long progress();
+		* 目前的传输进度
