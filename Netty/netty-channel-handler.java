@@ -4,9 +4,10 @@ ChannelHandler				 |
 	# 提供基本的Handler事件
 	# 类库
 		ChannelHandler
-			|-ChannelHandlerAdapter
-			|-ChannelInboundHandler
-			|-ChannelOutboundHandler
+			|-ChannelHandlerAdapter(抽象)
+			|-ChannelInboundHandler(读接口)
+			|-ChannelOutboundHandler(写接口)
+				|-ChannelDuplexHandler(读写都实现)
 
 	# Handler的生命周期(基本的事件)
 		handlerAdded	ChannelHandler 添加到 ChannelPipeline
@@ -116,6 +117,12 @@ ChannelOutboundHandler		 |
 				|-MessageToMessageEncoder<I>
 					|-LengthFieldPrepender
 					|-StringEncoder
+
+-----------------------------
+ChannelDuplexHandler		 |
+-----------------------------
+	# 读写Handler
+	# 它继承 ChannelInboundHandlerAdapter 实现 ChannelOutboundHandler
 
 -----------------------------
 ChannelPromise 机制			 |
