@@ -31,3 +31,10 @@ ChannelHandlerContext			|
 
 	ChannelHandlerContext fireUserEventTriggered(Object evt);
 		* 主动触发用户自定义的事件
+	
+
+	ChannelProgressivePromise newProgressivePromise();
+	ChannelFuture newFailedFuture(Throwable cause);
+	ChannelFuture newSucceededFuture();
+	ChannelPromise newPromise();
+	ChannelPromise voidPromise();

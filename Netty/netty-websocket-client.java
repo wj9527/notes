@@ -3,6 +3,7 @@ client					 |
 -------------------------
 	# ¿‡ø‚
 		WebSocketClientHandshakerFactory
+		WebSocketClientHandshaker
 	
 ------------------------------------
 WebSocketClientHandshakerFactory	|

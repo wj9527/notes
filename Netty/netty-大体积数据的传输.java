@@ -34,7 +34,7 @@
 	# 传输文件中指定的数据块
 	# Handler
 		ChunkedWriteHandler
-
+	
 	# 类库
 		ChunkedInput(接口)
 			ChunkedFile
@@ -97,3 +97,31 @@ ChunkedInput		  |
 
 	long progress();
 		* 目前的传输进度
+
+--------------------------------------------
+传输进度的监听								|
+--------------------------------------------
+	# 类库 
+		ChannelProgressiveFutureListener
+			* 用于监听传输进度的监听器
+			* 对 GenericProgressiveFutureListener 的空实现
+
+
+	ChannelFuture sendFileFuture = ctx.write(new DefaultFileRegion(file.getChannel(), 0, fileLength), ctx.newProgressivePromise());
+	sendFileFuture.addListener(new ChannelProgressiveFutureListener() {
+		// 传输进度
+		@Override
+		public void operationProgressed(ChannelProgressiveFuture future, long progress, long total) {
+			if (total < 0) { // 未知总大小
+				System.err.println(future.channel() + " Transfer progress: " + progress);
+			} else {
+				System.err.println(future.channel() + " Transfer progress: " + progress + " / " + total);
+			}
+		}
+
+		// 传输完成
+		@Override
+		public void operationComplete(ChannelProgressiveFuture future) {
+			System.err.println(future.channel() + " Transfer complete.");
+		}
+	});

@@ -1,7 +1,7 @@
 -----------------------------
 Channel						 |
 -----------------------------
-	# 接口
+	# 实现的接口
 		Channel extends AttributeMap, ChannelOutboundInvoker, Comparable<Channel
 
 	ChannelId id();
