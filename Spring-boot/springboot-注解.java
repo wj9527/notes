@@ -77,4 +77,18 @@ Spring-Boot 注解			|
 	
 	
 	@PropertySource
-		
+		# 加载外部配置文件
+		# 跟标签加载一样
+			<context:property-placeholder location="classpath:jdbc.properties" />
+
+	@Profile
+		# 只有一个属性
+		# 可以标识在类,方法上,指定一个或者多个激活的配置文件名
+			String[] value();
+		# 关联的配置
+			spring.profiles.active=dev
+		# 使用demo
+			@Profile("dev")  // 只有激活了dev配置文件时,才会加载该controller
+			@RestController
+			public class ProdController
+			
