@@ -58,6 +58,9 @@ java.reflect.Class	 |
 		* 判断是否是原始数据类型类对象
 		int.class.isPrimitive() => true
 		Integer.class.isPrimitive() => false
+	
+	boolean isInstance(Object obj);
+		* 判断指定的对象,是否是当前class的类型,或者子类
 
 	Class<?>[] getInterfaces()
 		* 获取当前类实现的所有接口

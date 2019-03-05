@@ -1,5 +1,5 @@
 ---------------------
-综合				 |
+其他				 |
 ---------------------
 	# 右击显示自己的菜单(具备右击事件的组件都可以使用)
 		onContextMenu:function(e,node){
@@ -83,3 +83,17 @@ datagrid			 |
 		
 		* 同理的,既然可以获取到摁钮的jq对象,就可以执行linkbutton的方法,禁用掉它
 			$('div.datagrid-toolbar a').eq(2).linkbutton('disable');
+
+---------------------
+validatebox			 |
+---------------------
+	# 扩展easyui的validatebox,新增验证
+		$.extend($.fn.validatebox.defaults.rules,{
+			name:{
+				validator : function(value,param){
+					console.log(value);
+					return /^(?!\d+$)(?!_+$)\w{1,14}$/.test(value.replace(/[\u4e00-\u9fa5]/g,"aa"));
+				},
+				message:'名称格式错误'
+			}
+		});

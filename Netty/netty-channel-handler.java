@@ -68,6 +68,9 @@ SimpleChannelInboundHandler	 |
 		
 		* autoRelease 是否自动释放资源,默认 true
 		* inboundMessageType 该处理器会处理的消息类型(必须是泛型或者其子类)
+			if (inboundMessageType.isInstance(msg)){
+				// 处理
+			}
 	
 	# 提供的可覆写的方法
 		abstract void channelRead0(ChannelHandlerContext ctx, I msg)
@@ -96,15 +99,23 @@ SimpleChannelInboundHandler	 |
 				}
 		
 		boolean acceptInboundMessage(Object msg)
-			* 执行 channelRead()的时候,会调用该方法
 			* 判断当前Handler是否可以处理该消息对象
+			* 执行 channelRead()的时候,会调用该方法,该方法默认调用了 TypeParameterMatcher 实例的 match(); 方法
 			* 如果返回 true,就进行强制类型转换,并且触抽象方法 channelRead0 
 			* 如果返回 false,就会触发下一个Handler的 channelRead 事件
 			
 
 	# TypeParameterMatcher
-		* 在SimpleChannelInboundHandler内部维护的一个对象
-
+		* 类型匹配器
+		* 在SimpleChannelInboundHandler内部维护的一个对象(抽象类)
+		* 提供了静态的工厂方法
+			static TypeParameterMatcher find(final Object object, final Class<?> parametrizedSuperclass, final String typeParamName);
+			static TypeParameterMatcher get(final Class<?> parameterType)
+		
+		*  唯一的抽象方法
+			abstract boolean match(Object msg);
+		
+		
 
 -----------------------------
 ChannelOutboundHandler		 |
