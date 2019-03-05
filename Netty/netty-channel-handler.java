@@ -108,6 +108,7 @@ SimpleChannelInboundHandler	 |
 	# TypeParameterMatcher
 		* 类型匹配器
 		* 在SimpleChannelInboundHandler内部维护的一个对象(抽象类)
+		* 很多带泛型的编解码器都是靠它来进行判断是否要进行解码/编码的
 		* 提供了静态的工厂方法
 			static TypeParameterMatcher find(final Object object, final Class<?> parametrizedSuperclass, final String typeParamName);
 			static TypeParameterMatcher get(final Class<?> parameterType)
