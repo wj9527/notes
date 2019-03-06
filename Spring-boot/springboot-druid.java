@@ -54,3 +54,72 @@ Druid						|
         initParams={@WebInitParam(name="exclusions",value="*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*")})
 		public class DruidStatFilter extends WebStatFilter {
 		}
+
+----------------------------
+starter						|
+----------------------------
+	# 文档
+		https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
+
+	# 依赖
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>1.1.10</version>
+		</dependency>
+
+	# 配置:配置类:DruidStatProperties,DataSourceProperties
+spring:
+  datasource:
+    #　spring提供的通用(常用)配置
+    driver-class-name:
+    url:
+    username:
+    password:
+    
+    # druid配置
+    druid:
+      # 连接池配置(DruidDataSource实例属性)
+      initial-size:
+      max-active:
+      min-idle:
+      max-wait:
+      pool-prepared-statements:
+      max-pool-prepared-statement-per-connection-size:
+      max-open-prepared-statements:
+      validation-query:
+      validation-query-timeout:
+      test-on-borrow:
+      test-on-return:
+      test-while-idle:
+      time-between-eviction-runs-millis:
+      min-evictable-idle-time-millis:
+      max-evictable-idle-time-millis:
+      filters:
+      
+      # Spring监控AOP切入点(x.y.z.service.*)是一个数组 String[]
+      aop-patterns:
+      
+      # 监控Servlet
+      stat-view-servlet:
+        enabled:
+        url-pattern:
+        allow:
+        deny:
+        login-username:
+        login-password:
+        reset-enable:
+      
+      # 监控Filter
+      web-stat-filter:
+        enabled:
+        url-pattern:
+        exclusions:
+        session-stat-max-count:
+        session-stat-enable:
+        principal-session-name:
+        principal-cookie-name:
+        profile-enable:
+        
+    
+    
