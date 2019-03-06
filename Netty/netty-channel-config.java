@@ -2,9 +2,17 @@
 ChannelConfig					|
 --------------------------------
 	# 对于Channel的一些配置
-	# 获取到Config对象
-		ChannelHandlerContext ctx .....
+	# 类库
+		ChannelConfig
+			|-SocketChannelConfig
+			|-ServerSocketChannelConfig
+
+	# 从Channel获取到Config对象
+		ChannelHandlerContext ctx ...
 		ChannelConfig channelConfig = ctx.channel().config();
+
+		ChannelFuture channelFuture = ...
+		ChannelConfig channelConfig = channelFuture.channel().config();
 	
 
 	# 方法

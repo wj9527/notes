@@ -49,6 +49,31 @@ ReplayingDecoder<T>			|
 ----------------------------
 	# 继承自 ByteToMessageDecoder 抽象类
 	# 跟 ByteToMessageDecoder 相比就是,它读取缓冲区的数据的时候,不需要去判断是否有足够的字节
+		* 它内部使用了一个特殊的 ByteBuf 实现:ReplayingDecoderByteBuf
+		* 如果在decode()中执行读取的字节数不够,ByteBuf自己会抛出异常然,在异常抛出后会被 ReplayingDecoder catch住
+			* 异常实例:Signal REPLAY = Signal.valueOf(ReplayingDecoder.class, "REPLAY");
+			* 每次的异常抛出,都是抛出同一个实例,避免异常对象多次创建的负担
+		* ReplayingDecoder catch住异常后,会把读角标重置为初始值
+		* 当有更多的数据后,会再次调用 decode() 方法
+
+	# 源码导读
+		// 如果可读的长度小于4字节,返回
+		if (buf.readableBytes() < 4) {
+			return;
+		}
+		// 标记读索引
+		buf.markReaderIndex();
+
+		// 读取一个int,表示数据的长度
+		int length = buf.readInt();
+
+		if (buf.readableBytes() < length) {
+			// 如果可读数据,小于数据的长度,返回
+			buf.resetReaderIndex();	// 并且重置读索引
+			return;
+		}
+
+		out.add(buf.readBytes(length));
 
 ----------------------------
 MessageToMessageDecoder<T>	|

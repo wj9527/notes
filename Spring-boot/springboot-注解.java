@@ -74,12 +74,22 @@ Spring-Boot 注解			|
 			Class<? extends BeanDefinitionReader> reader() default BeanDefinitionReader.class;
 	
 		# 通过该注解导入spring的xml配置文件
+		# 支持从文件系统或者classpath下加载
 	
 	
 	@PropertySource
 		# 加载外部配置文件
+			String name() default "";
+			String[] value();
+			boolean ignoreResourceNotFound() default false;
+			String encoding() default "";
+			Class<? extends PropertySourceFactory> factory() default PropertySourceFactory.class;
+
 		# 跟标签加载一样
 			<context:property-placeholder location="classpath:jdbc.properties" />
+
+		# 支持从不同的源加载数据
+			@PropertySource(value = { "file:c:/application.properties","classpath:app.properties"})
 
 	@Profile
 		# 只有一个属性
