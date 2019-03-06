@@ -1,11 +1,26 @@
 ----------------------------
 RestTemplate				|
 ----------------------------
-	* Spring RestTemplate 是 Spring 提供的用于访问 Rest 服务的客户端
-	* RestTemplate 提供了多种便捷访问远程Http服务的方法,能够大大提高客户端的编写效率
-	* 很客户端比如 Android或者第三方服务商都是使用 RestTemplate 请求 restful 服务
-	* 参考资料
-		http://www.jianshu.com/p/c9644755dd5e
+	# RestTemplate
+		* Spring RestTemplate 是 Spring 提供的用于访问 Rest 服务的客户端
+		* RestTemplate 提供了多种便捷访问远程Http服务的方法,能够大大提高客户端的编写效率
+		* 很客户端比如 Android或者第三方服务商都是使用 RestTemplate 请求 restful 服务
+	
+	# 参考资料
+			http://www.jianshu.com/p/c9644755dd5e
+
+	# 主要构成
+		HttpMessageConverter
+			* 对象转换器
+
+		ClientHttpRequestFactory 
+			* HTTP请求工厂,默认是JDK的HttpURLConnection,可以通过使用ClientHttpRequestFactory指定不同的HTTP请求方式,设置ssl等
+
+		ResponseErrorHandler
+			* 异常错误处理
+
+		ClientHttpRequestInterceptor
+			*  请求拦截器
 
 ----------------------------
 RestTemplate-实例创建		|
@@ -16,6 +31,9 @@ RestTemplate-实例创建		|
 	# 工厂创建
 		new RestTemplateBuilder().build();
 	
+
+			
+
 
 ----------------------------
 RestTemplate-api			|
