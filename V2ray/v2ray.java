@@ -6,7 +6,7 @@ v2ry						|
 		https://github.com/v2ray/v2ray-core
 	
 ----------------------------
-安装						|
+官方安装					|
 ----------------------------
 	# 下载并安装 V2Ray
 		wget https://install.direct/go.sh
