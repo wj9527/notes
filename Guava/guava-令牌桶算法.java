@@ -1,6 +1,18 @@
 ----------------------------
 RateLimiter					|
 ----------------------------
+	# 工厂函数
+		RateLimiter create(double permitsPerSecond) 
+		RateLimiter create(double permitsPerSecond, long warmupPeriod, TimeUnit unit)
+
+		* permitsPerSecond 表示一秒产生多少个令牌
+		* warmupPeriod
+		* unit表示warmupPeriod的时间单位
+
+
+----------------------------
+RateLimiter					|
+----------------------------
 	# 令牌桶算法实现
 		//令牌桶每秒产生2.5个令牌
 		RateLimiter rateLimiter = RateLimiter.create(2.5,1,TimeUnit.SECONDS);
