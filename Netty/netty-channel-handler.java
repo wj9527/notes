@@ -164,3 +164,34 @@ ChannelPromise 机制			 |
 	# 使用 @Sharable 注解共享一个 ChannelHandler 在一些需求中还是有很好的作用的
 		* 如使用一个 ChannelHandler 来统计连接数或来处理一些全局数据等等
 
+-----------------------------
+事件总结					 |
+-----------------------------
+	void handlerAdded(ChannelHandlerContext ctx) throws Exception;
+	void handlerRemoved(ChannelHandlerContext ctx) throws Exception;
+	void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception;
+
+	void channelRegistered(ChannelHandlerContext ctx) throws Exception;
+	void channelUnregistered(ChannelHandlerContext ctx) throws Exception;
+
+	void channelActive(ChannelHandlerContext ctx) throws Exception;
+	void channelInactive(ChannelHandlerContext ctx) throws Exception;
+
+	void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception;
+	void channelReadComplete(ChannelHandlerContext ctx) throws Exception;
+	void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception;
+	void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception;
+
+-----------------------------
+异常的传播与最佳实践		 |
+-----------------------------
+	# 异常的传播
+		* 异常发生后,会先触发当前handler exceptionCaught() 方法
+		* 如果当前节点,主动触发给下一个节点处理
+		* 会根据 pipeline 的添加顺序(跟Handler类型无关)触发下一个 handler 的 exceptionCaught() 方法
+
+	# 最佳的异常处理实践
+		* 在 pipeline 的最后,添加一个终极的 ExceptionHandler 
+		* 继承:ChannelInboundHandlerAdapter/ChannelHandlerAdapter,覆写 exceptionCaught() 方法来处理全局的异常
+		* 根据不同的异常类型来做处理
+
