@@ -32,6 +32,11 @@ ChannelHandlerContext			|
 	ChannelHandlerContext fireUserEventTriggered(Object evt);
 		* 主动触发用户自定义的事件
 	
+	String name();
+		* 获取的是当前 handler 的name(添加到 pipeline 时设置的name属性)
+
+    ChannelHandler handler();
+		* 返回的就是当前的handler实例对象
 
 	ChannelProgressivePromise newProgressivePromise();
 	ChannelFuture newFailedFuture(Throwable cause);

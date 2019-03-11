@@ -21,4 +21,15 @@ ChannelPipeline				|
 	
 	
 	
-	
+	# 部分添加handler的api
+		ChannelPipeline addFirst(String name, ChannelHandler handler);
+			* 添加handler到链表,并且设置名称
+
+		ChannelPipeline addLast(ChannelHandler... handlers);
+			* 添加handler到链表
+			* 名称默认: 类名#编号(从0开始)
+				ServerMessageHandler#0
+		
+		ChannelPipeline addLast(EventExecutorGroup group, ChannelHandler... handlers);
+			* 添加handler到链表,并且设置执行这些handler事件方法的线程池
+			
