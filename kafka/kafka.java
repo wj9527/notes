@@ -9,9 +9,16 @@ kafka-入门			 |
 
 	# 参考
 		https://blog.csdn.net/lizhitao/article/details/39499283
+		http://www.jasongj.com/tags/Kafka/
 
-
-
+	
+	# 特点
+		* 吞吐量高,在廉价的机器上,单机可以支持100w/s消息的读写
+		* 消息持久化,所有消息都会被持久化到硬盘,无消息丢失,支持消息重放
+		* 完全分布式:Producer,Broker,Consumer都支持水平的扩展
+		* 同时满足适应在线流处理和离线批处理
+		
+		
 ---------------------
 kafka-目录结构		 |
 ---------------------
