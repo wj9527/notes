@@ -6,7 +6,11 @@ ChannelPipeline				|
 		* 可以修改 ChannelPipeline 通过动态添加和删除 ChannelHandler
 		* ChannelPipeline 有着丰富的API调用动作来回应入站和出站事件
 	
-	
+	# 内部维护了一个双向链表
+		* InBound事件的传递: --->
+		* OutBound事件的传递: <---
+		* Exception事件的传递: --->
+
 	# 它也可以给客户端响应数据
 		ChannelPipeline pipeline = ctx.pipeline();
 		pipeline.write(Unpooled.copiedBuffer("netty in action", CharsetUtil.UTF_8));

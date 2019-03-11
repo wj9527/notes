@@ -2,12 +2,12 @@
 Buffer				|
 --------------------
 	# Éæ¼°µÄÀà¿â
-		ReferenceCounted
-			|-ByteBuf
+		ByteBuf
+			|-AbstractByteBuf
 				|-CompositeByteBuf
-			|-ByteBufHolder
-			|-FileRegion
-				|-DefaultFileRegion
+				|-UnpooledHeapByteBuf
+				|-UnpooledDirectByteBuf
+		ByteBufHolder
 		ByteBufProcessor
 		ByteBufAllocator
 		Unpooled
