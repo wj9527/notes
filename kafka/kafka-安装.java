@@ -2,11 +2,18 @@
 --------------------------------
 kafka 单机的安装				|
 --------------------------------
-	# 下载,解压,执行命令
+	# 下载,解压
+	# 启动ZKServer
+		* kafka自带了一个Zookeeper
+			lib
+			|-zookeeper-3.4.13.jar
+			config
+			|-zookeeper.properties
+		
+		zookeeper-server-start.bat ../../config/zookeeper.properties
+	
+	# 启动Kafka
 		kafka-server-start.bat ../../config/server.properties
-
-		* 需要先启动 ZkServer
-
 		
 
 --------------------------------
