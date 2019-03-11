@@ -92,8 +92,11 @@
 				* 指定容器运行的网络
 					--net=mynet
 				* 该网络需要先创建
-				
-
+			
+			--network-alias
+				* 指定当前容器在network中的别名(默认:[container-name].[net-name])
+					--network-alias my-service
+			
 			--cidfile
 				* 可以把容器的id存储到指定的文件
 					--cidfile=/tmp/containerid

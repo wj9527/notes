@@ -1,6 +1,9 @@
 ------------------------------
 network						  |
 ------------------------------
+	# 参考文档
+		https://docs.docker.com/config/containers/container-networking/
+	
 	# 同一个网络中的容器,都维护了一个 dns列表(/etc/hosts)
 
 		ip [container-name]
