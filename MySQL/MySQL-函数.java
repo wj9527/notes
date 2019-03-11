@@ -68,6 +68,10 @@ MYSQL-系统自带函数		|
 		* 比较俩字符串大小..根据字典排序咯.A > B
 		* 如果a > b 返回 1,反之返回 -1 相等返回 0
 	
+	find_in_set(str,list);
+		* 如果 str 出现在 list 中,返回 true
+			SELECT find_in_set(123,'123,456,788') as result; // 1
+
 	//加密相关
 	md5("被加密的字符");
 		* MD5加密函数,不可逆.平时用的
