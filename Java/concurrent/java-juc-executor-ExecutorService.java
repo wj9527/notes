@@ -9,10 +9,10 @@ ExecutorService				|
 				|-ScheduledExecutorService(接口,负责线程调度)
 					|-ScheduledThreadPoolExecutor(继承了ThreadPoolExecutor又实现了ScheduledExecutorService)
 	# 创建
-		ExecutorService pool = Executors.newFixedThreadPool(2);		
+		ThreadPoolExecutor pool = Executors.newFixedThreadPool(2);		
 			* 创建一个可重用固定线程数的线程池，以共享的无界队列方式来运行这些线程。
 		
-		ExecutorService pool = Executors.newCachedThreadPool();
+		ThreadPoolExecutor pool = Executors.newCachedThreadPool();
 			* 创建一个可根据需要创建新线程的线程池,但是在以前构造的线程可用时将重用它们。
 			* 对于执行很多短期异步任务的程序而言,这些线程池通常可提高程序性能。
 			* 线程数量不固定,可以根据需求更新线程数量
@@ -21,7 +21,7 @@ ExecutorService				|
 			* 创建一个使用单个 worker 线程的 Executor，以无界队列方式来运行该线程。
 			* 里面只有一个线程
 		
-		ScheduledExecutorService es =  Executors.newScheduledThreadPool(10);
+		ScheduledThreadPoolExecutor es =  Executors.newScheduledThreadPool(10);
 			* 创建调度线程池
 			* 创建固定大小的线程池,可以延时/重复的执行任务调度
 
@@ -60,3 +60,5 @@ ExecutorService				|
 
 		boolean isTerminated();
 			* 如果队列中的所有任务都处理完毕后返回 true
+
+
