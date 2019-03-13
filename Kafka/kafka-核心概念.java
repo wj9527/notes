@@ -28,6 +28,8 @@ Kafka核心概念			  |
 	# Producer 
 		* 消息生产者,负责往broker推送消息
 		* 它可以决定往哪个Partition写消息,可以是轮询,或者hash
+		* 推送消息的时候如果没有设置key,那么随机选择一个Partition
+		* 如果推送消息设置了key,那么会根据hash选择一个Partition
 	
 	# Consumer
 		* 消息消费者,负责从broker拉取消息消费

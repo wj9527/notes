@@ -46,6 +46,7 @@ zkCli.sh						|
 				acl 权限控制
 			* 创建多级目录的时候,父级目录必须存在
 			* 如果数据有特殊符号(空格),那么可以用双引号包裹整个数据项
+			* 必须设置data值,如果不设置的话,节点会创建失败
 		
 		ls path
 			* 查看指定目录下的所有子节点(只能查看一级)
@@ -81,6 +82,10 @@ zkCli.sh						|
 				dataLength = 11
 				numChildren = 0
 		
+		stat path
+			* 查看指定节点的信息
+			* 跟 get一样,不过它少了节点的数据信息
+
 		set path data [version] 
 			* 更新指定的节点
 				pah 节点
@@ -135,16 +140,28 @@ zkCli.sh						|
 --------------------------------
 Watcher 机制					|
 --------------------------------
-	# 涉及Watcher的命令
-		stat path [watch]
-			* 监听节点的删除,创建事件
+	stat path [watch]
+		* 监听指定节点的删除,创建,数据修改事件
 
-		ls path [watch]
-		ls2 path [watch]
-		get path [watch]
-			* 监听节点数据的变化事件
-			* 当该节点数据发生变化,该监听会收到事件通知
-		
+		* NodeCreated(节点被创建)
+			* 如果节点不存在,会提示:Node does not exist,不过仍然可以监听
+		* NodeDeleted(节点被删除)
+		* NodeDataChanged(数据发生了变化)
+
+	ls path [watch]
+	ls2 path [watch]
+		* 监听子节点增删的事件(不能监听子节点的数据变化事件)
+
+		* NodeChildrenChanged(子节点添加/删除)
+
+	get path [watch]
+		* 监听节点数据的变化事件
+		* 当该节点数据发生变化,该监听会收到事件通知
+
+		* NodeDataChanged(数据发生了变化)
+		* NodeDeleted(节点被删除)
+
+	* watch 其实就是随便输入一个字符
 		
 
 
