@@ -12,3 +12,4 @@ kafka 集群的安装				|
 	# 如果是伪集群,需要注意端口号和日志目录不能重复
 		listeners=PLAINTEXT://:9092
 		log.dirs=/tmp/kafka-logs
+	

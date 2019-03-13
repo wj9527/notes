@@ -10,6 +10,7 @@ kafka-入门			 |
 	# 参考
 		https://blog.csdn.net/lizhitao/article/details/39499283
 		http://www.jasongj.com/tags/Kafka/
+		https://www.jianshu.com/p/d3e963ff8b70
 
 	
 	# 特点
@@ -24,12 +25,25 @@ kafka-目录结构		 |
 ---------------------
 	bin
 		windows
-			kafka-run-class.bat
-			kafka-server-start.bat
-			kafka-server-stop.bat
 		kafka-run-class.sh
 		kafka-server-start.sh
 		kafka-server-stop.sh
+	logs(运行时创建的文件夹)
+		controller.log
+			* KafkaController 运行时日志,默认 TRACE
+		kafka-authorizer.log
+			* 权限认证相关操作日志,默认 WARN
+		kafka-requests.log
+			* 网络请求日志,默认 WARN
+		kafkaServer-gc.log
+			* 运行过程,GC的日志,默认 INFO
+		log-cleaner.log
+			* 日志清理操作相关统计信息,默认 INFO
+		server.log
+			* KafkaServer 运行日志,默认 INFO
+		state-change.log
+			* 分区角色切换等状态转换日志,默认 TRACE
+		
 	config
 		connect-console-sink.properties
 		connect-console-source.properties
