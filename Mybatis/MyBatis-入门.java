@@ -56,6 +56,10 @@
 	SqlSession openSession(ExecutorType execType, Connection connection);
 		* 执行类型
 	
+	ExecutorType 执行类型,是一个枚举
+		SIMPLE, 
+		REUSE, 
+		BATCH(获取一个批处理的Session)
 
 ————————————————————————
 4,MyBatis XML配置约束	|
