@@ -1,6 +1,11 @@
 --------------------------
 Kafka核心概念			  |
 --------------------------
+	# Broker 
+		* 一台Kafka服务器,负责消息的读,写,存
+		* 一个集群由多个Broker组成,一个Broker可以容纳多个Topic
+		* Broker与Broker之间不存在M/S(主从)的关系
+
 	# Topic
 		* 同一个Topic的消息可以分布在一个或者多个节点上
 		* 一个Topic包含一个或者多个 Partition
@@ -10,14 +15,24 @@ Kafka核心概念			  |
 		* 可以把它理解为一个 Queue
 	
 	# Partition
+		* 一个Topic分为多个Partition(创建的时候指定)
 		* 一个Partition只分布在一个Broker上
 		* 一个Partition物理上对应一个文件夹
+		* 一个Partition包含多个Segment,一个Segment对应一个文件
+		* Segment是由一个个不可变记录组成
+		* 记录只会被append到Segement中,不会被单独的删除或者修改
+		* 清除过期日志,直接删除一个或者多个Segment
+		* 内部消息强有序,且都有一个递增的序号
+
 	
 	# Producer 
 		* 消息生产者,负责往broker推送消息
+		* 它可以决定往哪个Partition写消息,可以是轮询,或者hash
 	
 	# Consumer
 		* 消息消费者,负责从broker拉取消息消费
+		* 一个Consumer一次只能从一个Partition中消费数据,并且维护它的offset(使用zookeeper)
+		* 每个Consumer都必须属于一个组,如果不指定,那么系统默认生成一个组
 	
 	# Consumer Group(CG)
 		* 消费者群组,一个群组由一个或者多个Consumer组成
@@ -29,6 +44,7 @@ Kafka核心概念			  |
 		
 		* 实现单播
 			* 所有的消费者都在一个CG
+		
 		* 实质上一个CG,才是一个消费者,可以把这个'消费者'理解为一个集群,集群中的每个Consumer都是一个节点
 
 		* 一个CG中会包含多个Consumer,这样不仅可以提高Topic中消息的并发消费能力,而且还能提高"故障容错"性
@@ -36,11 +52,8 @@ Kafka核心概念			  |
 		* Kafka的设计原理决定,对于一个Topic,同一个Group中不能有多于Partitions个数的Consumer同时消费
 		* 否则将意味着某些Consumer将无法得到消息(处于闲置状态)
 
-	
-	# Broker 
-		* 一台Kafka服务器
-		* 一个集群由多个Broker组成,一个broker可以容纳多个Topic
-	
+		* 一个partition,只能被消费组里的一个消费者消费
+
 	# Partition
 		* 为了实现扩展性,一个非常大的Topic可以分布到多个Broker(即服务器)上
 		* 一个Topic可以分为多个Partition,每个Partition是一个有序的队列
@@ -51,6 +64,10 @@ Kafka核心概念			  |
 		* kafka的存储文件都是按照offset.kafka来命名,用offset做名字的好处是方便查找
 		* 例如想找位于2049的位置,只要找到2048.kafka的文件即可
 		* 当然 the first offset就是00000000000.kafka
+	
+	# 数据过期机制
+		* Kakfa在消息被消费完毕之后不会删除
+		* 它根据时间策略来删除,默认是存储一周
 
 --------------------------
 Producer负载均衡和HA机制  |
@@ -75,6 +92,14 @@ kafak系统扩展性			  |
 	* broker会在zookeeper注册并保持相关的元数据(topic,partition信息等)更新
 	* 而客户端会在zookeeper上注册相关的watcher,一旦zookeeper发生变化,客户端能及时感知并作出相应调整
 	* 这样就保证了添加或去除broker时,各broker间仍能自动实现负载均衡
+
+--------------------------
+partition 的分配		  |
+--------------------------
+	* 将所有Broker(假设共n个Broker)和待分配的Partition排序
+	* 将第i个Partition分配到第(i % n)个Broker上,这个就是leader
+	* 将第i个Partition的第j个Replica分配到第((i + j) % n)个Broker上
+
 
 --------------------------
 Kafka-Replica			  |
