@@ -20,11 +20,3 @@ Future<V>						|
 			* 获取到执行的结果,会阻塞当前的线程
 			* 可以设置一个超时时间,超时后抛出 TimeoutException
 
--------------------------------
-CompletableFuture<T>			|
--------------------------------
-	# jdk 1.8 提供的对于 Future<V> 的实现
-		CompletableFuture<T> implements Future<T>, CompletionStage<T> 
-
-	# 支持以回调的形式去处理执行结果,而不用需要通过阻塞当前线程来获取执行结果
-

@@ -15,7 +15,7 @@ Executors			|
 		* 创建一个使用单个 worker 线程的 Executor，以无界队列方式来运行该线程。
 		* 里面只有一个线程
 	
-	ExecutorService newScheduledThreadPool(10);
+	ExecutorService newScheduledThreadPool();
 		* 创建调度线程池
 		* 创建固定大小的线程池,可以延时/重复的执行任务调度
 	
