@@ -9,11 +9,17 @@ ThreadPoolExecutor			|
 		ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,BlockingQueue<Runnable> workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler)
 
 		* corePoolSize
+			* 线程池基本的线程数量
 		* maximumPoolSize
+			* 线程池最大线程数量
 		* keepAliveTime
+			* 线程空闲后的存活时间
 		* unit
+			*  存活时间的单位
 		* workQueue
+			* 存放任务的阻塞队列
 		* threadFactory
+			* 线程池工厂类
 		* handler
 			* 在线程池无法处理新任务时的处理handler
 		
