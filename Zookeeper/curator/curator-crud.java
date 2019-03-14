@@ -28,6 +28,9 @@ crud									|
 		String client.create().withProtection().withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath(String path, byte[] data);
 
 		* 未知
+	
+	#  递归的创建多级节点
+		//TODO
 
 	# 修改节点
 		client.setData().forPath(String path, byte[] data);
@@ -87,3 +90,6 @@ crud									|
 			}
 		}).forPath(String path);
 	
+
+	# 递归的删除指定节点
+		client.delete().deletingChildrenIfNeeded().forPath(String path);
