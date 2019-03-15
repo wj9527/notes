@@ -62,3 +62,12 @@ kafka-目录结构		 |
 	libs
 	site-docs
 		kafka_2.12-2.1.1-site-docs.tgz
+
+
+---------------------
+kafka 消息协议		 |
+---------------------
+
+|offset|length|CRC32|Magic|attributes|timestamp|key length|key|value length|value|
+
+|4字节偏移量|4字节长度|4字节CRC32|1字节魔术变量|1字节attributes(枚举)|8字节时间戳|4字节keylength|key|4字节valuelength|value|
