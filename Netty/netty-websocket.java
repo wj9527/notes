@@ -9,11 +9,12 @@ websocket						 |
 			|-PingWebSocketFrame
 			|-PongWebSocketFrame
 			|-TextWebSocketFrame
-		WebSocketProtocolHandler
-			|-WebSocketServerProtocolHandler
-		WebSocketServerCompressionHandler
-		WebSocketServerProtocolHandshakeHandler
-		WebSocketServerHandshaker
+		WebSocketProtocolHandler(自动处理webSocket的ping pong等消息)
+			|-WebSocketServerProtocolHandler(简化开发提供的handler)
+		WebSocketServerCompressionHandler(WebSocket消息压缩)
+		WebSocketServerProtocolHandshakeHandler(WebSocket协议的握手实现)
+		WebSocketServerHandshaker(握手处理器)
+		WebSocketServerHandshakerFactory(生成握手器的工厂类)
 
 	# WebSocketFrame
 		* ws消息类型的抽象类,提供了N个实现,表示不同的消息类型
@@ -25,9 +26,11 @@ websocket						 |
 			WebSocketServerCompressionHandler.INSTANCE
 		* 使用 @ChannelHandler.Sharable 标识,可以用于多个Channel
 
+
 -------------------------------------
 WebSocketServerProtocolHandler		 |
 -------------------------------------
+	# 最重的一个封装,完成了N多的工作
 	# 负责处理:握手,控制帧(ping/pong/close),文本消息,二进制消息....
 	# 构造函数
 		WebSocketServerProtocolHandler(String websocketPath)
@@ -99,17 +102,6 @@ public class Server {
 					pipeline.addLast(new WebSocketServerProtocolHandler("/websocket", null, true));	// uri,子协议,是否支持扩展
 					pipeline.addLast(new SimpleChannelInboundHandler<WebSocketFrame>() {
 						@Override
-						public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-							String id = ctx.channel().id().asLongText();
-							System.out.println("新的连接:" + id);
-							super.handlerAdded(ctx);
-						}
-						@Override
-						public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-							System.out.println("连接断开:" + ctx.channel().id().asLongText());
-							super.channelInactive(ctx);
-						}
-						@Override
 						protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) throws Exception {
 							if (msg instanceof TextWebSocketFrame) { // 文本消息处理
 								String request = ((TextWebSocketFrame) msg).text();
@@ -119,6 +111,18 @@ public class Server {
 								String message = "不支持的消息类型: " + msg.getClass().getName();
 								throw new UnsupportedOperationException(message);
 							}
+						}
+						// 握手结果事件通知
+						@Override
+						public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+							if(evt instanceof HandshakeComplete) {
+								HandshakeComplete handshakeComplete = (HandshakeComplete) evt;
+								String uri = handshakeComplete.requestUri();
+								HttpHeaders httpHeaders = handshakeComplete.requestHeaders();
+								String selectedSubprotocol = handshakeComplete.selectedSubprotocol();
+								LOGGER.debug("HandshakeComplete uri={},headers={},selectedSubprotocol={}",uri,httpHeaders,selectedSubprotocol);
+							}
+							super.userEventTriggered(ctx, evt);
 						}
 					});
 				}

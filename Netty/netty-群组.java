@@ -63,6 +63,7 @@ DefaultChannelGroup			  |
 		name
 			* 群组的名称
 		stayClosed
+			* 是否可以关闭此组
 			
 
 	# 可以使用 GlobalEventExecutor.INSTANCE 来创建
