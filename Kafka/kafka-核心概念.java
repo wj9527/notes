@@ -13,7 +13,8 @@ Kafka核心概念			  |
 		* Producer发布消息必须要指定发布到哪一个Topic
 		* Consumer消费消息,也必须要指定订阅哪个Topic的消息
 		* 可以把它理解为一个 Queue
-	
+		* topic被删除后,默认还会存储一个礼拜,在此期间还可以进行消费
+
 	# Partition
 		* 一个Topic分为多个Partition(创建的时候指定)
 		* 一个Partition只分布在一个Broker上

@@ -24,6 +24,7 @@ Partition			  |
 			* 不是使用zk通知,而是直接给broker发送rpc请求(也许是因为性能问题 )
 		* 如果 ISR列表是空,那么会根据配置,随便选一个replica做leader,或者干脆这个partition就是宕机(不救了)
 		* 如果ISR列表的有机器,但是也宕机了,那么还可以等ISR的机器活过来
+		* 原来宕机的leader恢复后,controller会重新把它设置为leader?????
 			
 	# 多个副本的同步
 		* 服务端处理是follower从leader批量拉取数据来同步

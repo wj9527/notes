@@ -47,5 +47,13 @@ kafka 维护						|
 				* 指定集群中节点的信息
 			--topic
 				* 知道要消费哪个节点
+			--from-beginning
+				* 该参数表要从头开始消费
 			
 	
+	# 查看topic的消费进度
+		bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic test --time -1
+			
+			--time
+				* -1 表示查询当前topic各个分区前最大的消息offset(非consumer的offset,而是消息在每个分区的offset)
+				* -2 表示获取当前各个分区的最小位移
