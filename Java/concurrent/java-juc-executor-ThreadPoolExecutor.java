@@ -10,6 +10,8 @@ ThreadPoolExecutor			|
 
 		* corePoolSize
 			* 线程池基本的线程数量
+			* 一般线程池开始时是没有线程的,只有当任务来了并且线程数量小于corePoolSize才会创建线程
+
 		* maximumPoolSize
 			* 线程池最大线程数量
 		* keepAliveTime
@@ -57,8 +59,11 @@ ThreadPoolExecutor			|
 		boolean isShutdown()
 		void shutdown()
 			* 会等到所有任务完成才会关闭
+
 		List<Runnable> shutdownNow()
 			* 立即关闭线程池
+			* 对正在执行的任务全部发出interrupt(),停止执行
+			* 对还未开始执行的任务全部取消,并且返回还没开始的任务列表
 
 		void execute(Runnable command)
 		Future<?> submit(Runnable task)
