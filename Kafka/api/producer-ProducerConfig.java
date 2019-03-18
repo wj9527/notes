@@ -31,9 +31,16 @@ ProducerConfig			|
 		max.in.flight.requests.per.connection
 		key.serializer
 		value.serializer
+			* 设置key/value的编码器
+			* 值是编码器的类路径
+
 		connections.max.idle.ms
 		partitioner.class
+			* 设置分区器的实现类
+
 		interceptor.classes
+			* 设置拦截器的实现类
+
 		security.protocol
 		ssl.protocol
 		ssl.provider

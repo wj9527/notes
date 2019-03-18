@@ -30,6 +30,8 @@ ConsumerConfig				 |
 		metric.reporters
 		key.deserializer
 		value.deserializer
+			* 设置消息的解码器
+
 		request.timeout.ms
 		default.api.timeout.ms
 		connections.max.idle.ms
