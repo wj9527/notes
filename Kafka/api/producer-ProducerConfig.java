@@ -35,6 +35,9 @@ ProducerConfig			|
 
 		request.timeout.ms
 		metadata.max.age.ms
+			* 超过该时间未更新元数据,就会选择负载最小的broker,发送MetadataRequest来更新元数据信息
+			* 默认300000(ms) = 5分钟
+
 		metrics.sample.window.ms
 		metrics.num.samples
 		metrics.recording.level

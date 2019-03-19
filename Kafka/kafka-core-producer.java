@@ -160,3 +160,17 @@ producer				|
 		* 从而判读是否堆积了N多已经发送但是未响应的消息,如果真的存在很多,那么该broker能网络负载比较大,或者连接有问题
 
 	
+	# 元数据的更新
+		* 元数据,其实就是除了我们业务数据以外的一些其他数据
+		* 对于我们而言是透明的,但是又是不可缺少的,例如:kafka集群中的主题数量,每个主题的分区数量,分区的副本分配等等信息
+		* 当客户端中没有需要使用的元数据信息时,比如没有指定的主题信息
+		* 或者超过 metadata.max.age.ms 时间没有更新元数据都会引起元数据的更新操作,metadata.max.age.ms 的默认值为 300000,即 5 分钟
+			properties.setProperty(ProducerConfig.METADATA_MAX_AGE_CONFIG, String.valueOf(300000));
+		
+		* 更新的操作对于客户端来说是透明的
+
+		* 当需要更新元数据的时候,会先挑选出:leastLoadedNode
+		* leastLoadedNode其实就是所有Node中负载最小的Node(判断InFlightRequest中的未响应的请求数量值,数量越少,节点的负载越小)
+		* 然后向这个 Node 发送 MetadataRequest 请求来获取具体的元数据信息,这个更新操作是由 Sender 线程发起 的
+		* 在创建完 MetadataRequest 之后 同样会存入 InFlightRequest 之后的步骤就和发送消息时的类似
+		* 元数据虽然由 Sender 线程负责更新,但是主线程也需要读取这些信息,这里的数据同步通过 synchronized 和 final 关键字来保障
