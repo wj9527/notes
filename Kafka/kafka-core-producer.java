@@ -108,5 +108,55 @@ producer				|
 		
 		* 配置拦截器链
 			properties.setProperty(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, "SimpleInterceptor1,SimpleInterceptor1");
+	
+	# 执行过程
+		* 生产者客户端由两个线程组成:主线程,发送线程
+		* 主线程创建消息 -> 拦截器 —> 编码器 -> 分区计算器 -> 消息累加器(RecordAccumulator)
+		* 发送线程负责从消息累加器中获取消息,发送到broker
 
+	# 消息的累加器(缓存)
+		* 主线程调用了 send() api并不会立即执行消息的发送,会先把消息添加到累加器 (RecordAccumulator)
+		* RecordAccumulator 的作用就是缓存消息
+		* 以便sender线程批量的进行发送,提高效率(减少网络传输)
+		* 默认缓存的大小为:33554432kb = 32MB
+		* 缓存的大小可以设置
+			properties.setProperty(ProducerConfig.BUFFER_MEMORY_CONFIG, String.valueOf(1024 * 1024 * 50));
 		
+		* 如果生产者的消息发送速度超过了发送消息到服务器的速度
+		* 从而占满了缓冲区,在这种情况下,send() api 要么阻塞直到缓冲区有新的空间,要么抛出异常
+		* 可以通过配置来设置send()操作,最长阻塞时间(ms),超过时间就会抛出异常
+			properties.setProperty(ProducerConfig.MAX_BLOCK_MS_CONFIG, String.valueOf(60000));
+		
+		* 主线程发送的消息都会被追击到 RecordAccumulator 的某个双端队列(Deque)中
+		* RecordAccumulator 为每个分区都维护了一个双端队列,队列的内容就是:ProducerBatch(Deque<ProducerBatch>)
+			ConcurrentMap<TopicPartition, Deque<ProducerBatch>> batches;
+		* 一个ProducerBatch起码包含了一个消息记录(ProducerRecord)
+		* 消息写入缓存的时候,追加到双端队列的尾部,sender线程读取消息的时候,从双端队列的头部读取
+
+		* 在 RecordAccumulator 的内部还有一个 BufferPool
+		* 它主要用来实现 ByteBuffer 的复用,以实现缓存的高效利用 
+		* 不过 BufferPool 只针对特定大小的 ByteBuffer 进行管理,而其他大小的 ByteBuffer 不会缓存进 BufferPool 中
+		* 这个特定的大小由 batch.size 参数来指定,默认值为 16384B,即 16KB
+			properties.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, String.valueOf(16384));
+		
+		* 当一条消息send()到RecordAccumulator的时候,会先找到其对应的分区队列(Deque),如果不存在,则先创建
+		* 再从队列尾部获取一个ProducerBatch,如果不存在则新建
+		* 判断ProducerBatch是否有足够的空间写入当前的消息,如果可以则直接写入
+		* 如果不可以,则创建一个新的ProducerBatch,在新建 ProducerBatch 时评估这条消息的大小是否超过 batch.size 参数的大小
+		* 如果不超过,那么就以 batch.size 参数的大小来创建 ProducerBatch,这样在使用完这段内存区域之后,可以通过 BufferPool 的管理来进行复用
+		* 如果超过,那么就以评估的大小来创建 ProducerBatch,这段内存区域不会被复用
+	
+	# 请求响应的缓存
+		* 消息从RecordAccumulator发送到broker的请求,会被缓存到 InFlightRequests 中,直到响应
+		* 它的缓存格式为 -> broker节点id:Deque<Request>
+			Map<String, Deque<NetworkClient.InFlightRequest>> requests = new HashMap<>(); 
+		
+		* 可以通过配置限制每个连接(也就是客户端与 Node 之间的连接)最多缓存的请求数
+		* max.in.flight.requests.per.connection: 默认值为5,也就是说,最多缓存5个未响应的请求,一旦超过该值,就不能往这个连接发送更多的请求了
+		* 除非缓存中的请求,收到了响应
+			properties.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, String.valueOf(5));
+
+		* 可以通过 Deque<ProducerBatch>.size() 和 max.in.flight.requests.per.connection 进行比较
+		* 从而判读是否堆积了N多已经发送但是未响应的消息,如果真的存在很多,那么该broker能网络负载比较大,或者连接有问题
+
+	
