@@ -5,12 +5,12 @@ socket							|
 --------------------------------
 socket-模块属性					|
 --------------------------------
-	* 网络层
+	* 网络层属性
 		socket.AF_UNIX		# 本地(Unix/Linux系统才有该属性,适用于不同进程之间的通信)
 		socket.AF_INET      # IPV4
 		socket.AF_INET6     # IPV6
 	
-	* 传输层
+	* 传输层属性
 		socket.SOCK_STREAM  
 			* tcp
 
@@ -24,7 +24,20 @@ socket-模块属性					|
 		
 		socket.SOCK_RDM
 			* 可靠的UDP,保证交付消息,但是不保证交付顺序
-
+	
+	* 协议
+		socket.IPPROTO_TCP = 6
+		socket.IPPROTO_IP = 0
+		socket.IPPROTO_UDP = 17
+		socket.IPPROTO_ICMP = 1
+		socket.IPPROTO_RAW = 255
+		
+	
+	* socket选项
+		socket.IP_HDRINCL
+		socket.SOL_SOCKET
+			socket.SO_BROADCAST
+			socket.SO_REUSEADDR
 	
 --------------------------------
 socket-模块方法					|
@@ -39,9 +52,30 @@ socket-模块方法					|
 	
 	str gethostname()
 			* 获取本地主机名
-		
+	
+	float getdefaulttimeout()
 	None setdefaulttimeout()
-			* 设置全局的连接超时时间
+			* 读取/设置全局的连接超时时间
+		
+	socketpair()
+	fromfd()
+	fromshare()
+	gethostname()
+	gethostbyname()
+	gethostbyaddr()
+	getservbyname()
+	getprotobyname()
+		* 根据协议名称获取协议'对象'
+
+	ntohs()
+	ntohl()
+	htons()
+	htonl() 
+	inet_aton()
+	inet_ntoa()
+
+	socket create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,source_address=None) 
+
 
 --------------------------------
 socket-socket					|
@@ -162,6 +196,4 @@ socket-socket					|
 		makefile()	
 			* 创建一个与该套接字相关连的文件
 	
-		
-
 		
