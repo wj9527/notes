@@ -12,3 +12,10 @@ ConcurrentHashMap			|
 		* HashMap 线程不安全,效率高
 		* ConcurrentHashMap 线程安全,采用锁分段机制,效率较高
 	
+	
+	# 静态方法
+		<K> KeySetView<K,Boolean> newKeySet()
+		<K> KeySetView<K,Boolean> newKeySet(int initialCapacity)
+	
+	# 实例方法
+		
