@@ -4,15 +4,27 @@ ConsumerConfig				 |
 	# 消息消费者配置
 	# 配置项
 		bootstrap.servers
+			* kafka集群的节点
+			* ip:port
+			* 连接多个使用逗号分隔
+
 		client.dns.lookup
 		group.id
+			* 设置消费组,默认值为空字符串
+
 		session.timeout.ms
 		heartbeat.interval.ms
 		partition.assignment.strategy
+			* 消费者与topic之间的分区分配策略
+
 		metadata.max.age.ms
 		enable.auto.commit
 		auto.commit.interval.ms
 		client.id
+			* 当前消费者的id
+			* 如果不设置,会自动的生成一个非空字符串(consumer-[编号])
+				consumer-1....consumer-x
+
 		max.partition.fetch.bytes
 		send.buffer.bytes
 		receive.buffer.bytes
@@ -30,7 +42,7 @@ ConsumerConfig				 |
 		metric.reporters
 		key.deserializer
 		value.deserializer
-			* 设置消息的解码器
+			* 设置value和key的解码器
 
 		request.timeout.ms
 		default.api.timeout.ms
