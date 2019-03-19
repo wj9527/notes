@@ -39,7 +39,13 @@ producer				|
 			RecordTooLargeException(发送的消息太大,不会执行重试,直接抛出)
 
 		* 如果配置了 retries 参数,那么只要在规定的重试次数内自行恢复了,就不会抛出异常(retries 参数的默认值为 0)
-			props.put(ProducerConfig.RETRIES_CONFIG, 10);
+			props.put(ProducerConfig.RETRIES_CONFIG, "10");
+		
+		* 对于可重试异常发生后,可以设置两次重复调用的时间间隔,retry.backoff.ms(默认100毫秒)
+			props.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, "100");
+
+		* 在配置 retries 和 retry.backoff.ms 之前,最好先估算一下可能的异常恢复时间
+		* 这样可以设定总的重试时间大于这个异常恢复时间,以此来避免生产者过早地放弃重试 
 	
 	# 消息的序列化(编码器)
 		* 需要用到序列化,把消息(key和value)序列化为byte[]
@@ -174,3 +180,13 @@ producer				|
 		* 然后向这个 Node 发送 MetadataRequest 请求来获取具体的元数据信息,这个更新操作是由 Sender 线程发起 的
 		* 在创建完 MetadataRequest 之后 同样会存入 InFlightRequest 之后的步骤就和发送消息时的类似
 		* 元数据虽然由 Sender 线程负责更新,但是主线程也需要读取这些信息,这里的数据同步通过 synchronized 和 final 关键字来保障
+	
+	# 消息的有序性问题
+		* Kafka只能保证一个分区中的消息是有序性的
+
+		* 如果将 acks 参数配置为非零值,并且 max.in.flight.requests.per.connection 参数配置为大于 l 的值,那么就会出现错序的现象
+		* 如果第一批次消息写入失败,而第二批次消息写入成功,那么生产者会重试发送第一批次的消息
+		* 此时如果第一批次的消息写入成功,那么这两个批次的消息就出现了错序
+		
+		* 一般而言,在需要保证消息顺序的场合建议把参数 max.in.flight.requests.per.connection 配置为 1,而不是把 acks 配置为 0
+		* 这样会影响整体的吞吐
