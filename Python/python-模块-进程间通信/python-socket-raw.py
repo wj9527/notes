@@ -16,6 +16,28 @@ python-raw			|
 	   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	   |                    Options                    |    Padding    |
 	   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+		
+		Version IP协议版本号	4  bit	一般的值为:0100(IPV4) 0110(IPV6)
+		IHL (Ip Header Length)	4  bit	首部长度
+		TOS (Type Of Service)	8  bit	服务类型
+		Total Length			16 bit	ip 包总长度,包括头和数据
+
+		Identification			16 bit
+		Flags					3  bit  标记
+		Fragment Offset			13 bit  片偏移,表示该IP包在该组分片包中位置,接收端靠此来组装还原IP包
+
+		Time to Live			8  bit  生存时间,这个字段可以防止由于路由环路而导致IP包在网络中不停被转发。
+		Protocol				8  bit  标识了上层所使用的协议
+		Header Checksum			16 bit  16位首部校验和,IP头部的正确性检测,但不包含数据部分
+
+		Source Address			32 bit  源地址,除非使用NAT,否则整个传输的过程中,该地址不会改变
+
+		Destination Address		32 bit  目的IP地址,除非使用NAT,否则整个传输的过程中,该地址不会改变
+
+		Options					24 bit  
+		Padding					8  bit
+		
+
 	
 	# TCP Header
 		0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 
