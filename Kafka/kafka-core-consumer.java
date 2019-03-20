@@ -179,5 +179,126 @@ consumer				|
 			}
 		
 	# 负载均衡
-	# 多线程消费
+		* 当消费组中有消费者加入/宕机,或者是topic有partition新增/删除
+		* 都可能触发消费组中,消费者的负载均衡
+
+		* 在执行负载均衡计算的时候,消费组会变得不可用
+		* 可能会发生重复消费的情况
+			1. 消费者A消费了partition-1,还没来得及提交消费偏移度
+			2. 发生了负载均衡计算,partition-1 被分配给了消费者B
+			3. 因为消费者A没有提交消费偏移,所以消费者B会重复消费A已经消费过的记录
+		
+		* 可以在订阅topic的时候,监听负载均衡的发生
+			void subscribe(Collection<String> topics, ConsumerRebalanceListener listener)
+			void subscribe(Pattern pattern, ConsumerRebalanceListener listener)
+		
+		* ConsumerRebalanceListener 接口具有两个抽象方法
+			void onPartitionsRevoked(Collection<TopicPartition> partitions);
+				* 该方法会在负载均衡被计算之前,消费停止poll()消息之后执行
+				* 参数表示原始的分区
+				* 可以通过它来处理消费位移的提交,尽可能的避免重复消费的问题
+
+			void onPartitionsAssigned(Collection<TopicPartition> partitions);
+				* 该方法会在负载均衡计算之后(重新分配分区),消费者开始读取消息之前执行
+				* 参数表示重新分配的分区
+		
+		* demo
+			try (KafkaConsumer<Void, String> kafkaConsumer = new KafkaConsumer<>(properties)) {
+				// 记录实时的消费偏移度
+				Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
+				// 监听主题
+				kafkaConsumer.subscribe(Arrays.asList("demo3"), new ConsumerRebalanceListener() {
+					@Override
+					public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+						// 在重新计计算分区之前,同步提交消费偏移度,尽可能的保证不会出现重复消费的情况
+						kafkaConsumer.commitSync(offsets);
+					}
+					@Override
+					public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+						// 经过计计算，分配到的分区
+					}
+				});
+				// 开始消费
+				while (true) {
+					ConsumerRecords<Void, String> consumerRecords = kafkaConsumer.poll(Duration.ofMillis(Long.MAX_VALUE));
+					
+					for (ConsumerRecord<Void, String> consumerRecord : consumerRecords) {
+						
+						// 消费每一条消息后,实时的记录下该分区的消费偏移度
+						String topic = consumerRecord.topic();		// 当前消息的topic
+						int partition = consumerRecord.partition();	// 当前消息的partition
+						long offset = consumerRecord.offset();		// 当前消息的偏移度
+						offsets.put(new TopicPartition(topic, partition), new OffsetAndMetadata(offset + 1));
+					}
+
+					// 每次消费完毕数据，异步的提交消费偏移度
+					kafkaConsumer.commitAsync(offsets, null);
+				}
+			}
 	
+	# 消费者拦截器
+		* 主要作用是在读取到消息,以及提交消费位移时进行一些定制化的操作
+		* 实现接口:ConsumerInterceptor<K, V>
+			ConsumerRecords<K, V> onConsume(ConsumerRecords<K, V> records);
+				* 在消费消息(poll() 方法返回之前)前调用
+				* 如果它发生异常,会被捕获记录到日志,但是不会向上传递,会跳过当前这个发生了异常的拦截器,把上一次正常的消息提交给下个拦截去处理(如果存在)
+				* 参数就是新的消息
+
+			void onCommit(Map<TopicPartition, OffsetAndMetadata> offsets);
+				* 在提交消费位移之后调用
+				* 参数就是要提交的消费位移信息
+
+				* 可以使用该方法来记录,跟踪所提交的位移信息
+				* 比如,消费者调用了:commitAsync() 方法,我们就没法直接获取到提交的消费偏移信息
+				* 但是通过这种拦截器的方式,就可以获取到
+
+			void close();
+				* 一般没啥用,空实现
+
+		* 配置拦截器使用属性:interceptor.classes
+			properties.setProperty(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, LogConsumerInterceptor.class.getName());
+			
+	# 消费者对于并发操作的限制
+		* 消费者实例对象不是线程安全的,这个跟消息生产者不一样
+		* 如果有其他线程操作消费者对象,会抛出异常:ConcurrentModificationException
+		* 消费者实例内部提供了一个方法(private)
+
+			private static final long NO_CURRENT_THREAD = -1L;
+			private final AtomicLong currentThread = new AtomicLong(NO_CURRENT_THREAD);
+			private final AtomicInteger refcount = new AtomicInteger(0);
+
+			private void acquire() {
+				long threadId = Thread.currentThread().getId();
+				if (threadId != currentThread.get() && !currentThread.compareAndSet(NO_CURRENT_THREAD, threadId))
+					throw new ConcurrentModificationException("KafkaConsumer is not safe for multi-threaded access");
+				refcount.incrementAndGet();
+			}
+			
+			private void release() {
+				if (refcount.decrementAndGet() == 0)
+					currentThread.set(NO_CURRENT_THREAD);
+			}
+		
+		* 在每次执行动作之前,都会调用这个方法(acquire)
+		* 它是一个轻量级的锁,用线程操作计数的方法来检测是否发生了并发操作,以此保证只有一个线程在使用客户端
+
+		* release() 方法的存在是为了释放锁
+	
+	# 使用多线程消费
+		* 使用多线程的目的,是为了提高消费的速度
+		* 多线程的实现有很多种
+
+		* 线程封闭,也就是一个线程实例化一个消费者客户端
+		* 所有的消费者线程,都属于同一个消费组,一个分区创建一个线程(分区的数量可以提前知道)
+		* 优点就是,每个线程可以按照顺序去消费各个分区里面的数据
+		* 缺点就是,同一台机器要开启多个tcp连接,系统资源消耗大
+		
+		* 线程池的模式
+		* 一般而言,消费的瓶颈在于消费,而不是拉取(poll())
+		* 所以可以使用线程池来消费 poll() 拉取下来的消息
+		* 缺点就是对于顺序消息的处理会比较的麻烦
+
+		* 这个名堂还是有点儿多,单独列了个笔记
+
+			
+			
