@@ -51,6 +51,8 @@ consumer				|
 			}
 		}
 	
+	# 消费者客户端是非线程安全的
+	
 	# 消费者必须属于一个消费者
 		* 通过 group.id 属性设置
 			properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "group.demo");
@@ -74,11 +76,13 @@ consumer				|
 		* 使用这种方式进行订阅消息具有自动负载均衡的功能
 		* 在多个消费者的情况下,可以根据分区分配策略来自动分配各个消费者与分区的关系
 		* 在消费组内消费者的增加/减少,分区分配关系会自动的跳转,以及实现故障的自动转移
+
+		* 监听了主题后,需要调用 poll() 后才能获取到分区的分配信息
+		* 可以通过:Set<TopicPartition> assignment() 获取到订阅的主题,已经分配的分区信息
 	
 	# 分区订阅
 		* 相关api
 			void assign(Collection<TopicPartition> partitions)
-			Set<TopicPartition> assignment()
 
 		* TopicPartition 对象用于描述分区和主题
 			private int hash = 0;			//hash值
@@ -126,9 +130,54 @@ consumer				|
 		* 如果设置为0,poll会立即返回而不管是否拉取到了数据
 		* 如果线程的工作仅仅是为了拉取数据,那么该值可以设置为 Long.MAX_VALUE
 
+	# 控制消费
+		* 有时候需要主动的暂停消费某些分区,在一定的时机又恢复对这些分区的消费
+		* 可以达到控制消费速度的行为
+			Set<TopicPartition> paused()
+				* 返回被暂停的分区集合
+			void pause(Collection<TopicPartition> partitions)
+				* 暂停
+			void resume(Collection<TopicPartition> partitions)
+				* 恢复
+	# 关闭消费者
+		* 一般使用一个 while 循环来包裹住 poll()方法及相应的消费逻
+		* 退出循环,有一种方式是调用 KafkaConsumer 的 wakeup()方法 
+			void wakeup()
 
-	# 控制或者关闭消费
-	# 指定位移消息
+			* 该方法是唯一可以从其他线程里面调用的安全的方法
+			* 该方法被调用后,可以退出 poll() 逻辑,并且抛出:WakeupException
+			* 并不需要处理该异常,它只是退出 poll() 的一种机制
+		
+		*  跳出循环以后一定要显式地执行关闭动作以释放运行过程中占用的各种系统资源
+		* 客户端提供了一个 close() api来对占用的系统资源进行释放
+		* 释放的过程会比价缓慢,可能涉及到跟broker通信,提交消费位移等信息
+			void close()
+			void close(Duration timeout)
+
+			* timeout 设置超时时间,默认是 30s
+
+		* 一个完整的优雅关闭
+			boolean run = true; // 确定服务是否还要继续运行
+			KafkaConsumer<Void, String> kafkaConsumer = new KafkaConsumer<>(properties);
+			kafkaConsumer.subscribe(Arrays.asList("test"));
+			try{
+				while(run) {
+					ConsumerRecords<Void, String> consumerRecords = kafkaConsumer.poll(Duration.ofMillis(1000L));
+					for(ConsumerRecord<Void, String> consumerRecord : consumerRecords) {
+						// TODO 消费消息
+						System.out.println(consumerRecord);
+					}
+				}
+			}catch (WakeupException e) {
+				e.printStackTrace(); // 被主动唤醒,忽略该异常
+			}catch (Exception e) {	// 处理该异常
+				e.printStackTrace();
+			}finally {
+				if(kafkaConsumer != null) {
+					kafkaConsumer.close(); // 关闭资源
+				}
+			}
+		
 	# 负载均衡
 	# 多线程消费
 	

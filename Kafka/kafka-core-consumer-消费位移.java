@@ -10,6 +10,16 @@
 
 		* 把消息持久化的动作称之为提交,消费者在消费完消息之后,需要执行消费位移的提交
 	
+	# 模拟图
+		   0     1     2     3     4     5     6     7
+		+-----+-----+-----+-----+-----+-----+-----+-----+
+		|  A  |  B  |  C  |  D  |  E  |  F  |  G  |  x  |
+		+-----+-----+-----+-----+-----+-----+-----+-----+
+
+		已经消费的消息(消费到D)
+		————————————————————————>  ^ 消费偏移量为 4
+							
+	
 	# 获取到消费位移值
 		long position(TopicPartition partition)
 		long position(TopicPartition partition, final Duration timeout)
@@ -20,6 +30,8 @@
 		OffsetAndMetadata committed(TopicPartition partition, final Duration timeout)
 			* 获取已经提交过的消费位移
 			* 就是自己消费的最后一条记录值
+		
+		* 这些API都需要先进行 poll()操作,成功的获得了分区后才能执行成功
 	
 	# Kafka默认的消费位移提交方式为自动提交
 		* 可以通过参数:enable.auto.commit 设置,默认值为 true
@@ -133,4 +145,73 @@
 		}
 	
 
+------------------------
+指定位移消费			|
+------------------------
+	# 有了消费位移的持久化,才使消费者在关闭,崩溃或者在遇到再均衡的时候,可以让接替的消费者能够根据存储的消费位移继续进行消费
+
+	# 每当消费者查找不到所记录的消费位移时,就会根据消费者客户端参数 auto.offset.reset 的配置来决定从何处开始进行消费
+		auto.offset.reset
+			* 当消费者找不到消费偏移量记录的时候,从哪里开始进行消费
+			* 枚举值:
+				earliest	重置为最早的偏移量,从头开始消费
+				latest		将偏移重置为最新偏移量,通俗的说就是不消费以前的消息了,从下条消息开始消费(默认)
+				none		如果没有找到偏移量记录,抛出异常
+		
+		properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "none");
 	
+	# 通过程序来控制消费偏移量
+		void seek(TopicPartition partition, long offset)
+		void seekToBeginning(Collection<TopicPartition> partitions)
+		void seekToEnd(Collection<TopicPartition> partitions)
+
+		* 在执行 seek 系列的方法之前需要先执行一次 poll()方法
+		* 确保分配到分区之后才可以重置消费位置
+			try(KafkaConsumer<Void, String> kafkaConsumer = new KafkaConsumer<>(properties)){
+				// 监听主题
+				kafkaConsumer.subscribe(Arrays.asList("test"));
+				
+				// 必须确定消费者已经分配了分区信息
+				while(kafkaConsumer.assignment().size() == 0) {
+					// 执行poll() 获取到分区信息
+					kafkaConsumer.poll(Duration.ofMillis(1000L));	
+				}
+				
+				// 遍历分区,并且设置消费偏移量
+				for (TopicPartition topicPartition : kafkaConsumer.assignment()) {
+					kafkaConsumer.seek(topicPartition, 0);
+				}
+				
+				// 开始消费
+				while(true) {
+					ConsumerRecords<Void, String> consumerRecords = kafkaConsumer.poll(Duration.ofMillis(Long.MAX_VALUE));
+					for(ConsumerRecord<Void, String> consumerRecord : consumerRecords ) {
+						System.out.println(consumerRecord);
+					}
+				}
+			}
+	
+	# 获取偏移量信息
+		Map<TopicPartition, Long> beginningOffsets(Collection<TopicPartition> partitions)
+		Map<TopicPartition, Long> beginningOffsets(Collection<TopicPartition> partitions, Duration timeout)
+			* 获取指定分区的开始消费偏移量
+			* 这个偏移量不一定是0,因为kafka日志清理动作可能会清理旧的日志
+
+		Map<TopicPartition, Long> endOffsets(Collection<TopicPartition> partitions)
+		Map<TopicPartition, Long> endOffsets(Collection<TopicPartition> partitions, Duration timeout)
+			* 获取指定分区的末尾消费偏移量(就是下次待写入消息的位置)
+			* timeout指定超时时间,如果不指定,使用:request.timeout.ms 配置
+		
+		Map<TopicPartition, OffsetAndTimestamp> offsetsForTimes(Map<TopicPartition, Long> timestampsToSearch)
+		Map<TopicPartition, OffsetAndTimestamp> offsetsForTimes(Map<TopicPartition, Long> timestampsToSearch, Duration timeout)
+			* 获取指定时间的指定分区的消费偏移量
+			* Map 里面的 value 字段就表示时间戳值
+			* OffsetAndTimestamp
+				private final long timestamp;			// 时间戳
+				private final long offset;				// 消费偏移量
+				private final Optional<Integer> leaderEpoch;
+		
+		long position(TopicPartition partition)
+		long position(TopicPartition partition, final Duration timeout)
+			* 获取自己在指定分区的消费偏移量
+			* 其实就是自己消费的最后一条记录值 + 1

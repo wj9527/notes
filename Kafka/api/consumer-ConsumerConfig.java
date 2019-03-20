@@ -39,6 +39,13 @@ ConsumerConfig				 |
 		reconnect.backoff.max.ms
 		retry.backoff.ms
 		auto.offset.reset
+			* 当消费者找不到消费偏移量记录的时候,从哪里开始进行消费
+			* 枚举值:
+				earliest	重置为最早的偏移量,从头开始消费
+				latest		将偏移重置为最新偏移量,通俗的说就是不消费以前的消息了,从下条消息开始消费(默认)
+				none		如果没有找到偏移量记录,抛出异常
+
+
 		check.crcs
 		metrics.sample.window.ms
 		metrics.num.samples
@@ -49,6 +56,8 @@ ConsumerConfig				 |
 			* 设置value和key的解码器
 
 		request.timeout.ms
+			* 默认的网络请求超时时间
+
 		default.api.timeout.ms
 		connections.max.idle.ms
 		interceptor.classes
