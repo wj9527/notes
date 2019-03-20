@@ -45,6 +45,8 @@ ConsumerConfig				 |
 				latest		将偏移重置为最新偏移量,通俗的说就是不消费以前的消息了,从下条消息开始消费(默认)
 				none		如果没有找到偏移量记录,抛出异常
 
+			* 如果设置偏移量越界了,也会通过该配置的策略来重置消费偏移量
+
 
 		check.crcs
 		metrics.sample.window.ms

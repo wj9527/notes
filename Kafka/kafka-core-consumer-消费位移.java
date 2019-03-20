@@ -190,7 +190,9 @@
 					}
 				}
 			}
-	
+		
+		* 如果设置偏移量越界了(设置了一不存在的值),那么会根据 auto.offset.reset 策略来重置消费偏移量
+
 	# 获取偏移量信息
 		Map<TopicPartition, Long> beginningOffsets(Collection<TopicPartition> partitions)
 		Map<TopicPartition, Long> beginningOffsets(Collection<TopicPartition> partitions, Duration timeout)
@@ -215,3 +217,4 @@
 		long position(TopicPartition partition, final Duration timeout)
 			* 获取自己在指定分区的消费偏移量
 			* 其实就是自己消费的最后一条记录值 + 1
+	
