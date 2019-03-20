@@ -18,13 +18,25 @@ KafkaConsumer<K, V>		   |
 		void commitAsync()
 		void commitAsync(final Map<TopicPartition, OffsetAndMetadata> offsets, OffsetCommitCallback callback)
 		void commitAsync(OffsetCommitCallback callback)
+			* 异步提交消费位移
+			* offsets 可以设置指定主题,指定分区的位移值
+			* OffsetCommitCallback 设置回调
+				void onComplete(Map<TopicPartition, OffsetAndMetadata> offsets, Exception exception);
+
 		void commitSync()
 		void commitSync(Duration timeout)
 		void commitSync(final Map<TopicPartition, OffsetAndMetadata> offsets)
 		void commitSync(final Map<TopicPartition, OffsetAndMetadata> offsets, final Duration timeout)
+			* offsets 可以设置指定主题,指定分区的位移值
+			* 同步提交消费位移
 
 		OffsetAndMetadata committed(TopicPartition partition)
 		OffsetAndMetadata committed(TopicPartition partition, final Duration timeout)
+			* 获取已经提交过的消费位移
+			* OffsetAndMetadata
+				private final long offset;
+				private final String metadata;
+				private final Integer leaderEpoch;
 
 		Map<TopicPartition, Long> endOffsets(Collection<TopicPartition> partitions)
 		Map<TopicPartition, Long> endOffsets(Collection<TopicPartition> partitions, Duration timeout)
@@ -58,9 +70,13 @@ KafkaConsumer<K, V>		   |
 		Set<TopicPartition> paused()
 
 		ConsumerRecords<K, V> poll(final Duration timeout)
+			* 从broker拉取消息
+			* timeout控制阻塞时间
 
 		long position(TopicPartition partition)
 		long position(TopicPartition partition, final Duration timeout)
+			* 获取到下一条需要拉取的消息位置
+			* timeout控制阻塞时间,因为要获取元数据,可能会阻塞
 
 		void resume(Collection<TopicPartition> partitions)
 
@@ -97,5 +113,6 @@ KafkaConsumer<K, V>		   |
 		void unsubscribe()
 			* 取消订阅主题
 			* 也可以通过 subscribe 去订阅一个空的主题集合来达到取消订阅的效果
+				subscribe(new ArrayList<String>());
 		
 		void wakeup()

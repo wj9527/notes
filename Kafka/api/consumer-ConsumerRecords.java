@@ -1,36 +1,32 @@
 --------------------------------
-ConsumerRecord<K,V>				|
+ConsumerRecords<K,V>				|
 --------------------------------
-	# 消费者消费的消息对象
-	# 构造函数
-		ConsumerRecord(String topic,int partition,long offset,K key,V value)
-		ConsumerRecord(String topic,int partition,long offset,long timestamp,TimestampType timestampType,Long checksum,int serializedKeySize,int serializedValueSize,K key,V value,Headers headers)
-		ConsumerRecord(String topic,int partition,long offset,long timestamp,TimestampType timestampType,Long checksum,int serializedKeySize,int serializedValueSize,K key,V value,Headers headers,Optional<Integer> leaderEpoch)
-		ConsumerRecord(String topic,int partition,long offset,long timestamp,TimestampType timestampType,long checksum,int serializedKeySize,int serializedValueSize,K key,V value)
+	# 消费者消费的消息对象的集合
+	# 它实现了迭代器:Iterable<ConsumerRecord<K, V>,表示多个ConsumerRecord
+	# 静态属性
+		ConsumerRecords<Object, Object> EMPTY = new ConsumerRecords<>(Collections.EMPTY_MAP);
 
-		timestampType
-			* 时间戳的类型,枚举值
-				NO_TIMESTAMP_TYPE(-1, "NoTimestampType") // 没时间戳
-				CREATE_TIME(0, "CreateTime")			//  消息创建时间
-				LOG_APPEND_TIME(1, "LogAppendTime");	//  追加到日志文件的时间
-		
-		headers
-			* 消息头,可以用于传输业务数据以外的其他信息
-			* Headers是一个接口,实现类:RecordHeaders
-
-	# 实例属性
-		private final String topic;						// 主题
-		private final int partition;					// 分区号
-		private final long offset;						
-		private final long timestamp;					// 时间戳
-		private final TimestampType timestampType;
-		private final int serializedKeySize;
-		private final int serializedValueSize;
-		private final Headers headers;					// 消息头
-		private final K key;							// 键
-		private final V value;							// 值
-		private final Optional<Integer> leaderEpoch;
-		private volatile Long checksum;
+	# 静态方法
+		<K, V> ConsumerRecords<K, V> empty()
 
 	# 实例方法
-		
+		int count();
+			* 消息总数量
+
+		boolean isEmpty();
+			* 是否为空
+
+		Iterator<ConsumerRecord<K, V>> iterator();
+			* 返回包含了所有消息的迭代器
+
+		Set<TopicPartition> partitions();
+			* 返回当前主题消息所在的所有主题以及分区
+
+		Iterable<ConsumerRecord<K, V>> records(String topic);
+			* 返回包含了指定主题消息的迭代器
+			* 当前消费者可能订阅了多个主题
+
+		List<ConsumerRecord<K, V>> records(TopicPartition partition);
+			* 返回包含了指定主题,指定分区消息的集合
+			* 当前消费者可能订阅了多个主题,或者多个分区
+

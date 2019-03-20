@@ -19,7 +19,11 @@ ConsumerConfig				 |
 
 		metadata.max.age.ms
 		enable.auto.commit
+			* 是否开启自动提交消费位移,默认值为:true
+
 		auto.commit.interval.ms
+			* * 设置两次位移记录提交的间隔,默认: 50000(ms) 也就是5秒
+
 		client.id
 			* 当前消费者的id
 			* 如果不设置,会自动的生成一个非空字符串(consumer-[编号])

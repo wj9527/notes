@@ -57,7 +57,36 @@ consumer				|
 		* 如果不设置,默认为空字符串
 		* 一般而言这个值的设置要有一定的业务意义
 	
-	# 订阅主题与分区(api)
+	# 主题订阅
+		* 相关api
+			Set<String> subscription()
+			void subscribe(Collection<String> topics)
+			void subscribe(Collection<String> topics, ConsumerRebalanceListener listener)
+			void subscribe(Pattern pattern)
+			void subscribe(Pattern pattern, ConsumerRebalanceListener listener)
+		
+		* 订阅主题,如果方法被重复的调用,那么以最后一次调用的为准
+		* 如果使用正则表达式的方法(Pattern)订阅了主题,就算是主题不存在也可以,在主题被创建后,符合条件的主题会被自动的订阅
+		* 负载均衡监听器:ConsumerRebalanceListener 
+			 void onPartitionsRevoked(Collection<TopicPartition> partitions);
+			 void onPartitionsAssigned(Collection<TopicPartition> partitions);
+
+		* 使用这种方式进行订阅消息具有自动负载均衡的功能
+		* 在多个消费者的情况下,可以根据分区分配策略来自动分配各个消费者与分区的关系
+		* 在消费组内消费者的增加/减少,分区分配关系会自动的跳转,以及实现故障的自动转移
+	
+	# 分区订阅
+		* 相关api
+			void assign(Collection<TopicPartition> partitions)
+			Set<TopicPartition> assignment()
+
+		* TopicPartition 对象用于描述分区和主题
+			private int hash = 0;			//hash值
+			private final int partition;	// 分区编号
+			private final String topic;		// 主题信息
+			TopicPartition(String topic, int partition)
+
+		* 这种方式订阅,不具备自动的负载均衡功能
 	
 	# 主题订阅模式的互斥性
 		* 集合的订阅方式:AUTO_TOPICS
@@ -90,7 +119,14 @@ consumer				|
 		* 如果有多个,使用逗号分隔
 	
 	# 消息消费
-	# 位移提交
+		* 消息消费模式为主动从topic拉取消息,这是一个不断轮询的过程
+		* 相关api
+			ConsumerRecords<K, V> poll(final Duration timeout)
+		* 该值的设置取决于程序对响应速度的要求
+		* 如果设置为0,poll会立即返回而不管是否拉取到了数据
+		* 如果线程的工作仅仅是为了拉取数据,那么该值可以设置为 Long.MAX_VALUE
+
+
 	# 控制或者关闭消费
 	# 指定位移消息
 	# 负载均衡
