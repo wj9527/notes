@@ -25,6 +25,8 @@ producer				|
 			ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("test", "你好啊");
 			kafkaProducer.send(producerRecord);
 		}
+	
+	# 生产者客户端是线程安全的
 
 	# 异常的可重试机制
 		* KafkaProducer 中 一般会发生两种类型的异常 : 可重试的异常和不可重试的异常 
