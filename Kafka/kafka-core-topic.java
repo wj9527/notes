@@ -34,6 +34,9 @@ Topic						|
 				* 该配置项可以存在多个,表示覆盖多个值
 					--config kek=value
 					--config cleanup.policy=compact --config max.message.bytes=l000
+				* 可以在zookeeper的节点下查看这些数据:
+					get /config/topics/[topic-name]
+
 			
 			--if-not-exists
 				* 如果主题已经存在,不会抛出异常,也不会创建成功
@@ -63,3 +66,20 @@ Topic						|
 		
 		Replicas
 			* 当前这个分区都在哪些节点上
+	
+	# 查看创建主题时设置的参数(--config)
+		get /config/topics/[主题名]
+
+		{
+			"version":1,
+			"config":{
+				"max.message.bytes":"10000",
+				"cleanup.poliy":"compact"
+			}
+		}
+
+		* config 表示设置的一个或者多个配置项
+
+	# replica分配算法考虑机房(0.10.x)
+		* 可以配置一个参数broker.rack说明当前broker在哪个机房
+		* 算了,用到的时候再去查吧
