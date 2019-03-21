@@ -19,7 +19,30 @@ kafka 维护						|
 				* 每个partition多少个备份
 			--topic
 				* 设置topic的名称
+			--replica-assignment
+				* 可以自己控制分区的分配
+				* 这种方式根据分区号的数值大小按照从小到大的顺序进行排列,分区与分区之间用逗号","隔开
+				* 分区内多个副本用冒号":"隔开
+				* 并且在使用该参数创建主题时不需要原本必备的 partitions 和 replication-factor 这两个参数
+				* 同一个分区内的副本不能有重复,比如指定了 0:0,1:1 这种,就会报出异常
+				
+				--replica-assignment 2:0,0:1,1:2,2:1
+
+				2:0 表示第 0 个分区,有两个副本,在broker.id 为 2 和 0 的节点上
+				0:1 表示第 1 个分区,有两个副本,在broker.id 为 0 和 1 的节点上
+				1:2 表示第 2 个分区,有两个副本,在broker.id 为 1 和 2 的节点上
+				2:1 表示第 3 个分区,有两个副本,在broker.id 为 2 和 1 的节点上
+
+			--config
+				* 自定义配置,覆盖主题的默认配置
+				* 该配置项可以存在多个,表示覆盖多个值
+					--config kek=value
+					--config cleanup.policy=compact --config max.message.bytes=l000
 			
+			--if-not-exists
+				* 如果主题已经存在,不会抛出异常,也不会创建成功
+			
+				
 	# 查看创建的主题
 		bin/kafka-topics.sh --zookeeper localhost:2181 --list
 	
