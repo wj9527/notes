@@ -25,13 +25,21 @@ Spring boot 第一种方式		|
 	
 	2,在 @SpringBootApplication 类上添加注解来扫描 mapper 接口
 		@MapperScan("com.xx");
-		* 扫描指定包下的 mapper 接口
-		* value				参数是一个数组,可以扫描多个
-		* annotationClass	仅仅加载添加了指定注解的类
-		* sqlSessionFactoryRef 
-			* 创建这些mapper代理对象的时候
-			* 使用指定名称的IOC中SqlSessionFactory实例
-			* 可以用于多数据源实现的时候
+			* 扫描指定包下的 mapper 接口
+			* value				参数是一个数组,可以扫描多个
+			* annotationClass	仅仅加载添加了指定注解的类
+			* sqlSessionFactoryRef 
+				* 创建这些mapper代理对象的时候
+				* 使用指定名称的IOC中SqlSessionFactory实例
+				* 可以用于多数据源实现的时候
+
+			sqlSessionTemplateRef
+				* 创建这些mapper代理对象的时候
+				* 使用指定名称的IOC中sqlSessionTemplate实例
+				* 可以用于多数据源实现的时候
+
+		@MapperScans
+			* 是一个组合注解,value值是多个 @MapperScan
 		
 
 	3,在properties中配置参数
