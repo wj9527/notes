@@ -25,4 +25,6 @@ admin					     |
 		
 		TopicCommand
 			* kafka-topics.sh 脚本使用的类
-			
+		
+		KafkaAdminClient
+			* 一个超级管理的类,可以用于管理broker,topic,acl

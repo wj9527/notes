@@ -1,85 +1,32 @@
 ----------------------------
 Topic						|
 ----------------------------
-	
-----------------------------
-主题管理					|
-----------------------------
-	# 创建主题
-		 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
-			--zookeeper
-				* 指定zk
-			--partitions
-				* 分区数量
-			--replication-factor
-				* 每个分区的副本数量
-			--topic
-				* 主题名称,一般不要用下划线开头,因为kafka内部的主题使用下划线开头
-			--replica-assignment
-				* 可以自己控制分区的分配
-				* 这种方式根据分区号的数值大小按照从小到大的顺序进行排列,分区与分区之间用逗号","隔开
-				* 分区内多个副本用冒号":"隔开
-				* 并且在使用该参数创建主题时不需要原本必备的 partitions 和 replication-factor 这两个参数
-				* 同一个分区内的副本不能有重复,比如指定了 0:0,1:1 这种,就会报出异常
-				
-				--replica-assignment 2:0,0:1,1:2,2:1
+	# 主题的创建
+		* 主题相关的配置,其实在broker都有默认的配置项和值
+		* 如果主题没有进行特殊的设置,那么就会使用broker默认的
 
-				2:0 表示第 0 个分区,有两个副本,在broker.id 为 2 和 0 的节点上
-				0:1 表示第 1 个分区,有两个副本,在broker.id 为 0 和 1 的节点上
-				1:2 表示第 2 个分区,有两个副本,在broker.id 为 1 和 2 的节点上
-				2:1 表示第 3 个分区,有两个副本,在broker.id 为 2 和 1 的节点上
+	# 主题的删除
+		* 主题被删除后,不会立即的从磁盘删除,只是被标记为删除
+		* 如果broker配置的参数: delete.topic.enable=false 那么执行删除不会有任何的效果
+		* 如果要删除的主题是 Kafka 的内部主题,那么删除时就会报错
 
-			--config
-				* 自定义配置,覆盖主题的默认配置
-				* 该配置项可以存在多个,表示覆盖多个值
-					--config kek=value
-					--config cleanup.policy=compact --config max.message.bytes=l000
-				* 可以在zookeeper的节点下查看这些数据:
-					get /config/topics/[topic-name]
+		* 使用 kafka-topics.sh 脚本删除主题的行为本质上只是在 ZooKeeper 中的 /admin/delete_topics 路径下创建一个与待删除主题同名的节点
+		* 以此标记该主题为待删除的状态
+		* 与创建主题相同的是,真正删除主题的动作也是由 Kafka 的控制器负责完成的
+		* 说白了,可以通过操作zookeeper的节点来完成主题的删除操作
 
-			
-			--if-not-exists
-				* 如果主题已经存在,不会抛出异常,也不会创建成功
-	
-	# 可以通过 ZooKeeper 客户端来获取 broker分区副本的分配情况
-		get /brokers/topics/[主题名]
-
-		{"version":1,"partitions":{"2":[1,2]}}
-
-		partitions:
-			* 表示当前主题的分区"2",有两个副本,分配在了border.id 等于 1 和 2 的节点上
-			* json对象的key表示主题的分区编号,value数组表示该分区的副本都分配在哪些broker节点上
-				
+		* 还可以手动的方式来删除主题,主题的元数据存储在zookeeper的路径:
+			/brokers/topics
+			/config/topics
+		* 主题中的消息数据存储在磁盘 log.dir 或 log.dirs 配置的路径下,只需要手动删除这些地方的内容即可
+			1. 先删除zk中的元数据
+				rmr /config/topics/[主题名称]
+				delete /brokers/topics/[主题名称]
+				delete /config/topics/[主题名称]
+			2. 再删除日志文件
+				rm - rf /tmp/kafka-logs/[主题名称]＊
 		
-		
-	# 查看主题详情
-		bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic test
-			--zookeeper
-				* 指定zk
-			--describe
-				* 查看详情指令
-			--topic
-				* 主题名称
-		
-		Topic(主题名):test      PartitionCount(分区数量):1        ReplicationFactor(每个分区副本数):1     Configs(主题的配置信息):
-        Topic: test     Partition(分区号): 0    Leader(当前分区Lader副本所在节点的broker.id): 2       Replicas(当前分区所有副本所在节点的broker.id - AR): 2     Isr(当前分区的ISR集合 - ISR): 2
-		
-		Replicas
-			* 当前这个分区都在哪些节点上
-	
-	# 查看创建主题时设置的参数(--config)
-		get /config/topics/[主题名]
+		* 删除主题是一个不可逆的操作
 
-		{
-			"version":1,
-			"config":{
-				"max.message.bytes":"10000",
-				"cleanup.poliy":"compact"
-			}
-		}
-
-		* config 表示设置的一个或者多个配置项
-
-	# replica分配算法考虑机房(0.10.x)
-		* 可以配置一个参数broker.rack说明当前broker在哪个机房
-		* 算了,用到的时候再去查吧
+	# 
+		
