@@ -27,6 +27,3 @@ Topic						|
 				rm - rf /tmp/kafka-logs/[主题名称]＊
 		
 		* 删除主题是一个不可逆的操作
-
-	# 
-		

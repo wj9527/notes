@@ -40,21 +40,71 @@ KafkaAdminClient		 |
 		Map<MetricName, ? extends Metric> metrics()
 		RenewDelegationTokenResult renewDelegationToken(final byte[] hmac, final RenewDelegationTokenOptions options)
 	
-	# 主题的创建
-		// 基本的配置
-		Properties properties = new Properties();
-		properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+	# 基本的一些操作
+		public static void addPartition() throws InterruptedException, ExecutionException {
+			Properties properties = new Properties();
+			properties.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+			KafkaAdminClient kafkaAdminClient = (KafkaAdminClient) KafkaAdminClient.create(properties);
+			// 把指定的partition数量增加到5个
+			NewPartitions newPartitions = NewPartitions.increaseTo(5); // 参数表示修改后的数量
+			// 执行操作
+			CreatePartitionsResult createPartitionsResult = kafkaAdminClient.createPartitions(Collections.singletonMap("topic_1", newPartitions));
+			createPartitionsResult.all().get();
+		}
 
-		try(KafkaAdminClient kafkaAdminClient = (KafkaAdminClient) KafkaAdminClient.create(properties)){
-			// 新建主题，设置名称partition数量，和副本数量
-			NewTopic newTopics = new NewTopic("demo3", 1, (short) 1);
-			
-			CreateTopicsResult createTopicsResult = kafkaAdminClient.createTopics(Collections.singleton(newTopics));
-			try {
-				// 线程阻塞，直到返回所有主题的创建结果
-				createTopicsResult.all().get();
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
+		public static void alterConfig() throws InterruptedException, ExecutionException {
+			Properties properties = new Properties();
+			properties.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+			KafkaAdminClient kafkaAdminClient = (KafkaAdminClient) KafkaAdminClient.create(properties);
+			// ConfigEntry 表示一个配置项
+			ConfigEntry configEntry = new ConfigEntry("cleanup.policy","compact");
+			// 多个配置项构造成 Config
+			Config config = new Config(Arrays.asList(configEntry));
+			// 根据 topic/broker 和Config 构建map
+			Map<ConfigResource, Config> configMap = Collections.singletonMap(new ConfigResource(ConfigResource.Type.TOPIC, "topic_1"), config);
+			// 执行修改
+			 AlterConfigsResult alterConfigsResult = kafkaAdminClient.alterConfigs(configMap);
+			 alterConfigsResult.all().get(); // 阻塞，直到所有的修改都完成
+		}
+		public static void describe() throws InterruptedException, ExecutionException {
+			Properties properties = new Properties();
+			properties.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+			KafkaAdminClient kafkaAdminClient = (KafkaAdminClient) KafkaAdminClient.create(properties);
+			DescribeConfigsResult describeConfigsResult = kafkaAdminClient.describeConfigs(Arrays.asList(new ConfigResource(ConfigResource.Type.TOPIC,"topic_1")));
+			Map<ConfigResource, Config> configMap = describeConfigsResult.all().get();
+			for(Map.Entry<ConfigResource, Config> entry : configMap.entrySet()) {
+				// 类型和名称
+				System.out.println("type=" + entry.getKey().type() + " name=" + entry.getKey().name());
+				// 配置详情
+				System.out.println(entry.getValue());
+			}
+		}
+
+		public static void createTopic() throws InterruptedException, ExecutionException {
+			Properties properties = new Properties();
+			properties.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+			KafkaAdminClient kafkaAdminClient = (KafkaAdminClient) KafkaAdminClient.create(properties);
+			NewTopic newTopic = new NewTopic("topic_1", 1, (short)1);
+			CreateTopicsResult createTopicsResult = kafkaAdminClient.createTopics(Arrays.asList(newTopic));
+			createTopicsResult.all().get();// 阻塞线程，直到所有主题创建成功
+		}
+
+		public static void deleteTopic() throws InterruptedException, ExecutionException {
+			Properties properties = new Properties();
+			properties.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+			KafkaAdminClient kafkaAdminClient = (KafkaAdminClient) KafkaAdminClient.create(properties);
+			DeleteTopicsResult deleteTopicsResult = kafkaAdminClient.deleteTopics(Arrays.asList("demo1","demo2","demo3","test"));
+			deleteTopicsResult.all().get(); // 阻塞线程，直到所有主题删除成功
+		}
+
+		public static void listTopics() throws InterruptedException, ExecutionException {
+			Properties properties = new Properties();
+			properties.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+			KafkaAdminClient kafkaAdminClient = (KafkaAdminClient) KafkaAdminClient.create(properties);
+			ListTopicsResult listTopicsResult = kafkaAdminClient.listTopics();
+			Collection<TopicListing>  topicListings = listTopicsResult.listings().get();
+			for(TopicListing topicListing : topicListings) {
+				System.out.println("主题名称:" + topicListing.name() + " 是否是内部的:" + topicListing.isInternal());
 			}
 		}
 		
