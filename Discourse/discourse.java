@@ -174,3 +174,6 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 	
 	# 发送摘要邮件的频率
 		设置 -> 用户设置 -> default email digest frequency
+	
+	# 显示回复到回复的标识
+		设置 -> 发帖 -> suppress reply directly above
