@@ -23,13 +23,6 @@ character_set_server=utf8
 default_storage_engine=INNODB
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 
-	# 初始化
-		mysqld --initialize-insecure
-
-		* 初始化无密码的root用户
-		* 登录时输入密码直接回车
-		* 登录成功后修改密码
-			set password for 'root'@'%' = password('root');
 	
 	# 安装到系统服务
 		mysqld --install
@@ -37,6 +30,17 @@ sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 		* 使用系统命令维护
 			net start mysql
 			net stop mysql
+		
+		* 出错可以卸载重新安装
+			mysqld remove
+	
+	# 初始化
+		mysqld --initialize-insecure
+
+		* 初始化无密码的root用户
+		* 登录时输入密码直接回车
+		* 登录成功后修改密码
+			set password for 'root'@'%' = password('root');
 
 
 
