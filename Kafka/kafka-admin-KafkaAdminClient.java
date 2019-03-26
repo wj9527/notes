@@ -8,6 +8,8 @@ KafkaAdminClient		 |
 	
 	# 方法
 		AlterConfigsResult alterConfigs(Map<ConfigResource, Config> configs, final AlterConfigsOptions options)
+			* 修好主题的配置
+
 		AlterReplicaLogDirsResult alterReplicaLogDirs(Map<TopicPartitionReplica, String> replicaAssignment, final AlterReplicaLogDirsOptions options)
 
 		void close(long duration, TimeUnit unit);
@@ -15,6 +17,8 @@ KafkaAdminClient		 |
 		CreateAclsResult createAcls(Collection<AclBinding> acls, CreateAclsOptions options)
 		CreateDelegationTokenResult createDelegationToken(final CreateDelegationTokenOptions options)
 		CreatePartitionsResult createPartitions(Map<String, NewPartitions> newPartitions,final CreatePartitionsOptions options)
+			* 修改parition数量和副本的数量
+
 		CreateTopicsResult createTopics(final Collection<NewTopic> newTopics,final CreateTopicsOptions options)
 			* 创建topic
 
@@ -22,6 +26,8 @@ KafkaAdminClient		 |
 		DeleteConsumerGroupsResult deleteConsumerGroups(Collection<String> groupIds, DeleteConsumerGroupsOptions options)
 		DeleteRecordsResult deleteRecords(final Map<TopicPartition, RecordsToDelete> recordsToDelete, final DeleteRecordsOptions options)
 		DeleteTopicsResult deleteTopics(Collection<String> topicNames, DeleteTopicsOptions options)
+			* 删除topic
+
 		DescribeAclsResult describeAcls(final AclBindingFilter filter, DescribeAclsOptions options)
 		DescribeClusterResult describeCluster(DescribeClusterOptions options) 
 		DescribeConfigsResult describeConfigs(Collection<ConfigResource> configResources, final DescribeConfigsOptions options)
@@ -37,6 +43,8 @@ KafkaAdminClient		 |
 		ListConsumerGroupOffsetsResult listConsumerGroupOffsets(final String groupId, final ListConsumerGroupOffsetsOptions options)
 		ListConsumerGroupsResult listConsumerGroups(ListConsumerGroupsOptions options)
 		ListTopicsResult listTopics(final ListTopicsOptions options)
+			* 获取所有的topic数量
+
 		Map<MetricName, ? extends Metric> metrics()
 		RenewDelegationTokenResult renewDelegationToken(final byte[] hmac, final RenewDelegationTokenOptions options)
 	
@@ -45,9 +53,23 @@ KafkaAdminClient		 |
 			Properties properties = new Properties();
 			properties.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 			KafkaAdminClient kafkaAdminClient = (KafkaAdminClient) KafkaAdminClient.create(properties);
-			// 把指定的partition数量增加到5个
-			NewPartitions newPartitions = NewPartitions.increaseTo(5); // 参数表示修改后的数量
-			// 执行操作
+			
+			/**
+			 * 把指定的partition数量增加到5个
+			 */
+			// NewPartitions newPartitions = NewPartitions.increaseTo(5); // 参数表示修改后的数量
+			
+			/**
+			 * 把指定的parition数量增加到6个
+			 * 并且重新指定其副本的分配方案
+			 */
+			List<List<Integer>> newAssignments = new ArrayList<>();
+			newAssignments.add(Arrays.asList(1,2));		// 第1个分区,有两个副本,在broker 1 和 2上	leader节点在broker2上
+			newAssignments.add(Arrays.asList(2,3));		// 第2个分区,有两个副本,在broker 2 和 3上	leader节点在broker3上
+			newAssignments.add(Arrays.asList(3,1));		// 第3个分区,有两个副本,在broker 3 和 1上	leader节点在broker1上
+			NewPartitions newPartitions = NewPartitions.increaseTo(6,newAssignments);
+			
+			// 执行修改操作
 			CreatePartitionsResult createPartitionsResult = kafkaAdminClient.createPartitions(Collections.singletonMap("topic_1", newPartitions));
 			createPartitionsResult.all().get();
 		}

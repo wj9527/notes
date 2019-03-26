@@ -109,8 +109,90 @@ Topic 优先副本的选举		|
 
 		* 可以手动的去执行脚本,来完成分区的自动平衡,手动的方式自己可以控制执行的时间,以及需要平衡的分区(针对性的执行,而不是一次性的执行所有)
 
+		* 该机制保证的是leader在集群中分布均匀
 
 
+----------------------------
+Topic 分区的重新分配		|
+----------------------------
+	# 两个问题
+		* 如果broker宕机/下线,上面的分区副本就处于不可用状态
+		* 可能会影响到整个集群的可用性和负载
+
+		* 如果新增一台broker到集群,原来的分区不会均衡到新的Broker上
+		* 只有新创建的主题,才会把分区分配到这个新的broker上
+
+		* 为了解决上面的问题,于是就需要使用:分区重新分配
+	
+	# 使用脚本完成分区重新分配:kafka-reassign-partitions.sh
+		* 它可以在集群扩容,broker节点宕机的情况下对分区进行迁移
+		* 该脚本的使用分为三个步骤
 		
+		1 创建包含主题清单的JSON文件
+			{
+				"topics":[{
+					"topic":"topic-name"
+				}],
+				"version":1
+			}
 
+		2 根据主题清单文件和broker节点清单生成一个重新分配方案
+			bin/kafka-reassign-partitions.sh  --zookeeper localhost:2181  --generate --topics-to-move-json-file  reassign.json --broker-list 0,2
+				--generate
+					* 是当前脚本的指令,用来生成一个重新分配的方案
+
+				--topics-to-move-json-file
+					* 指定主题清单JSON文件
+
+				--broker-list
+					* 指定要分配的broker节点列表(broker.id)
+			
+			* 执行完毕后会在控制台输出两个内容
+				Current parition replica assignment
+					* 当前分区的分配情况
+					* 最好保存到文件中,如果可以用来回滚
+
+				Proposed parition reassignment configuration
+					* 生成的重新分配方案
+
+
+		3 根据生成的方案执行重新分配动作
+			bin/kafka-reassign-partitions.sh  --zookeeper localhost:2181  --execute  --reassignment-json-file  project.json
+				 --execute
+					* 是当前脚本的指令,用来执行一个重新分配的方案
+
+				--reassignment-json-file
+					* 指定分配方案的JSON文件
+				
+				--throttle
+					* 限制同步数据的网络传输速度: byte/s
 		
+		* 原理就是为每个分区先添加新的副本,新的副本从leader复制数据
+		* 复制的过程是通过网络复制的,所以需要花一点儿时间
+		* 在复制完成后,就会删除旧的副本(恢复原来的副本数量)
+	
+	# 复制限流
+		* 执行分区重分配的时候,复制的量太大可能会影响整体的性能(尤其是处于业务高峰期的时候)
+		* 可以通过broker参数来限制同步速度(限流),从而保证数据在同步期间整体的服务不会受到太大的影响
+			follower.replication.throttled.rate
+				* 设置Follower副本的复制速速
+				* 单位是 byte/s
+
+			leader.replication.throttled.rate
+				* 设置Leader副本的传输速度
+				* 单位是 byte/s
+		
+		* 在执行分区重分配脚本的时候,也可以通过参数来限制速度: byte/s
+			--throttle
+	
+	# 通俗理解
+		* 该机制保证的是集群中新增/减少broker的时候,使各个broker上的分区平衡
+
+----------------------------
+修改副本因子				|
+----------------------------
+	# 就是修改parition分区的副本数量
+	# 也是通过脚本:kafka-reassign-partitions.sh 来实现
+		* 用到的时候再查吧
+	
+	# 分区的副本数量是可以减少的(与分区的数量不同,分区数只能增加)
