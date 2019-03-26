@@ -8,8 +8,18 @@ EventLoop				|
 				|-EpollEventLoopGroup
 				|-NioEventLoopGroup
 			
-
 	
+	# EpollEventLoopGroup
+		* 由jni驱动的epoll()和非阻塞IO
+		* 只能在Linux系统上使用,比NIO传输更快
+		* 如果使用epoll(),那么ServerBootstrap的channel要使用:EpollServerSocketChannel
+
+			NioEventLoopGroup		→ EpollEventLoopGroup
+			NioEventLoop			→ EpollEventLoop
+
+			NioServerSocketChannel	→ EpollServerSocketChannel
+			NioSocketChannel		→ EpollSocketChannel
+				
 	# 总结
 		* 一个EventLoopGroup当中会包含一个或者多个EventLoop
 		* 一个EventLoop在它的整个生命周期中都只会与唯一一个Thread进行绑定

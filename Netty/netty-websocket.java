@@ -135,3 +135,31 @@ public class Server {
 		}
 	}
 }
+
+	
+---------------------------------
+在握手前处理uri参数等等			 |
+---------------------------------
+	# 思路
+		* 在 HttpObjectAggregator 之后添加一个Handler,用于获取到完整的http请求信息:FullHttpRequest
+		* 可以通过FullHttpRequest获取到uri,header,method,query param等信息
+		* 自己可以决定是响应异常信息,还是执行下一个handler,也就是ws握手
+
+	# 代码
+		pipeline.addLast(new HttpObjectAggregator(65536));
+		pipeline.addLast(new ChannelInboundHandlerAdapter() {
+			@Override
+			public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+				if(msg instanceof FullHttpRequest) {
+					FullHttpRequest fullHttpRequest = (FullHttpRequest) msg;
+					
+					// 获取到请求的uri,里面包含了请求路径和请求参数
+					String uri = fullHttpRequest.uri();
+
+					fullHttpRequest.setUri(ENDPOINT); // 一定要设置uri跟websocket的端点匹配
+				}
+				super.channelRead(ctx, msg);
+			}
+		});
+		pipeline.addLast(new WebSocketServerCompressionHandler());
+		pipeline.addLast(new WebSocketServerProtocolHandler(ENDPOINT, null, true));	// uri,子协议,是否支持扩展
