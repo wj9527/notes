@@ -13,6 +13,8 @@ Netty服务端的配置			|
 			serverBootstrap.group(bossGroup, workerGroup);
 			// 设置io模式
 			serverBootstrap.channel(NioServerSocketChannel.class);
+			// 监听的网卡和端口
+			serverBootstrap.localAddress(new InetSocketAddress("0.0.0.0", 1024));
 			// 设置日志handler
 			serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
 			// 设置客户端handlder
@@ -30,8 +32,8 @@ Netty服务端的配置			|
 			// 设置客户端属性
 			serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
 
-			// 绑定端口,并且同步(阻塞)的启动服务
-			ChannelFuture channelFuture = serverBootstrap.bind(1024).sync();
+			// 绑定到设置的端口和网卡,并且同步(阻塞)的启动服务
+			ChannelFuture channelFuture = serverBootstrap.bind().sync();
 			channelFuture.channel().closeFuture().sync();
 		} finally {
 			bossGroup.shutdownGracefully();
