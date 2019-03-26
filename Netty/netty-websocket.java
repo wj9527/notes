@@ -22,9 +22,6 @@ websocket						 |
 	
 	# WebSocketServerCompressionHandler
 		* 提供了对websocket消息的压缩
-		* 私有化了构造函数,提供了一个全局的静态实例
-			WebSocketServerCompressionHandler.INSTANCE
-		* 使用 @ChannelHandler.Sharable 标识,可以用于多个Channel
 
 
 -------------------------------------
