@@ -58,5 +58,11 @@ BigDecimal-实例方法		|
 	BigDecimal divide(BigDecimal divisor, MathContext mc)
 	BigDecimal divide(BigDecimal divisor, RoundingMode roundingMode)
 		* 加减乘除
+			newScale					表示保留的小数位数
+			roundingMode				指定舍入模式(可以是int或者枚举)
+			mc							通过指定的 MathContext 处理精度和舍入
 	
-	
+	BigDecimal setScale(int newScale, int roundingMode)
+		* 格式化小数
+			newScale		表示保留的小数位数
+			roundingMode	舍入模式

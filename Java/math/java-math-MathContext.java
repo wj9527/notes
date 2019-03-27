@@ -14,7 +14,7 @@ MathContext				|
 		MathContext(String val)
 
 		setPrecision
-			* 精度
+			* 精度,一共最长最少长度(包含小数)
 		
 		setRoundingMode
 			* 舍入模式
