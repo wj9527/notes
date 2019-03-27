@@ -1,7 +1,4 @@
-class  
-{
-	public static void main(String[] args) 
-	{
-		System.out.println("Hello World!");
-	}
-}
+--------------------
+Math				|
+--------------------
+	# 包含了大量的静态方法,用于数学计算
