@@ -100,6 +100,16 @@ DefaultChannelGroup			  |
 		ChannelGroupFuture writeAndFlush(Object message, ChannelMatcher matcher, boolean voidPromise);
 	
 	# Channel 关闭,会自动的从 Group 种移除
+		@Override
+		public boolean add(Channel channel) {
+			...
+			boolean added = map.putIfAbsent(channel.id(), channel) == null;
+			if (added) { // 如果添加成功,则设置channel的close监听，逻辑代码为把自己从group中移除
+				channel.closeFuture().addListener(remover);
+			}
+			...
+		}
+	
 	# 一个 Channel 可以属于多个 Group
 	# 如果ServerChannel和channel存在于同一个中ChannelGroup中,则对该组执行的任何请求的I / O操作ServerChannel都会先执行
 		* 当一次性关闭服务器时,此规则非常有用
