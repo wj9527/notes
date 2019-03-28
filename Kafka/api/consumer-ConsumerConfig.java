@@ -147,6 +147,8 @@ ConsumerConfig				 |
 			* 枚举值:
 				READ_UNCOMMITTED(默认)
 					* 可以读取到HW(High Watermark)处的位置
+					* 可以读取到消费者未commit的事务消息
+				
 				READ_COMMITTED
 					* 读事务已经提交的消息
 					* 只能消费到 LSO(Last Stable Offset)的位置

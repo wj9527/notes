@@ -11,8 +11,6 @@ KafkaProducer<K, V>		|
 		KafkaProducer(Properties properties, Serializer<K> keySerializer, Serializer<V> valueSerializer)
 		
 	# 实例方法
-		void abortTransaction() 
-		void beginTransaction()
 		void close()
 		void close(long timeout, TimeUnit timeUnit)
 			* 关闭,释放资源
@@ -32,6 +30,8 @@ KafkaProducer<K, V>		|
 			* 对于同一个分区而言,回调函数(Callback)的调用可以保证分区有序,先执行调用的 Callback 肯定会先执行
 		
 		void initTransactions()
+		void abortTransaction() 
+		void beginTransaction()
 		void commitTransaction()
 		void sendOffsetsToTransaction(Map<TopicPartition, OffsetAndMetadata> offsets,String consumerGroupId)
 
