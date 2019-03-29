@@ -7,14 +7,16 @@
 
 初始化仓库
 	git init 
+		* 默认初始化当前目录,而且当前面必须是空的
+		* 如果指定了目录参数,则会在当前目录新建一个目录进行初始化
 
-设置用户信息
+全局的设置(设置全局,添加 --global 参数)
 	git config --global user.name "KevinBlandy"
 	git config --global user.email "747692844@qq.com"
-	* 设置全局,添加 --global 参数
-	* 表示机器上所有的Git仓库都会使用这个配置,当然也可以对某个仓库指定不同的用户名和Email地址
+		* 表示机器上所有的Git仓库都会使用这个配置,当然也可以对某个仓库指定不同的用户名和Email地址
 		
-	
+	git config --global color.ui true
+		* 开启彩色的UI(交互文字有颜色)
 
 添加文件到暂存区
 	git add [文件名]
@@ -155,6 +157,14 @@
 		* 其实就是返回远程仓库的名称 origin
 		* 可以添加参数 -v 来显示更完整的信息
 
+# 创建与远程分支关联的本地分支
+	git checkout -b  origin/[远程分支名称] [本地分支名称]
+
+# 设置本地分支与远程分支关联
+	git branch --set-upstream-to origin/[远程分支名称] [本地分支名称]
+
+	* 本地分需要先创建
+
 ---------------------------------
 分支管理						 |
 ---------------------------------
@@ -181,6 +191,20 @@
 
 删除分支
 	 git branch -d [name]
+
+
+# 冻结现场
+	git stash
+
+# 查看冻结的列表
+	git stash list
+
+# 解除现场冻结
+	git stash apply stash@{0}
+
+# 删除冻结
+	git stash drop
+	git stash pop(解除并且删除最后一个冻结)
 
 ---------------------------------
 分支策略管理					 |
