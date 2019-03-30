@@ -41,6 +41,7 @@
 		git reset --hard 4e7e8757dc1bb577df3eab1de1572f7ab7f665ef
 			* 切换到指定的版本
 			* 版本号没必要写全,前几位就可以了,Git会自动去找
+	
 
 ------------------------
 远程仓库				|
@@ -67,10 +68,10 @@
 		alias		远程地址别名
 		branch		指定分支名称
 	
-	git fetch [alias]
+	git fetch [alias] [branch]
 		* 拉取远程仓库代码,不合并
 	
-	git pull
+	git pull [alias] [branch]
 		* 拉取远程仓库代码,并且合并到当前分支
 
 	
