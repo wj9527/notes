@@ -26,6 +26,39 @@ socket选项					|
 ----------------------------
 socket选项-详解				|
 ----------------------------
+	SO_RESUSEADDR
+		* 默认值为 false,表示不允许地址重用
+		* socket api
+			 void setReuseAddress(boolean on)
+			 boolean getReuseAddress()
+		
+		* 当 Socket 执行 close()关闭的时候,如果网络上还有发送到这个Socket的数据,那么底层的Socket不会立即释放本地端口,而是会等待一段时间
+		  确保收到了网络上发过来的延迟数据,然后再释放端口,Socket 收到这些延迟数据后,不会做任何处理,目的是:确保这些数据不会被其他碰巧绑定到同样端口的新进程接收到
+		* 为了确保一个进程关闭socket后,即使它还没释放端口,同一个主机上的其他进程还可以即刻重用该端口,可以调用api设置 true
+		* 需要注意的是,setReuseAddress(true),必须在Socket还没有绑定到一个本地端口之前调用,否则无效
+		* 公用同一个端口的进程都必须调用:setReuseAddress(true)
+	
+	SO_TIMEOUT
+		* 读取超时时间,单位是毫秒
+		* socket api
+			void setSoTimeout(int timeout) 
+			int getSoTimeout()
+
+		* 在 InputStream 执行 read() 数据的时候,如果没有数据就会等待
+		* 如果超过 SO_TIMEOUT 时间还没有数据,就抛出异常
+		* 该api必须在读取数据之前设置才有效,当抛出了:SocketTimeoutException,连接并没有断开,可以尝试再次的读取数据
+		* 包括 accept() Api,超过该时间限制没有新的连接时也会异常
+	
+	SO_RCVBUF
+		* 控制输入数据的缓冲区大小
+		* socket api
+			 void setReceiveBufferSize(int size)
+			 int getReceiveBufferSize()
+		* 如果传输大的连续的数据块(基于http或者ftp协议的通信)可以使用较大的缓冲区,这可以减少传输数据的次数,提高传输效率
+		* 如果是交互频繁,且单次传输数据量比较小的通信方式(Telnet和网络游戏),则应该才用小的缓冲区,确保小批量的数据能够及时发送给对方
+		* 这种设置缓冲区大小的原则,也同样适用于Socket的SO_SNDBUF选项
+		* 如果底层不支持SO_RCVBUF/SO_SNDBUF选项,那么会抛出异常
+
 	TCP_NODELAY
 		* 默认值为 false,表示采用用Negale算法
 		* socket api
@@ -38,29 +71,6 @@ socket选项-详解				|
 		* 如果发送方持续地发送小批量数据,并且接收方不一定会立即响应数据,那么Negale算法会使发送方运行慢(游戏,鼠标的移动都会发送数据到服务器,就不要才用Negale算法)
 		* 如果socket底层不支持 TCP_NODELAY 会抛出 SocketException
 	
-	
-	SO_RESUSEADDR
-		* 默认值为 false,表示不允许地址重用
-		* socket api
-			 void setReuseAddress(boolean on)
-			 boolean getReuseAddress()
-		
-		* 当 Socket 执行 close()关闭的时候,如果网络上还有发送到这个Socket的数据,那么底层的Socket不会立即释放本地端口,而是会等待一段时间
-		  确保收到了网络上发过来的延迟数据,然后再释放端口,Socket 收到这些延迟数据后,不会做任何处理,目的是:确保这些数据不会被其他碰巧绑定到同样端口的新进程接收到
-		* 为了确保一个进程关闭socket后,即使它还没释放端口,同一个主机上的其他进程还可以即刻重用该端口,可以调用api设置 true
-		* 需要注意的是,setReuseAddress(true),必须在Socket还没有绑定到一个本地端口之前调用,否则无效
-		* 公用同一个端口的进程都必须调用:setReuseAddress(true)
-		  
-	SO_TIMEOUT
-		* 读取超时时间,单位是毫秒
-		* socket api
-			void setSoTimeout(int timeout) 
-			int getSoTimeout()
-
-		* 在 InputStream 执行 read() 数据的时候,如果没有数据就会等待
-		* 如果超过 SO_TIMEOUT 时间还没有数据,就抛出异常
-		* 该api必须在读取数据之前设置才有效,当抛出了:SocketTimeoutException,连接并没有断开,可以尝试再次的读取数据
-		* 包括 accept() Api,超过该时间限制没有新的连接时也会异常
 	
 	SO_LINGER
 		* 控制socket的关闭行为
@@ -79,17 +89,6 @@ socket选项-详解				|
 				1,底层socket已经发送完毕所有的数据
 				2,尽管底层socket并没有发送完毕剩余的数据,但是超时,剩余未发送的数据会被丢弃
 		
-	SO_RCVBUF
-		* 控制输入数据的缓冲区大小
-		* socket api
-			 void setReceiveBufferSize(int size)
-			 int getReceiveBufferSize()
-		* 如果传输大的连续的数据块(基于http或者ftp协议的通信)可以使用较大的缓冲区,这可以减少传输数据的次数,提高传输效率
-		* 如果是交互频繁,且单次传输数据量比较小的通信方式(Telnet和网络游戏),则应该才用小的缓冲区,确保小批量的数据能够及时发送给对方
-		* 这种设置缓冲区大小的原则,也同样适用于Socket的SO_SNDBUF选项
-		* 如果底层不支持SO_RCVBUF/SO_SNDBUF选项,那么会抛出异常
-	
-
 	SO_SNDBUF
 		* 控制输出数据的缓冲区的大小
 		* socket api
