@@ -50,7 +50,7 @@
 		* 查看远程列表的push/pull列表
 	
 	git remote show [alias]
-		* 查看指定远程仓库的相信信息
+		* 查看指定远程仓库的详细信息
 	
 	git remote add [alias] [remote]
 		* 添加一个远程仓库
@@ -62,46 +62,72 @@
 	
 	git remote rm [alias]
 		* 删除指定别名的远程仓库
-
-	git push [alias] [branch]
-		* 推送到远程仓库
-		alias		远程地址别名
-		branch		指定分支名称
 	
-	git fetch [alias] [branch]
-		* 拉取远程仓库代码,不合并
-	
-	git pull [alias] [branch]
-		* 拉取远程仓库代码,并且合并到当前分支
-
-	
+	git clone [remote]
+		* clone远程仓库,并且自动关联master分支
 
 ------------------------
 GIT-分支				|
 ------------------------
-	git branch
-		* 查看所有的分支
+	# 本地分支
+		git branch
+			* 查看所有的分支
 
-	git branch [name]
-		* 创建分支
+		git branch [name]
+			* 创建分支
 
-	git checkout [name]
-		* 切换分支
+		git checkout [name]
+			* 切换分支
 
-	git checkout -b [name]
-		* 创建+切换分支
+		git checkout -b [name]
+			* 创建+切换分支
 
-	git merge [name]
-		* 合并某分支到当前分支
+		git merge [name]
+			* 合并某分支到当前分支
+		
+			--no-ff 
+				* 使用该参数就可以用普通模式合并,合并后的历史有分支,能看出来曾经做过合并
+				* 因为本次合并要创建一个新的commit,所以加上-m参数,把commit描述写进去
+					git merge --no-ff -m "注释" [name]
+				
+				* fast forward模式的合并就看不出来曾经做过合并(默认)
 
-	git branch -d [name]
-		* 删除分支
+		git branch -d [name]
+			* 删除分支
+			-D
+				* 大写的-D表示强制删除
+		
+		git branch --merged
+			*  查看哪些分支已经合并到了当前分支
 
+		git branch --no-merged
+			* 查看哪些分支还未合并到当前的分支
+	
+	# 远程分支
+		git checkout --track [alias]/[branch]
+			* 从远程仓库拉取分支,并且在本地创建与之关联的分支
+			* 可以通过 -b 参数来设置本地的分支的名称(不与远程分支一样)
 
+		git branch --set-upstream-to=[alias]/[branch] [branch]
+			* 设置已有的本地分支(当前分支)跟踪一个刚刚拉取下来的远程分支(或者想要修改正在跟踪的上游分支)
+		
 
+		git push [alias] --delete [branch]
+			* 删除远程分支
+		
+		git push [alias] [branch]
+			* 推送本地分支到远程分支
+			* 可以通过 -u 参数来与远程分支创建关联
+		
+		git fetch [alias] [branch]
+			* 拉取远程仓库代码,不合并
+	
+		git pull [alias] [branch]
+			* 拉取远程仓库代码,并且合并到当前分支
+			
 
-
-
+		
+		
 
 
 ------------------------

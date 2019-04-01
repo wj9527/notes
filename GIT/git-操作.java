@@ -193,7 +193,7 @@
 	 git branch -d [name]
 
 
-# 冻结现场
+# 冻结现场(保存进度)
 	git stash
 
 # 查看冻结的列表
