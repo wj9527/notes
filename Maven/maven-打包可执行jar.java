@@ -43,7 +43,6 @@
 						<!-- 打包jar文件 -->
 						<type>jar</type>
 						<includeTypes>jar</includeTypes>
-						<useUniqueVersions>false</useUniqueVersions>
 						<!-- 复制到目录 -->
 						<outputDirectory>
 							${project.build.directory}/lib
