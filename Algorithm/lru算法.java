@@ -31,6 +31,8 @@
 		}
 
 		// 超过最大容量后,尝试移除最少使用的key的策略
+
+		// 该方法会在每次执行添加操作后回调,如果返回true,则删除链表最后的一个元素
 		@Override 
 		protected boolean removeEldestEntry(java.util.Map.Entry<K, V> eldest) {  
 			return super.size() > this.maxCapacity;  
