@@ -33,7 +33,7 @@ HashMap				|
 		Set<Map.Entry<K,V>> entrySet;
 	
 	# HashMap 在并发场景下使用时容易出现问题 
-		* 多线程put操作后,get操作导致死循环
+		* 多线程put操作后,get操作导致死循环(据说jdk8修复了这个问题)
 			HashMap<String, String> map = new HashMap<String, String>();
 			for (int i = 0; i < 1000; i++) {
 				new Thread(new Runnable() {
@@ -49,7 +49,7 @@ HashMap				|
 				* 当获取一个不存在的 key 时,计算出的 index 正好是环形链表的下标就会出现死循环
 
 		
-		* 多线程put非null元素后,get操作得到null值(导致元素丢失)
+		* 多线程put非null元素后,get操作得到null值(导致元素丢失,这个问题jdk8没有修复)
 			
 
 		
