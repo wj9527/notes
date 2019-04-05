@@ -22,6 +22,8 @@ Netty-入门					|
 		http://ifeve.com/netty-in-action/
 		http://ifeve.com/netty5-user-guide/
 		http://www.cnblogs.com/zou90512/p/3492287.html
+
+		http://www.52im.net/thread-2043-1-1.html
 	
 	# 为什么放弃Netty5
 		https://github.com/netty/netty/issues/4466
