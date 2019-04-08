@@ -8,5 +8,11 @@ http								|
 			|-HttpResponseDecoder
 			|-RtspDecoder
 		HttpServerCodec
-
-
+		HttpContentCompressor
+		HttpUtil
+		HttpObjectAggregator
+			|-HttpServerUpgradeHandler
+		FullHttpRequest
+			|-DefaultFullHttpRequest
+		FullHttpResponse
+			|-DefaultFullHttpResponse
