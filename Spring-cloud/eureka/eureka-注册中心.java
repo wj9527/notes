@@ -3,10 +3,9 @@
 ------------------------
 	# maven依赖
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka-server</artifactId>
-			<version>1.3.5.RELEASE</version>
-		</dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+        </dependency>
 	
 	# 开启 eureka server
 		@SpringBootApplication
@@ -18,7 +17,7 @@
 		}
 
 
-	# 配置项
+	# 配置项,配置类(EurekaInstanceConfigBean)
 		
 		eureka.instance.name=localhost
 			# eureka服务端的实例名称
@@ -67,20 +66,20 @@
 			</dependency>
 
 		2,配置用户名和密码
-			security.user.name=KevinBlandy
-			security.user.password=123456
+			spring.security.user.name=KevinBlandy
+			spring.security.user.password=123456
 
 		3,在访问路径上加入用户名密码
-			eureka.client.serviceUrl.defaultZone=http://${security.user.name}:${security.user.password}@localhost:${server.port}/eureka/
+			eureka.client.serviceUrl.defaultZone=http://${spring.security.user.name}:${spring.security.user.password}@localhost:${server.port}/eureka/
 			* 注意格式: 用户名:密码@主机名:端口
 	
 		* 控制台也需要使用该用户名和密码登录
 	
 	# 客户端的配置
 		
-		security.user.name=KevinBlandy
-		security.user.password=123456
+		spring.security.user.name=KevinBlandy
+		spring.security.user.password=123456
 
-		eureka.client.serviceUrl.defaultZone=http://${security.user.name}:${security.user.password}@localhost:10086/eureka/
+		eureka.client.serviceUrl.defaultZone=http://${spring.security.user.name}:${spring.security.user.password}@localhost:10086/eureka/
 
 		* 客户端不用security的依赖,只用在注册中心的地址中添加用户名和密码

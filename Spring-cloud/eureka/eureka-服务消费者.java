@@ -3,10 +3,13 @@
 ------------------------
 	# maven依赖
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-			<version>1.3.5.RELEASE</version>
-		</dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+        </dependency>
 	
 	# 注解启动
 		@EnableEurekaClient
@@ -22,7 +25,7 @@
 	
 	# 调用消费者
 		
-		//微服务的地址(其实就是名称)
+		//微服务的地址(其实就是名称),要大写
 		private static final String SERVICE_NAME = "http://USER-SERVICE";
 		
 		@Autowired

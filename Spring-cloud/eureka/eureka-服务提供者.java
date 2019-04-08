@@ -3,10 +3,9 @@
 ------------------------
 	# maven依赖
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-			<version>1.3.5.RELEASE</version>
-		</dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
 	
 	
 	# 开启服务自动注册到注册中心
@@ -21,7 +20,7 @@
 		* @EnableEurekaClient 表示了当前微服务是通过 eureka 框架进行服务注册的,不能通过其他的
 		* 可以使用:@EnableDiscoveryClient 注解,该注解是一个接口,可以适用于所有服务治理的框架
 
-	# 配置项
+	# 配置项(配置类:EurekaInstanceConfigBean)
 		spring.application.name=example-user-service
 			# 当前微服务的名称,会以大写的形式出现在 eureka 的控制台
 
