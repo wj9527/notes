@@ -12,8 +12,8 @@ ALLOCATOR						 |
 
 	* 它的参数是接口实现:ByteBufAllocator
 	* 系统预定义了一些默认的实现
-		serverBootstrap.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-		serverBootstrap.option(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
+		serverBootstrap.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+		serverBootstrap.childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
 		
 ---------------------------------
 RCVBUF_ALLOCATOR				 |
