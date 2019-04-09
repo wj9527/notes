@@ -17,7 +17,7 @@
 		}
 
 
-	# 配置项,配置类(EurekaInstanceConfigBean)
+	# 配置项,配置类(EurekaInstanceConfigBean,EurekaServerConfigBean)
 		
 		eureka.instance.name=localhost
 			# eureka服务端的实例名称
@@ -52,7 +52,8 @@
 
 	# 禁用自我保护模式
 		eureka.server.enable-self-preservation=false
-
+	
+	# 这种机制下,客户端能会获取到失效的服务,所以要求客户端必须要有容错机制(重试,熔断)
 
 
 ------------------------

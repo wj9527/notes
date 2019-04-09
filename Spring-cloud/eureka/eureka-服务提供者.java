@@ -122,7 +122,7 @@
 		eureka.instance.lease-renewal-interval-in-seconds
 			* 服务续约任务的调用时间间隔,默认30s
 		eureka.instance.lease-expiration-duration-in-seconds
-			* 服务时效的时间,默认90s,就是说多少秒没有收到心跳算是服务失效
+			* 服务时效的时间,默认90s,就是说多少秒没有收到心跳算是服务失效,就会把服务从列表移除
 
 ------------------------
 服务提供者-服务下线		|

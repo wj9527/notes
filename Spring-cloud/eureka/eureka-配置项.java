@@ -9,6 +9,11 @@ Eureka的配置项				|
 
 	# 客户端的配置
 		* 端点的一些配置
+	
+	# 配置类
+		EurekaServerConfigBean
+		EurekaInstanceConfigBean
+		EurekaClientConfigBean
 
 ----------------------------
 Eureka的配置项				|
@@ -62,7 +67,7 @@ Eureka的配置项				|
 		* 该Bean里面的属性都是以:eureka.client 开头的
 	
 	# 端点信息的配置Bean
-		org.springframework.cloud.netflix.eureka
+		org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean
 
 		* 该Bean里面的属性都是以:eureka.instance 开头的
 		* 该Bean里面包含了一个属性名为: metadataMap 的 HashMap,也就是说支持,自定义的键值参数
