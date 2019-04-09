@@ -84,3 +84,16 @@
 		eureka.client.serviceUrl.defaultZone=http://${spring.security.user.name}:${spring.security.user.password}@localhost:10086/eureka/
 
 		* 客户端不用security的依赖,只用在注册中心的地址中添加用户名和密码
+	
+	# springboot2.0以后security默认开启了csrf,可能导致客户端的注册失败(响应客户端401状态码)
+		* 可以尝试在服务端关闭csrf
+
+		@EnableWebSecurity
+		public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+			@Override
+			protected void configure(HttpSecurity http) throws Exception {
+				http.csrf().disable();
+				super.configure(http);
+			}
+		}
