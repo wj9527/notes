@@ -106,7 +106,7 @@
 		eureka.instance.healthCheckUrlPath=/health
 
 		* 必须保证该地址可以访问,否则注册中心不会根据端点的健康检查来修改端点的状态
-		* 当然,前提是开启了健康检查:eureka.client.healthcheck.enabled=true
+		* 当然,前提是客户端开启了健康检查:eureka.client.healthcheck.enabled=true
 
 		* 如果服务提供者带有 context-path 属性的话,或者修改了健康检查的地址,就必须要配置它了
 		* 该配置支持绝对路径,也就是说,服务提供者假设以以https提供服务:
