@@ -86,4 +86,8 @@ public interface FooMapper extends BaseMapper<FooEntity>{
 
 
 
+# Provider的接口支持一个参数
+	ProviderContext
+		private final Class<?> mapperType; // mapper接口
+		private final Method mapperMethod; // mapper方法
 
