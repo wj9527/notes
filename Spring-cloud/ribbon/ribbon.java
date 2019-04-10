@@ -25,29 +25,27 @@ ribbon						|
 整合						|
 ----------------------------
 	# 坐标
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-ribbon</artifactId>
-			<version>1.4.4.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-			<version>1.4.4.RELEASE</version>
-		</dependency>
+		 <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+        </dependency>
 	
 	# 开启负载均衡
 		@Configuration
 		public class RestTemplateConfig{
 
 			@Bean
-			@LoadBalance
+			@LoadBalanced
 			public RestTemplate restTemplate(){
 				return new RestTemplate();
 			}
 		}
 
-		* 给 RestTemplate 注册Ioc时,添加 @LoadBalance 注解
+		* 给 RestTemplate 注册Ioc时,添加 @LoadBalanced 注解
 		* @LoadBalanced 是Springcloud定义的接口注解
 		
 ----------------------------
