@@ -91,10 +91,6 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 		* 再把 info@unconfigured.discourse.org 改成你的发件邮箱地址
 		* 编辑文件的时候不要删除每一行前的空格符,保持语句块上下是对齐的,不要删除没说明的引号
 
-		Kev1nB!andy(ecs)=>ecs.run();
-		Kev1nB!andy(happy)=> return happy*2;
-		Kev1nB!andy(name)=>println(name);
-
 ---------------------
 杂七杂八			 |
 ---------------------
@@ -177,3 +173,5 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 	
 	# 显示回复到回复的标识
 		设置 -> 发帖 -> suppress reply directly above
+
+

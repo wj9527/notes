@@ -2,7 +2,7 @@
 IRule				|
 --------------------
 	# 负载均衡的算法都需要实现 IRule 接口
-	# 自定义轮询实现,一般都直接继承: AbstractLoadBalanerRule
+	# 自定义轮询实现,一般都直接继承: AbstractLoadBalancerRule
 	# 默认的算法(实现)
 		RoundRobinRule
 			* 轮询,当轮询到的服务不能调用时,会抛出异常
@@ -41,7 +41,7 @@ IRule				|
 	
 	# 针对指定的服务,定义轮询算法
 		1,定义配置类,该类装载自定义的算法实现到ioc
-			@Configuration		//不要添加@Configuration
+			//不要添加@Configuration
 			public class MyRule(){
 				@Bean
 				public IRule myRule(){
@@ -78,7 +78,7 @@ IRule				|
 			public @interface RibbonClients {
 				//定义多个 @RibbonClient 
 				RibbonClient[] value() default {};
-				//定义默认的算法实现,如果@RibbonClient没有算法实现,则会从这里获取
+				//定义默认的算法实现,如果 @RibbonClient 没有算法实现,则会从这里获取
 				Class<?>[] defaultConfiguration() default {};
 			}
 	

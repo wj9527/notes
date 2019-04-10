@@ -51,6 +51,7 @@ ribbon						|
 ----------------------------
 LoadBalancerClient			|
 ----------------------------
+	# 负载均衡器
 	# @LoadBalanced 用来给 RestTemplate做标记,以使用 LoadBalancerClient 来配置他
 
 		public interface LoadBalancerClient extends ServiceInstanceChooser {

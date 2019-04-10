@@ -16,4 +16,8 @@ ribbon配置				|
 ------------------------
 ribbon配置-项			|
 ------------------------
-	
+
+ribbon:
+  eureka:
+    # 是否禁用Eureka对Ribbon服务实例的实现
+    enabled: true
