@@ -2,10 +2,17 @@
 Get					 |
 ---------------------
 	String run(String url) throws IOException {
+
 		OkHttpClient client = new OkHttpClient();
-		Request request = new Request.Builder().url(url).build();
-		Response response = client.newCall(request).execute();
-		return response.body().string();
+
+        Request request = new Request.Builder()
+                .url(url)    // url
+                .addHeader("foo","bar") // ÏûÏ¢Í·
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+        response.body().string();
 	}
 
 ---------------------
