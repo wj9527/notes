@@ -22,6 +22,7 @@ response						|
 	* 返回 render_template(tempalte,**context) 实例,来完成模版的渲染响应
 		tempalte:模版名称
 		context	:上下文
+	* 其实该函数返回的是 str,也就是渲染后的模板字符串数据
 	* Flask 会在 templates 文件夹里寻找模板
 	* 如果应用是个模块,这个文件夹应该与模块同级
 		application.py
@@ -33,7 +34,7 @@ response						|
 			|-__init__.py
 			|-templates
 				|-hello.html
-	
+
 --------------------------------
 构建 response					|
 --------------------------------
@@ -70,7 +71,10 @@ response						|
 			response.set_cookie('JSESSIONID','F8575532',max_age=-1)
 			return response
 	
-
+	* make_response 响应的是一个 Response 对象
+	* 也可以自己创建一个 Response对象
+		from flask import Response
+	
 --------------------------------
 重定向							|
 --------------------------------
