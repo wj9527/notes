@@ -49,6 +49,8 @@ public class MailService {
 
     static {
         try {
+			// 发件人/收件人地址包含了中文,需要进行编码
+			// name<address> -> KevinBlabdy<747692844@qq.com>
             MAIL_USER = javax.mail.internet.MimeUtility.encodeText("springboot中文社区");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
