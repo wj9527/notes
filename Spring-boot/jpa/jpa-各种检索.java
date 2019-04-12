@@ -148,11 +148,12 @@
         // 匹配任何非 null 字段
         ExampleMatcher.matchingAny();
 
+		// matcher属性名是对象的属性名称(驼峰),而不是DB列名
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
                 //模糊查询匹配开头，即{username}%
                 .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.startsWith())
                 //模糊查询匹配结尾，即%{username}
-                .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.endsWith())
+                .withMatcher("userName", ExampleMatcher.GenericPropertyMatchers.endsWith())
                 //全部模糊查询，即%{address}%
                 .withMatcher("address" ,ExampleMatcher.GenericPropertyMatchers.contains())
 
