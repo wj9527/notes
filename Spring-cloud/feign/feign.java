@@ -13,12 +13,10 @@ feign					|
 		* 与Ribbon不同,feign只需要定义服务绑定接口且以声明式的方法,简单而又优雅的实现了服务的调用
 
 	# 坐标
-		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-feign -->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-feign</artifactId>
-			<version>1.4.4.RELEASE</version>
-		</dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
 
 ------------------------
 入门体验				|
@@ -29,6 +27,13 @@ feign					|
 		@EnableEurekaClient
 
 			* 通过 @EnableFeignClients 来启动Feign驱动
+		
+	# @EnableEurekaClient
+		String[] value() default {};
+		String[] basePackages() default {};
+		Class<?>[] basePackageClasses() default {};
+		Class<?>[] defaultConfiguration() default {};
+		Class<?>[] clients() default {};
 
 	# 定义接口
 		@FeignClient("USER-SERVICE")
@@ -42,6 +47,22 @@ feign					|
 		* 使用路由注解(@GetMapping)来指定调用路径,通过 @PathVariable 来绑定参数
 		* 跟mybatis的mapper一样,动态生成实现载入IOC中
 	
+	# @FeignClient
+		@AliasFor("name")
+		String value() default "";
+		@Deprecated
+		String serviceId() default "";
+		String contextId() default "";
+		@AliasFor("value")
+		String name() default "";
+		String qualifier() default "";
+		String url() default "";
+		boolean decode404() default false;
+		Class<?>[] configuration() default {};
+		Class<?> fallback() default void.class;
+		Class<?> fallbackFactory() default void.class;
+		String path() default "";
+		boolean primary() default true;
 
 	# 配置
 		feign.hystrix.enabled: true

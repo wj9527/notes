@@ -8,6 +8,17 @@ hystrix 监控				|
 	# maven坐标
 		<dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
-            <version>1.4.4.RELEASE</version>
+            <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
         </dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+	
+	# 添加注解
+		@EnableHystrixDashboard
+	
+	# 访问
+		${ctx}/hystrix
+	

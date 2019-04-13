@@ -94,3 +94,18 @@ Spring-家族体系				|
 	spring-cloud-vault
 	spring-cloud-gateway
 
+
+----------------------------
+Spring-maven				|
+----------------------------
+	<dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Greenwich.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
