@@ -13,5 +13,7 @@ ribbon配置						|
 	# 针对服务的配置方式
 		USER-SERVICE.ribbon.ConnectTimeout=500
 		USER-SERVICE.ribbon.ReadTimeout=500
+		USER-SERVICE.ribbon.MaxAutoRetriesNextServer=2
+		USER-SERVICE.ribbon.MaxAutoRetires=1
 
 		* 配置语法:<服务名称>.ribbon.<key>=<value>

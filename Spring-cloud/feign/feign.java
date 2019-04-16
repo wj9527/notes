@@ -28,24 +28,45 @@ feign					|
 
 			* 通过 @EnableFeignClients 来启动Feign驱动
 		
-	# @EnableEurekaClient
+
+	# 定义接口
+		@FeignClient(value = "USER-SERVICE")
+		@RequestMapping("/user")
+		public interface UserService {
+
+			@GetMapping(value = "/info/{userId}")
+			Object userInfo(@PathVariable("userId")Integer userId);
+		}
+
+		
+		* @FeignClient 通过该注解,指定微服务的名称
+		* 使用路由注解(@GetMapping)来指定调用路径,通过 @PathVariable 来绑定参数
+		* 跟mybatis的mapper一样,动态生成实现载入IOC中
+	
+	# 配置
+		feign.hystrix.enabled: true
+			* 开启熔断器,不开启好像 fegin不起作用
+
+	# 使用 FeignClient 接口
+		
+		@Autowired
+		private UserService userService;
+		
+		@GetMapping("/user")
+		public User getUser(@RequestParam("id")int id){
+			//以接口的形式调用微服务
+			return this.userService.userInfo(id);
+		}
+	
+--------------------
+注解的详细属性		|
+--------------------
+	# @EnableFeignClients
 		String[] value() default {};
 		String[] basePackages() default {};
 		Class<?>[] basePackageClasses() default {};
 		Class<?>[] defaultConfiguration() default {};
 		Class<?>[] clients() default {};
-
-	# 定义接口
-		@FeignClient("USER-SERVICE")
-		public interface UserService {
-			
-			@GetMapping("/user/{userId}")
-			User getById (@PathVariable("userId")Integer id);
-		}
-		
-		* @FeignClient 通过该注解,指定微服务的名称
-		* 使用路由注解(@GetMapping)来指定调用路径,通过 @PathVariable 来绑定参数
-		* 跟mybatis的mapper一样,动态生成实现载入IOC中
 	
 	# @FeignClient
 		@AliasFor("name")
@@ -60,43 +81,35 @@ feign					|
 		boolean decode404() default false;
 		Class<?>[] configuration() default {};
 		Class<?> fallback() default void.class;
+			* 指定服务降级类(就是失败的重试方法)
+			* 该类应该实现当前的Client接口,并且覆写接口方法,这些方法就是接口的降级方法
+
 		Class<?> fallbackFactory() default void.class;
 		String path() default "";
 		boolean primary() default true;
-
-	# 配置
-		feign.hystrix.enabled: true
-			* 开启熔断器,不开启好像 fegin不起作用
-
-	# 使用 FeignClient 接口
-		
-		@Autowired
-		private UserService userService;
-		
-		@GetMapping("/user")
-		public User getUser(@RequestParam("id")int id){
-			//以接口的形式调用微服务
-			return this.userService.getById(id);
-		}
-	
-
 
 ------------------------
 数据压缩				|
 ------------------------
 	# fegin支持对请求和响应进行zip压缩,减少带宽的传输
-	# 开启配置
-		feign.compression.request.enabled=true
-		feign.compression.response.enabled=true
-	
-	# 更细致的配置
-		fegin.compression.request.mime-types=text/xml.application/xml,application/json
-			* 哪些数据需要压缩
-			*  默认值:text/xml.application/xml,application/json
 
-		fegin.compression.request.min-request-size=2048
-			* 数据量达到多大时进行压缩
-			* 默认值:2048
+feign:
+  hystrix:
+    enabled: true
+  compression:
+    request:
+	  # 开启请求压缩
+      enabled: true 
+	  # 支持压缩的ContentType
+      mime-types:
+        - text/xml
+        - application/xml
+        - application/json
+	  # 执行压缩的最小体积
+      min-request-size: 2048
+    response:
+	  # 是否压缩响应
+      enabled: true
 
 ------------------------
 日志配置				|
@@ -138,5 +151,7 @@ feign					|
 			* 除了BASIC以外还会记录请求头和响应头信息
 		FULL
 			* 记录所偶
+
+
 
 

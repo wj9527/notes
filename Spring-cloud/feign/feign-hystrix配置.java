@@ -23,10 +23,11 @@ hystrix配置					|
 	
 	# 针对于某个服务进行关闭
 		* 需要通过 @Scope("prototype") 注解来为客户端指定 Feign.Builder 实例
-		
+			
 			@Configuration
 			public DisableHystrixConfigration{
 				@Bean
+				@Scope("prototype")
 				public Feign.Builder feignBuilder(){
 					return Feign.Builder();
 				}
@@ -42,3 +43,4 @@ hystrix配置					|
 ----------------------------
 服务降级配置				|
 ----------------------------
+
