@@ -18,6 +18,9 @@ feign					|
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+		* 仅仅需要该依赖
+		* 不需要重复的声明:ribbon,hystrix
+
 ------------------------
 入门体验				|
 ------------------------
