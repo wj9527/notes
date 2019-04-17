@@ -32,10 +32,10 @@ ssl						|
 		TrustManager
 			* 信任管理器
 			* 负责判断决定是否信任对方的安全证书
-
+			
+			|-X509TrustManager
 			|-X509Certificate
-				* 接口的实现
-				
+		
 
 		SSLContext
 			* 对整个SSL/TLS协议的封装,表示了安全套接字协议的实现
