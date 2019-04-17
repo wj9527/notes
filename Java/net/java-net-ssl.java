@@ -41,6 +41,22 @@ ssl						|
 			* 对整个SSL/TLS协议的封装,表示了安全套接字协议的实现
 			* 主要负责设置安全通信过程中的各种信息,例如跟证书相关的信息
 			* 并且负责构建 SSLSocketFactory,SSLServerSocketFactory 和 SSLEngine 等工厂类
+				  void init(KeyManager[] keyManagers, TrustManager[] trustManagers, SecureRandom secureRandom);
+
+					keyManagers
+						* 使用证明自身证书,如果为null,系统会创建默认的KeyManager对象,以及关联的KeyStore对象
+						* KeyStore对象从系统属性:javax.net.ssl.keyStore 中获取安全证书,如果不存在该属性,那么KeyStore对象的内容为空
+
+					trustManagers
+						* 信任的证书,如果为null,系统会创建默认的TrustManager对象,以及关联的KeyStore对象
+						* KeyStore对象会从如下步骤去获取安全证书,如果如下步骤为都失败,则KeyStore对象的内容为空
+							1, 尝试从系统属性: javax.net.ssl.trustStore 属性中获取
+							2, 尝试把 ${JAVA_HOME}/jre/lib/security/jssecacerts 文件作为安全证书
+							...
+
+					secureRandom
+						* 安全的随机数,如果设置为null,则使用默认的
+
 
 		SSLServerSocketFactory
 		SSLServerSocket(ServerSocket子类)
@@ -56,6 +72,12 @@ ssl						|
 
 				void setNeedClientAuth(false);
 					* 是否要校验客户端的证书
+
+				void setWantClientAuth(true);	
+					* 希望对方供安全证书,如果对方不提供,连接不会中断,通信继续进行
+
+				void setNeedClientAuth(false);	 
+					* 要求对方必须提供安全证书,如果对方不提供,连接中断,通信无法进行
 
 		SSLSession
 			* SSL会话
@@ -141,3 +163,5 @@ public SSLContext sslContext(InputStream keyPath, String keyPassword, InputStrea
 
 	return sslContext;
 }
+
+
