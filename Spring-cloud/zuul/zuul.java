@@ -2,6 +2,7 @@
 zuul						|
 ----------------------------
 	# Zuul包含了对请求的:路由,过滤,代理  ...等核心的主要功能
+		
 	# 路由
 		* 负责把外部请求转发到具体的微服务实例上
 		* 是实现外部访问统一入口的基础
@@ -53,7 +54,17 @@ zuul-入门体验				|
 	# 通过路由进行访问
 		* 协议:网关主机:端口:服务名称/接口
 
-		http://localhost:8081/user-service/user/1
-		
-		
+		http://localhost:8081/user-service/user/info/1
+	
+	# 通过Feign访问
+		// ZUUL也是注册到eureka的服务
+		@FeignClient(value = "ZUUL")
+		// 通过 /{服务名}/{uri} 调用服务
+		@RequestMapping("/user-service/user")
+		public interface UserService {
+			
+			@GetMapping(value = "/info/{userId}")
+			Object userInfo(@PathVariable("userId")Integer userId);
+		}
+				
 

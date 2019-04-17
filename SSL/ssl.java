@@ -232,19 +232,3 @@ keytool制作CA根证书以及颁发二级证书		  |
 
 
 
-https://www.openssl.org/docs/manmaster/man1/pkcs12.html
-
-# OPENSSL 把cer/key证书转换为 p12证书
-			openssl pkcs12 -export -in [name.cer] -inkey [name.key]-out [name.p12]
-				-in
-					* 证书
-
-				-inkey
-					* 私钥
-				
-				-out
-					* 生成的p12证书文件
-
-# OPENSSL 把 pkcs12 证书转换为 pem证书
-openssl pkcs12 -in ca.keysotre -out ca.crt.pem -clcerts -nokeys
-openssl pkcs12 -in ca.keysotre -out ca.key.pem -nocerts -nodes
