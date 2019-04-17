@@ -27,13 +27,11 @@ ssl						|
 		KeyManager
 			* 密钥管理器
 			* 责选择用于证实自己身份的安全证书,发给通信另一方
-			* KeyManager 对象由 KeyManagerFactory 工厂类生成
 
 		TrustManagerFactory
 		TrustManager
 			* 信任管理器
 			* 负责判断决定是否信任对方的安全证书
-			* TrustManager 对象由 TrustManagerFactory 工厂类生成
 
 			|-X509Certificate
 				* 接口的实现
@@ -93,6 +91,8 @@ trustManagerFactory.init(keyStore);
 TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
 
 SSLContext sslContext = SSLContext.getInstance("TLS");
+
+// 设置当前socket使用的证书,以及信任的证书,还有随机源
 sslContext.init(keyManagers,trustManagers,null);
 
 // 用于nio
@@ -100,3 +100,44 @@ SSLEngine sslEngine = sslContext.createSSLEngine();
 
 // 用于bio
 SSLServerSocketFactory sslServerSocketFactory = sslContext.getServerSocketFactory();
+
+------------------------
+ssl						|
+------------------------
+/**
+ *
+ * @param keyPath			当前Socket使用的证书
+ * @param keyPassword		密码
+ * @param trustPath			信任证书
+ * @param trustPassword		密码
+ * @return
+ * @throws Exception
+ */
+public SSLContext sslContext(InputStream keyPath, String keyPassword, InputStream trustPath, String trustPassword) throws Exception {
+
+	// 加载socket证书
+	KeyStore keyStore = KeyStore.getInstance("JKS");
+	keyStore.load(keyPath,keyPassword.toCharArray());
+
+	KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+	keyManagerFactory.init(keyStore,keyPassword.toCharArray());
+	KeyManager[] keyManagers = keyManagerFactory.getKeyManagers();
+
+
+	// 加载Trust信任证书
+	TrustManager[] trustManagers = null;
+	if(trustPath != null && trustPassword != null){
+
+		KeyStore trustKeystore = KeyStore.getInstance("JKS");
+		trustKeystore.load(trustPath,trustPassword.toCharArray());
+
+		TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
+		trustManagerFactory.init(trustKeystore);
+		trustManagers = trustManagerFactory.getTrustManagers();
+	}
+
+	SSLContext sslContext = SSLContext.getInstance("TLS");
+	sslContext.init(keyManagers,trustManagers,new SecureRandom());
+
+	return sslContext;
+}
