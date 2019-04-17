@@ -118,6 +118,15 @@ java ssl					 |
 				* 用于签发的证书的证书所在的keystore(root证书)
 			-storepass
 				* 用于签发的证书的证书所在的keystore的密码(root证书)
+	
+	# 打印证书
+		keytool -printcert -rfc -file [name.cer]
+
+			-printcert 
+				* 打印指令
+			-rfc 
+			-file 
+				* 证书文件
 
 ------------------------------------------
 keytool制作CA根证书以及颁发二级证书		  |
@@ -125,17 +134,23 @@ keytool制作CA根证书以及颁发二级证书		  |
 	# 过程
 		1,生成CA证书
 			keytool -genkey
+		
+		2,导出CA证书公钥
+			keytool -export
 
-		2,客户端生成证书
+		3,客户端生成证书
 			keytool -genkey
-
-		3,客户端生成请求文件
+		
+		4,客户端生成请求文件
 			keytool -certreq
 
-		4,使用CA证书进行签发
+		5,使用CA证书进行签发
 			keytool -gencert
+		
+		6,客户端导入CA证书
+			keytool -import
 
-		5,客户端获取到CA签发的证书,导入自己的库
+		7,客户端获取到CA签发的证书,导入自己的库
 			keytool -import
 
 
@@ -150,8 +165,15 @@ keytool制作CA根证书以及颁发二级证书		  |
 		keytool -certreq -alias app1 -file app1.csr -keystore app1.keystore -storepass 123456
 	
 	# 使用根证书进行认证
-		keytool -gencert -alias rootca -infile app1.csr -outfile app1.cer -keystore rootca.keystore -storepass 123456
+		* 认证证书
 
-		keytool -import -file app1.cer -alias app2 -keystore app2.keystore -storepass 123456
-
-		keytool -list -v -keystore app1.keystore -storepass 123456
+			keytool -gencert -alias rootca -infile app1.csr -outfile app1.cer -keystore rootca.keystore -storepass 123456
+		
+		* 导入CA证书
+			keytool -import -file root.cer -alias root -keystore app1.keystore -storepass 123456
+		
+		* 导入签发的证书
+			keytool -import -file app1.cer -alias app1 -keystore app1.keystore -storepass 123456
+		
+		*  查看kestore里的证书列表
+			keytool -list -v -keystore app1.keystore -storepass 123456
