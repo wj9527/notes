@@ -7,10 +7,11 @@ java ssl 证书类型			 |
 
 		.pem
 			* 一般是文本格式,可保存证书,可保存私钥
+			* 以 -----BEGIN... 开头,以 -----END... 结尾,中间的内容是 BASE64 编码
+			* 这种格式可以保存证书和私钥,有时也把PEM 格式的私钥的后缀改为 .key 以区别证书与私钥
 		
 		.crt
-			* 可以是二进制格式,可以是文本格式
-			* 与 .der 格式相同,不保存私钥
+			* 有可能是 pem 编码格式,也有可能是 der 编码格式
 		
 		.pfx .P12
 			* 二进制格式,同时包含证书和私钥,一般有密码保护
@@ -178,19 +179,6 @@ java ssl					 |
 			-deststorepass
 				* 目标密钥库文件,类型(PCKS12),密码
 		
-		* OPENSSL 把cer/key证书转换为 p12证书
-			openssl pkcs12 -export -in [name.cer] -inkey [name.key]-out [name.p12]
-				-in
-					* 证书
-
-				-inkey
-					* 私钥
-				
-				-out
-					* 生成的p12证书文件
-
-
-
 
 ------------------------------------------
 keytool制作CA根证书以及颁发二级证书		  |
@@ -241,3 +229,22 @@ keytool制作CA根证书以及颁发二级证书		  |
 		
 		*  查看kestore里的证书列表
 			keytool -list -v -keystore app1.keystore -storepass 123456
+
+
+
+https://www.openssl.org/docs/manmaster/man1/pkcs12.html
+
+# OPENSSL 把cer/key证书转换为 p12证书
+			openssl pkcs12 -export -in [name.cer] -inkey [name.key]-out [name.p12]
+				-in
+					* 证书
+
+				-inkey
+					* 私钥
+				
+				-out
+					* 生成的p12证书文件
+
+# OPENSSL 把 pkcs12 证书转换为 pem证书
+openssl pkcs12 -in ca.keysotre -out ca.crt.pem -clcerts -nokeys
+openssl pkcs12 -in ca.keysotre -out ca.key.pem -nocerts -nodes
