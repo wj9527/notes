@@ -122,7 +122,7 @@ public class SSLContextFactory {
 ----------------------------------------
 	SSLEngine engine = SSLContextFactory.getSslContext("server.keystore","123456").createSSLEngine();
 	engine.setUseClientMode(false);
-	engine.setNeedClientAuth(true);
+	engine.setNeedClientAuth(true);  // 需要验证客户端
 	socketChannel.pipeline().addLast(new SslHandler(engine));
 
 ----------------------------------------

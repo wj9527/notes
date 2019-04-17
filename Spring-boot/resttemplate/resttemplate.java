@@ -96,6 +96,6 @@ ClientHttpRequestFactory |
 	
 	# 设置自定义的Factory
 		OkHttpClient okHttpClient = new OkHttpClient();
-		OkHttp3ClientHttpRequestFactory okHttp3ClientHttpRequestFactory = new OkHttp3ClientHttpRequestFactory();
+		OkHttp3ClientHttpRequestFactory okHttp3ClientHttpRequestFactory = new OkHttp3ClientHttpRequestFactory(okHttpClient);
 
 		restTemplate.setRequestFactory(okHttp3ClientHttpRequestFactory);

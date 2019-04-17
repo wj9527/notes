@@ -15,14 +15,12 @@ zuul						|
 	
 	# 'Zuul服务最终还是会注册进Eureka'
 
-
 	# Maven
 		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zuul -->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-zuul</artifactId>
-			<version>1.4.4.RELEASE</version>
-		</dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+        </dependency>
 
 ----------------------------
 zuul-入门体验				|
@@ -30,12 +28,31 @@ zuul-入门体验				|
 	# 配置
 		* 它也要当作一个服务,注册到Eureka中
 		* 所以,它也需要服务提供者的那一套eureka配置
+
+		spring:
+		  application:
+			name: zuul
+		  security:
+			user:
+			  name: springcloud
+			  password: 123456
+		eureka:
+		  client:
+		    # 需要从注册中心获取服务
+			fetch-registry: true
+			# 需要把自己注册到注册中心
+			register-with-eureka: true
+			service-url:
+			  defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8081/eureka/
 	
 	# 驱动注解
 		@EnableZuulProxy
+
+		* 标识注解,没有任何的属性
 	
 	# 通过路由进行访问
 		* 协议:网关主机:端口:服务名称/接口
+
 		http://localhost:8081/user-service/user/1
 		
 		

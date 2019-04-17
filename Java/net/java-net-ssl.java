@@ -53,6 +53,11 @@ ssl						|
 		SSLEngine
 			* SSL非阻塞引擎
 			* NIO通信,使用这个类,它让通过过程支持非阻塞的安全通信
+				void setUseClientMode(true);
+					* 当前是客户端模式还是服务端模式
+
+				void setNeedClientAuth(false);
+					* 是否要校验客户端的证书
 
 		SSLSession
 			* SSL会话
@@ -63,3 +68,35 @@ ssl						|
 			
 
 		SecureRandom
+
+		CertificateFactory
+
+------------------------
+ssl						|
+------------------------
+
+// JKS的证书密码
+char[] password = "123456".toCharArray();
+
+// 加载证书文件
+KeyStore keyStore = KeyStore.getInstance("JKS");
+keyStore.load(Files.newInputStream(Paths.get("")),password);
+
+// KeyManager　选择用于证明自身身份的证书,并请发送给对方
+KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+keyManagerFactory.init(keyStore,password);
+KeyManager[] keyManagers = keyManagerFactory.getKeyManagers();
+
+// TrustManager 决定是否信任对方的证书
+TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
+trustManagerFactory.init(keyStore);
+TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+
+SSLContext sslContext = SSLContext.getInstance("TLS");
+sslContext.init(keyManagers,trustManagers,null);
+
+// 用于nio
+SSLEngine sslEngine = sslContext.createSSLEngine();
+
+// 用于bio
+SSLServerSocketFactory sslServerSocketFactory = sslContext.getServerSocketFactory();
