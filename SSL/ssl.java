@@ -1,4 +1,39 @@
 -----------------------------
+java ssl 证书类型			 |
+-----------------------------
+	# 证书文件类型
+		.der .cer
+			* 文件是二进制格式,只保存证书,不保存私钥
+
+		.pem
+			* 一般是文本格式,可保存证书,可保存私钥
+		
+		.crt
+			* 可以是二进制格式,可以是文本格式
+			* 与 .der 格式相同,不保存私钥
+		
+		.pfx .P12
+			* 二进制格式,同时包含证书和私钥,一般有密码保护
+			* pfx是浏览器用的
+
+		.jks
+			* 二进制格式,同时包含证书和私钥,一般有密码保护
+			*  JAVA 的专属格式(Java Key Storage)
+		
+	
+	# 包含了私钥的证书文件格式
+		JKS
+			* Java支持的证书私钥格式
+			* java用的存储密钥的容器,可以同时容纳n个公钥或私钥,后缀一般是.jks或者.keystore或.truststore等
+		JCEKS
+		PKCS12 
+		BKS
+		UBER
+		PKCS12
+			* 定义了包含私钥与公钥证书(public key certificate)的文件格式,行业标准
+			* pfx 就实现了了PKCS#12
+
+-----------------------------
 java ssl					 |
 -----------------------------
 	# keytool 指令一览
@@ -11,7 +46,7 @@ java ssl					 |
 		 -gencert            根据证书请求生成证书
 		 -importcert         导入证书或证书链
 		 -importpass         导入口令
-		 -importkeystore     从其他密钥库导入一个或
+		 -importkeystore     从其他密钥库导入一个或所有条目
 		 -keypasswd          更改条目的密钥口令
 		 -list               列出密钥库中的条目
 		 -printcert          打印证书内容
@@ -127,6 +162,35 @@ java ssl					 |
 			-rfc 
 			-file 
 				* 证书文件
+	
+	# 从其他密钥库导入一个或所有条目
+		keytool -importkeystore -v  -srckeystore [name.p12] -srcstoretype [pkcs12] -srcstorepass [密码] -destkeystore [name.keystore] -deststoretype [pkcs12] -deststorepass [密码] 
+			
+			-importkeystore
+				* 导入指令
+			-v
+			-srckeystore
+			-srcstoretype
+			-srcstorepass
+				* 源密钥库文件,类型(PCKS12),密码
+			-destkeystore
+			-deststoretype
+			-deststorepass
+				* 目标密钥库文件,类型(PCKS12),密码
+		
+		* OPENSSL 把cer/key证书转换为 p12证书
+			openssl pkcs12 -export -in [name.cer] -inkey [name.key]-out [name.p12]
+				-in
+					* 证书
+
+				-inkey
+					* 私钥
+				
+				-out
+					* 生成的p12证书文件
+
+
+
 
 ------------------------------------------
 keytool制作CA根证书以及颁发二级证书		  |
