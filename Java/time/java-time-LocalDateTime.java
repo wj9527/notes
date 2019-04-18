@@ -12,6 +12,12 @@ LocalDateTime			 |
 		
 		 LocalDateTime parse(CharSequence text, DateTimeFormatter formatter);
 			* 根据 formatter 来格式出 LocalDateTime 对象
+		
+		LocalDateTime of(LocalDate date, LocalTime time)
+			* 根据日期和时间构造
+			* 可以构造一个指定日期(今天)的最小时间和最大时间
+				LocalDateTime.of(LocalDate.now(),LocalTime.MAX);	2019-04-18 23:59:59.999999999
+				LocalDateTime.of(LocalDate.now(),LocalTime.MIN);	2019-04-18 00:00
 
 -------------------------
 LocalDateTime-api		 |
@@ -29,6 +35,11 @@ LocalDateTime-api		 |
 			* 返回分钟
 		int getSecond();
 			* 返回秒
+		
+		int get(TemporalField field)
+			* 根据参数获取指定的数据
+			* 可以使用枚举:ChronoField
+
 	# 设置相关
 		LocalDateTime withDayOfMonth(int num);
 			* 设置月中的天数
