@@ -68,3 +68,31 @@ zuul-入门体验				|
 		}
 				
 
+----------------------------
+hystrix 和 Ribbon的支持		|
+----------------------------	
+	# zuul本身就包含了hystrix和Ribbon,它天生就有线程隔离和断路器的自我保护功能,以及对服务端负载均衡调用的功能
+		* 当使用 path 与 url 的映射关系来配置路由的时候,不会有熔断和负载均衡的功能
+		* 所以要尽量的使用 path 和 service-id 来配置路由
+	
+	# 配置
+		hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds
+			* 配置服务调用的超时时间,单位是毫秒
+			* 如果超时,会把该执行命令标记为TIMEOUT,并且抛出异常,响应异常JSON给调用方
+		
+		ribbon.ConnecTimeout
+			* 设置路由转发请求的时候,创建连接的超时时间
+			* 该值应该小于服务调用的超时时间,因为一旦出现创建链接超时,系统会尝试进行重试
+			* 如果重试失败,则响应失败信息给调用方
+		
+		ribbon.readTimeout
+			* 设置路由建立后,读取服务响应的超时时间
+			* 该值应该小于服务调用的超时时间,因为一旦出现读取接超时,系统会尝试进行重试
+		
+		zuul.retryable=true
+			* 可以通过该配置关闭/开启重试机制
+		
+		zuul.routes.<route>.retryable=false
+			* 可以针对路由映射,设置是否要开启失败重试机制
+	
+

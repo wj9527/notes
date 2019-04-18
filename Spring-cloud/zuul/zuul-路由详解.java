@@ -103,6 +103,4 @@ Cookie 与头信息				|
 		zuul.routes.<router>.sensitiveHeaders=
 			* 把指定路由的敏感头设置为空
 
-----------------------------
-hystrix 和 Ribbon的支持		|
-----------------------------
+

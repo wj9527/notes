@@ -12,7 +12,9 @@ zuul:
 	  # 转发到的服务
       service-id: USER-SERVICE
 	  # 转发的URL
-	  url: https://springboot.io  
+	  url: https://springboot.io 
+	  # 该路由是否允许失败重试
+	  retryable: false
   
   # 统一当前网关的前缀
   prefix: /api
@@ -26,3 +28,5 @@ zuul:
     - Authorization
   # 添加客户端(消费者)的HOST到http头
   add-host-header: true
+  # 是否允许失败重试
+  retryable: false
