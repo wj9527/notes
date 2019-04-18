@@ -56,6 +56,10 @@ LocalDateTime-api		 |
 		LocalDateTime plusMonths(int month);
 			* 添加多少个月
 			* '还有很多添加时分秒的API,都一样'
+		
+		LocalDateTime minusWeeks(long weeks)
+			* 返回N周之前的现在时间
+			* '还有很多添加时分秒的API,都一样'
 
 	# 格式化相关
 		String formart(DateTimeFormatter matter);
