@@ -10,7 +10,7 @@
 	/^(?!\d+$)(?!_+$)\w{1,14}$/.test(name.replace(/[\u4e00-\u9fa5]/g,"aa"));
 	name.replaceAll("[\\u4e00-\\u9fa5]", "aa").matches("^(?!\\d+$)(?!_+$)\\w{1,14}$");
 
-# B站垃圾信息过滤正则(致敬B站的开源精神)
+# B站总结的垃圾信息过滤正则(致敬B站的开源精神)
 	regexpTaobao    = regexp.MustCompile(`￥([\w\s]+)￥`)
 	regexpURL       = regexp.MustCompile(`(?:http|https|www)(?:[\s\.:\/\/]{1,})([\w%+:\s\/\.?=]{1,})`)
 	regexpWhitelist = regexp.MustCompile(`((acg|im9|bili|gov).*(com|html|cn|tv)|(av\d{8,}|AV\d{8,}))`)
