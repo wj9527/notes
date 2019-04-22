@@ -1,4 +1,4 @@
-# 配置类:ZuulProperties
+# 配置类:ZuulProperties,ZuulConstants
 
 zuul:
   # 禁止以默认的方式访问服务
@@ -28,5 +28,7 @@ zuul:
     - Authorization
   # 添加客户端(消费者)的HOST到http头
   add-host-header: true
+  # 添加代理头到HTTP头
+  add-proxy-headers: true
   # 是否允许失败重试
   retryable: false

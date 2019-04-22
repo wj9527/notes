@@ -17,15 +17,19 @@ zuul					|
 			public String filterType();
 				* 定义过滤器的类型,它决定了过滤器在请求的哪个生命周期中执行,枚举字符串
 					pre(FilterConstants.PRE_TYPE)
-						* 在请求处理之前执行
+						* 在请求被路由之前执行
 					error(FilterConstants.ERROR_TYPE)
+						* 在请求异常时候处理
 					post(FilterConstants.POST_TYPE)
+						* 在最后(route和error之后)调用
 					route(FilterConstants.ROUTE_TYPE)
+						* 在请求路由时调用
 					
 
 			@Override
 			public int filterOrder();
 				* 当存在多个过滤器的时候,该值定义了过滤器的执行顺序
+				* 数值越小,优先级越高
 		}
 	
 	# 校验小Demo
@@ -42,8 +46,11 @@ zuul					|
 			}
 			return null;
 		}
-	
+
+
+
 
 ------------------------
-requestContext			|
+请求上下文				|
 ------------------------
+	# RequestContext
