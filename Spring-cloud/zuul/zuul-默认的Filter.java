@@ -79,7 +79,7 @@
 		* 它的执行顺序为: 0
 		* 它的执行时间为: post
 		* 它是post阶段第一个执行的过滤器
-		* 它仅在请求上下文中包含了 error.status_code 参数(由之前执行的过滤器设置的错误编码),并且还没有被当前过滤器处理过的时候执行
+		* 它负责处理异常,但是它是否执行的条件是,上下文中存在异常,并且尚未转发到errorPath
 		* 它的逻辑就是,使用请求上下文中的错误信息来组成一个 forward 到 api 网关 /error 错误端点的请求,来产生错误响应
 
 	SendResponseFilter
@@ -93,3 +93,19 @@
 ------------------------
 系统预定义Filter		|
 ------------------------
+
+排序				Filter							功能
+pre	---------------------------------------------------------
+-3					ServletDetectionFilter			标记Servlet类型
+-2					Servlet30WrapperFilter			包装HttpServletRequest对象
+-1					FormBodyWrapperFilter			包装请求体
+ 1					DebugFilter						标记调试标志
+ 5					PreDecorationFilter				处理请求上下文,以供后续使用
+route -------------------------------------------------------
+10					RibbonRoutingFilter				serviceId转发
+100					SimpleHostRoutingFilter			url请求转发
+500					SendForwardFilter				forward请求转发
+post --------------------------------------------------------
+0					SendErrorFilter					处理有错误的请求响应
+1000				SendResponseFilter				处理正常的请求响应
+
