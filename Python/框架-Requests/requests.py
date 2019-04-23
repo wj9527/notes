@@ -4,6 +4,7 @@ requests					|
 	# http 库
 	# 文档地址
 		http://docs.python-requests.org/zh_CN/latest/user/quickstart.html
+		http://cn.python-requests.org/zh_CN/latest/
 
 	# 安装
 		pip install requests
