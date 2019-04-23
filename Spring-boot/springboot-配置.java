@@ -121,8 +121,9 @@ Spring-Boot 外部配置		|
 			> 配置日志文件地址
 				logging.file=d:/mylog/log.log
 			> 配置日志输出级别
+				logging.level.root=INFO
 				logging.level.org.springframework.web=DEBUG		
-				logging.level.*=INFO
+				
 
 		* 引用外部文件的配置(推荐使用)
 			> spring boot 会默认加载:classpath:logback-spring.xml或者classpath:logback-spring.groovy

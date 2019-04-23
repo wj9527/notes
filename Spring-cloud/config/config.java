@@ -14,3 +14,12 @@ config						|
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-client</artifactId>
         </dependency>
+	
+	# ¼Ü¹¹
+						 <--------->	Service1
+						|
+		GIT <----> ConfigServer			
+						|
+						 <--------->	Service2
+	
+
