@@ -22,7 +22,10 @@ ConfigClient					|
 			  profile: dev
 			  # 分支
 			  label: master
-	
+			
+		* 应用启动的时候会根据 application.name 和 config.profile 还有 config.label 去 config.uri 上去加载配置文件信息
+			{label} ==> {application}-{profile}.yml
+
 	# 在程序里面使用
 		// 直接使用 @Value 注解
 		@Value("${config.name}")
