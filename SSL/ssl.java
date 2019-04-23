@@ -69,6 +69,8 @@ java ssl					 |
 				* 指定 keystore 名称(如果keystore不存在,会新建)
 			-keyalg
 				* 指定证书的非对称加密算法,一般固定:RSA
+			-keysize
+				* 指定非对称加密算法的密钥长度: 512/1024/2048
 			-storepass
 				* keystore的密码
 	
@@ -183,52 +185,32 @@ java ssl					 |
 ------------------------------------------
 keytool制作CA根证书以及颁发二级证书		  |
 ------------------------------------------
-	# 过程
-		1,生成CA证书
-			keytool -genkey
-		
-		2,导出CA证书公钥
-			keytool -export
+	# CREATE CA
+		keytool -genkey -deststoretype pkcs12 -alias CA_ROOT -validity 3500 -keystore CA_ROOT.keystore -keyalg RSA -keysize 2048 -storepass 123456
+		keytool -export -alias CA_ROOT -file CA_ROOT.cer -keystore CA_ROOT.keystore -storepass 123456
 
-		3,客户端生成证书
-			keytool -genkey
-		
-		4,客户端生成请求文件
-			keytool -certreq
+	# CLIENT
+		keytool -genkey -deststoretype pkcs12 -alias client -validity 365 -keystore client.keystore -keyalg RSA -keysize 2048 -storepass 123456
+		keytool -certreq -alias client -file client.csr -keystore client.keystore -storepass 123456
 
-		5,使用CA证书进行签发
-			keytool -gencert
-		
-		6,客户端导入CA证书
-			keytool -import
+	# CLIENT SIGN
+		keytool -gencert -alias CA_ROOT -infile client.csr -outfile client.cer -keystore CA_ROOT.keystore -storepass 123456
 
-		7,客户端获取到CA签发的证书,导入自己的库
-			keytool -import
+	# SERVER
+		keytool -genkey -deststoretype pkcs12 -alias server -validity 365 -keystore server.keystore -keyalg RSA -keysize 2048 -storepass 123456
+		keytool -certreq -alias server -file server.csr -keystore server.keystore -storepass 123456
 
+	# SERVER SIGN
+		keytool -gencert -alias CA_ROOT -infile server.csr -outfile server.cer -keystore CA_ROOT.keystore -storepass 123456
 
-	# 先成根证书
-		keytool -genkey -deststoretype pkcs12 -alias rootca -keystore rootca.keystore -keyalg RSA -storepass 123456
-		
-		keytool -export -alias rootca -file root.cer -keystore rootca.keystore -storepass 123456
+	# INSTALL CLIENT
+		keytool -import -file CA_ROOT.cer -alias ca -keystore client.keystore -storepass 123456
+		keytool -import -file ca_client.cer -alias client -keystore client.keystore -storepass 123456
+		keytool -list -v -keystore client.keystore -storepass 123456
 
-	# 生成自签名证书,并且生成请求文件
-		keytool -genkey -deststoretype pkcs12 -alias app1 -keystore app1.keystore -keyalg RSA -storepass 123456
+	# INSTALL SERVER
+		keytool -import -file CA_ROOT.cer -alias ca -keystore server.keystore -storepass 123456
+		keytool -import -file ca_server.cer -alias server -keystore server.keystore -storepass 123456
+		keytool -list -v -keystore server.keystore -storepass 123456
+
 	
-		keytool -certreq -alias app1 -file app1.csr -keystore app1.keystore -storepass 123456
-	
-	# 使用根证书进行认证
-		* 认证证书
-
-			keytool -gencert -alias rootca -infile app1.csr -outfile app1.cer -keystore rootca.keystore -storepass 123456
-		
-		* 导入CA证书
-			keytool -import -file root.cer -alias root -keystore app1.keystore -storepass 123456
-		
-		* 导入签发的证书
-			keytool -import -file app1.cer -alias app1 -keystore app1.keystore -storepass 123456
-		
-		*  查看kestore里的证书列表
-			keytool -list -v -keystore app1.keystore -storepass 123456
-
-
-

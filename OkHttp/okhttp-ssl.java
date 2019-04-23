@@ -26,7 +26,9 @@ okhttp官方的demo代码|
 --------------------
 okhttp自己实践的	|
 --------------------
-import okhttp3.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import javax.net.ssl.*;
 import java.io.IOException;
@@ -36,32 +38,24 @@ import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.CertificateException;
 
-public class SslClient {
+public class HttpClient {
 
-    // 协议
+    // TLS/SSLv3
     private static final String PROTOCOL = "TLS";		//SSLv3
 
-    // keystore 类型
+    // JKS/PKCS12
     private static final String KEY_KEYSTORE_TYPE = "JKS";
 
-    // 算法
-    private static final String ALGORITHM = "SunX509";
+    private static final String SUN_X_509 = "SunX509";
 
-    public static SSLContext getSslContext(String keystore, String password) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, IOException, KeyManagementException, IOException {
-
+    private static SSLContext getSslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) throws NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException, CertificateException, IOException, KeyManagementException, IOException {
         SSLContext sslContext = SSLContext.getInstance(PROTOCOL);
-
-        KeyManager[] keyManagers = getKeyManagers(Files.newInputStream(Paths.get(keystore)), password);
-
-        TrustManager[] trustManagers = getTrustManagers(Files.newInputStream(Paths.get(keystore)), password);
-
-        sslContext.init(keyManagers, trustManagers, null);
-
+        sslContext.init(keyManagers, trustManagers, new SecureRandom());
         return sslContext;
     }
 
     private static KeyManager[] getKeyManagers(InputStream keystore, String password)throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,IOException {
-        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(ALGORITHM);
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(SUN_X_509);
         KeyStore keyStore = KeyStore.getInstance(KEY_KEYSTORE_TYPE);
         keyStore.load(keystore, password.toCharArray());
         keyManagerFactory.init(keyStore, password.toCharArray());
@@ -70,7 +64,7 @@ public class SslClient {
     }
 
     private static TrustManager[] getTrustManagers(InputStream keystore, String password)throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
-        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(ALGORITHM);
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(SUN_X_509);
         KeyStore keyStore = KeyStore.getInstance(KEY_KEYSTORE_TYPE);
         keyStore.load(keystore, password.toCharArray());
         trustManagerFactory.init(keyStore);
@@ -80,15 +74,15 @@ public class SslClient {
 
     public static void main(String[] args)throws Exception {
 
-        // keystore的路径
+        // 客户端证书的路径
         String keystorePath = "C:\\Users\\Administrator\\Desktop\\key\\client\\client.keystore";
-        
+
         // keystore的密码
         String keystorePassword = "123456";
 
-        SSLContext sslContext = getSslContext(keystorePath,keystorePassword);
-
+        KeyManager[] keyManagers = getKeyManagers(Files.newInputStream(Paths.get(keystorePath)),keystorePassword);
         TrustManager[] trustManagers = getTrustManagers(Files.newInputStream(Paths.get(keystorePath)),keystorePassword);
+        SSLContext sslContext = getSslContext(keyManagers,trustManagers);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0])
@@ -99,7 +93,7 @@ public class SslClient {
                 .build();
 
         Request request = new Request.Builder()
-                .url("https://localhost:1024")
+                .url("https://localhost:443")
                 .build();
 
         Response response = client.newCall(request).execute();
