@@ -221,7 +221,7 @@ ConfigServer					|
 
 		spring.datasource.password={cipher}e10adc3949ba59abbe56e057f20f883e
 
-		* 客户端加载的时候,会自动为带有 {cipher} 前缀的配置进行解密
+		* 配置服务器进行加载的时候,会自动为带有 {cipher} 前缀的配置进行解密
 		* 使用 yml 配置,需要使用 '' 包裹值
 		
 	# 使用的前提,需要在Oracle官方下载依赖:jce
@@ -231,18 +231,31 @@ ConfigServer					|
 		* Java8的下载地址:https://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
 		* 添加到: $JAVA_HOME/jre/lib/security 目录下
 	
-	# 服务端添加密钥配置
+	# 服务端添加密钥配置(对称加密),需要配置在:bootstrap.yml
 		encrypt:
-		 key: 123456
+		  key: 4D44331C666011E9B03100163E11BA6D
 	
 	# 可以访问的端点
 		/encrypt/status	加密功能的状态
-		/key			查看密钥
+		/key			查看密钥(非对称加密)
 		/encrypt		对请求Body加密
-		/descrpy		对请求Body解密
+		/decrypt		对请求Body解密
 
 
-	# 配置密钥
-		
+	# 可以使用非对称加密
+		* 生成证书
+			keytool -genkey -alias mytestkey -keyalg RSA  -dname "CN=Config Server,OU=Unit,O=Organization,L=City,S=State,C=CN"   -keypass changeme -keystore server.jks -storepass letmein
 	
-	# 非对称加密的配置
+		* 服务器配置
+			encrypt:
+			  key-store:
+				# keystore文件位置
+				location: classpath:ssl/server.jks
+				# 证书别名
+				alias: mytestkey
+				# keystore密码
+				password: letmein
+				# JKS类型keystore的证书密码
+				secret: changeme
+				# 证书类型
+				type: JKS

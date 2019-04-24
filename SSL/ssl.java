@@ -55,7 +55,7 @@ java ssl					 |
 		 -printcrl           打印 CRL 文件的内容
 		 -storepasswd        更改密钥库的存储口令
 	
-	# 生成证书到keystore
+	# 生成密钥对到keystore
 		keytool -genkey -deststoretype [pkcs12] -alias [alias] -validity [100] -keystore [server.keystore] -keyalg [RSA] -storepass [密码]
 			-genkey
 				* 生成证书的指令
@@ -70,10 +70,16 @@ java ssl					 |
 			-keyalg
 				* 指定证书的非对称加密算法,一般固定:RSA
 			-keysize
-				* 指定非对称加密算法的密钥长度: 512/1024/2048
+				* 指定加密算法的密钥长度
 			-storepass
 				* keystore的密码
-	
+			-keypass
+				* 证书的密码
+				* 只有JKS类型的证书才支持该选项,pkcs12 不支持,会忽略
+			-dname
+				* 设置参数的快捷方式
+					-dname "CN=Web Server,OU=Unit,O=Organization,L=City,S=State,C=US"
+			
 	# 从证书中导出公钥
 		keytool -export -alias [alias] -file [name.cer] -keystore [name.keystore] -storepass [密码]
 
