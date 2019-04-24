@@ -28,6 +28,8 @@ ConfigServer					|
 				git:
 				  # git配置仓库的位置(不能以为 / 结尾),根目录下必须要有: .git 目录(说白了,必须是GIT的根目录)
 				  uri: https://github.com/KevinBlandy/temp-config.git
+				  # 本地缓存的目录
+				  basedir: D:\\temp\\config
 				  # 配置仓库下的相对搜索路径,可以有多个
 				  search-paths:
 					- config
@@ -58,9 +60,11 @@ ConfigServer					|
 	
 	# ConifgServer还会在本地缓存配置文件
 		* 本地缓存的目录
-			C:\Users\KevinBlandy\AppData\Local\Temp\config-repo-[hash]
+			C:\Users\KevinBlandy\AppData\Local\Temp\config-repo-[随机数]
 		
 		* 防止Git服务器宕机而无法加载配置
+		* 可以通过配置来指定特殊的缓存目录
+			spring.cloud.config.server.git.basedir=D:\\temp\\config
 	
 	
 	
@@ -89,6 +93,8 @@ ConfigServer					|
 			* 其实也可以解决,亲测,在ConfigServer启动的时候,先在根路径创建目录: {application},application替换为 app,并且初始化为git目录,并且有commit文件
 				配置 -> uri: 'file:D:\\config-rep\\{application}-config'
 				新建 -> D:\\config-rep\\app-config
+			
+			* 上述俩问题是因为健康监测导致的
 		
 		* 占位符还可以使用在搜索路径上,以此来区分同一个仓库下的不同文件夹
 			spring
@@ -105,3 +111,138 @@ ConfigServer					|
 			* 这个靠谱,经过试验没啥问题
 
 		
+	
+	# 多仓库的配置
+		spring.cloud.config.server.git.uri='file:\\default'
+		spring.cloud.config.server.git.repos.dev.pattern='dev/*'
+		spring.cloud.config.server.git.repos.dev.uri='file:D:\\dev'
+
+		spring.cloud.config.server.git.repos.test.pattern='test/*'
+		spring.cloud.config.server.git.repos.test.uri='file:D:test'
+
+		* git.uri 指定的默认的仓库,系统启动就会去加载
+		
+		* 指定特殊名称的仓库,以及访问的pattern
+			git.repos.<name>.pattern
+			git.repos.<name>.uri
+
+--------------------------------
+访问权限						|
+--------------------------------
+	# 默认采用HTTP协议的鉴权
+		spring.cloud.config.server.git.username
+		spring.cloud.config.server.git.password
+	
+	# 采用SSH协议的鉴权
+		需要自己在当前主机环境生成 ssh密钥对,并且把公钥配置到git的服务器
+
+--------------------------------
+本地文件系统					|
+--------------------------------
+	# 不使用GIT/SVN,直接使用文件系统
+		spring.profiles.active=native
+
+		cloud.config.server.native.search-locations
+			* 指定一个或者多个配置文件的搜索路径
+
+		* 不建议使用本地文件系统,还是要使用GIT
+
+--------------------------------
+健康监测						|
+--------------------------------
+	# 在 gti.uri 配置中使用 {application} 占位符,会给出警告,(找不到 app 仓库)因为Server实现了健康监测器
+		ConfigServerHealthIndicator
+
+		* 在该检测器中默认构建一个 application 为 app 的仓库
+
+	
+	# 可以直接Git的仓库中新建一个配置库,让健康检测器访问
+		spring
+		  cloud:
+			config:
+			  server:
+				health:
+				  # 可以选择关闭健康监测
+				  enabled: false
+				  # Map<String, Repository> repositories
+				  repositories:
+					check:
+					  name: check-rep
+					  label: master
+					  profiles: default
+		
+
+--------------------------------
+属性覆盖						|
+--------------------------------
+	# 通过该属性配置的K/V都会被加载到客户端,但是客户端不能修改
+		spring:
+		  cloud:
+			config:
+			  server:
+			    # Map<String, String>
+				overrides:
+				  name: KevinBlandy
+				  skill:
+					- Java
+					- Python
+
+--------------------------------
+安全保护						|
+--------------------------------
+	# 服务端添加Security依赖
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+	
+	# 服务端配置用户名和密码
+		spring:
+		  security:
+			user:
+			  # 服务端的账户名密码
+			  name: config
+			  password: 123456
+		
+		* 服务端访问端点,也需要使用该账户名密码登录
+	
+	# 客户端使用用户名和密码连接
+		spring:
+		  cloud:
+			config:
+			  # 访问服务端的账户名密码
+			  username: config
+			  password: 123456
+	
+--------------------------------
+配置的加密/解密					|
+--------------------------------
+	# 在SpringCloud Config 中加载的配置使用 {cipher} 前缀来标识,表示该内容是一个加密的配置值
+
+		spring.datasource.password={cipher}e10adc3949ba59abbe56e057f20f883e
+
+		* 客户端加载的时候,会自动为带有 {cipher} 前缀的配置进行解密
+		* 使用 yml 配置,需要使用 '' 包裹值
+		
+	# 使用的前提,需要在Oracle官方下载依赖:jce
+		local_policy.jar
+		US_export_policy.jar
+	
+		* Java8的下载地址:https://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
+		* 添加到: $JAVA_HOME/jre/lib/security 目录下
+	
+	# 服务端添加密钥配置
+		encrypt:
+		 key: 123456
+	
+	# 可以访问的端点
+		/encrypt/status	加密功能的状态
+		/key			查看密钥
+		/encrypt		对请求Body加密
+		/descrpy		对请求Body解密
+
+
+	# 配置密钥
+		
+	
+	# 非对称加密的配置

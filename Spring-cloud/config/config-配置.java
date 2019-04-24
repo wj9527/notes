@@ -3,3 +3,4 @@
 # ≈‰÷√¿‡
 	MultipleJGitEnvironmentProperties
 	PropertySourceBootstrapProperties
+	ConfigServerHealthIndicator
