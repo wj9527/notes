@@ -82,15 +82,16 @@ ConfigServer					|
 			label
 				* 这个参数比较特别,如果Git分支名称包含了 '/' ,那么在label参数在http的uri中应该使用 '_' 来代替,避免改变了URI的含义
 
-			* 目前测试,好像占位符不支持 file: 协议,如果使用 {application},在ConfigServer启动的时候会被替换为 : app,从而导致系统异常,提示不存在的目录
+			* 目前测试,好像占位符{application}不支持配置在 uri 属性中,如果使用 {application},在ConfigServer启动的时候会被替换为 : app,从而导致系统异常,提示不存在的目录
+				配置 -> uri: 'https://github.com/KevinBlandy/{application}-config-rep.git'
+				异常 -> Cannot clone or checkout repository: https://github.com/KevinBlandy/app-config-rep.git
+
 			* 其实也可以解决,亲测,在ConfigServer启动的时候,先在根路径创建目录: {application},application替换为 app,并且初始化为git目录,并且有commit文件
 				配置 -> uri: 'file:D:\\config-rep\\{application}-config'
 				新建 -> D:\\config-rep\\app-config
 		
 		* 占位符还可以使用在搜索路径上,以此来区分同一个仓库下的不同文件夹
-			spring.config.server.git.search-paths={application}
-
-			spring 
+			spring
 			  cloud:
 			    config:
 			      server:
@@ -101,4 +102,6 @@ ConfigServer					|
 					  - '{application}-config'
 
 			* 根据不用应用名,去不同的子目录下搜索
+			* 这个靠谱,经过试验没啥问题
+
 		
