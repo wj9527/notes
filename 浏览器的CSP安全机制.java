@@ -23,6 +23,7 @@ CSP机制					|
 		connect-src		HTTP 连接（通过 XHR、WebSockets、EventSource等）
 		worker-src		worker脚本
 		manifest-src	manifest 文件
+		form-action		Form表单的action
 	
 	# default-src 默认值
 		* default-src用来设置上面各个选项的默认值
@@ -80,6 +81,8 @@ CSP机制					|
 		关键字: 'none' 禁止加载任何外部资源，需要加引号
 	
 		* 可以有多个值,使用空格分割,每个选项使用;分割
+			Content-Security-Policy: default-src 'none'; img-src 'self' data:; script-src 'self'
+
 		* 如果同一个限制选项使用多次,只有第一次会生效
 
 	# script-src 的特殊值
@@ -132,7 +135,8 @@ CSP机制	总结			|
 		worker-src		worker脚本
 		manifest-src	manifest 文件
 		default-src		所有选项的默认选项(可以被覆盖)
-	
+		form-action		Form表单的action
+
 	# 可以设置的值
 		* 主机名: 
 			example.org
