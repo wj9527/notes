@@ -81,17 +81,33 @@ ConfigClient					|
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+		
+		* 需要开放  /refresh 端点权限
+			management:
+			  endpoints:
+				web:
+				  base-path: /actuator
+				  exposure:
+					include:
+					  - '*'
 	
-	# 在客户端的 /form 路径可以看到配置
-		* 实验没生效
+	# 访问客户端,查看配置
 	
 	# 尝试修改Git仓库的配置文件(commit)
 
 	# 请求客户端的刷新路径 /refresh
-		* 此时配置信息已经被更新为最新修改的配置
+		http://localhost/actuator/refresh
+		
+			[
+				"config.client.version",
+				"config.name"
+			]
+
+		* 此时当前客户端的配置信息已经被更新为最新修改的配置
+		* 目前这种操作只能修改到:Environment 中的数据,不能修改到通过 @Value 注入的变量
 	
 
-	# 可以使用Git仓库的钩子程序(web hook),来触发 /refresh 接口完成自动刷新
+	# 可以使用Git仓库的钩子程序(web hook),来触发客户端的 /refresh 接口完成自动刷新
 		
 	# 实际的开发,并不建议使用这种方式来做配置更新,而是通过消息总线来: springcloud-bus
 
