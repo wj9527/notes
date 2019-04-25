@@ -128,7 +128,60 @@ GIT-分支				|
 	
 		git pull [alias] [branch]
 			* 拉取远程仓库代码,并且合并到当前分支
-			
+
+------------------------
+GIT-标签				|
+------------------------
+	# tag就是一个让人容易记住的有意义的名字,它跟某个commit绑在一起
+		* 标签总是和某个commit挂钩,如果这个commit既出现在master分支,又出现在dev分支,那么在这两个分支上都可以看到这个标签
+		* 创建的标签都只存储在本地,不会自动推送到远程
+	
+	git tag
+		* 查看标签
+		* 标签不是按时间顺序列出,而是按字母排序的
+
+	git tag [name] [commit]
+		* 在当前分支打一个标签
+		name
+			* 标签名称
+
+		commit
+			* 可以指定commitid,通过下面的命令查看历史commitid
+				git log --pretty=oneline --abbrev-commit
+			* 如果不指定该参数,默认标签是打在最新提交的commit上的
+		
+		-a
+			* 该选项用来设置标签的名称
+		-m
+			* 该选项用来设置标签的说明
+			* 一般跟 -a 一起使用,用于打标签,并且设置说明
+				git tag -a "v1" -m "我的第一个标签"
+
+	git show [name]
+		* 查看指定标签的commit详情
+	
+	git push [alias] [name]
+		* 推送当前分支的指定的标签到远程仓库关联的分支
+		--tags
+			* 一次性推送全部尚未推送到远程的本地标签
+				git push origin --tags
+			* 不用手动指定标签名 name
+	
+	git tag -d [name]
+		* 删除本地指定名称的标签
+	
+	git push origin --delete [name]
+		* 删除远程仓库的标签(先删除本地标签)
+		* 标签的删除也是 push
+	
+
+	
+	
+
+	
+
+
+
 
 		
 		
