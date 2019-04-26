@@ -22,6 +22,9 @@ ChannelPipeline				|
 		pipeline.fireXxxxx();
 
 		* 从头部(左边)开始执行触发 ChannelInboundHandler 的事件
+		* 它继承了接口:
+			ChannelInboundInvoker			定义了触发入站事件的fireXxxx 方法
+			ChannelOutboundInvoker			定义了触发出站事件的fireXxxx 方法
 	
 	
 	
