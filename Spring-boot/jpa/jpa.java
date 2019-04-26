@@ -13,6 +13,7 @@ jpa					 |
 	
 	# 使用
 		1,自定义接口继承:Repository
+
 			public interface UserRepository extends JpaRepository<UserDTO,Integer> {}
 
 		2,配置扫描Repository和Entity
