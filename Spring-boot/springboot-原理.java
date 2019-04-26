@@ -109,3 +109,20 @@ Springboot-自定义AutoConfiguration |
 		
 		org.springframework.boot.SpringApplicationRunListener
 			* 配置 SpringApplicationRunListener 的实现,处理事件
+
+
+--------------------------
+Springboot-自动配置最佳实践|
+--------------------------
+	# 一般定义两个比较重要的组件
+		xxx-starter
+		xxx-autoconfigure
+	
+	# starter 只是一个空的maven工程,没有任何的代码,配置
+		* 在 starter工程jar中除了maven的pom以外,还存在一个文件: META-INF/spring.providers
+		* 该文件只用描述依赖
+
+		provides: xxx-autoconfigure, beetl-core
+	
+	# autoconfigure 是核心的自动装配工程
+		
