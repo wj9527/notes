@@ -13,7 +13,6 @@ HikariCP				|
 	
 	# ÅäÖÃÏî
 
-
 spring:
   # »ù±¾ÅäÖÃ
   datasource:
@@ -59,7 +58,14 @@ spring:
 	  health-check-registry: 
       health-check-properties: 
 	  sealed: 
-
+	
+	# ´úÂë
+		@Bean
+		@ConfigurationProperties(prefix = "spring.datasource")
+		public DataSource dataSource(){
+			HikariDataSource hikariDataSource = new HikariDataSource();
+			return hikariDataSource;
+		}
 
 ------------------------
 ±àÂëÅäÖÃ				|
