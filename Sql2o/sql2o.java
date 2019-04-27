@@ -4,7 +4,15 @@ SQL2O					 |
 	# Github
 		https://github.com/aaberg/sql2o
 	
-	
+		
+	# Maven
+		<dependency>
+			<groupId>org.sql2o</groupId>
+			<artifactId>sql2o</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
+
 	# ¹¹Ôìº¯Êý
 		Sql2o(String jndiLookup)
 		Sql2o(String url, String user, String pass)
