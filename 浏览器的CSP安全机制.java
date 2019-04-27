@@ -24,7 +24,8 @@ CSP机制					|
 		worker-src		worker脚本
 		manifest-src	manifest 文件
 		form-action		Form表单的action
-	
+		frame-src		使用元素(如<frame>和<iframe>)加载的嵌套浏览上下文指定有效来源
+
 	# default-src 默认值
 		* default-src用来设置上面各个选项的默认值
 			Content-Security-Policy: default-src 'self'

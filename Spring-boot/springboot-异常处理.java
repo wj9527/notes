@@ -99,3 +99,158 @@ Spring boot-异常处理2		|
 				return new ModelAndView("error/error");
 			}
 		}
+
+
+----------------------------
+Spring boot-我最喜欢的实践  |
+----------------------------
+	# 视图请求异常,响应异常的视图信息
+	# api接口异常,响应异常的JSON/状态码信息
+	
+	# 抽象基本的异常处理类
+		import java.io.IOException;
+
+		import javax.servlet.http.HttpServletRequest;
+		import javax.servlet.http.HttpServletResponse;
+
+		import org.springframework.http.HttpStatus;
+		import org.springframework.http.converter.HttpMessageNotReadableException;
+		import org.springframework.validation.BindException;
+		import org.springframework.web.HttpMediaTypeNotSupportedException;
+		import org.springframework.web.HttpRequestMethodNotSupportedException;
+		import org.springframework.web.bind.MissingServletRequestParameterException;
+		import org.springframework.web.bind.ServletRequestBindingException;
+		import org.springframework.web.bind.annotation.ExceptionHandler;
+		import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+		import org.springframework.web.multipart.MaxUploadSizeExceededException;
+		import org.springframework.web.servlet.NoHandlerFoundException;
+
+		import io.javaweb.paste.common.Message;
+		import io.javaweb.paste.exception.ServiceException;
+
+
+		public abstract class BaseExceptionAdvice {
+			
+			//请求路径未找到
+			@ExceptionHandler(NoHandlerFoundException.class)  
+			public Object noHandlerFoundException(HttpServletRequest request,HttpServletResponse response,NoHandlerFoundException e) throws IOException {
+				return this.errorHandler(request,response,Message.fail(HttpStatus.NOT_FOUND, "请求路径不存在"),e);
+			}
+			
+			//上传文件过大
+			@ExceptionHandler(value = {MaxUploadSizeExceededException.class})
+			public Object maxUploadSizeExceededException(HttpServletRequest request,HttpServletResponse response,MaxUploadSizeExceededException e) throws IOException {
+				return this.errorHandler(request,response,Message.fail(HttpStatus.BAD_REQUEST, "文件大小不能超过:" + e.getMaxUploadSize()),e);
+			}
+			
+			//请求方式不支持
+			@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+			public Object httpRequestMethodNotSupportedException(HttpServletRequest request,
+											HttpServletResponse response,
+											HttpRequestMethodNotSupportedException httpRequestMethodNotSupportedException) {
+				return this.errorHandler(request, response, Message.fail(HttpStatus.METHOD_NOT_ALLOWED, "请求方式不支持"),httpRequestMethodNotSupportedException);
+			}
+			
+			//缺少必须参数
+			@ExceptionHandler(MissingServletRequestParameterException.class)
+			public Object missingServletRequestParameterException(HttpServletRequest request,
+																		HttpServletResponse response,
+																		MissingServletRequestParameterException exception) {
+				return this.errorHandler(request,response,Message.fail(HttpStatus.BAD_REQUEST, "缺少必须参数:" + exception.getParameterName()),exception);
+			}
+			
+			//业务异常
+			@ExceptionHandler(ServiceException.class)
+			public Object businessException(HttpServletRequest request,
+													HttpServletResponse response,
+													ServiceException exception) {
+				return this.errorHandler(request, response, exception.message(),exception);
+			}
+			
+			//系统异常
+			@ExceptionHandler(Exception.class)
+			public Object exception(HttpServletRequest httpServletRequest,
+											HttpServletResponse httpServletResponse,
+											Exception exception) {
+				return this.errorHandler(httpServletRequest, httpServletResponse, Message.fail(HttpStatus.INTERNAL_SERVER_ERROR, "系统异常"),exception);
+			}
+			
+			
+			//非法请求
+			@ExceptionHandler(value = {
+				HttpMessageNotReadableException.class,
+				IllegalArgumentException.class,
+				MethodArgumentTypeMismatchException.class,
+				BindException.class,
+				HttpMediaTypeNotSupportedException.class,
+				ServletRequestBindingException.class
+			})
+			public Object  badRequestException(HttpServletRequest request,HttpServletResponse response,Exception e) throws IOException {
+				e.printStackTrace();
+				return this.errorHandler(request,response,Message.fail(HttpStatus.BAD_REQUEST, "非法请求"),e);
+			} 
+			
+			
+			abstract public Object errorHandler(HttpServletRequest request,HttpServletResponse response,Message<Void> message,Throwable throwable); 
+		}
+	
+	# api异常
+		import javax.servlet.http.HttpServletRequest;
+		import javax.servlet.http.HttpServletResponse;
+
+		import org.springframework.http.ResponseEntity;
+		import org.springframework.web.bind.annotation.ControllerAdvice;
+		import org.springframework.web.bind.annotation.RestController;
+
+		import io.javaweb.paste.common.Message;
+
+		@ControllerAdvice(annotations = {RestController.class})		// 只处理restController
+		public class RestExceptionAdvice extends BaseExceptionAdvice {
+
+			@Override
+			public ResponseEntity<String> errorHandler(HttpServletRequest request, HttpServletResponse response, Message<Void> message,Throwable throwable) {
+				throwable.printStackTrace();
+				return ResponseEntity.status(message.getStatus()).build();
+			}
+
+		}
+
+	# 视图异常
+		
+		import java.io.PrintWriter;
+
+		import javax.servlet.http.HttpServletRequest;
+		import javax.servlet.http.HttpServletResponse;
+
+		import org.springframework.stereotype.Controller;
+		import org.springframework.web.bind.annotation.ControllerAdvice;
+		import org.springframework.web.servlet.ModelAndView;
+
+		import io.javaweb.paste.common.Message;
+		import io.javaweb.paste.common.StringBuilderWriter;
+
+		@ControllerAdvice(annotations = {Controller.class})		// 只处理Controller
+		public class ExceptionAdvice extends BaseExceptionAdvice {
+
+			public static final String ERROR_PATH = "error/error";
+			
+			@Override
+			public Object errorHandler(HttpServletRequest request, HttpServletResponse response, Message<Void> message,Throwable throwable) {
+				
+				ModelAndView modelAndView = new ModelAndView(ERROR_PATH);
+				
+				modelAndView.addObject("message", message);
+				
+				StringBuilderWriter stringBuilderWriter = new StringBuilderWriter();
+				
+				PrintWriter printWrite = new PrintWriter(stringBuilderWriter);
+				
+				throwable.printStackTrace(printWrite);
+				
+				modelAndView.addObject("throwable", stringBuilderWriter.toString());
+				
+				return modelAndView;
+			}
+		}
+
+		
