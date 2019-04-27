@@ -66,3 +66,20 @@ demo						|
 	
 	# 在 META-INF/services/org.sql2o.converters.ConvertersProvider 文件中添加实现类全路径(注意最后有空格)
 		io.javaweb.example.sql2o.converter.Sql2oConvertersProvider
+
+
+----------------------------
+在程序中设置类型转换器		|
+----------------------------
+
+	// 创建类型映射Map
+	Map<Class, Converter> converters = new HashMap<>();
+
+	// 添加类型和转换器的映射
+	converters.put(LocalDateTime.class,new LocalDateTimeConverter());
+
+	// 实例化 NoQuirks
+	Quirks quirks = new NoQuirks(converters);
+
+	// 实例化sql2o
+	Sql2o sql2o = new Sql2o(dataSource,quirks);
