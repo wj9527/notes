@@ -3,11 +3,11 @@ Spring boot-异常处理1		|
 ----------------------------
 	# 使用 Spring Boot 提供的处理器
 	# 可以处理 404,500等异常
-	1,自动异常处理 Controller ,实现接口: org.springframework.boot.autoconfigure.web.ErrorController.ErrorController
+	1,自动异常处理 Controller ,实现接口: org.springframework.boot.web.servlet.error.ErrorController
 	2,覆写方法
 		
 		@Controller
-		public class ErrorController implements org.springframework.boot.autoconfigure.web.ErrorController {
+		public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 
 			private static final Logger LOGGER = LoggerFactory.getLogger(ErrorController.class);
 
