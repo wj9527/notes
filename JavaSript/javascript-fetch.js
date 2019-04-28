@@ -15,6 +15,7 @@ fetch				|
 
 		body
 			* 请求体数据,可以是FormData,URLSearchParams或者字符串
+			* 如果是GET请求,不允许有该参数
 
 		method
 			* 以字符串形式指定请求方法
