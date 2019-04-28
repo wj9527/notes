@@ -254,3 +254,17 @@ Spring boot-我最喜欢的实践  |
 		}
 
 		
+
+		# 也可以定义俩注解
+			@View		标识在视图Controller上
+			@Api		标识在api接口Controller上
+
+
+			// 处理视图异常
+			@ControllerAdvice(annotations = {View.class})
+			public class VieExceptionAdvice extends BaseExceptionAdvice
+			
+
+			// 处理接口异常
+			@ControllerAdvice(annotations = {Api.class})
+			public class ApiExceptionAdvice extends BaseExceptionAdvice 
