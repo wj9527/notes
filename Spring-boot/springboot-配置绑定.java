@@ -31,7 +31,9 @@ Spring-boot 绑定到POJO		|
 	
 	# 把该类添加到IOC容器
 		* 可以在类上添加 @Component  注解
+
 		* 也可以在其他类上,通过:@EnableConfigurationProperties({User.class}); 注解来添加到IOC
+		* @EnableConfigurationProperties 如果要配置在 @Configuration 类上
 	
 	* Spring Boot使用宽松的规则用于绑定属性到 @ConfigurationProperties 
 	* 以配置的属性名和bean属性名不需要精确匹配。
