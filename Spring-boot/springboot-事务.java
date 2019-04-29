@@ -46,4 +46,11 @@ Spring-boot 事务			|
 		* spring boot专门用户配置事务的类是:org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration
 		* 'spring boot中不需要显示开启使用'@EnableTransactionManagement 注解,'直接在哪里标注'
 	
-	
+		* 添加依赖
+			 <dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+			</dependency>
+		
+		* 添加注解
+			@EnableTransactionManagement
