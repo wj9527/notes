@@ -95,11 +95,12 @@
 
 		
 		* 这设计感觉咋那么瓜皮???
-		* 所有的参数被封装为Freemarker定义的类型 BeanModel 后,都有一个方法 (BeanModel implements TemplateModel )
+		* 所有的参数被封装为Freemarker定义的类型 BeanModel 后,都有2个方法 (BeanModel implements TemplateModel )
 
 			Object getAdaptedObject(Class<?> hint)
+			Object getWrappedObject()
 
-			* 通过该方法,可以获取到调用时传递的原生对象
+			* 通过这俩方法,可以获取到调用时传递的原生对象
 			
 			${localDateTimeFormatter(paste.createDate)}
 
