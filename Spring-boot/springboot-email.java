@@ -17,8 +17,9 @@ email							|
 spring:
   mail:
     host: smtp.exmail.qq.com
-    username: 
-    password: 
+    username: no-reply@javaweb.io
+    password: 123456789
+    sender: Javaweb开发者社区
     port: 587
     default-encoding: UTF-8
     protocol: smtp
@@ -31,6 +32,7 @@ spring:
           auth: true
           starttls:
             enable: true
+            required: true
 
 
 #--------------------------------------
