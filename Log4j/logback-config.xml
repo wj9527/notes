@@ -1,0 +1,33 @@
+<configuration>
+	<property name="PATTERN" value="[%-5p][%thread][%d{yyy-MM-dd HH:mm:ss}][%C %M] => %m%n" />
+	<property name="LOG_FILE" value="javaweb.log" />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_FILE}</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!-- 单个日志文件最多 100MB,超过就执行一次归档(压缩)  -->
+			<maxFileSize>100MB</maxFileSize>
+			<!-- 每天一个归档 -->
+			<fileNamePattern>%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+			<!-- 保留的归档文件的最大数量,超出数量就删除旧文件 -->
+			<maxHistory>60</maxHistory>
+			<!-- 日志文件的存储上限大小,超过该大小后,会自动删除最旧的日志 -->
+			<totalSizeCap>20GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<root level="DEBUG">
+		<appender-ref ref="rolling"/>
+		<appender-ref ref="console"/>
+	</root>
+
+</configuration>

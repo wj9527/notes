@@ -6,10 +6,9 @@ logback					|
 		logback-core
 		logback-classic
 		logback-access
-		* logback-core是其它两个模块的基础模块。
-		* logback-classic是log4j的一个 改良版本。
-		* logback-classic完整实现SLF4J API使你可以很方便地更换成其它日志系统如log4j或JDK14 Logging。
-		* logback-access访问模块与Servlet容器集成提供通过Http来访问日志的功能。
+		* logback-core		是其它两个模块的基础模块。
+		* logback-classic	完整实现SLF4J API使你可以很方便地更换成其它日志系统如log4j或JDK14 Logging。是log4j的一个 改良版本。
+		* logback-access	访问模块与Servlet容器集成提供通过Http来访问日志的功能。
 	
 	# maven 依赖
 		<!-- logger begin-->
