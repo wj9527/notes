@@ -20,7 +20,7 @@ Get					 |
 ---------------------
 	OkHttpClient client = new OkHttpClient();
 
-	HttpUrl.Builder builder = HttpUrl.parse("http://120.78.93.29:9080/openApi/category").newBuilder();
+	HttpUrl.Builder builder = HttpUrl.parse("http://localhost:1024/openApi/category").newBuilder();
 
 	// 添加一个或者多个检索参数
 	builder.addQueryParameter("name","val");
