@@ -16,6 +16,28 @@ Get					 |
 	}
 
 ---------------------
+带query param的GET	 |
+---------------------
+	OkHttpClient client = new OkHttpClient();
+
+	HttpUrl.Builder builder = HttpUrl.parse("http://120.78.93.29:9080/openApi/category").newBuilder();
+
+	// 添加一个或者多个检索参数
+	builder.addQueryParameter("name","val");
+	builder.addEncodedQueryParameter("age","val");
+
+	HttpUrl httpUrl = builder.build();
+
+	Request request = new Request.Builder()
+			.url(httpUrl)    // url
+			.addHeader("foo","bar") // 消息头
+			.build();
+
+	Response response = client.newCall(request).execute();
+
+	response.body().string();
+
+---------------------
 文件下载			 |
 ---------------------
 	OkHttpClient client = new OkHttpClient();
