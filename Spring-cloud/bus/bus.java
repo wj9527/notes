@@ -14,7 +14,7 @@ bus					 |
 		* 此时,所有连接到bus的客户端都会发生更新操作
 
 	# 客户端 Maven,bus的实现,二选一
-		dependency>
+		<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>
