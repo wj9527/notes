@@ -169,7 +169,8 @@ springboot≈‰÷√	http2				  |
 						@Override
 						public void customize(Builder builder) {
 							builder.addHttpListener(HTTP_PORT, "0.0.0.0");
-							//builder.setServerOption(UndertowOptions.ENABLE_HTTP2, true);
+							builder.setServerOption(UndertowOptions.ENABLE_HTTP2, true);				// ø™∆Ùhttp2
+							builder.setServerOption(UndertowOptions.HTTP2_SETTINGS_ENABLE_PUSH,true);	// ø™∆ÙServer Push
 						}
 					});
 					

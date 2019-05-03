@@ -59,21 +59,23 @@ FastJsonConfig
 			* 输出key时是否使用双引号,默认为true	
 		SerializerFeature.UseSingleQuotes	
 			* 使用单引号而不是双引号,默认为false	
-		SerializerFeature.WriteMapNullValue	
-			* 是否输出值为null的字段,默认为false	
 		SerializerFeature.WriteEnumUsingToString	
 			* Enum输出name()或者original,默认为false	
 			* 如果该属性为true,则枚举字段输出 toString() 的返回值
 		SerializerFeature.UseISO8601DateFormat	
 			* Date使用ISO8601格式输出，默认为false	
+		
+		SerializerFeature.WriteMapNullValue	
+			* 是否输出值为null的字段,默认为false	
 		SerializerFeature.WriteNullListAsEmpty	
 			* List字段如果为null,输出为[],而非null	
 		SerializerFeature.WriteNullStringAsEmpty	
-			* 字符类型字段如果为null,输出为”“,而非null	
+			* 字符类型字段如果为null,输出为"",而非null	
 		SerializerFeature.WriteNullNumberAsZero	
 			* 数值字段如果为null,输出为0,而非null	
 		SerializerFeature.WriteNullBooleanAsFalse	
 			* Boolean字段如果为null,输出为false,而非null	
+		
 		SerializerFeature.SkipTransientField	
 			* 如果是true，类中的Get方法对应的Field是transient，序列化时将会被忽略。默认为true	
 		SerializerFeature.SortField	
