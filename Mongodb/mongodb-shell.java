@@ -8,6 +8,8 @@ Shell						  |
 	
 		--nodb
 			* 启动时,不连接任何的mongodb
+		--norc
+			* 启动时不执行 .mongorc.js 脚本
 	
 	# 直接'执行函数'名称,可以看到函数的实现源码
 
@@ -52,6 +54,10 @@ Shell 全局指令/函数			  |
 		* 打印函数
 	load(file)
 		* 加载指定的js脚本,并且执行
+		* 默认加载当前目录的脚本,也可以使用绝对路径加载其他文件夹下的脚本
+	run(shell)
+		* 执行shell命令
+		* 执行成功返回 0
 	
 ------------------------------
 Shell 内置对象				  |
@@ -72,4 +78,33 @@ Shell 内置对象				  |
 			db.getMongo().getDBs();		// show dbs
 
 			// 查看collections
-			db.getConnectionNames();	// show collections
+			db.getCollectionNames();	// show collections
+	DB
+		# db对象
+
+	DBCollection
+		# 集合对象
+
+------------------------------
+.mongorc.js					  |
+------------------------------
+	# 该js文件在用户的home目录下: ~/.mongorc.js 
+	# 在启动 mongo 客户端的时候,会自动的加载执行
+		mongo
+	
+	# 可以利用它来完成一些初始化功能(设置全局变量啥的)
+
+	# 重写危险的函数,防止手误触发
+		function no(args){
+			print('危险函数,不能执行');
+		}
+
+		// 禁止删除数据库
+		db.dropDatabase = DB.prototype.dropDatabase = no;
+
+		// 禁止删除集合
+		DBCollection.prototype.drop = no;
+
+		// 禁止删除索引
+		DBCollection.prototype.dropIndex = no;
+
