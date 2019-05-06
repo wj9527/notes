@@ -118,3 +118,33 @@ Shell 内置对象				  |
 		// 禁止删除索引
 		DBCollection.prototype.dropIndex = no;
 
+------------------------------
+定置 Shell 提示				  |
+------------------------------
+	# 设置 prompt 变量为一个字符串,或者一个函数(返回字符串),就可以重置默认的Shell提示
+		* prompt 就是命令行的前缀
+	
+
+	# 设置为当前的时间
+		var prompt = function(){
+			return new Date().getTime() + '>';
+		}
+				
+	
+	# 设置为当前的db
+		var prompt = function(){
+			if (typeof db == 'undefined'){
+				return '(no db)>';
+			}
+			try{
+				db.runCommand({getLastError:1});
+			}catch (e) {
+				print(e);
+			}
+			return db + '>';
+		}
+
+------------------------------
+编辑复合变量				  |
+------------------------------
+	TODO
