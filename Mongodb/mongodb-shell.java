@@ -94,6 +94,9 @@ Shell 内置对象				  |
 
 	DBCollection
 		# 集合对象
+	
+	Object
+			
 
 ------------------------------
 .mongorc.js					  |
