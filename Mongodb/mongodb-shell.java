@@ -10,7 +10,7 @@ Shell						  |
 			* 启动时,不连接任何的mongodb
 		--norc
 			* 启动时不执行 .mongorc.js 脚本
-	
+		
 	# 直接'执行函数'名称,可以看到函数的实现源码
 
 		db.createCollection;
@@ -89,6 +89,11 @@ Shell 内置对象				  |
 
 			// 查看collections
 			db.getCollectionNames();	// show collections
+			
+			db.getLastError();
+
+			db.runCommand();
+			
 	DB
 		# db对象
 
