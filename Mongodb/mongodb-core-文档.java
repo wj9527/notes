@@ -52,6 +52,16 @@
 		* 返回删除的数量
 			{ "nRemoved" : 2 }
 		* 删除操作不可逆,千万要慎重
+		* 该api其实已经过时了
+		* remove() 执行删除后,并不会释放空间,需要 执行 db.repairDatabase()  来回收磁盘空间
+	
+	db.[colelction].deleteOne()
+		* 删除符合条件的第一个文档
+	
+	db.[colelction].deleteMany()
+		* 删除符合条件的所有文档
+	
+		
 
 --------------------------------
 更新							|

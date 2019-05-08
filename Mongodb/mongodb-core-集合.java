@@ -45,8 +45,12 @@
 	show collections
 		* 查看当前db中的所有集合
 
-	db.[name].drop()
+	db.[collection].drop()
 		* 删除当前DB中指定名称的集合
 		* 成功返回 true, 失败返回 false
 	
+	db.[collection].count();
+		* 返回集合中的文档数量
+	
+
 

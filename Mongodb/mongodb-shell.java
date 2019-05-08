@@ -93,6 +93,8 @@ Shell 内置对象				  |
 			db.getLastError();
 
 			db.runCommand();
+				* 执行指令
+				
 			
 	DB
 		# db对象

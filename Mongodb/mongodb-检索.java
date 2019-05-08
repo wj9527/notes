@@ -101,6 +101,20 @@ find 查询条件	 |
 				}
 			});
 	
+	$type
+		* 可以根据数据字段的类型来过滤
+		* 字段的类型,使用int值表示
+			Double	1	 
+			String	2	 
+			Object	3	 
+			Array	4	 
+			
+			....
+
+			db.users.find({'id':{
+				'$type':1					// 检索id字段的数据类型为数值的记录
+			}});
+
 
 	# 正则检索
 		* 条件可以是合法的正则表达式
@@ -226,15 +240,58 @@ find 游标		 |
 			* 参数是一个对象,key就是排序的字段,value是数值
 			* 正数是升序排序,负数是逆序排序,可以同时存在多个排序策略
 				sort({'name':1,'age':-1});  // 按照名称升序,按照年龄逆序
+			
+			* 如果排序的字段值是不同的,那么mongdb本身定义了一个默认的排序规则(用到的时候再查)
 
 		skip();
 			* 丢弃前面的几个记录
+			* 如果数据量很大的话,不建议使用 skip() 来略过数据,因为这个处理比较慢
 
 		limit();
 			* 限制结果数量上限
+		
+		pretty()
+			* 对JSON结果进行格式化
 
 
 
 		var cursor = db.users.find({}).sort({'id':1}).limit(10).skip(1);
 
+	
+	# 翻页
+		* skip的算法还是一样: (当前页 - 1) * 每页显示的数量
+
+		db.users.find({}).skip(0).limit(10);		// 第一页
+		db.users.find({}).skip(10).limit(10);		// 第二页
+	
+	# 随机获取文档
+		// 计算出文档的总记录数量
+		var count = db.users.count();
+		// 计算出随机数
+		var random = Math.floor(Math.random() * count)
+		// 使用skip和limit选择一条记录
+		db.users.find({}).skip(random).limit(1);
+
+	
+	# 高级查询
+		* 高级的查询选项,通过 _addSpecial({}); 函数定义
+			db.users.find()._addSpecial({});
+		
+		$maxscan: int
+			* 限制扫描文档数的上限
+			* 可能会导致某些符合条件的文档没有被扫描到
+		
+		$min: json
+		$max: json
+		$showDiskLoc: boolean
+			* 在检索结果中添加一个 '$diskLoc' 字段,显示该记录存在于磁盘的位置信息
+
+		...
+	
+	# 快照查询
+		// TODO
+	
+
+	# 游标的生命周期
+		// TODO
 	
