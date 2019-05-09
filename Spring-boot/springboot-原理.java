@@ -126,3 +126,26 @@ Springboot-自动配置最佳实践|
 	
 	# autoconfigure 是核心的自动装配工程
 		
+
+--------------------------
+元数据					  |
+--------------------------
+	# SpringBoot的starter(jar)包含元数据文件
+		* 元数据文件提供所有支持的配置属性的详细信息
+		* 这些文件旨在让 IDE 开发人员使用 application.properties 或 application.yml 文件像用户一样提供上下文帮助和"代码完成"
+
+		* 通俗理解来说,这个东西就是为了让idea可以读取到,从而在 yml/properties 编辑的时候,可以给出提示
+	
+	# 参考文档
+		https://docs.spring.io/spring-boot/docs/current/reference/html/configuration-metadata.html
+
+	# 元数据文件的路径
+		META-INF/spring-configuration-metadata.json
+
+		* 它是一个json文件
+	
+		
+	# groups 属性
+	# properties 属性
+	# hints 属性
+
