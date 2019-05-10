@@ -252,6 +252,9 @@ find 游标		 |
 		
 		pretty()
 			* 对JSON结果进行格式化
+		
+		explain();
+			* 显示mongo检索的详细信息
 
 
 
