@@ -100,7 +100,25 @@ in 表达式					|
 
 		var exists = "Java" in setOf<String>("Java","Groovy","Kotlin","Scala")
 	
+----------------------
+解构赋值,与[]展开	 |
+----------------------
+	# 跟js/py差不多
+	# [] 展开, 使用 * 运算符
+		fun foo(var1:String, vararg values: String, var2:String){
+			for ((index, value) in values.withIndex()){
+				println("value=$index, value=$value")
+			}
+		}
 
+		fun main(args:Array<String>){
+			foo("1",* args,var2 = "")
+		}
+
+	# 解构赋值
+		var (key, value) = Pair("name", "KevinBlandy")
+		println("key=$key, value=$value")
+		
 
 ----------------------------
 when 表达式					|

@@ -57,7 +57,60 @@
 			}
 	
 
+	# 可变参数
+		* 在参数上使用关键字: vararg
+			fun foo(var1:String, vararg values: String, var2:String){
+				for ((index, value) in values.withIndex()){
+					/*
+						value=0, value=2
+						value=1, value=3
+					*/
+					println("value=$index, value=$value")
+				}
+			}
+
+			fun main(args:Array<String>){
+				foo("1",* args,var2 = "")
+			}
+			* vararg 可以放置在任意位置
+			* 如果它不是最后一个参数的话, 那么它后面的参数, 在调用的时候需要手动的通过命名参数来指定
+
+
+		* 可变参数与Java还有一个不同, 可变参数其实就是一个参数数组
+			* 调用Java的可变参数, 传递一个数组的话,这个数组参数就是可变参数
+			* 调用Kotlin的可变参数, 传递一个数组的话, 需要自己展开数组, 不然的话, 整个数组参数只会作为可变参数的一个元素(使用 *结构数组 - 这个PY又TM一样)
+	
+	# 中缀调用
+		* 调用函数的方法
+			1.to("one")		一般调用
+			1 to "one"		中缀调用
 		
+		* 所谓的中缀调用就是: [对象] [方法] [参数]
+		* 在中缀调用中, 没有额外的分隔符, 函数名称是直接放在目标对象名称和参数之间的
+
+		* 允许中缀函数调用的函数, 必须使用关键字: infix 修饰
+			class Foo(){
+				infix fun foo(value:String):String{
+					return value.plus(value)
+				}
+			}
+
+			fun main(args:Array<String>){
+				var foo = Foo();
+
+				var result = foo.foo("Hello")
+				println(result)
+
+				result = foo foo "Hello";
+				println(result)
+			}
+		
+		* 可以使用扩展方法, 来定义一个所有对象都可以使用的中缀调用的方法(其实系统已经定义过了)
+			infix fun Any.to(value:Any) = Pair(this,value)
+			fun main(args:Array<String>){
+				var pair = "name" to "KevinBlandy"
+				println(pair)
+			}
 
 
 ----------------------
