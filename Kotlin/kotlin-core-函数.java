@@ -89,6 +89,7 @@
 		* 在中缀调用中, 没有额外的分隔符, 函数名称是直接放在目标对象名称和参数之间的
 
 		* 允许中缀函数调用的函数, 必须使用关键字: infix 修饰
+		* 并且中缀函数, 只能有一个参数
 			class Foo(){
 				infix fun foo(value:String):String{
 					return value.plus(value)
