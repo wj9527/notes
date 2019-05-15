@@ -30,6 +30,8 @@
 				fun main(args:Array<String>){
 					print("x=$x, y=$y")		// x=outer, y=inner
 				}
+		
+		* 可以使用 as 来设置类库/属性的 别名,python一个德行
 			
 		
 	# 顶层函数与属性

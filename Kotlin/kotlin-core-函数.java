@@ -10,8 +10,6 @@
 			// 函数体
 		}
 
-
-
 	
 	# 表达式函数体
 		* 在返回值类型后添加 = ,紧跟函数体
@@ -62,8 +60,163 @@
 		
 
 
-			
+----------------------
+扩展函数			  |
+----------------------
+	# 就是可以给已有的类,添加新的方法
+	
+	# 尝试给 java.lang.String 类,添加一个 lastChar() 方法,返回字符串的最后一个字符
+		fun String.lastChar(): Char = this[this.length - 1]
+		var lastChar = "KevinBlandy".lastChar()
+		println(lastChar) // y
+	
+	# 尝试给 ArrayList 添加一个 foo 方法
+		fun <T : Any?> ArrayList<T>.foo() = println("自己添加的方法")
+		arrayListOf(1).foo();
+	
+	# 语法
+		fun [目标类].[方法名称]([方法参数]) = [方法体]
+
+		fun [目标类].[方法名称]([方法参数]): [返回值类型] { 
+			[方法体]
+		}
+
+		* 在扩展方法体中,可以自由的使用 this ,或者不使用 来访问到内部的属性/方法
+		* 但是,扩展方法不能访问到 private / protected 属性/方法
+	
+
+	# 扩展函数,需要导入才会生效(其实所谓的导入,就是执行到了那句扩展函数的设置代码)
+		package io.kevinblandy.common
+		fun String.lastChar(): Char = if (this.isEmpty()) ' ' else this[this.length - 1]
+
+		import io.kevinblandy.common.lastChar as foo;
+		var lastChar = "KevinBlandy".foo();
+		println(lastChar)
+	
+	
+	# 实质上,扩展函数是静态函数
+		* 这个函数把第一个参数,设置为了当前调用的对象
+		* 扩展函数不会生成代理对象,不会有额外的性能消耗
+	
+	# 从 Java 中调用扩展函数
+		* 知道了扩展函数的本质,就是一个静态函数
+		* 所以这个其实非常的简单,把扩展函数当成一个静态函数,然后把调用该函数的对象,传递给扩展函数的第一个参数
+
+		@file:JvmName("CommonUtils")
+		package io.kevinblandy.common
+		fun String.foo(value:String) =  this + value;
+
+		import io.kevinblandy.common.CommonUtils;
+		public class Main {
+			public static void main(String[] args) {
+				String value = CommonUtils.foo("KevinBlandy","123456");
+				System.out.println(value);		// KevinBlandy123456
+			}
+		}
 
 	
+	# 扩展函数是一个非常高效的语法糖,甚至还可以通过泛型,来限制扩展的对象
+		import java.lang.StringBuilder
+		fun Collection<String>.join(
+			separator:String,
+			prefix:String,
+			suffix:String) : String {
+			var stringBuilder = StringBuilder(prefix)
+			for((index, value) in this.withIndex()){
+				if (index > 0){
+					stringBuilder.append(separator)
+
+				}
+				stringBuilder.append(value)
+			}
+			stringBuilder.append(suffix)
+			return stringBuilder.toString()
+		}
+
+		fun main(){
+			var result = arrayListOf("1","2","3","4","5").join(", ", "[", "]")
+			println(result)
+		}
+	
+	# 扩展函数不可以被重写
+		* 扩展函数不存在重写,因为扩展函数会被编译成一个静态函数,调用该函数的对象作为第一个形参
+		* 扩展函数并不是类的一部分,它是声明在类之外的
+
+			open class View {
+				open fun click () = println("View Click")
+			}
+			open class Button : View (){
+				override fun click() = println("Button click")
+			}
+			
+			// 两个类都扩展方法
+			fun View.showOff() = println("Im a View")
+			fun Button.showOff() = println("Im a Button")
+
+			fun main(){
+				var view: View = Button()
+				// 普通函数, 执行时被重写
+				view.click()				// Button click 
+
+				// 扩展函数, 执行时没有被重写
+				view.showOff()				// Im a View
+			}
+		
+		* 如果一个类的成员函数和扩展函数有相同的签名(名称一样, 形参一样),那么成员函数会优先使用
+
+----------------------
+扩展属性			  |
+----------------------
+	# 扩展属性有必要和扩展函数一起了解
+	# 扩展属性没有任何状态, 因为没地方存储, 因为不能给现有的Java对象添加额外的字段
+	# 扩展属性本质上就是添加了一个: getter/setter 
+	
+	# 定义语法
+		[var/val] [类].[属性名称] : [返回值] get() = [方法体]
+
+	# 给 String 添加一个 lastChar 的 getter 属性
+		val String.lastChar get() = this[this.length - 1]
+		var lastChar = "KevinBlandy".lastChar;
+		println(lastChar) // y
+	
+	# 给 StringBuilder 添加 getter/setter 属性(StringBuilder 允许修改)
+		var StringBuilder.last : Char
+			get() {
+			   return this[this.length - 1]
+			}
+			set(value: Char) {
+				this[this.length - 1] = value
+			}
+		val stringBuilder = StringBuilder("KevinBlandy")
+		stringBuilder.last = 'I';
+		println(stringBuilder.last)		// I
+	
+	# getter 扩展属性使用 val 声明, 因为只能读, setter 扩展属性必须用 var 声明, 因为可以写
+
+	# 从Java中调用扩展属性,需要显示的调用getter函数(根据属性名称驼峰命名的get函数)
+		@file:JvmName("CommonUtils")
+		package io.kevinblandy.common
+		val String.last  get() = this[this.length - 1]
+
+		import io.kevinblandy.common.CommonUtils;
+		public class Main {
+			public static void main(String[] args) {
+				// getLast
+				Character character = CommonUtils.getLast("KevinBlandy");
+				System.out.println(character);
+			}
+		}
+
+	
+	# 属性的扩展,不能在方法内部执行
+		val String.lastChar get() = this[this.length - 1]; // 方法外部扩展属性, 正常
+
+		fun main(){
+			// val String.lastChar get() = this[this.length - 1]; 方法内部进行扩展属性, 编译异常
+			println("123".lastChar)
+		}
+
+
+
 
 

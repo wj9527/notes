@@ -5,3 +5,19 @@ Kotlin					|
 		https://kotlinlang.org/
 		https://www.kotlincn.net/
 
+
+
+------------------------
+Kotlin	- 征途			|
+------------------------
+
+	# 为什么在方法内部扩展属性会编译异常, 但是在方法内部扩展方法就没事儿
+		val String.lastChar get() = this[this.length - 1]; // 方法外部扩展属性, 正常
+		fun main(){
+			// val String.lastChar get() = this[this.length - 1]; // 方法内部扩展属性, 异常
+			println("123".lastChar)
+
+			fun String.foo(value: String) = this + "_" + value // 方法内部扩展方法, 正常
+			println("123".foo("321"))
+		}
+	

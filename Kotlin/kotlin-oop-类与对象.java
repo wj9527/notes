@@ -14,10 +14,14 @@
 	
 	# 定义 getter/setter
 		* 跟 js 一个德行,getter 的值是计算得来的
-			class User(){
-				val name : String get(){
-					return "KeviniBlandy";
-				}
+			class User {
+				var name : String
+					get() {
+						return "这个是读取的name属性"
+					}
+					set(value: String ){
+						println("这个是设置的name属性:$name")
+					}
 			}
 			println(user.name);
 		
@@ -27,6 +31,8 @@
 				return [计算后的返回值] 
 			}
 		
+		* 如果仅仅定义 getter, 那么属性的声明必须是: val
+		* 如果需要定义 setter, 那么属性的声明必须是: var 
 		* 也可以省略 {} ,使用简单的表达式
 			val old : Boolean get() = this.age > 25;
 
