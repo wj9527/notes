@@ -32,3 +32,44 @@
 				}
 			
 		
+	# 顶层函数与属性
+		* Kotiin 编译生成的类的名称, 对应于包含函数的文件的名称, 这个文件中的所有顶层函数编译为这个类的静态函数
+
+		* 要改变包含 Kotlin 顶层函数的生成的类的名称, 需要为这个文件添加 @file:JvmName 的注解, 将其放到这个文件的开头, 位于包名的前面
+		
+		* 顶层属性也是一样,也是作为类成员变量
+			var 声明的属性,会生成 getter/setter 方法: getXxx/setXxx
+			val 声明的属性,只会生成 getter 方法 方法: getXxx
+			const val 声明的属性,生成 public static final .... 属性,可以直接访问,不需要方法
+
+			@file:JvmName("CommonUtils")
+			package io.kevinblandy.funcs
+
+			var var1 = "var1";
+			val var2 = "var2";
+			const val VAR3 = "var3";
+
+			fun foo(){
+				println("Hello")
+			}
+
+			import io.kevinblandy.funcs.CommonUtils;
+			public class Demo {
+
+				public static void main(String[] args) {
+
+					CommonUtils.foo();
+
+					// getter/setter
+					String var1 = CommonUtils.getVar1();
+					CommonUtils.setVar1("new value");
+					
+					// getter
+					String var2 = CommonUtils.getVar2();
+					
+					// 相当于 public static final String VAR3 = "var3"
+					String var3  = CommonUtils.VAR3;
+				}
+			}
+
+	
