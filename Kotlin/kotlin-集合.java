@@ -19,6 +19,11 @@
 		min();
 		max();
 	
+	# list 支持的特殊扩展函数
+		withIndex(): Iterable<IndexedValue<T>>
+			* 返回一个迭代器, 迭代对象包含了下标和值
+				public data class IndexedValue<out T>(public val index: Int, public val value: T)
+	
 	
 	# 其他的一些相关函数
 		var pari = Pair(v1,v2)

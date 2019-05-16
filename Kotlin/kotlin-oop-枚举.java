@@ -44,5 +44,16 @@
 			println(PYTHON)
 		}
 	
-			
 	
+	# 枚举可以继承/实现,并且覆写方法
+		interface Foo {
+			fun foo()
+		}
+
+		enum class Lang : Foo{
+			JAVA {
+				override fun foo() {
+					TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+				}
+			}
+		}

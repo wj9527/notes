@@ -9,7 +9,9 @@ Kotlin					|
 	# 一个德行
 		* 局部函数跟 js/py 一样
 		* 解构赋值,[]展开跟 py 一样
+		* getter/setter 跟js差不多
 		* raw 字符串, 跟py一样
+		* object, 跟js的字面量对象差不多
 
 ------------------------
 Kotlin	- 征途			|
