@@ -112,6 +112,17 @@
 				var pair = "name" to "KevinBlandy"
 				println(pair)
 			}
+	
+	# 局部函数
+		* 方法内部可以再次声明一个函数调用,跟js/py一样
+			fun outer(){
+				var number = 15
+				fun inner (){
+					println("number=$number")
+				}
+				inner()
+			}
+		*  内部函数,可以访问外部函数的局部变量
 
 
 ----------------------

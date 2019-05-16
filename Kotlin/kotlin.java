@@ -5,7 +5,11 @@ Kotlin					|
 		https://kotlinlang.org/
 		https://www.kotlincn.net/
 
-
+	
+	# 一个德行
+		* 局部函数跟 js/py 一样
+		* 解构赋值,[]展开跟 py 一样
+		* raw 字符串, 跟py一样
 
 ------------------------
 Kotlin	- 征途			|
