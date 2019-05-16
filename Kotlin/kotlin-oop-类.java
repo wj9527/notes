@@ -146,7 +146,21 @@ getter/setter			|
 	# 私有化构造函数, 可以阻止外面创建类实例
 		class Foo private constructor() {}
 
-
+	# 我最喜欢的写法, 这种表达要清楚点还是
+		open class Super {
+			private val name:String
+			constructor(name: String){
+				this.name = name
+			}
+		}
+		class User : Super{
+			private val name:String
+			private constructor(name:String): super(name) {
+				this.name = name
+			}
+			constructor(): this("Unknown")
+		}
+	
 ------------------------
 抽象类					|
 ------------------------	
