@@ -4,16 +4,18 @@
 	# 创建集合的函数
 		var list = listOf(1,2,3,4)								java.util.Arrays$ArrayList
 			* Arrasys.asList()
+			* 只读
 
 		var list = arrayListOf(1,2,3,4);						ArrayList
 
 		var set = setOf()
 			* Collections.singleton()							java.util.Collections$SingletonSet
+			* 只读
 
 		var set = hashSetOf(1,2,3,4);							HashSet
 	
 		<A,B> mapOf(pairs:Pair<A,B>)							LinkedHashMap
-			
+			* 只读
 
 		var map = hashMapOf(1 to "1", 2 to "2", 3 to "3")		HashMap
 	
@@ -37,6 +39,10 @@
 		filterValues()
 		filterKeys()
 			* map的key 和 value 过滤器
+		
+		filterNotNull()
+			* 过滤掉所有空null元素
+			* 返回的列表不存在 null 元素
 		
 		mapValues()
 		mapKeys()
@@ -80,7 +86,10 @@
 
 				.flatMap { it.authors }.forEach {println(it)} // 把所有的作者信息, 都组合成了一个流
 		
-
+		
+		forEachIndex()
+			* 带下标的遍历, 参数是一个 lambda, 有两个参数: index, element
+				intArray.forEachIndexed { index, element -> println("$index, $element") }
 		
 
 		* 这些函数之间可以链式调用, 跟 Java8的 Stream 一样
@@ -126,3 +135,83 @@
 			* 该对象可以被解构赋值
 				var (key, value) = Pair("name", "KevinBlandy")
 				println("key=$key, value=$value")
+
+	# Kotlin 和  Java 的集合关系
+		Iterable	MutableIterable	  : Iterable<T> 
+		Collection	MutableCollection : Collection<E>, MutableIterable<E>
+		List		MutableList		  : List<E>, MutableCollection<E> 
+		Set			MutableSet		  : Set<E>, MutableCollection<E> 
+
+		ArrayList
+		HashSet
+		
+		* 使用  Mutable... 开头的表示可以修改数据的的接口
+		* Java类 ArrayList,HashSet 都继承了 Kotlin的可变接口
+	
+	# 集合创建函数
+		+----------------------------------------------------------------------------------------------
+		|集合类型	不可变			可变
+		|List		listOf			mutableListOf(),arrayListOf()
+		|Set		setOf			mutableSetOf(),hashSetOf(),linkedSetOf(),sortedSetOf()
+		|Map		mapOf			mutableMapOf(),hashMapOf(),linkedMapOf(),sortedMapOf()
+		+----------------------------------------------------------------------------------------------
+
+
+---------------------
+可变集合和只读集合	 | 
+---------------------
+	# 只读集合接口
+		kotlin.collections.Collection
+	
+	# 可变集合接口(可以添加修改)
+		kotlin.collections.MutableCollection
+
+		* 它继承自接口:kotlin.collections.Collection
+		* 添加了 add / remove 等方法
+	
+	# 把集合转换为数组
+		toTypedArray(): Array<T>
+	
+	
+	# 基本数据类型的集合
+		* 为了表示基本数据类型的数组, Kotlin 提供了N多个独立的类
+		* 每种数据类型都对应一个
+			IntArray
+			BooleanArray
+			...
+		
+		* 这些都会被编译为: int[], char[].... 
+		
+		* 直接创建, 一般在参数指定数组的长度
+		* 因为是基本数据类型, 所以有默认值
+			IntArray(size: Int)
+
+		* 构造函数还可以添加一个 lambda 参数, 用于初始化数组成员
+		* 会把每个角标, 传递给诶 lambda, 并且把返回值当作数组的元素
+			var arr = IntArray(10){i -> i + 1}
+			println(arr.joinToString(",")) // 1,2,3,4,5,6,7,8,9,10
+					
+		
+		* 使用工厂函数创建
+			intArrayOf(1,2,3,4,6)
+		
+		
+		* 包装类型的数据集合, 可以通过 toXxxArray(), 转换为基本数据类型的集合
+		    var array:ArrayList<Int> = arrayListOf(1,2,3)
+			var intArray = array.toIntArray()
+		
+---------------------
+数组				 | 
+---------------------
+	# Kotlin的 Array 就是 数组
+		* 支持使用下标来访问元元素
+			var list:List<String> = arrayListOf("1","3")
+			var value = list[1]
+
+			* 越界会有异常
+		
+	
+	# Array 的构造方法, 可以接收一个数组的大小, 和 lambda 表达式
+		* 数组会使用 lmabda 初始化这个数组, 参数就是当前的角标
+			var letters = Array(10) { i:Int -> (i + 1).toString()}
+			println(letters.joinToString(",")) // 1,2,3,4,5,6,7,8,9,10

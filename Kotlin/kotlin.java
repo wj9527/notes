@@ -13,6 +13,7 @@ Kotlin					|
 		* getter/setter 跟js差不多
 		* raw 字符串, 跟py一样
 		* object, 跟js的字面量对象差不多
+		* with/apply 跟 js 一样
 
 ------------------------
 Kotlin	- 征途			|
