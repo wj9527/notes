@@ -14,6 +14,8 @@
 -XX:MaxPermSize
 -XX:MaxMetaspaceSize
 -XX:MaxDirectMemorySize
+-XX:MinMetaspaceFreeRatio
+-XX:MaxMetaspaceFreeRatio
 
 -XX:+HeapDumpOnOutOfMemoryError
 -XX:+PrintGCDetails

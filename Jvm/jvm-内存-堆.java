@@ -16,7 +16,7 @@
 			
 		
 		* 非堆区
-			- 永久代(Metaspace/PermGen)
+			- 元空间(Metaspace/PermGen)
 			
 			
 			
