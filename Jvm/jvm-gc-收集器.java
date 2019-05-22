@@ -43,14 +43,32 @@ Gc收集器				|
 			* Concurrent Mode Failure 并发执行收集的时候, 不能腾出内存给正在运行的业务线程
 			* 此时会临时启动:Serial Old 收集器来重新对老年代进行垃圾收集
 
+	
 ------------------------
-收集器的参数总结		|
-------------------------	
-	-XX:+SerialGC
-	-XX:+UseParallelGC
-	-XX:+UseParallelOldGC
-	-XX:+UseG1GC
+Gc收集器关系图			|
+------------------------
+	+-------------------------年轻代回收------------------------------------+
+	|[Serial]	  [ParNew]		[Parallel Scavenge]							|
+	|--------------------------老年代回收-------------------------------[G1]|
+	|[Concurrent Mark Sweep(CMS)] [Serial Old(MSC)]	[Parallel Old]			|
+	+-----------------------------------------------------------------------+
+	
+	# 可以组合的GC收集器
+		[Serial] + Concurrent Mark Sweep(CMS)]
 
+		[Serial] + [Serial Old(MSC)]
+
+		[ParNew] + [Concurrent Mark Sweep(CMS)]
+
+		[ParNew] + [Serial Old(MSC)]
+		
+		[Parallel Scavenge] + [Serial Old(MSC)]
+
+		[Parallel Scavenge] + [Parallel Old]
+
+		[Serial Old(MSC)] + [Concurrent Mark Sweep(CMS)]
+
+	
 ------------------------
 Serial					|
 ------------------------
@@ -207,7 +225,7 @@ Concurrent Mark Sweep(CMS)|
 			* 也就是说要留足内存空间给业务线程使用, 因此CMS不能跟其他的收集器一样要等到老年代几乎被完全填满了后再进行收集,因为需要预留空间给并发业务线程使用
 
 			* JDK1.5环境下,默认老年代内存使用了 68%后, 就会触发该收集器, 这个设置比较保守
-			*  如果中老年代增长不是很快, 可以适当的调高参数(0 - 100 百分比), 降低GC次数
+			* 如果中老年代增长不是很快, 可以适当的调高参数(0 - 100 百分比), 降低GC次数
 				-XX:CMSInitiatingOccupancyFraction
 			
 			* 如果CMS运行期间,预留的内存不足以业务线程的使用, 就会出现一次:Concurrent Mode Failure 失败

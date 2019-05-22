@@ -49,8 +49,10 @@ jvm参数	统计			  |
 	* 打印类加载信息
 
 -XX:+TraceClassUnLoading
-	* 打印类卸载 信息
+	* 打印类卸载信息
 
+-XX:+PrintFlagsFinal
+	
 
 
 
