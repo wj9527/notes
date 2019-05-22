@@ -25,6 +25,28 @@ jvm参数	统计			  |
 -XX:MaxDirectMemorySize
 -XX:MinMetaspaceFreeRatio
 -XX:MaxMetaspaceFreeRatio
+
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:+PrintGCDetails
+	* 打印GC日志详情
+-XX:+PrintGCTimeStamps  
+	* 打印GC时间戳
+
+-XX:+TraceClassLoading
+	* 打印类加载信息
+
+-XX:+TraceClassUnLoading
+	* 打印类卸载 信息
+
+
+
+
+
+
+
+
+
+
 -XX:ParallelGCThreads
 	* 设置 ParNew 收集器的收集线程数量
 
@@ -39,10 +61,6 @@ jvm参数	统计			  |
 	* 可以理解为: 垃圾收集时间占总时间的比例
 	* 默认 GCTimeRatio 的值为 99, 那么系统将花费不超过 1 / (1 + 99) = 1% 的时间用于垃圾收集
 
--XX:+HeapDumpOnOutOfMemoryError
--XX:+PrintGCDetails
--XX:+TraceClassLoading
--XX:+TraceClassUnLoading
 
 
 -XX:SurvivorRatio
@@ -64,3 +82,9 @@ jvm参数	统计			  |
 	* 使用自适应GC策略, 只需要把基本的内存数据设置好,例如堆内存大小值
 	* 然后仅仅关注/设置最大停顿时间:-XX:MaxGCPauseMillis 
 	* 或者给JVM设置一个最大吞吐量 -XX:GCTimeRatio 的优化目标, 具体的工作细节就由jvm完成
+
+
+-XX:+SerialGC
+-XX:+UseParallelGC
+-XX:+UseParallelOldGC
+-XX:+UseG1GC
