@@ -26,17 +26,31 @@ jvm参数	统计			  |
 -XX:MinMetaspaceFreeRatio
 -XX:MaxMetaspaceFreeRatio
 
+-Xloggc
+	* 指定日志文件的地址
+		-Xloggc:../logs/gc.log
+
 -XX:+HeapDumpOnOutOfMemoryError
+-XX:+PrintGC
+	*  打印GC
+-XX:+PrintHeapAtGC
+	* 在GC前后都打印日志信息
+
 -XX:+PrintGCDetails
 	* 打印GC日志详情
+
 -XX:+PrintGCTimeStamps  
-	* 打印GC时间戳
+	* 打印GC时间,JVM启动时间
+
+-XX:+PrintGCDateStamps 
+	* 输出GC的时间戳(以日期的形式, 如 2013-05-04T21:53:59.234+0800)
 
 -XX:+TraceClassLoading
 	* 打印类加载信息
 
 -XX:+TraceClassUnLoading
 	* 打印类卸载 信息
+
 
 
 
