@@ -46,7 +46,7 @@
 	
 	-XX:HandlePromotionFailure
 		* 是否允许分配担保失败, 即老年代的剩余空间不足以应付整个新生代所有对象都存活的极端情况
-	* 是否允许担保失败, 担保失败后会执行Full GC
+		* 担保失败后会执行Full GC
 	
 	-XX:ParallelGCThreads
 		* 设置 ParNew 收集器的收集线程数量
