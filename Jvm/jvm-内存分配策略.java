@@ -41,6 +41,11 @@
 			* -HandlePromotionFailure
 				* 执行 Full GC
 		
-			
+		
+		* JDK6之后, HandlePromotionFailure 参数就没用了
+		* 只要老年代连续的内存空间大于新生代所有对象总内存大小空间, 或者大于历次晋升到老年代对象(总大小)的平均大小, 就执行:Minor GC 
+		* 否则, 就执行 Full GC
+	
+		
 
 
