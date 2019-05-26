@@ -28,10 +28,12 @@
 	-XX:PretenureSizeThreshold
 		* 晋升到老年代的对象大小, 设置该参数后, 体积大于该参数的对象, 直接在老年代分配
 		* 默认值是0, 意思是不管多大都是先在Eden中分配内存
+		* 仅仅只对:Serial 和 ParNew 两个收集器有效
 	
 	-XX:MaxTenuringThreshold
 		* 晋升到老年代的对象年龄, 每个对象在坚持过一次:Minor GC 后, 年龄就会 +1
-		* 当超过该值的时候, 就会进入老年代
+		* 当超过该值的时候, 就会进入老年代, 默认为 15 
+		
 
 	-XX:+UseAdaptiveSizePolicy
 		* 打开自适应 GC 策略, 在这种模式下, 其他的一些属性不需要自己去设置, 参数会被自动调整, 以达到在堆大小, 吞吐量和停顿时间之间的平衡点
@@ -44,6 +46,7 @@
 	
 	-XX:HandlePromotionFailure
 		* 是否允许分配担保失败, 即老年代的剩余空间不足以应付整个新生代所有对象都存活的极端情况
+	* 是否允许担保失败, 担保失败后会执行Full GC
 	
 	-XX:ParallelGCThreads
 		* 设置 ParNew 收集器的收集线程数量

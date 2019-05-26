@@ -33,11 +33,9 @@ Gc收集器				|
 			* 从年轻代空间(包括 Eden 和 Survivor 区域)回收内存
 			* Minor GC 都会触发 stop-the-world
 
-		* Major GC
-			* 清理老年代
-
-		* Full GC
-			* 清理整个堆空间—包括年轻代和老年代
+		* Full GC/Major GC
+			* Major GC 指的是, 清理老年代, 一般都会伴随一次 Minor GC(非绝对的), 也就形成了 Full GC
+			* 速度很慢, 比 Minor GC 慢10倍以上
 
 		* Concurrent Mode Failure 
 			* Concurrent Mode Failure 并发执行收集的时候, 不能腾出内存给正在运行的业务线程

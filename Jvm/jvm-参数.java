@@ -9,12 +9,21 @@ jvm参数	统计			  |
 -verbose:gc -Xms20m -Xmx20m -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError
 -verbose:class -XX:+TraceClassLoading -XX:+TraceClassUnloading
 
--Xmn
--Xss
--Xms
 -Xmx
+	* 堆内存最大值
+
+-Xms
+	* 堆初始化大小
+	* 此值可以设置与-Xmx相同, 以避免每次垃圾回收完成后JVM重新分配内存
+
+-Xmn
+	* 新生代内存大小
+-Xss
+	* 每个线程的栈的大小
 
 -Xnoclassgc
+	* 关闭Class的回收
+
 -verbose:gc
 -verbose:class
 
@@ -38,6 +47,7 @@ jvm参数	统计			  |
 
 -XX:+PrintGCDetails
 	* 打印GC日志详情
+	* 并且在JVM退出的时候, 打印各个内存区域的使用情况
 
 -XX:+PrintGCTimeStamps  
 	* 打印GC时间,JVM启动时间
@@ -77,11 +87,27 @@ jvm参数	统计			  |
 	* 可以理解为: 垃圾收集时间占总时间的比例
 	* 默认 GCTimeRatio 的值为 99, 那么系统将花费不超过 1 / (1 + 99) = 1% 的时间用于垃圾收集
 
-
+-XX:NewRatio
+	* 设置新生代和老年代的内存比例
+	* 设置为4 -XX:NewRatio=4, 则年轻代与年老代所占比值为 1 : 4, 年轻代占整个堆栈的1/5
 
 -XX:SurvivorRatio
+	* 设置新生代内存中 Eden 和 Survivor的比例值
+	* 默认 -XX:SurvivorRatio=8 , 也就是说 Eden 占 80%内存
+
 -XX:PretenureSizeThreshold
--XX:HandlePromotionFailure
+	* 晋升到老年代的对象大小, 设置该参数后, 体积大于该参数的对象, 直接在老年代分配
+	* 默认值是0, 意思是不管多大都是先在Eden中分配内存
+	* 仅仅只对:Serial 和 ParNew 两个收集器有效
+
+-XX:MaxTenuringThreshold
+	* 晋升到老年代的对象年龄, 每个对象在坚持过一次:Minor GC 后, 年龄就会 +1
+	* 当超过该值的时候, 就会进入老年代
+	* 当超过该值的时候, 就会进入老年代, 默认为 15 
+
+-XX:+HandlePromotionFailure
+	* 是否允许分配担保失败, 即老年代的剩余空间不足以应付整个新生代所有对象都存活的极端情况
+	* 担保失败后会执行Full GC
 
 -XX:+UseConMarkSweepGC
 	* 使用Concurrent Mark Sweep(CMS)作为老年代收集器
