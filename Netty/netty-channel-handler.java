@@ -13,6 +13,17 @@ ChannelHandler				 |
 		handlerAdded	ChannelHandler 添加到 ChannelPipeline
 		handlerRemoved	ChannelHandler 从 ChannelPipeline 移除
 		exceptionCaught	ChannelPipeline 执行抛出异常
+	
+	# 一些其他的类库
+		SimpleUserEventChannelHandler
+			* 类似于SimpleChannelInboundHandler
+			* 该Handler用于处理指定类型(泛型), 的用户事件handler
+			public class StringEventHandler extends SimpleUserEventChannelHandler<String> {
+				@Override
+				 protected void eventReceived(ChannelHandlerContext ctx, String evt) throws Exception {
+					 System.out.println(evt);
+				 }
+			 }
 
 -----------------------------
 ChannelInboundHandler		 |
