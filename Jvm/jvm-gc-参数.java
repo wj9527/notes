@@ -2,7 +2,7 @@
 收集器的参数总结		|
 ------------------------	
 	-XX:+UseSerialGC
-		* Client 模式的默认值, 开启该模式后使用:Serial + Parallel Old 组合
+		* Client 模式的默认值, 开启该模式后使用:Serial + Serial Old 组合
 		* 新生代串行, 老年串行
 
 	-XX:+UseParNewGC
@@ -17,7 +17,6 @@
 
 	-XX:+UseParallelGC 
 		* 在Server模式下的默认值, 使用:Parallel Scavenge + Serial Old  组合(PS MarkSweep)组合
-		* 新生代并行, 老年代并行
 
 	-XX:+UseParallelOldGC
 		* 使用:Parallel Scavenge + Parallel Old
