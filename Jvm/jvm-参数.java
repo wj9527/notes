@@ -33,8 +33,13 @@ jvm参数	统计			  |
 -XX:MaxPermSize
 -XX:MaxMetaspaceSize
 -XX:MaxDirectMemorySize
+	* 设置最大的堆外内存大小
+
 -XX:MinMetaspaceFreeRatio
 -XX:MaxMetaspaceFreeRatio
+
+-XX:+DisableExplicitGC
+	* 禁止显示的调用GC(System.gc())
 
 -Xloggc
 	* 指定日志文件的地址
