@@ -21,6 +21,9 @@ Thread-方法					|
 			* 返回当前的线程对象
 		sleep(long l);
 			* 当前线程停止 l 毫秒
+		
+		Map<Thread, StackTraceElement[]> getAllStackTraces()
+			* 获取到JVM中所有线程的执行栈
 
 	# 实例方法
 		

@@ -18,6 +18,7 @@ jvm参数	统计			  |
 
 -Xmn
 	* 新生代内存大小
+
 -Xss
 	* 每个线程的栈的大小
 
@@ -40,6 +41,8 @@ jvm参数	统计			  |
 		-Xloggc:../logs/gc.log
 
 -XX:+HeapDumpOnOutOfMemoryError
+	* 在内存溢出的时候, 生成内存快照
+
 -XX:+PrintGC
 	*  打印GC
 -XX:+PrintHeapAtGC
