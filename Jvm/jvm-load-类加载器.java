@@ -14,14 +14,16 @@ ClassLoader		 |
 		
 	
 	# 类加载类型
-		* 启动类加载器 Boostrap ClassLoader
+		* 启动类加载器 Bootstrap ClassLoader
 			* 在 $JAVA_HOME\lib 目录中, 或者通过 -Xbootclasspath 参数指定
 			* 使用 C++ 实现, 是JVM自身的一部分, 不能被程序代码获取到
+			* 查看它的加载目录:System.getProperty("sun.boot.class.path")
 		
 		* 扩展类加载器 Extension ClassLoader
 			* 由: sun.misc.Launcher$ExtClassLoader 实现, 实现接口:ClassLoader
 			* 它负责加载 $JAVA_HOME\lib\ext 目录中的, 或者被 java.ext.dirs 系统变量指定的路径中的所有类库
 			* 开发者可以直接使用扩展类加载器
+			* 查看它的加载目录:System.getProperty("java.ext.dirs")
 
 		* 应用类加载器 Application ClassLoader
 			* 由: sun.misc.Launcher$AppClassLoader 实现, 实现接口:ClassLoader
@@ -33,7 +35,16 @@ ClassLoader		 |
 			
 				Class<?> driverClass = Class.forName("com.mysql.cj.jdbc.Driver");
 				System.out.println(driverClass.getClassLoader()); // sun.misc.Launcher$AppClassLoader@18b4aac2
-					
+		
+		* 程序里面获取各个加载器
+			ClassLoader appClassLoader = ClassLoader.getSystemClassLoader();
+			System.out.println(appClassLoader); //sun.misc.Launcher$AppClassLoader@18b4aac2
+
+			ClassLoader extClassLoader = appClassLoader.getParent();
+			System.out.println(extClassLoader);	//sun.misc.Launcher$ExtClassLoader@cc34f4d
+
+			ClassLoader bootstrapClassLoader = extClassLoader.getParent();
+			System.out.println(bootstrapClassLoader);	// null ,C++实现,用户代码无法获取
 
 		
 	# 双亲委派机制
@@ -141,6 +152,25 @@ ClassLoader		 |
 
 
 
+-----------------
+ClassLoader		 |
+-----------------
+	# 自定义类加载器
+		class MyClassLoader extends ClassLoader {
+			@Override
+			protected Class<?> findClass(String name) throws ClassNotFoundException {
+				// 尝试委托加载
+				Class<?> clazz = super.loadClass(name);
+				if (clazz != null){
+					return clazz;
+				}
+				/**
+				 * TODO 自己尝试加载, 如果不存在, 抛出异常:ClassNotFoundException
+				 * TODO 如果存在则获取到字节数据, 转换为类对象
+				 */
 
-	
-		
+				byte[] data = new byte[1024];
+				clazz = defineClass("", data, 0, data.length);
+				return clazz;
+			}
+		}

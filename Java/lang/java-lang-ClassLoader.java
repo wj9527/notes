@@ -20,14 +20,22 @@ ClassLoader				|
 
 		@Deprecated
 		protected final Class<?> defineClass(byte[] b, int off, int len)
-
 		protected final Class<?> defineClass(String name, byte[] b, int off, int len)
 		protected final Class<?> defineClass(String name, byte[] b, int off, int len,ProtectionDomain protectionDomain)
 		protected final Class<?> defineClass(String name, java.nio.ByteBuffer b, ProtectionDomain protectionDomain)
+			* 根据字节数据创建一个类
+
+		protected Class<?> findClass(String name) 
+			* 空的方法, 自己实现的加载器建议覆写该方法
+
+		protected Class<?> loadClass(String name, boolean resolve)
+		public Class<?> loadClass(String name)
+			* 加载方法
+				name 类方法名称
+				resolve 是否解析初始化类 
+
 
 		protected Package definePackage(String name, String specTitle,String specVersion, String specVendor, String implTitle, String implVersion,String implVendor, URL sealBase)
-		
-		protected Class<?> findClass(String name) 
 		protected String findLibrary(String libname) 
 		protected final Class<?> findLoadedClass(String name)
 		protected URL findResource(String name)
@@ -36,9 +44,7 @@ ClassLoader				|
 		protected Object getClassLoadingLock(String className
 		protected Package getPackage(String name)
 		protected Package[] getPackages()
-		protected Class<?> loadClass(String name, boolean resolve)
-		public Class<?> loadClass(String name)
-
+		
 		protected final void setSigners(Class<?> c, Object[] signers)
 
 
