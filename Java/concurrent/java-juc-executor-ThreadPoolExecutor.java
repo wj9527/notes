@@ -15,13 +15,15 @@ ThreadPoolExecutor			|
 			* 线程池最大线程数量
 
 		* keepAliveTime
-			* 线程空闲后的存活时间
+			* 超出 corePoolSize 后创建的线程, 空闲后的存活时间
+			* 超过时间后就会被回收
 
 		* unit
 			*  存活时间的单位
 
 		* workQueue
 			* 存放任务的阻塞队列
+			* 如果 workQueue 是无界的, 那么永远不会触发 maximumPoolSize, 自然keepAliveTime也就没有了意义
 
 		* threadFactory
 			* 线程池工厂类
@@ -146,6 +148,7 @@ RejectedExecutionHandler   |
 	2, 当线程数大于等于 corePoolSize 并且 workQueue 没有满时, 放入 workQueue 中
 
 	3, 线程数大于等于 corePoolSize 并且当 workQueue 满时, 新任务新建线程运行, 线程总数要小于 maximumPoolSize
+		* 超出了 corePoolSize 而创建的线程, 如果空闲时间超过了:keepAliveTime 就会被回收
 
 	4, 当线程总数等于 maximumPoolSize 并且 workQueue 满了的时候执行 handler 的 rejectedExecution 也就是拒绝策略
 	
