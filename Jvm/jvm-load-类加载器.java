@@ -174,3 +174,6 @@ ClassLoader		 |
 				return clazz;
 			}
 		}
+
+		* 最好不要重写 loadClass 方法, 因为这样容易破坏双亲委托模式
+		* 一般都还可以考虑继承:URLClassLoader
