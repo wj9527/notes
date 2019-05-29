@@ -42,11 +42,19 @@ jvm参数	统计			  |
 	* 禁止显示的调用GC(System.gc())
 
 -Xloggc
-	* 指定日志文件的地址
+	* 指定gc日志文件的地址, 而不是输出到标准输出流
 		-Xloggc:../logs/gc.log
 
 -XX:+HeapDumpOnOutOfMemoryError
 	* 在内存溢出的时候, 生成内存快照
+
+-XX:HeapDumpPath
+	* 在内存溢出的时候, 存储内存快照的文件夹
+		-XX:HeapDumpPath=C:\Users\KevinBlandy\Desktop
+	
+	* 文件名称格式: java_pid[pid].hprof
+		java_pid7560.hprof
+
 
 -XX:+PrintGC
 	*  打印GC
@@ -62,6 +70,11 @@ jvm参数	统计			  |
 
 -XX:+PrintGCDateStamps 
 	* 输出GC的时间戳(以日期的形式, 如 2013-05-04T21:53:59.234+0800)
+
+-Xloggc:
+	* 保存GC信息到指定的文件
+		-Xloggc:C:\Users\KevinBlandy\Desktop\gc.log
+	* 如果文件已经存在, 会被覆写
 
 -XX:+TraceClassLoading
 	* 打印类加载信息
