@@ -121,6 +121,12 @@ Garbage	Collection     |
 			* 查看类的加载/卸载信息
 				-verbose:class -XX:+TraceClassLoading -XX:+TraceClassUnloading
 
+----------------------------
+关于直接内存的回收			|
+----------------------------
+	# Java堆GC的时候, 会顺带的执行直接内存的GC
+	# 或者在Java中手动的执行 System.gc() 来触发
+	
 
 ------------------------------------
 垃圾收集算法-标记清除法				|
