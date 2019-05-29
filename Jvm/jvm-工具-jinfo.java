@@ -16,7 +16,7 @@ jinfo					|
 			* 例: 查看 -XX:CICompilerCount 的值
 				jinfo -flag CICompilerCount 3900
 		
-		--flags
+		-flags
 			* 查看指定JVM选项的所有值(如果没设置, 就是默认值了)
 		
 		-sysprops

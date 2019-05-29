@@ -32,6 +32,7 @@ ClassLoader		 |
 			
 			* 它负责加载用户类路径(CLASS_PATH)上所指定的类库
 			* 如果程序中没自定义过类加载器, 一般情况下这个就是默认的类加载器
+			* 查看它的加载目录:System.getProperty("java.class.path")
 			
 				Class<?> driverClass = Class.forName("com.mysql.cj.jdbc.Driver");
 				System.out.println(driverClass.getClassLoader()); // sun.misc.Launcher$AppClassLoader@18b4aac2
@@ -155,6 +156,23 @@ ClassLoader		 |
 -----------------
 ClassLoader		 |
 -----------------
+	# 类加载器的几个关键方法
+		protected final Class<?> defineClass(String name, byte[] b, int off, int len)
+		protected final Class<?> defineClass(String name, byte[] b, int off, int len,ProtectionDomain protectionDomain)
+		protected final Class<?> defineClass(String name, java.nio.ByteBuffer b, ProtectionDomain protectionDomain)
+			* 用于把字节互数据解析为JVM能够识别的Class对象
+			* 该方法只是会生成对象, 但是还没 resolve
+
+		protected Class<?> findClass(String name) 
+			* 自定义加载器, 一般覆写父类的 findClass 方法来完成类的加载
+
+		
+		protected Class<?> loadClass(String name, boolean resolve)
+		public Class<?> loadClass(String name)
+
+		protected final void resolveClass(Class<?> c) 
+			* 解析初始化类, 就是链接
+
 	# 自定义类加载器
 		class MyClassLoader extends ClassLoader {
 			@Override
@@ -176,4 +194,8 @@ ClassLoader		 |
 		}
 
 		* 最好不要重写 loadClass 方法, 因为这样容易破坏双亲委托模式
-		* 一般都还可以考虑继承:URLClassLoader
+	
+	# 一般都还可以考虑继承:URLClassLoader
+		* 因为它帮我们完成了大部分的加载工作
+
+		
