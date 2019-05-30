@@ -22,25 +22,6 @@ Gc收集器				|
 		* 它们之间没有绝对的最完美的收集器,(如果有, 也不用实现那么多出来)
 	
 	
-	# 可能涉及到的名词解释
-		* 并行
-			* 多个GC收集器线程在同时的工作, 但是应用线程处于终止状态
-
-		* 并发
-			* 应用线程和GC收集线程同时(因为CPU核心数的问题,可能会交替执行)执行
-		
-		* Minor GC
-			* 从年轻代空间(包括 Eden 和 Survivor 区域)回收内存
-			* Minor GC 都会触发 stop-the-world
-
-		* Full GC/Major GC
-			* Major GC 指的是, 清理老年代, 一般都会伴随一次 Minor GC(非绝对的), 也就形成了 Full GC
-			* 速度很慢, 比 Minor GC 慢10倍以上
-
-		* Concurrent Mode Failure 
-			* Concurrent Mode Failure 并发执行收集的时候, 不能腾出内存给正在运行的业务线程
-			* 此时会临时启动:Serial Old 收集器来重新对老年代进行垃圾收集
-
 	
 ------------------------
 Gc收集器关系图			|
