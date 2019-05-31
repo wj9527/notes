@@ -29,6 +29,10 @@ G1 收集器			|
 			* G1除了追求低停顿后, 还能建立可预测的停顿时间模型,
 			* 能够让使用者明确指定在一个长度M毫秒的时间段内, GC收集时间不能超过N毫秒
 			* 这几乎已经是 Java(RTSJ) 实时垃圾收集器的特征
+	
+	# 参考
+		https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html#garbage_first_garbage_collection
+		https://liuzhengyang.github.io/2017/06/07/garbage-first-collector/
 
 --------------------
 G1 内存模型			|
