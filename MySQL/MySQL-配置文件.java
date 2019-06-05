@@ -3,6 +3,9 @@
 character_set_server=utf8
 collation_server=utf8_chinese_ci
 
+# 查询缓冲区的大小,单位是字节, 默认 128mb
+innodb_buffer_pool_size = 268435456
+
 [mysqld]
 
 [mysqld_safe]

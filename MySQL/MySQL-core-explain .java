@@ -60,13 +60,17 @@ Explain			|
 					* 则该子查询的第一个SELECT关键字代表的那个查询的select_type就是DEPENDENT SUBQUERY
 
 				DEPENDENT UNION
+					* 在包含UNION或者UNION ALL的大查询中, 如果各个小查询都依赖于外层查询的话, 那除了最左边的那个小查询之外, 其余的小查询的select_type的值就是DEPENDENT UNION
+
 				DERIVED
+					* 对于采用物化的方式执行的包含派生表的查询, 该派生表对应的子查询的select_type就是DERIVED
+
 				MATERIALIZED
+					* 当查询优化器在执行包含子查询的语句时, 选择将子查询物化之后与外层查询进行连接查询时, 该子查询对应的select_type属性就是MATERIALIZED
+
 				UNCACHEABLE 
-				SUBQUERY
 				UNCACHEABLE UNION
 			
-		
 		table
 			* 检索中使用到的表, 如果使用了别名, 则显示别名, 出现在前边的表表示驱动表, 出现在后边的表表示被驱动表
 		
@@ -77,34 +81,58 @@ Explain			|
 			* 针对单表的访问方法
 			* 枚举值
 				system
+					* 当表中只有一条记录并且该表使用的存储引擎的统计数据是精确的
+					* 比如MyISAM, Memory, 那么对该表的访问方法就是system
+					
 				const
+					* 根据主键或者唯一二级索引列与常数进行等值匹配时, 对单表的访问方法就是const
+
 				eq_ref
+					* 在连接查询时, 如果被驱动表是通过主键或者唯一二级索引列等值匹配的方式进行访问的(如果该主键或者唯一二级索引是联合索引的话, 所有的索引列都必须进行等值比较)
+					* 则对该被驱动表的访问方法就是eq_ref
+
 				ref
+					* 当通过普通的二级索引列与常量进行等值匹配时来查询某个表, 那么对该表的访问方法就可能是ref
+
 				fulltext
+					* 全文索引
+
 				ref_or_null
+					* 当对普通二级索引进行等值匹配查询, 该索引列的值也可以是NULL值时, 那么对该表的访问方法就可能是ref_or_null
+
 				index_merge
+
 				unique_subquery
+					* unique_subquery是针对在一些包含IN子查询的查询语句中,
+					* 如果查询优化器决定将IN子查询转换为EXISTS子查询,而且子查询可以使用到主键进行等值匹配的话, 那么该子查询执行计划的type列的值就是unique_subquery
+
 				index_subquery
+					* index_subquery与unique_subquery类似, 只不过访问子查询中的表时使用的是普通的索引
 				range
+					* 使用索引获取某些范围区间的记录, 那么就可能使用到range访问方法
 				index
+					* 以使用索引覆盖, 但需要扫描全部的索引记录时, 该表的访问方法就是index
+
 				ALL
+					* 全表扫描
 
 		
 
 		possible_keys
-			* 可能用到的索引
+			* 表示在某个查询语句中, 对某个表执行单表查询时可能用到的索引有哪些
+			* possible_keys列中的值并不是越多越好, 可能使用的索引越多, 查询优化器计算查询成本时就得花费更长时间, 所以如果可以的话, 尽量删除那些用不到的索引
 		
 		key
-			* 实际上使用的索引
+			* 表示实际用到的索引有哪些
 		
 		key_len
-			* 实际使用到的索引长度
+			* 表示当优化器决定使用某个索引执行查询时, 该索引记录的最大长度
 		
 		ref
 			* 当使用索引列等值查询时, 与索引列进行等值匹配的对象信息
 		
 		rows
-			* 预估的需要读取的记录条数
+			* 预计需要扫描的行数
 		
 		filtered
 			* 某个表经过搜索条件过滤后剩余记录条数的百分比
@@ -114,4 +142,10 @@ Explain			|
 		
 
 		
-		
+	# Json格式的执行计划
+		EXPLAIN FORMAT=JSON [select]
+
+		* 以JSON的形式显示结果
+	
+	# 使用EXPLAIN语句查看了某个查询的执行计划后, 紧接着还可以使用SHOW WARNINGS语句查看与这个查询的执行计划有关的一些扩展信息
+		SHOW WARNINGS;
