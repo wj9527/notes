@@ -4,16 +4,16 @@
 
 let publisher = (function(){
 	let queue = {}
-	function sub(event, listner){
+	function sub(event, listener){
 		if (!queue[event]){
 			queue[event] = []
 		}
-		queue[event].push(listner)
+		queue[event].push(listener)
 	}
 	function push(event, resource){
 		if (queue[event]){
-			for (let listner of queue[event]){
-				listner(resource)
+			for (let listener of queue[event]){
+				listener(resource)
 			}
 		}
 	}
