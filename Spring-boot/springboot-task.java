@@ -24,3 +24,6 @@ task					|
 				<level value="info" />
 			</logger>
 	
+	
+	# 默认使用线程:scheduling 去执行
+		* 可以使用 @Async 注解, 使用自定义的线程池去执行
