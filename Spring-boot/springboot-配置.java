@@ -170,6 +170,41 @@ Spring-Boot 外部配置		|
 		* 可以通过设置来禁用bootstrap
 			spring.cloud.bootstrap.enabled=false
 	
+
+------------------------
+多环境配置				|
+------------------------
+	# application.properties属性文件会被SpringBoot应用自动加载, 而且有一个加载顺序
+		1. 当前目录的/config子目录下
+		2. 当前目录下
+		3. classpath目录的/config子目录下
+		4. classpath目录下
+	
+	# 通过Environment属性 spring.config.name 可以自定义applicaiton.properties文件的名称
+		ConfigFileApplicationListener.CONFIG_NAME_PROPERTY = "spring.config.name";
+	
+	# 通过Environment属性 spring.config.location 自定义 applicaiton.properties 文件的位置
+		ConfigFileApplicationListener.CONFIG_LOCATION_PROPERTY = "spring.config.location";
+
+	# 通过Environment属性 spring.config.additional-location 自定义 applicaiton.properties 文件的位置
+		ConfigFileApplicationListener.CONFIG_ADDITIONAL_LOCATION_PROPERTY="spring.config.additional-location";
+
+		* spring.config.location 会覆盖默认的搜索路径
+		* 它只是追加, 追加的位置是在默认的位置之前
+	
+	# 这几个配置要在应用启用之前配置, 所以需要将其配置到'系统环境变量'或者'系统参数'或者'命令行参数'中优先读取
+
+
+	# 指定配置文件的文件夹
+		* 生产环境,和开发环境的配置文件不一定非要存储在项目中
+		* 可以存储在本地磁盘, 使用配置设置
+			ConfigFileApplicationListener.CONFIG_ADDITIONAL_LOCATION_PROPERTY="spring.config.additional-location";
+		
+		* 可以在代码里面设置, 如果有多个值, 使用逗号分隔
+			System.setProperty("spring.config.additional-location", "file:${user.home}/config/,file:${user.home}/config-dev/");
+		
+		* 支持使用 spel 表达式
+
 	
 
 ------------------------
