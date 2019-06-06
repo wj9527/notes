@@ -7,7 +7,7 @@ freemarker						  |
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency> 
 	
-	# 配置项
+	# 配置项:FreeMarkerAutoConfiguration
 spring:
   freemarker:
     # 是否开启，默认:true
@@ -37,7 +37,7 @@ spring:
     allow-request-override: true
     # session的属性是否可以覆盖controller的model的同名项。默认 false,如果发生同名属性覆盖的情况会抛出异常
     allow-session-override: false
-    # 默认:true
+    # 是否要暴露spring提供的宏，默认:true: /org/springframework/web/servlet/view/freemarker/spring.ftl
     expose-spring-macro-helpers: true
     # 模板引擎加载目录，默认:classpath:/templates/
     template-loader-path:
@@ -63,6 +63,7 @@ spring:
     expose-request-attributes: true
 	# 暴露session域中的属性
     expose-session-attributes: true
+	expose-spring-macro-helpers: true
     check-template-location: true
     template-loader-path:
       - classpath:/templates/

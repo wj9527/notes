@@ -120,6 +120,12 @@
 	c
 		* 返回计算机能看懂的数据
 	
+	int
+		* 转换为int数据
+	
+	long
+		* 转换为long属性
+	
 	string 
 		* 转换为字符串
 		* 可以通过 number_format 和 locale 设置的默认格式
