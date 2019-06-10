@@ -15,9 +15,15 @@ Lock-属性					|
 ----------------------------
 Lock-方法					|
 ----------------------------
-	lock();
+	void lock();
 		* 上锁
+	
+	void lockInterruptibly() throws InterruptedException;
+
+	boolean tryLock();
+	boolean tryLock(long time, TimeUnit unit) throws InterruptedException;
 
 	unlock();
 		* 锁释放
-
+	
+	Condition newCondition();
