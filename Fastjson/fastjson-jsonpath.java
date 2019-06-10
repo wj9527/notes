@@ -83,6 +83,3 @@ JSONPath		 |
 	['key0','key1']				多个属性访问, 例如$['id','name']
 	..							deepScan属性访问,例如$..name
 	*							对象的所有属性, 例如$.leader.*
-
-
-	
