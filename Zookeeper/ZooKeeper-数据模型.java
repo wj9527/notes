@@ -50,7 +50,16 @@ Zookeeper数据模型		|
 
 		* 永久节点
 			- 该节点的只有在客户端主动执行删除的时候才会被删除
-			
+		
+		* 容器节点(3.5特性)
+			- 该节点, 会在最后一个字节点被删除的时候, 自动的删除
+				* 许多组件(例如, 锁, 领导等)要求创建父节点, 参与者在该父节点下创建顺序节点, 参与者完成后, 将删除其节点
+			- 当容器节点的最后一个孩子节点被删除之后, 容器节点将被标注并在一段时间后删除。 
+			- 由于容器节点的该特性,当在容器节点下创建一个子节点时, 应该始终准备捕获 KeeperException.NoNodeException, 如果捕获了该异常, 则需要重新创建容器节点
+
+		* TTL节点(3.5新特性, 还未实现???)
+			- 目前还没仔细看官网的资料, 猜测就是一个节点在经过多少时间没访问后, 就会被删除
+		
 		* 节点的类型在创建的时候就已经确定,并且不能被改变
 	
 	# 序列化特性
@@ -59,15 +68,33 @@ Zookeeper数据模型		|
 		* 格式为: "%10d",前面空的补0: 0000000001
 		
 	
-	# 根据上面两个特性,于是存在了4种节点
-		PERSISTENT
-			* 永久节点
-		PERSISTENT_SEQUENTIAL
-			* 永久节点序列化
+	# 根据的几个特性,于是存在了多种组合种节点
+
 		EPHEMERAL
 			* 临时节点
+
 		EPHEMERAL_SEQUENTIAL
 			* 临时节点序列化
+		
+		PERSISTENT
+			* 永久节点
+
+		PERSISTENT_SEQUENTIAL
+			* 永久节点序列化
+		
+		PERSISTENT_WITH_TTL
+			* 带TTL(time-to-live，存活时间)的永久节点
+			* 节点在TTL时间之内没有得到更新并且没有孩子节点, 就会被自动删除
+		
+		PERSISTENT_SEQUENTIAL_WITH_TTL
+			* 带TTL(time-to-live, 存活时间)和序列化的永久节点,
+			* 节点在TTL时间之内没有得到更新并且没有孩子节点, 就会被自动删除
+		
+		CONTAINER
+			* 容器节点, 用于Leader, Lock等特殊用途,
+			* 当容器节点不存在任何子节点时容器将成为服务器在将来某个时候删除的候选节点
+			* '容器节点不能是临时的, 也不能是序列化的'
+				-c cannot be combined with -s or -e. Containers cannot be ephemeral or sequential.
 	
 ------------------------
 Zookeeper节点属性		|
