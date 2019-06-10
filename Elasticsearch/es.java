@@ -18,37 +18,8 @@ Elasticsearch			 	 |
 Elasticsearch-目录结构		 |
 -----------------------------
 	bin
-		|-x-pack
-			|-certgen.bat
-			|-.bat
-			|-certutil.bat
-			|-migrate.bat
-			|-saml-metadata.bat
-			|-setup-passwords.bat
-			|-sql-cli.bat
-			|-syskeygen.bat
-			|-users.bat
-		|-elasticsearch-sql-cli-6.3.0.jar
-		|-elasticsearch.bat
-		|-elasticsearch-certgen.bat
-		|-elasticsearch-certutil.bat
-		|-elasticsearch-croneval.bat
-		|-elasticsearch-env.bat
-		|-elasticsearch-keystore.bat
-		|-elasticsearch-migrate.bat
-		|-elasticsearch-plugin.bat
-		|-elasticsearch-saml-metadata.bat
-		|-elasticsearch-service.bat
-		|-elasticsearch-setup-passwords.bat
-		|-elasticsearch-sql-cli.bat
-		|-elasticsearch-syskeygen.bat
-		|-elasticsearch-translog.bat
-		|-elasticsearch-users.bat
-		|-x-pack-env.bat
-		|-x-pack-security-env.bat
-		|-x-pack-watcher-env.bat
+		|-elasticsearch
 	config
-		|-elasticsearch.keystore
 		|-elasticsearch.yml
 		|-jvm.options
 		|-log4j2.properties
@@ -56,34 +27,36 @@ Elasticsearch-目录结构		 |
 		|-roles.yml
 		|-users
 		|-users_roles
-	data
+	jdk
 	lib
 	logs
 	modules
 	plugins
 
 -----------------------------
-Elasticsearch-启动JSON		 |
+Elasticsearch-启动			 |
 -----------------------------
-	# http://127.0.0.1:9200/
-
-	{
-		"name" : "b9yxBCU",								//节点名称
-		"cluster_name" : "elasticsearch",				//集群名称
-		"cluster_uuid" : "V3_diOPVS7m85S_dmijzfw",		//集群uuid
-		"version" : {
-			"number" : "6.3.0",							//版本号
-			"build_flavor" : "default",				
-			"build_type" : "zip",		
-			"build_hash" : "424e937"
-			"build_date" : "2018-06-11T23:38:03.357887Z",
-			"build_snapshot" : false,
-			"lucene_version" : "7.3.1",
-			"minimum_wire_compatibility_version" : "5.6.0",
-			"minimum_index_compatibility_version" : "5.0.0"
-		},
-		"tagline" : "You Know, for Search"
-	}
+	# 执行脚本
+		bin/elasticsearch
+	
+	# 访问:http://127.0.0.1:9200/
+		{
+			"name": "KEVINBLANDY",
+			"cluster_name": "elaticsearch",
+			"cluster_uuid": "wCaZ0Z6rSmmFpFjQFSWjDw",
+			"version": {
+			"number": "7.1.1",
+			"build_flavor": "default",
+			"build_type": "zip",
+			"build_hash": "7a013de",
+			"build_date": "2019-05-23T14:04:00.380842Z",
+			"build_snapshot": false,
+			"lucene_version": "8.0.0",
+			"minimum_wire_compatibility_version": "6.8.0",
+			"minimum_index_compatibility_version": "6.0.0-beta1"
+			},
+			"tagline": "You Know, for Search"
+		}
 
 -----------------------------
 Elasticsearch-核心概念		 |
@@ -102,6 +75,7 @@ Elasticsearch-核心概念		 |
 	Type
 		# 类型,每个索引里都可以有一个或者多个type,type是index中的另一个逻辑分类
 		# 一个type下的document都有相同的field,比如博客系统,有一个索引,可以定义用户数据type,博客数据type,评论数据type
+		# 在7里面已经被沉底的删除了
 	
 	Documen
 		# 文档,es种的最小数据单元,一个document可以是一条客户数据,一条商品分类数据
@@ -130,4 +104,3 @@ Elasticsearch-核心概念		 |
 -----------------------------
 Elasticsearch-征途			 |
 -----------------------------
-倒排索引详解
