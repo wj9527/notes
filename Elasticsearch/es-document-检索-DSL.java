@@ -10,26 +10,30 @@ DSL	query					  |
 	# 匹配所有
 		{"query": { "match_all": {} }}
 	
-	# 精准匹配指定的字段名称
+	# 短语检索(全文检索)
 		{
-		  "query": { "match": { "<field>": <value> } }
+		  "query": { "match": { "<field>": <keyworlds> } }
 		}
 
-		* 如果允许匹配多个字段, 那么 value 可以有多个, 使用逗号分隔
+		* 如果允许匹配多个字段, 那么 keyworlds 可以有多个, 使用逗号分隔
 			{
 			  "query":{"match": {"name":"Litch Rocck"}} //name = "Litch" or name = "Rocck"
 			}
-		
-		* 如果参数里面确实有空格,需要精准匹配那么需要使用:match_phrase
+	
+	# 精准检索
+		* 必须是全部符合key=value,才符合条件
 			{
 			  "query":{"match_phrase": {"name":"Litch Rocck"}} //name = "Litch Rocck"
 			}
+	
+	# HTTP协议规定GET没有请求体,一般也不允许GET请求带有body,但GET更加适合于检索场景
+		* 如果遇到不支持的场景,也可以使用POST方法 +  _search 端点
+			POST /<index>/_search
 
 ------------------------------
 DSL	bool					  |
 ------------------------------
 	# 把多个条件使用布尔逻辑将较小的查询组成更大的查询
-	# filter
 	# and 关系用:must
 		{
 		  "query": {
@@ -88,6 +92,32 @@ DSL	bool					  |
 		}
 		* 该 bool 返回一个判断条件:name = "Litch" and 24 != 24
 
+------------------------------
+DSL	filter					  |
+------------------------------
+	# 过滤, 使用查询来限制将与其他子句匹配的文档, 而不会更改计算分数的方式
+		{
+		  "query":{
+			"bool":{
+			  "must":{
+				"match_all":{}
+			  },
+			  "filter":{
+				"range":{
+				  "<field>":{
+					"<operation>": <value>
+				  }
+				}
+			  }
+			}
+		  } 
+		}
+
+		* operation 可以有:
+			gtlt
+			le
+			ge
+			ne
 
 ------------------------------
 DSL	分页					  |

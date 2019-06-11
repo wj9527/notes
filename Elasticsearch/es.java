@@ -11,6 +11,8 @@ Elasticsearch			 	 |
 	
 	# ²Î¿¼
 		https://blog.csdn.net/laoyang360/article/details/79293493
+		http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html
+		http://cwiki.apachecn.org/pages/viewpage.action?pageId=4260364
 
 	
 

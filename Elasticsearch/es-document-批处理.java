@@ -4,6 +4,8 @@ bulk批量增删改				|
 	# _bulk 请求对json的语法,要求相当严格
 		* 每个json串儿,不能换行,只能放在同一行
 		* 两个json串儿之间要换一行
+		* 最后一行数据必须以换行符结尾
+		* Content-Type标头应设置为application/x-ndjson
 
 	# create,update操作,需要俩json串
 		* 第一个json指定操作,以及元数据

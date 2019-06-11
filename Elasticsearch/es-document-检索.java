@@ -36,6 +36,7 @@
 
 		* 如果不添加检索参数q,则会匹配出所有的记录
 		* 结果默认只会检索10条记录
+	
 
 -------------------
 query参数		   |
@@ -62,6 +63,24 @@ query参数		   |
 			* 由协调节点进行排序,取出最符合条件的数据,按照分页返回
 			* 这个过程耗费带宽,内存,网络计算,这个就是deep paging问题,我们的开发尽量要避免这种情
 
+	
+	# _source 数据过滤参数:
+		_source
+			* 检索数据是否要携带 _source 数据, 值可以是 true/false
+			* 也可以通过该参数来指定要检索的字段
+				GET /goods/_doc/1?_source=author.name,author.age
+			
+		_source_includes
+		_source_excludes
+			* 过滤/包含指定的 _source 数据
+		
+		* 支持有多个值, 使用否号分割
+		* 支持通配符:*
+				GET /goods/_doc/1?_source=*.name
+	
+	# stored_fields
+		//TODO
+	
 
 -------------------
 元数据			   |

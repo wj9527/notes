@@ -1,4 +1,12 @@
 ----------------------------
+集群						|
+----------------------------
+	# 集群节点的发现
+		https://www.elastic.co/guide/en/elasticsearch/reference/current/discovery-settings.html	
+	
+	# 
+
+----------------------------
 集群状态					|
 ----------------------------
 	# 请求
