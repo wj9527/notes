@@ -22,7 +22,8 @@
 		* Master Shard和Replica Shard不能在同一个节点, 如果节点宕机, 主从都不能使用, 不能容错
 		* Master Shard宕机, 某个Replica Shard会自动成为Master Shard
 	
-
+	# 集群节点之间的数据同步是多线程异步的
+		* Replica节点在更新的时候, 使用_version乐观锁来保证数据的一致性
 
 
 ----------------------------
