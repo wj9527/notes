@@ -11,8 +11,12 @@ Elasticsearch			 	 |
 	
 	# 参考
 		https://blog.csdn.net/laoyang360/article/details/79293493
+		https://github.com/laoyang360/deep_elasticsearch
 		http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html
 		http://cwiki.apachecn.org/pages/viewpage.action?pageId=4260364
+
+		https://elastic.blog.csdn.net/
+		https://elasticsearch.cn/
 
 	
 
@@ -106,3 +110,7 @@ Elasticsearch-核心概念		 |
 -----------------------------
 Elasticsearch-征途			 |
 -----------------------------
+倒排索引
+打分机制
+全文检索原理
+分词原理

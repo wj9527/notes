@@ -1,18 +1,32 @@
 -------------------
 基本的根据条件检索 |
 -------------------
+	# 可以一次性检索多个index
+		GET /<index>,<index>/_search
+	
+	# 可以一次性检索所有的index
+		GET /_all/_search
+	
+-------------------
+基本的根据条件检索 |
+-------------------
 	# 请求
 		GET /<index>/_search?q=<query>
-			
 		
 		{
 		  "took" : 2,
+				* 执行搜索的时间（以毫秒为单位）
 		  "timed_out" : false,
+				* 搜索是否超时
 		  "_shards" : {
 			"total" : 1,
+				* 搜索了多少个分片
 			"successful" : 1,
+				* 搜索成功的分片数量
 			"skipped" : 0,
+				* 跳过的分片数量
 			"failed" : 0
+				* 搜索失败的分片数量
 		  },
 		  "hits" : {
 			"total" : {
@@ -34,9 +48,6 @@
 		  }
 		}
 
-		* 如果不添加检索参数q,则会匹配出所有的记录
-		* 结果默认只会检索10条记录
-	
 
 -------------------
 query参数		   |
@@ -54,8 +65,8 @@ query参数		   |
 		* 如果有多个, 使用逗号分隔:sort=age:asc,_id:desc
 	
 	# 分页参数:size & from
-		* size,每页显示的记录数量
-		* from,从第几条数据开始检索,0表示第一条
+		* size,每页显示的记录数量, 默认10
+		* from,从第几条数据开始检索,默认0(表示第一条)
 	
 		* deep paging问题
 			* deep paging,简单来说,就是搜索得特别深,比如1000000条数据,每页显示10条,此时需要检索最后一页的数据
@@ -81,37 +92,18 @@ query参数		   |
 	# stored_fields
 		//TODO
 	
-
--------------------
-元数据			   |
--------------------
-
-	took
-		* 执行搜索的时间（以毫秒为单位）
-	timed_out 
-		* 搜索是否超时
+	# timeout 超时参数
+		* 默认无超时
 	
-		_shards.id
-			* 搜索了多少个分片
-		_shards.successful
-			* 搜索成功的分片数量
-		_shards.skipped
-			* 跳过的分片数量
-		_shards.failed
-			* 搜索失败的分片数量
-
-		hits.total.value
-			* 在包含的搜索条件匹配的文档总数的信息的对象
-			* 总命中数的值
-
-		hits.total.relation
-			* hits.total.value是否是确切的命中计数
-			* 在这种情况下它等于"eq"或总命中数的下限(大于或等于), 在这种情况下它等于gte
-
-		hits.hits[x].sort
-			* 对结果进行排序键
-		
-		hits.hits[x]._source
-			* 实际的搜索结果
-
-	
+	# df
+	# analyzer
+	# analyze_wildcard
+	# batched_reduce_size
+	# default_operator
+	# lenient
+	# explain
+	# track_scores
+	# track_total_hits
+	# terminate_after
+	# search_type
+	# allow_partial_search_results

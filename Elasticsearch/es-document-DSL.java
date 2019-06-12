@@ -4,13 +4,17 @@ DSL							  |
 	# 文档
 		https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
 	
+	# HTTP协议规定GET没有请求体,一般也不允许GET请求带有body,但GET更加适合于检索场景
+		* 如果遇到不支持的场景,也可以使用POST方法 +  _search 端点
+			POST /<index>/_search
+	
 ------------------------------
 DSL	query					  |
 ------------------------------
 	# 匹配所有
 		{"query": { "match_all": {} }}
 	
-	# 短语检索(全文检索)
+	# 全文检索
 		{
 		  "query": { "match": { "<field>": <keyworlds> } }
 		}
@@ -19,16 +23,15 @@ DSL	query					  |
 			{
 			  "query":{"match": {"name":"Litch Rocck"}} //name = "Litch" or name = "Rocck"
 			}
-	
+		* 会把检索的内容进行分词, 然后去倒排索引中检索, 只要是索引可以匹配到任何一个词, 就可以算作结果
+
 	# 精准检索
 		* 必须是全部符合key=value,才符合条件
 			{
 			  "query":{"match_phrase": {"name":"Litch Rocck"}} //name = "Litch Rocck"
 			}
 	
-	# HTTP协议规定GET没有请求体,一般也不允许GET请求带有body,但GET更加适合于检索场景
-		* 如果遇到不支持的场景,也可以使用POST方法 +  _search 端点
-			POST /<index>/_search
+
 
 ------------------------------
 DSL	bool					  |
@@ -132,7 +135,7 @@ DSL	排序					  |
 		{"sort": { "<field>": { "order": "<desc/asc>" } }}
 
 ------------------------------
-DSL	限制结果字				  |
+DSL	限制结果字段			  |
 ------------------------------
 	# 使用 _source
 		{
@@ -141,5 +144,3 @@ DSL	限制结果字				  |
 
 		* 通过 _source 指定n多个要检索的字段, 字段支持对象导航
 
-
-	

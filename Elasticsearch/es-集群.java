@@ -1,63 +1,39 @@
 ----------------------------
 集群						|
 ----------------------------
-	# 集群节点的发现
+	# 文档
 		https://www.elastic.co/guide/en/elasticsearch/reference/current/discovery-settings.html	
 	
-	# 
-
-----------------------------
-集群状态					|
-----------------------------
-	# 请求
-		GET /_cat/health?
+	# ES隐藏了分布式系统中的很多复杂特性
+		* 数据分片机制, 数据会被分片为多个shard, 分布式的存储在不同的节点
+		* 集群发现机制, 可以有新节点的加入和退出
+		* shard负载均衡, shard 要平均的分配到不同的节点
+		* shard的重新分配, 在节点增减的时候, 会自动的均衡每个节点的 shard
 	
-		epoch      timestamp cluster      status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
-		1560149716 06:55:16  elaticsearch green           1         1      2   2    0    0        0             0                  -                100.0%
+	# Shard
+		* Primary Shard, 分布式存储
+			* 一个doc肯定存在于一个 Primary Shard
+			* Primary Shard在创建的时候就已经确定, 不能修改, 默认有5个Primary Shard
 
-		epoch
-		timestamp
-		cluster
-			* 集群名称
+		* Replica Shard, 副本
+			* 每个Primary Shard 默认有1个 Replica Shard, 可以index创建后随意的修改
+		
+		* Master Shard负责处理读写请求, Replica Shard仅仅负责读请求
+		* Master Shard和Replica Shard不能在同一个节点, 如果节点宕机, 主从都不能使用, 不能容错
+		* Master Shard宕机, 某个Replica Shard会自动成为Master Shard
+	
 
-		status
-			* 表示集群的状态, 使用英文的颜色词儿表示
-				Green	:一切都很好
-				Yellow	:所有数据都可用,但尚未分配一些副本
-				Red		:某些数据由于某种原因不可用
-		
-		node.total
-			* 集群中的节点数量
-		
-		node.data
-		shards 
-		pri
-		relo
-		init
-		unassign
-		pending_tasks
-		max_task_wait_time
-		active_shards_percent
+
 
 ----------------------------
-查看集群中的节点信息		|
+相关的端点					|
 ----------------------------
-	# 请求
-		GET /_cat/health?
+	GET /_cluster/health
+	GET /_cat/health?
+	GET /_cat/nodes?v
 
-		ip        heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
-		127.0.0.1           12          51   8                          mdi       *      KEVINBLANDY
 
-		ip
-		heap.percent
-		ram.percent
-		cpu
-		load_1m
-		load_5m
-		load_15m
-		node.role
-		master
-		name
+
 
 
 
