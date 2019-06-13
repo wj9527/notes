@@ -2,10 +2,14 @@
 基本的根据条件检索 |
 -------------------
 	# 可以一次性检索多个index
-		GET /<index>,<index>/_search
+		* 直接检索多个index
+			GET /<index>,<index>/_search
 	
-	# 可以一次性检索所有的index
-		GET /_all/_search
+		* 一次性检索所有的index
+			GET /_all/_search
+	
+		* 通过 * 来匹配多个index
+			GET /<prefix>*,*<sufix>/_search
 	
 -------------------
 基本的根据条件检索 |

@@ -109,6 +109,9 @@ document 路由						|
 ---------------------------
 活动分片				   |
 ---------------------------
+	# 文档
+		https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html
+
 	# 执行增删改的时候, 可以通过分片的活跃度来保证写一致性
 	# ElasticSearch 5.0之后使用 wait_for_active_shards 代替了consistency 来指定写一致性级别
 		POST /<index>/_doc/<id>?wait_for_active_shards=1
