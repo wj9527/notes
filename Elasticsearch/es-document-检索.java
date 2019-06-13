@@ -57,11 +57,20 @@
 query参数		   |
 -------------------
 	# 过滤参数:q
-		* 
+		q=* 
 			* 检索所有, q=*
 
-		<field>:<value>
-			* 精准匹配, q=name:KevinBlandy
+		q=<value>
+			* 任何字段, 只要包含该值就满足条件
+			* 搜索的是_all field
+
+		q=<field>:<value>
+			* 全文检索, 只要是指定字段中有关键字的都OK, :q=name:KevinBlandy
+			* 有多个匹配value值, 使用逗号分隔
+		
+		q=<field>:<+/-><value>
+			* + 表示必须包含, - 表示必须不包含: q=-author.name:Litch 
+		
 	
 	# 排序擦数:sort
 		sort=<field>:<asc/desc>
