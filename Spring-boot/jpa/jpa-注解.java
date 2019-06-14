@@ -21,6 +21,9 @@ JPA的注解			|
 		* name	Sring类型的属性,用于指定检索名,例如 "User.findByName"
 		* query	String类书的属性,用于HQL,例如 "FROM User WHERE name = :name"
 		* 在该 Entity 的接口中定义的 findByName 方法,就是通过 query 属性的HQL来进行检索的
+	
+	@QuerydslPredicate
+		
 
 --------------------
 Entity注解			|
