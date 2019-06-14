@@ -121,6 +121,18 @@ db_database = 'demo'
 db_charset = 'utf8mb4'
 db_cursorclass = pymysql.cursors.DictCursor
 
+'''
+config = {
+    'host':'127.0.0.1',
+    'port' : 3306,
+    'user' : 'root',
+    'passwd' : 'root',
+    'database' : 'springcloud',
+    'charset' : 'utf8mb4',
+    'cursorclass' : pymysql.cursors.DictCursor
+}
+'''
+
 # 创建连接对象
 conn = pymysql.connect(host=db_host,port=db_port,user=db_user,passwd=db_pass,db=db_database,charset=db_charset,cursorclass=db_cursorclass)
 

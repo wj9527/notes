@@ -29,4 +29,36 @@
 	Witespace analyzer
 	Language analyzer
 
-	
+---------------------
+执行分词指令		 |
+---------------------
+	# 请求
+		GET /<index>/_analyze
+
+		{
+		  "analyzer": "<analyzer>",
+		  "text":"<text>"
+		}
+
+		* index 非必须, 如果指定的话, 就是使用指定index的mapping来进行
+		* analyzer 指定要使用的分词器, 以及要进行分词的文本(text)
+
+		{
+		  "tokens" : [
+			{
+			  "token" : "hello", //拆分的一个词儿
+			  "start_offset" : 0, // 该词在文本中的位置(从哪儿字符串开始到哪个字符串)
+			  "end_offset" : 5,
+			  "type" : "<ALPHANUM>",
+			  "position" : 0  // 该词语在文本中的位置(拆出来的第几个词儿)
+			},
+			{
+			  "token" : "world",
+			  "start_offset" : 6,
+			  "end_offset" : 11,
+			  "type" : "<ALPHANUM>",
+			  "position" : 1
+			}
+		  ]
+		}
+

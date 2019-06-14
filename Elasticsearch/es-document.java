@@ -170,3 +170,41 @@ _all metadata		|
 	# 对该字符串建立索引, 如果搜索的时候, 没有指定搜索的field, 那么默认就是搜索 _all field
 	
 
+--------------------
+数据结构的改变		|
+--------------------
+	# 一个json的doc, 会发生一下数据结构的改变
+		* 会变成列式存储, 都会被转换为一列
+
+	# 对象的改变
+		{
+			"name":"Java入门到入土",
+			"author":{
+				"name":"KevinBlandy",
+				"age":23
+			}
+		}
+
+		{
+			"name":"Java入门到入土",
+			"author.name":"KevinBlandy",
+			"author.age":"KevinBlandy"
+		}
+
+	# 数组的改变
+		{
+			"name":"KevinBlandy",
+			"skill":[{
+				"name":"Java",
+				"proficiency": 90
+			},{
+				"name":"Python",
+				"proficiency": 80
+			}]
+		}
+
+		{
+			"name":"KevinBlandy",
+			"skill.name":["Java", "Python"],
+			"skill.proficiency":[90, 80]
+		}
