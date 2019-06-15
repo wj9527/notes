@@ -179,6 +179,9 @@ Spring-Boot 外部配置		|
 		2. 当前目录下
 		3. classpath目录的/config子目录下
 		4. classpath目录下
+
+		* private static final String DEFAULT_SEARCH_LOCATIONS = "classpath:/,classpath:/config/,file:./,file:./config/";
+		* 列表高的配置, 覆盖列表低的配置
 	
 	# 通过Environment属性 spring.config.name 可以自定义applicaiton.properties文件的名称
 		ConfigFileApplicationListener.CONFIG_NAME_PROPERTY = "spring.config.name";
@@ -201,10 +204,15 @@ Spring-Boot 外部配置		|
 			ConfigFileApplicationListener.CONFIG_ADDITIONAL_LOCATION_PROPERTY="spring.config.additional-location";
 		
 		* 可以在代码里面设置, 如果有多个值, 使用逗号分隔
+			String configLocation = "file:${user.home}" + File.separator + "config" + File.separator;
+			System.setProperty(ConfigFileApplicationListener.CONFIG_ADDITIONAL_LOCATION_PROPERTY, configLocation);
+
+
 			System.setProperty("spring.config.additional-location", "file:${user.home}/config/,file:${user.home}/config-dev/");
+
 		
 		* 支持使用 spel 表达式
-
+		* 建议项目工程中不要存储生产环境的相关配置, 生产环境的配置, 通过 'spring.config.additional-location' 制定存储在生产服务器的磁盘上
 	
 
 ------------------------
