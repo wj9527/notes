@@ -17,8 +17,8 @@ spring:
   # ª˘±æ≈‰÷√
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    driverClassName: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
     username: root
     password: root
   
@@ -59,13 +59,6 @@ spring:
       health-check-properties: 
 	  sealed: 
 	
-	# ¥˙¬Î
-		@Bean
-		@ConfigurationProperties(prefix = "spring.datasource")
-		public DataSource dataSource(){
-			HikariDataSource hikariDataSource = new HikariDataSource();
-			return hikariDataSource;
-		}
 
 ------------------------
 ±‡¬Î≈‰÷√				|
