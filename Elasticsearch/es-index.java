@@ -7,6 +7,9 @@ index	- ¥¥Ω®		   |
 -----------------------
 	# «Î«Û
 		PUT /<index> 
+		{
+			...config
+		}
 	
 		{
 			"acknowledged" : true,

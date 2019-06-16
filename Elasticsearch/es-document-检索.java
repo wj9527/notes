@@ -120,3 +120,8 @@ query参数		   |
 	# terminate_after
 	# search_type
 	# allow_partial_search_results
+	# scroll
+		* 滚动搜索(有点像迭代器的感觉)
+		* 每次仅仅响应一批数据, 直到响应完毕所有
+		* 第一次检索的时候, 会生成快照, 在响应完毕之前, doc的修改不可见(可重复读的感觉)
+
