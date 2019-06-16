@@ -28,7 +28,36 @@ Entity注解			|
 --------------------
 	@Entity
 	@Table
+		String name() default "";
+		String catalog() default "";
+
+		String schema() default "";
+
+		UniqueConstraint[] uniqueConstraints() default {};
+
+		Index[] indexes() default {};
+
 	@Column
+		String name() default "";
+
+		boolean unique() default false;
+
+		boolean nullable() default true;
+
+		boolean insertable() default true;
+
+		boolean updatable() default true;
+
+		String columnDefinition() default "";
+
+		String table() default "";
+
+		int length() default 255;
+
+		int precision() default 0;
+
+		int scale() default 0;
+
 	@Id
 	@GeneratedValue
 		* 标识ID字段,并且指定其生成策略

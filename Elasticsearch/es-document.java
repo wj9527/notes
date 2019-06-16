@@ -208,3 +208,35 @@ _all metadata		|
 			"skill.name":["Java", "Python"],
 			"skill.proficiency":[90, 80]
 		}
+
+
+--------------------------------------------
+对field索引两次来解决字符串排序的问题		|
+--------------------------------------------
+	# 对 String field 进行排序, 往往结果不准确, 因为分词后是是多个单词, 再次进行排序的时候, 结果不是我们想要的
+	# 通常的解决方案是, 把一个 String field 建立两次索引, 一个分词, 用于搜索, 一个不分词, 用于排序
+
+		{
+			"title":{
+				"type":"string",
+				"analyzer":"english",
+				"fields": {
+					"raw": {
+						"type": "string",
+						"index": "not_analyzed",
+						"fielddata": true
+					}
+				}
+			}
+		}
+
+		GET /_search
+		{
+			"query":{
+				"match":{
+					"title":"Hello"
+				}
+			},
+			"sort": "title.raw"
+		}
+	
