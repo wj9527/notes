@@ -40,7 +40,10 @@
 		* 设置连接密码
 	
 	maxmemory 
-		* 设置内容淘汰策略
+		* 设置最大允许使用的内存
+	
+	maxmemory-policy
+		* 设置内存淘汰策略
 	
 	save [time] [keys]
 		* RDB持久化设置

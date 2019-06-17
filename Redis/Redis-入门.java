@@ -180,7 +180,7 @@ Redis-配置文件			|
 内存淘汰机制			|
 -----------------------
 	# 内存淘汰机制
-		* 配置文件中的配置选项:maxmemory 
+		* 配置文件中的配置选项:maxmemory-policy 
 		* 枚举值值
 			volatile-lru
 				* 从已设置过期时间的数据集(server.db[i].expires)中挑选最近最少使用的数据淘汰
