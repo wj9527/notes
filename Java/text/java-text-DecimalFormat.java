@@ -1,7 +1,7 @@
 ------------------------
 DecimalFormat			|
 ------------------------
-	# 强大的数字格式化工具
+	# 强大的数字格式化工具, 继承:NumberFormat
 	# DecimalFormat 类主要靠 # 和 0 两种占位符号来指定数字长度。
 	# 0 表示如果位数不足则以 0 填充，# 表示只要有可能就把数字拉上这个位置。
 
@@ -9,7 +9,7 @@ DecimalFormat			|
 ------------------------
 demo					|
 ------------------------
-		doublepi=3.1415927;　//圆周率  
+		double pi=3.1415927;　//圆周率  
 　　　　//取一位整数  
 　　　　System.out.println(new DecimalFormat("0").format(pi));　　　//3  
 
@@ -25,7 +25,7 @@ demo					|
 　　　　//以百分比方式计数，并取两位小数  
 　　　　System.out.println(new DecimalFormat("#.##%").format(pi));　//314.16%  
 　　  
-　　　　longc=299792458;　　//光速  
+		long c = 299792458;　　//光速  
 
 　　　　//显示为科学计数法，并取五位小数  
 　　　　System.out.println(new DecimalFormat("#.#####E0").format(c));　//2.99792E8  
@@ -41,3 +41,5 @@ demo					|
 
 	# DecimalFormat 类主要靠 # 和 0 两种占位符号来指定数字长度。
 	# 0 表示如果位数不足则以 0 填充，# 表示只要有可能就把数字拉上这个位置。
+
+	
