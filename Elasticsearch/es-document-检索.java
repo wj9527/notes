@@ -125,3 +125,13 @@ query参数		   |
 		* 每次仅仅响应一批数据, 直到响应完毕所有
 		* 第一次检索的时候, 会生成快照, 在响应完毕之前, doc的修改不可见(可重复读的感觉)
 
+	
+	# filter_path
+		* 可以过滤整个JSON结果的字段, 包括元数据信息
+		* 支持对象导航
+			GET /<index>/_search?filter_path=hits.hits  // 仅仅显示hits信息
+				
+
+	# error_trace
+		* true/false, 是否在异常的时候, 响应堆栈信息
+	

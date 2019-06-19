@@ -180,3 +180,82 @@ document.addEventListener('dragend', function (event) {
     event.preventDefault();
 });
 
+----------------------------------------
+序列化表单为form字符串					|
+----------------------------------------
+function serializationForm(form){
+	
+	const urlSearchParams = new URLSearchParams();
+	const formNodes = ['INPUT', 'TEXTAREA', 'SELECT']
+	const queue = [...form.childNodes]
+
+	while (queue.length > 0){
+		const node = queue.shift()
+		if(formNodes.includes(node.nodeName)){
+			let name = node.getAttribute('name');
+			let value = null;
+			if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio'){
+				if (node.checked){
+					value = node.value;
+				}else{
+					continue;
+				}
+			}else {
+				value = node.value;
+			}
+
+			urlSearchParams.append(name, value);
+		}else {
+			for(let subNode of node.childNodes){
+				queue.push(subNode);
+			}
+		}
+	}
+	return urlSearchParams.toString();
+}
+
+----------------------------------------
+序列化表单为json字符串					|
+----------------------------------------
+function serializationJSON(form){
+
+    const requestBody = {};
+    const formNodes = ['INPUT', 'TEXTAREA', 'SELECT']
+    const queue = [...form.childNodes]
+
+    while (queue.length > 0){
+        const node = queue.shift()
+        if(formNodes.includes(node.nodeName)){
+            let name = node.getAttribute('name');
+            let value = null;
+            if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio'){
+                if (node.checked){
+                    value = node.value;
+                }else{
+                    continue;
+                }
+            }else {
+                value = node.value;
+            }
+
+            value = encodeURIComponent(value);
+
+            if (name in requestBody){
+                const existsValue = requestBody[name]
+                if (Array.isArray(existsValue)){
+                    existsValue.push(value)
+                }else {
+                    const arrValue = [existsValue, value]
+                    requestBody[name] = arrValue;
+                }
+            }else {
+                requestBody[name] = value;
+            }
+        }else {
+            for(let subNode of node.childNodes){
+                queue.push(subNode);
+            }
+        }
+    }
+    return JSON.stringify(requestBody);
+}

@@ -13,7 +13,7 @@ Elasticsearch			 	 |
 		https://blog.csdn.net/laoyang360/article/details/79293493
 		https://github.com/laoyang360/deep_elasticsearch
 		http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html
-		http://cwiki.apachecn.org/pages/viewpage.action?pageId=4260364
+		https://elasticsearch.apachecn.org/#/
 
 		https://elastic.blog.csdn.net/
 		https://elasticsearch.cn/

@@ -79,7 +79,8 @@ DSL	query					  |
 			}
 		
 		* operation ©иртсп:
-			gtlt
+			gt
+			lt
 			le
 			ge
 			ne
