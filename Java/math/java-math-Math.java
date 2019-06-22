@@ -38,7 +38,12 @@ Math				|
 		
 		double sqrt(double a);
 			* a的平方根
+
+		int round(float a)
+			* 四舍五入
 		
+		double floor(double a)
+			* 向下取整
 
 	# 静态属性
 		E
