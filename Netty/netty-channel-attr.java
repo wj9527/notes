@@ -5,7 +5,7 @@ attr					 |
 		Constant
 			|-AbstractConstant
 				|-AttributeKey
-		
+		ConstantPool
 		AttributeMap
 			|-DefaultAttributeMap
 				|-AbstractChannel
@@ -15,6 +15,24 @@ attr					 |
 		
 		Attribute
 	
+	# ConstantPool
+		* 维护了一个 ConcurrentHashMap 
+			private final ConcurrentMap<String, T> constants = PlatformDependent.newConcurrentHashMap();
+		
+	
+	# AttributeMap
+		* 一个抽象的接口, Channel 实现了
+			<T> Attribute<T> attr(AttributeKey<T> key);
+			<T> boolean hasAttr(AttributeKey<T> key);
+	
+	# Attribute
+		* 表示Value的接口
+			AttributeKey<T> key();
+			T get();
+			void set(T value);
+			T getAndSet(T value);
+			T setIfAbsent(T value);
+			boolean compareAndSet(T oldValue, T newValue);
 
 	# ChannelHandlerContext 和 Channel 的 attr 没有区别
 		Channel.attr() == ChannelHandlerContext.attr()
@@ -45,19 +63,3 @@ AttributeKey			|
 		* 底层还是调用 valueOf(String name),
 		* 在 firstNameComponent 和 secondNameComponent  之间添加了 '#' 字符串(命名空间的感觉)
 
--------------------------
-Attribute				 |
--------------------------
-	# 表示Value
-
-	AttributeKey<T> key();
-
-    T get();
-
-    void set(T value);
-
-    T getAndSet(T value);
-
-    T setIfAbsent(T value);
-
-    boolean compareAndSet(T oldValue, T newValue);
