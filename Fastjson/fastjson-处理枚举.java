@@ -3,27 +3,7 @@
 ----------------------------
 	# 默认的枚举处理是直接把枚举的名称序列化为字符串
 
-
-----------------------------
-把枚举转换为一个对象		|
-----------------------------
-	
-		//创建序列化配置
-		SerializeConfig serializeConfig = new SerializeConfig();
-		//使用该 api 来指定枚举类.class,可变参数
-		serializeConfig.configEnumAsJavaBean(PreservationModel.Category.class);
 		
-
-		//创建fastjson配置
-		FastJsonConfig fastJsonConfig = new FastJsonConfig();
-		fastJsonConfig.setSerializeConfig(serializeConfig);
-		
-		PreservationModel preservationModel = new PreservationModel();
-		preservationModel.setCategory(PreservationModel.Category.BASIS);
-		preservationModel.setId(1);
-		
-		//在序列化对象时候,设置fastjsonConfig或者serializeConfig
-		System.out.println(JSON.toJSONString(preservationModel, serializeConfig));
 	
 
 --------------------------------
@@ -135,4 +115,41 @@
 		* 在枚举字段上声明注解
 			@JSONField(serializeUsing = EnumsSerialize.class,deserializeUsing = EnumDeserialize.class)
 
+
+--------------------------------
+序列化枚举为ordinal				|
+--------------------------------
+	# 全局设置
+		JSON.DEFAULT_GENERATE_FEATURE &= ~SerializerFeature.WriteEnumUsingName.mask;
+	
+	# 特殊设置
+		// 临时计算出配置
+		int serializerFeatures = JSON.DEFAULT_GENERATE_FEATURE & ~SerializerFeature.WriteEnumUsingName.mask;
+		String text = JSON.toJSONString(object, serializerFeatures);
+
+--------------------------------
+Enum当做JavaBean序列化			|
+--------------------------------
+	# 在枚举类标识注解
+		@JSONType(serializeEnumAsJavaBean = true)
+	
+	# 代码配置
+		//创建序列化配置
+		SerializeConfig serializeConfig = new SerializeConfig();
+		//使用该 api 来指定枚举类.class,可变参数，仅仅对这一次的序列化有效
+		serializeConfig.configEnumAsJavaBean(PreservationModel.Category.class);
+
+		// 也可以全局设置，所有默认的序列化都有效
+		// SerializeConfig.globalInstance.configEnumAsJavaBean(OrderType.class);
 		
+
+		//创建fastjson配置
+		FastJsonConfig fastJsonConfig = new FastJsonConfig();
+		fastJsonConfig.setSerializeConfig(serializeConfig);
+		
+		PreservationModel preservationModel = new PreservationModel();
+		preservationModel.setCategory(PreservationModel.Category.BASIS);
+		preservationModel.setId(1);
+		
+		//在序列化对象时候,设置fastjsonConfig或者serializeConfig
+		System.out.println(JSON.toJSONString(preservationModel, serializeConfig));

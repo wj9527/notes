@@ -66,7 +66,7 @@ FastJsonConfig
 			* Date使用ISO8601格式输出，默认为false	
 		
 		SerializerFeature.WriteMapNullValue	
-			* 是否输出值为null的字段,默认为false	
+			* 是否输出值为null的普通字段和object字段,默认为false
 		SerializerFeature.WriteNullListAsEmpty	
 			* List字段如果为null,输出为[],而非null	
 		SerializerFeature.WriteNullStringAsEmpty	
