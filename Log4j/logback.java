@@ -10,7 +10,27 @@ logback					|
 		* logback-classic	完整实现SLF4J API使你可以很方便地更换成其它日志系统如log4j或JDK14 Logging。是log4j的一个 改良版本。
 		* logback-access	访问模块与Servlet容器集成提供通过Http来访问日志的功能。
 	
-	# maven 依赖
+	# 普通项目
+		* 依赖
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-access</artifactId>
+			</dependency>
+		* classpath下添加配置文件: logback.xml
+
+	# spring 项目
 		<!-- logger begin-->
 		<!-- 该依赖会替换spring的日志实现 -->
 		<dependency>

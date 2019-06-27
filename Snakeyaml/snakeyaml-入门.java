@@ -8,6 +8,9 @@ Snakeyaml						|
 			<version>1.23</version>
 		</dependency>
 	
+	# Õ¯’æ
+		https://bitbucket.org/asomov/snakeyaml/wiki/Home
+	
 	# »Î√≈
 		Yaml yaml = new Yaml();
 		InputStream inputStream = Main.class.getResourceAsStream("/application.yml");
