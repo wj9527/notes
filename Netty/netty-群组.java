@@ -63,8 +63,12 @@ DefaultChannelGroup			  |
 		name
 			* 群组的名称
 		stayClosed
-			* 是否可以关闭此组
-			
+			* 如果该值为 true, 那么在当前群组被关闭的时候, 新加入的 channel 会被执行 close
+				if (stayClosed && closed) {
+					channel.close();
+				}
+				return added;
+					
 
 	# 可以使用 GlobalEventExecutor.INSTANCE 来创建
 		ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
