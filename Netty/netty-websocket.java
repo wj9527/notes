@@ -47,9 +47,16 @@ WebSocketServerProtocolHandler		 |
 			* 是否允许扩展
 		maxFrameSize
 			* 消息帧最大字节数
+
 		allowMaskMismatch
+			* 是否要接受未实现标准规范的数据帧
+
 		checkStartsWith
+			* 如果为true, 则使用startWith 检测 uri, 否则使用quals
+			* 如果为false, 则必须要求uri跟websocket一摸一样
+			
 		dropPongFrames
+			* 忽略pong信息
 	
 	# 它会把websocket的数据编码为 WebSocketFrame 对象,交给下一个Handler去处理
 
