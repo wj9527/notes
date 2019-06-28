@@ -53,6 +53,8 @@ Redis-整合单机版					|
 			stringRedisTemplate.opsForValue();		//获取操作简单k-v的api
 			stringRedisTemplate.opsForSet();		//获取操作set的api
 	
+	# 非阻塞的客户端
+		ReactiveRedisTemplate
 		
 			
 ------------------------------------
