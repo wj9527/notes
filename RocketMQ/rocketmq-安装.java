@@ -14,4 +14,10 @@
 				* 参数指定绑定的网卡和端口
 				-n 0.0.0.0:9876
 	
-			
+		
+		mqbroker.cmd -n localhost:9876 autoCreateTopicEnable=true
+	
+		
+		# 启动异常修改脚本:runbroker.cmd
+
+			set CLASSPATH=.;%BASE_DIR%conf;"%CLASSPATH%"
