@@ -15,22 +15,67 @@ websocket						 |
 		WebSocketServerProtocolHandshakeHandler(WebSocket协议的握手实现)
 		WebSocketServerHandshaker(握手处理器)
 		WebSocketServerHandshakerFactory(生成握手器的工厂类)
-
+		WebSocketDecoderConfig(解码相关的配置)
+		WebSocketCloseStatus(WebSocket的状态码封装)
+		
+			
 	# WebSocketFrame
 		* ws消息类型的抽象类,提供了N个实现,表示不同的消息类型
 		* 看子类,类名就知道是啥消息的实现了
 	
 	# WebSocketServerCompressionHandler
 		* 提供了对websocket消息的压缩
+	
+	# WebSocketDecoderConfig
+		* websocket解码相关的配置
+		* 实用Builder模式构建
+			WebSocketDecoderConfig webSocketDecoderConfig = WebSocketDecoderConfig.newBuilder()
+				.allowExtensions(true)				 // 是否允许扩展
+				.allowMaskMismatch(false)			// 是否要接受未实现标准规范的数据帧
+				.closeOnProtocolViolation(true)		// 是否在协议错误(冲突)的情况下关闭(默认true)
+				.expectMaskedFrames(true)			// 服务端必须设置为true(如果是客户端, 必须设置为false)
+				.maxFramePayloadLength(1024)		// 最大的消息体体积
+				.build();
+			
+			private int maxFramePayloadLength = 65536;
+			private boolean expectMaskedFrames = true;
+			private boolean allowMaskMismatch;
+			private boolean allowExtensions;
+			private boolean closeOnProtocolViolation = true;
 
+			
+	# WebSocketCloseStatus
+		* websocket状态码的封装
+			private final int statusCode;			// 状态码
+			private final String reasonText;		// 原因
+		    private String text;					// this.text = text = code() + " " + reasonText();
+
+		* 构造函数
+			public WebSocketCloseStatus(int statusCode, String reasonText)
+		
+		* 静态方法
+			public static WebSocketCloseStatus valueOf(int code)
+				* 根据code获取现有的静态实现
+				* 如果不存在, 则创建:
+					return new WebSocketCloseStatus(code, "Close status #" + code);
+				
+			public static boolean isValidStatusCode(int code)
+				* 判断指定的状态码是否是一个不合法的状态码
+
+
+		* 提供了N多的的静态实现
+			public static final WebSocketCloseStatus NORMAL_CLOSURE = new WebSocketCloseStatus(1000, "Bye");
+			...
+		
 
 -------------------------------------
 WebSocketServerProtocolHandler		 |
 -------------------------------------
 	# 最重的一个封装,完成了N多的工作
 	# 负责处理:握手,控制帧(ping/pong/close),文本消息,二进制消息....
-	# 构造函数
+	# 构造函数(版本迭代, 构造函数的形参也许不正确了, 但是形参列表的始终正确)
 		WebSocketServerProtocolHandler(String websocketPath)
+		WebSocketServerProtocolHandler(String websocketPath, long handshakeTimeoutMillis)
 		WebSocketServerProtocolHandler(String websocketPath, boolean checkStartsWith)
 		WebSocketServerProtocolHandler(String websocketPath, String subprotocols)
 		WebSocketServerProtocolHandler(String websocketPath, String subprotocols,boolean allowExtensions) 
@@ -41,10 +86,13 @@ WebSocketServerProtocolHandler		 |
 		
 		websocketPath
 			* 提供服务的uri
+
 		subprotocols
 			* 支持的子协议列表
+
 		allowExtensions
 			* 是否允许扩展
+
 		maxFrameSize
 			* 消息帧最大字节数
 
@@ -57,8 +105,18 @@ WebSocketServerProtocolHandler		 |
 			
 		dropPongFrames
 			* 忽略pong信息
+		
+		handshakeTimeoutMillis
+			* websocket握手超时,
+			* 默认: private static final long DEFAULT_HANDSHAKE_TIMEOUT_MS = 10000L;
+		
+		decoderConfig
+			* WebSocketDecoderConfig 类
+			* WebSocket解码相关的配置
 	
 	# 它会把websocket的数据编码为 WebSocketFrame 对象,交给下一个Handler去处理
+
+		
 
 	
 ---------------------------------
