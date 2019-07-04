@@ -66,3 +66,14 @@ BigDecimal-实例方法		|
 		* 格式化小数
 			newScale		表示保留的小数位数
 			roundingMode	舍入模式
+	
+
+	String toString();
+		* 有必要时使用科学计数法
+
+	String toPlainString();
+		* 不使用任何指数
+
+	String toEngineeringString();
+		* 有必要时使用工程计数法
+		* 工程记数法是一种工程计算中经常使用的记录数字的方法, 与科学技术法类似. 但要求10的幂必须是3的倍数
