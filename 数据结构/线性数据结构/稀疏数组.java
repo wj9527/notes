@@ -72,50 +72,70 @@
 --------------------
 python实现			|
 --------------------
-	def compressed_array(arr):
-		# 有效的数据量
-		count = 0
-		for i in arr:
-			for x in i:
-				if x != 0:
-					count += 1
+def compressed_array(arr):
+    # 有效的数据量
+    count = 0
+    for i in arr:
+        for x in i:
+            if x != 0:
+                count += 1
 
-		# 列数
-		col = len(arr)
+    # 列数
+    col = len(arr)
 
-		# 行数
-		row = len(arr[0])
+    # 行数
+    row = len(arr[0])
 
-		ret = []
+    # 稀疏数组
+    ret = []
 
-		# 创建稀疏数组
-		for i in range(0, count + 1):
-			ret.append([])
+    # 初始化元信息
+    meta_info = [col, row, count]
+    ret.append(meta_info)
 
-		# 初始化元信息
-		ret[0].append(col)
-		ret[0].append(row)
-		ret[0].append(count)
+    # 遍历有效数据
+    for i, v in enumerate(arr):
+        for x, z in enumerate(v):
+            if z != 0:
+                data_info = [i, x, z]
+                ret.append(data_info)
 
-		# 再次遍历原始数组
-		index = 1
+    return ret
 
-		for i, v in enumerate(arr):
-			for x, z in enumerate(v):
-				if z != 0:
-					# 遍历到了有效数据
-					ret[index].append(i)
-					ret[index].append(x)
-					ret[index].append(z)
-					index += 1
 
-		return ret
+def decompression_array(arr):
 
-	ret = compressed_array([[ 0,  0,  0,  22, 0,  0, 15],
-			[ 0, 11,  0,  0,  0, 17,  0],
-			[ 0,  0,  0, -6,  0,  0,  0],
-			[ 0,  0,  0,  0,  0, 39,  0],
-			[91,  0,  0,  0,  0,  0,  0],
-			[ 0,  0, 28,  0,  0,  0,  0]])
+    ret = []
 
-	print(ret)
+    # 行数
+    col = arr[0][0]
+
+    # 列数
+    row = arr[0][1]
+
+    for i in range(col):
+        # 初始化子数组
+        sub_arr = [0 for i in range(row)]
+        ret.append(sub_arr)
+
+    for i, sub_arr in enumerate(arr):
+        # 忽略第一行元数据
+        if i != 0:
+            ret[sub_arr[0]][sub_arr[1]] = sub_arr[2]
+
+    return ret
+
+
+result = compressed_array([[0, 0, 0, 22, 0, 0, 15],
+                        [0, 11, 0, 0, 0, 17, 0],
+                        [0, 0, 0, -6, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 39, 0],
+                        [91, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 28, 0, 0, 0, 0]])
+
+print(result)
+
+
+result = decompression_array(result)
+
+print(result)
