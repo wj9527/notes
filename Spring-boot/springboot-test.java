@@ -23,8 +23,8 @@ springboot的单元测试		|
 
 
 		@RunWith(SpringRunner.class)
-		// 设置@SpringBootApplication 类
-		@SpringBootTest(classes = JpaApplication.class)
+		// 设置@SpringBootApplication 类，并且设置随机端口监听
+		@SpringBootTest(classes = JpaApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 		public class JpaTest {
 
 			// 可以使用IOC
