@@ -101,6 +101,7 @@ FastJsonConfig
 		SerializerFeature.BeanToArray	
 			* 将对象转为array输出	
 		SerializerFeature.WriteNonStringKeyAsString		
+			* 如果key不为String 则转换为String 比如Map的key为Integer
 		SerializerFeature.NotWriteDefaultValue		
 		SerializerFeature.BrowserSecure		
 		SerializerFeature.IgnoreNonFieldGetter		

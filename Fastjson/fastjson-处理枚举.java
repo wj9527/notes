@@ -123,8 +123,12 @@
 		JSON.DEFAULT_GENERATE_FEATURE &= ~SerializerFeature.WriteEnumUsingName.mask;
 	
 	# 特殊设置
-		// 临时计算出配置
+		// 序列化枚举为 ordinal
 		int serializerFeatures = JSON.DEFAULT_GENERATE_FEATURE & ~SerializerFeature.WriteEnumUsingName.mask;
+		String text = JSON.toJSONString(object, serializerFeatures);
+
+		// 序列化枚举为 name
+		int serializerFeatures = JSON.DEFAULT_GENERATE_FEATURE | SerializerFeature.WriteEnumUsingName.mask;
 		String text = JSON.toJSONString(object, serializerFeatures);
 
 --------------------------------
