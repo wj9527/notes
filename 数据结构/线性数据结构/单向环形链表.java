@@ -24,12 +24,11 @@ Python 实现				|
 
 
 	class Joseph(object):
-		# 初始化
 		def __init__(self):
 			self.first = None
 			self.current = None
+			self.size = 0
 
-		# 添加节点
 		def add(self, value):
 			node = Node(value, None)
 			if self.first is None:
@@ -41,31 +40,61 @@ Python 实现				|
 				node.next = self.first
 				self.current = node
 
-		# 遍历节点
+			self.size += 1
+
+
 		def forEach(self, handler):
 			if self.first is None:
 				return
 			temp = self.first
 			while True:
 				handler(temp.value)
-				# 遍历完毕
 				if temp.next == self.first:
 					break
 				temp = temp.next
 
+		def joseph(self, start, count):
+			if self.first is None:
+				return
+
+			# 让last指向最后一个节点
+			last = self.first
+			while True:
+				if last.next == self.first:
+					break
+				last = last.next
+
+			for x in range(start - 1):
+				self.first = self.first.next
+				last = last.next
+
+			while True:
+				if last == self.first:
+					break
+				for x in range(count - 1):
+					self.first = self.first.next
+					last = last.next
+
+				# 出队
+				print(self.first.value)
+				self.size -= 1
+
+				self.first = self.first.next
+				last.next = self.first
+
+			# 留下的最后一个
+			print('last = %s' % self.first.value)
+
 
 	queue = Joseph()
 
-	queue.add(1)
-	queue.add(2)
-	queue.add(3)
-	queue.add(4)
-	queue.add(5)
-	queue.add(6)
-	queue.add(7)
+	for i in range(1, 6):
+		queue.add(i)
 
+	queue.joseph(1, 2)
 
-	queue.forEach(lambda x:print(x))
+	print(queue.size)
+
 
 
 
