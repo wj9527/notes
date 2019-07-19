@@ -84,6 +84,10 @@ response						|
 		@app.route('/')
 		def index():
 			return redirect(url_for('login'))
+		
+		* url_for的第一个参数是处理方法的名称, 不是url
+		* 还可以有第二个参数，用来添加重定向的url参数
+			return redirect(url_for('name_view', id = user_id))
 	
 	* 也可以重定向到站外连接:return redirect('http://javaweb.io')
 
