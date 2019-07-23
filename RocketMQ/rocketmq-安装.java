@@ -25,16 +25,16 @@
 
 
 ## 默认端口
-mqnamesrv:9876
-mqbroker - mqnamesrv:10909
-mqbroker - client:10911
+mqnamesrv <-> client:9876
+mqbroker <-> mqnamesrv:10909
+mqbroker <-> client:10911
 
 ## 启动
-### 启动namesrc
+### 启动namesrc，绑定网卡和端口
 nohup ./bin/mqnamesrv -n "0.0.0.0:9876" > /dev/null &
 
 ### 修改配置文件，设置本机的ip可以被生产者，消费者访问到
 echo 'brokerIP1=192.168.0.3' > conf/broker.properties
 
-### 启动broker 
+### 启动broker，并且指定配置文件
 nohup ./bin/mqbroker -n localhost:9876 -c conf/broker.properties autoCreateTopicEnable=true > /dev/null &

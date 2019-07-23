@@ -20,7 +20,17 @@ visualvm			 |
 	　　};
 
 	# 服务端启动 jstatd 
-		jstatd -J-Djava.security.policy=jstatd.all.policy  -p 1024 &
+		jstatd -J-Djava.security.policy=jstatd.all.policy -p 1024 &
+
+		jstatd -J-Djava.security.policy=jstatd.all.policy -J-Djava.rmi.server.hostname=172.26.13.178 -J-Djava.rmi.server.logCalls=true -p 1024 &
+		
+		-J-Djava.security.policy=jstatd.all.policy 
+			* 指定路径
+		-J-Djava.rmi.server.logCalls=true
+			* 打印日志
+		-J-Djava.rmi.server.hostname=192.168.19.114
+			* 指定主机名，主机名应该和用 hostname -i 命令执行出来的结果一致
+
 
 	# 选项
 		-nr
