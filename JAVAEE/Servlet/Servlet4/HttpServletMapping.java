@@ -23,7 +23,10 @@ HttpServletMapping |
 	
 	# MappingMatch 枚举
 		CONTEXT_ROOT
+			* 匹配的是根路径
+
 		DEFAULT
+			* 匹配的是默认路径
 
 		EXACT
 			* 精准匹配
@@ -32,5 +35,25 @@ HttpServletMapping |
 			* 扩展名匹配
 				xx.do
 		PATH
-			* 路径匹配
-				/*
+			* 通用(*)路径匹配
+	
+	# Demo
+		 <servlet>
+			 <servlet-name>MyServlet</servlet-name>
+			 <servlet-class>MyServlet</servlet-class>
+		 </servlet>
+		 <servlet-mapping>
+			 <servlet-name>MyServlet</servlet-name>
+			 <url-pattern>/MyServlet</url-pattern>
+			 <url-pattern>""</url-pattern>
+			 <url-pattern>*.extension</url-pattern>
+			 <url-pattern>/path/*</url-pattern>
+		 </servlet-mapping>
+
+
+		URI					Path (in quotes)	matchValue	pattern	mappingMatch
+		""					""					""			CONTEXT_ROOT
+		"/index.html"		""					/			DEFAULT
+		"/MyServlet"		MyServlet			/MyServlet	EXACT
+		"/foo.extension"	foo					*.extension	EXTENSION
+		"/path/foo"			foo					/path/*		PATH
