@@ -16,3 +16,6 @@ Jetty 插件						|
 			</webApp>
 		</configuration>
 	</plugin>
+	
+	# 启动的Maven指令
+		jetty:run
