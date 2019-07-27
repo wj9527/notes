@@ -5,7 +5,7 @@ Druid						|
 		# 指定数据源类型
 		spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
 		spring.datasource.driver-class-name=com.mysql.jdbc.Driver
-		spring.datasource.url=jdbc:mysql://127.0.0.1:3306/springboot?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+		spring.datasource.url=jdbc:mysql://127.0.0.1:3306/springboot?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&serverTimezone=GMT%2b8
 		spring.datasource.username=root
 		spring.datasource.password=KevinBlandy_mysql
 		

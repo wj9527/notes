@@ -74,6 +74,9 @@
 				grid-gap: <grid-row-gap> <grid-column-gap>;
 			* 如果省略了第二个值，浏览器认为第二个值等于第一个值。
 		
+		* 根据最新标准，这三个属性名的grid-前缀已经删除
+		* grid-column-gap和grid-row-gap写成column-gap和row-gap，grid-gap写成gap。
+		
 	
 	# 区域
 		* 网格布局允许指定"区域"（area），一个区域由单个或多个单元格组成
