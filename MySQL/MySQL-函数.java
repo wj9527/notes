@@ -79,6 +79,18 @@ MYSQL-系统自带函数		|
 		* 专门供MYSQL用的
 	sha1("被加密的字符");
 		* 这个也是一个加密函数，可以用于项目
+	
+
+	//IP 转换
+	INET_ATON()
+		* 把IP字符串转换为int
+	
+	INET_NTOA()
+		* 把INT转换为字符串ip
+	
+	* ip转换函数的意义在于可以方便快速的检索
+		SELECT * FROM `table` WHERE `ip` BETWEEN INET_ATON('192.168.0.1') AND INET_NTOA('192.168.0.255');
+
 
 ------------------------
 MYSQL-自定义函数		|
