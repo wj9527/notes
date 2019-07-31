@@ -172,7 +172,8 @@ Ehcache3			|
 		spring.cache.type=jcache
 		spring.cache.jcache.config=classpath:ehcache/ehcache.xml
 		# 如果存在多个jcache的实现,需要在这里指定实现类
-		spring.cache.jcache.provider=
+		# 实现类应该是 jsr107 规范的实现
+		spring.cache.jcache.provider=org.ehcache.jsr107.EhcacheCachingProvider
 	
 	# 注解配置
 		@Cacheable(value = "name")
