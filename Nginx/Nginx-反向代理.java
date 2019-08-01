@@ -100,10 +100,9 @@ Nginx-域名重定向		|
 Nginx-https				|
 ------------------------
 	server {
-		listen 443;
+		listen 443 ssl;
 		server_name springboot.io www.springboot.io;
 
-		ssl on;
 		ssl_certificate      /usr/local/ssl/springboot/springboot.pem;
 		ssl_certificate_key  /usr/local/ssl/springboot/springboot.key;
 
@@ -147,7 +146,6 @@ Nginx-http2开启			|
 				listen 443 ssl http2;
 				server_name *.c-lang.cn;
 				
-				ssl on;
 				ssl_certificate      /etc/letsencrypt/live/c-lang.cn/fullchain.pem;
 				ssl_certificate_key  /etc/letsencrypt/live/c-lang.cn/privkey.pem;
 				
