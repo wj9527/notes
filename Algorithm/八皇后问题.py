@@ -37,7 +37,10 @@
 python实现			 |
 ---------------------
 
+
 count = 0
+
+operation_count = 0
 
 arr_length = 8
 
@@ -47,6 +50,8 @@ arr = [0 for i in range(arr_length)]
 # 当前放置的第n个皇后后，判断该皇后是否和前面已经摆放的皇后冲突
 def judge(n):
     global arr
+    global operation_count
+    operation_count += 1
     for i in range(n):
         if arr[i] == arr[n]:
             # 同一列
@@ -80,8 +85,11 @@ def check(n):
 
 check(0)
 
+# 92 种解法
 print(count)
-# 92种解法
+# 执行了 15720 次计算
+print(operation_count)
+
 '''
 [0, 4, 7, 5, 2, 6, 1, 3]
 [0, 5, 7, 2, 6, 3, 1, 4]
