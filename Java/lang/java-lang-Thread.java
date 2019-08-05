@@ -53,6 +53,9 @@ Thread-方法					|
 		void stop();
 			* 暴力停止该线程
 		
+		boolean isAlive()
+			* 判断线程是否还存活
+		
 		void setContextClassLoader(ClassLoader cl)
 		ClassLoader getContextClassLoader()
 			* 设置/获取当前线程程序中使用的 classloader
