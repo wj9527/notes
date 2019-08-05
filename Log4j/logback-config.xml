@@ -13,7 +13,7 @@
 		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
 			<!-- 单个日志文件最多 100MB,超过就执行一次归档(压缩)  -->
 			<maxFileSize>100MB</maxFileSize>
-			<!-- 每天一个归档 -->
+			<!-- 按照日期归档 -->
 			<fileNamePattern>%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
 			<!-- 保留的归档文件的最大数量,超出数量就删除旧文件 -->
 			<maxHistory>60</maxHistory>
