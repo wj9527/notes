@@ -14,7 +14,7 @@ spi机制					|
 	# 实现
 		* 在jar的目录创建文件:META-INF/services/<接口全限定名>
 		* 文件内容就是接口实现类的全路径
-		* 例如 mysql-jdbc 的实现
+		* 例如 mysql-jdbc 的实现，可以有多个，使用换行隔开
 			/META-INF/services/java.sql.Driver
 			com.mysql.cj.jdbc.Driver
 			
