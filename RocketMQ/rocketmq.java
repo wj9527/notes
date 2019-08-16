@@ -7,3 +7,5 @@
 		https://help.aliyun.com/document_detail/29532.html
 
 		https://github.com/apache/rocketmq/tree/master/docs/cn
+
+		http://rocketmq.cloud
