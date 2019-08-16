@@ -105,6 +105,9 @@ socket-socket					|
 			* 否则将套接字设为阻塞模式(默认)
 			* 非阻塞模式下,如果调用 recv() 没有发现任何数据,或 send() 调用无法立即发送数据,那么将引起 socket.error 异常
 		
+		bool getblocking()
+			* 获取当前的IO模式，是否是阻塞的。
+		
 		tuple accept()
 			* 阻塞线程,直到有客户端的连接,就会返回 tuple
 			* 第一个元素就是,客户端的 socket 对象,第二个元素,又是一个元组
