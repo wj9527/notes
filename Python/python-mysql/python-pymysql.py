@@ -31,6 +31,17 @@ pymysql				 |
 				* 可选值
 					pymysql.cursors.DictCursor	
 						* 结果集会被映射为  dict
+		
+		* 使用dict封装参数
+			db_config = {
+				'host': '127.0.0.1',
+				'port': 3306,
+				'user': 'root',
+				'password': 'root',
+				'db': 'user',
+				'charset': 'utf8mb4',
+				'cursorclass': pymysql.cursors.DictCursor
+			}
 
 ---------------------
 Connection			 |
