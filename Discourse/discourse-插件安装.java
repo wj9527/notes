@@ -32,29 +32,11 @@
 		https://github.com/discourse/discourse-solved.git
 	
 	# 谷歌广告插件
-		https://github.com/discoursehosting/discourse-adsense.git
+		https://github.com/discourse/discourse-adplugin
 
-		* CSP策略需要添加两个白名单
+		* CSP策略需要添加白名单
 			pagead2.googlesyndication.com
 			adservice.google.com
+			www.googletagservices.com
+			'unsafe-inline'
 
-base-uri 'none'; 
-object-src 'none'; 
-script-src 'unsafe-eval' 
-'report-sample' 
-https://forum.springboot.io/logs/ 
-https://forum.springboot.io/sidekiq/ 
-https://forum.springboot.io/mini-profiler-resources/ 
-https://forum.springboot.io/assets/ 
-https://forum.springboot.io/brotli_asset/ 
-https://forum.springboot.io/extra-locales/ 
-https://forum.springboot.io/highlight-js/ 
-https://forum.springboot.io/javascripts/ 
-https://forum.springboot.io/plugins/ 
-https://forum.springboot.io/theme-javascripts/ 
-https://forum.springboot.io/svg-sprite/ 
-hm.baidu.com 
-zz.bdstatic.com
-push.zhanzhang.baidu.com 
-pagead2.googlesyndication.com 
-adservice.google.com; 
