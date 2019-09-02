@@ -65,6 +65,23 @@
 		* string("true","false") 也可以用于格式化bool变量,但是已经废弃了。
 	
 
+	
+	# Map
+		* 如果map的key是string，可以直接使用 . 活着 [] 取值
+
+		* 如果map的key不是string，比较麻烦，需要先设置
+
+			configuration.setAPIBuiltinEnabled(true);
+			DefaultObjectWrapper defaultObjectWrapper = (DefaultObjectWrapper) configuration.getObjectWrapper();
+			defaultObjectWrapper.setUseAdaptersForContainers(true);
+		
+		* 取值表达式
+			<#list mine?keys as key>
+				${key?c} - ${mine?api.get(key)}<br/>
+			</#list>
+
+			* 使用: ?api.get() 来获取非字符串的value
+		
 
 --------------------
 值域				|
