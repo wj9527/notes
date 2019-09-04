@@ -24,7 +24,11 @@ Linux-源码安装				|
 --with-stream_ssl_module \
 --with-http_slice_module \
 --with-mail \
---with-mail_ssl_module
+--with-mail_ssl_module \
+--with-http_stub_status_module  \
+--with-threads \
+--with-http_gzip_static_module \
+--with-http_sub_module
 
 
 	4,确定无误后直接安装
