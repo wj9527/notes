@@ -317,6 +317,10 @@ http://blog.csdn.net/xyang81/article/details/51759200
 		yum remove -y mysql-community-server-5.7.27-1.el7.x86_64
 		yum remove -y mysql-community-common-5.7.27-1.el7.x86_64
 	
+	
+	* 删除遗留的数据目录
+		rm -rf /var/lib/mysql
+	
 
 
  
