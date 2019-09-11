@@ -304,3 +304,19 @@ http://blog.csdn.net/xyang81/article/details/51759200
 	* 设置开机启动
 		systemctl enable mysqld
 		systemctl daemon-reload
+
+10, 卸载
+
+	* 查看安装好的mysql相关的服务
+		rpm -qa | grep -i mysql
+	
+	* 把检索到所有mysql服务都执行卸载：yum remove -y xxx
+		yum remove -y mysql-community-client-5.7.27-1.el7.x86_64
+		yum remove -y mysql57-community-release-el7-11.noarch
+		yum remove -y mysql-community-libs-5.7.27-1.el7.x86_64
+		yum remove -y mysql-community-server-5.7.27-1.el7.x86_64
+		yum remove -y mysql-community-common-5.7.27-1.el7.x86_64
+	
+
+
+ 
