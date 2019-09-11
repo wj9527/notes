@@ -128,9 +128,9 @@ DISCOURSE_SMTP_ENABLE_START_TLS: true
 		bookmarks		收藏
 	
 	# 帖子审核机制
-		设置 -> 发帖 -> approve post count
-		设置 -> 发帖 -> approve unless trust level
-		设置 -> 发帖 -> approve new topics unless trust level
+		设置 -> 发帖 -> approve post count (新用户或基础用户需要被审核的帖子数量：一般设置为1，表示0级用户的新帖子，需要被审核一次)
+		设置 -> 发帖 -> approve unless trust level (该信任等级之下的用户的帖子必须被审核)
+		设置 -> 发帖 -> approve new topics unless trust level (低于该信任等级的用户的新帖子需要被审核：一般设置为0，表示0级用户的帖子需要被审核)
 	
 	# 询问是否允许通知
 		设置 -> 基本设置 -> push notifications prompt
