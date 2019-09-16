@@ -35,6 +35,17 @@ BigDecimal				|
 BigDecimal-静态方法		|
 ------------------------
 	BigDecimal valueOf(double val)
+		* 如果是通过 double 构建 BigDecimal, 那么不能直接使用构造函数来创建, 可能会有精度丢失的问题
+			BigDecimal val = new BigDecimal(0.1D); // 0.1000000000000000055511151231257827021181583404541015625
+		
+		* 建议使用该静态方法来创建
+			BigDecimal val = BigDecimal.valueOf(0.1D) // 0.1
+		
+		* 源码, 本质上就是转换为字符串来构建 BigDecimal 
+			public static BigDecimal valueOf(double val) {
+				return new BigDecimal(Double.toString(val));
+			}
+
 	BigDecimal valueOf(long val)
 	BigDecimal valueOf(long unscaledVal, int scale)
 
@@ -77,3 +88,4 @@ BigDecimal-实例方法		|
 	String toEngineeringString();
 		* 有必要时使用工程计数法
 		* 工程记数法是一种工程计算中经常使用的记录数字的方法, 与科学技术法类似. 但要求10的幂必须是3的倍数
+ 
