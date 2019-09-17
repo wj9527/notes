@@ -35,6 +35,8 @@
 		* 用户的邮件和名称
 	
 	core.quotepath=false
+		* 设置为false, 解决在 git bash 中,中文以编码形式出现的问题
+
 	color.ui=true
 		* 交互界面的文字带颜色
 	
