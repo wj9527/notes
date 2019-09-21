@@ -24,6 +24,7 @@ ServiceWorer				|
 		* 可以使用 self 关键字来指向 this
 		* 只能使用 https 或者 localhost
 		* 不能访问DOM, 完全异步
+		* 可以访问Cache和IndexDB
 
 	# sw的作用域不同, 监听的 fetch 请求也是不一样的
 		* 假设的sw文件放在根目录下位于 '/sw/sw.js' 路径的话, 那么你sw就只能监听 '/sw/*'下面的请求
