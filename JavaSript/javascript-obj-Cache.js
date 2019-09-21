@@ -1,7 +1,8 @@
-class  
-{
-	public static void main(String[] args) 
-	{
-		System.out.println("Hello World!");
-	}
-}
+--------------------
+Cache				|
+--------------------
+	# ²Î¿¼
+		https://developer.mozilla.org/zh-CN/docs/Web/API/Cache
+	
+
+	
