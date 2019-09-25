@@ -27,3 +27,15 @@ task					|
 	
 	# 默认使用线程:scheduling 去执行
 		* 可以使用 @Async 注解, 使用自定义的线程池去执行
+
+	
+	# 自定义配置, 实现配置接口 :SchedulingConfigurer
+		@Configuration
+		public class SchedulingConfiguration implements SchedulingConfigurer {
+
+			@Override
+			public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+				// 设置执行任务的线程池
+				taskRegistrar.setScheduler(Executors.newScheduledThreadPool(20));
+			}
+		}
