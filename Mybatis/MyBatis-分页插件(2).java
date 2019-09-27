@@ -46,6 +46,47 @@ MyBatis-PageRowBounds分页|
 				"total":3				// 总记录数量
 			}
 
+-------------------------
+MyBatis-常用配置	 |
+-------------------------
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- 自动转换实体的属性和列名的规则（驼峰-下划线） -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!-- 默认枚举处理 -->
+		<setting name="defaultEnumTypeHandler" value="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		<!-- 自动映射，发现未知列（或者未知属性类型）抛出异常 
+		<setting name="autoMappingUnknownColumnBehavior" value="FAILING"/>
+		-->
+		<!-- 自动映射，任何复杂的结果集 -->
+		<!-- <setting name="autoMappingBehavior" value="FULL"/>  -->
+	</settings>
+	<typeAliases>
+		<package name="com.quliao.core.domain"/>
+	</typeAliases>
+	<typeHandlers>
+		<typeHandler handler="org.apache.ibatis.type.EnumTypeHandler" javaType="com.quliao.core.domain.enums.SysCode" jdbcType="VARCHAR"/>
+	</typeHandlers>
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor">
+			<!-- 方言 -->
+			<property name="helperDialect" value="mysql"/>
+			<!-- RowBounds对象的offset属性做为分页的page参数 -->
+			<property name="offsetAsPageNum" value="true"/>
+			<!-- 分页合理化参数，防止因为页码头尾溢出而检索到空记录 -->
+			<property name="reasonable" value="true"/>
+			<!-- 当 pageSize(limit) = 0 忽略页码，直接检索出所有的记录 -->
+			<property name="pageSizeZero" value="true"/>
+			<!-- RowBounds 作为分页参数时需要检总记录数 -->
+			<property name="rowBoundsWithCount" value="true"/>
+		</plugin>
+	</plugins>
+</configuration>
 
 -------------------------
 MyBatis-PageHelper分页	 |
