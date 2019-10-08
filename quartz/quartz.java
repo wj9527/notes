@@ -2,20 +2,22 @@
 Quartz-入门							|
 -----------------------------------
 	# 简介
-		是由OepnSymhony开源组织在job scheduling 领域又一个开源项目
-		反正很牛逼的任务调度系统,可以直接在SE或者EE项目中使用
-		可以创建一个,或者十个,千个等等复杂的任务调度系统
+		* 是由OepnSymhony开源组织在job scheduling 领域又一个开源项目
+		* 反正很牛逼的任务调度系统,可以直接在SE或者EE项目中使用
+		* 可以创建一个,或者十个,千个等等复杂的任务调度系统
 	
+	# 网址
+		http://www.quartz-scheduler.org
+
+
 	# Maven依赖
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz-jobs</artifactId>
-			<version>2.2.1</version>
 		</dependency>   
 
 	# 核心接口
@@ -30,7 +32,13 @@ Quartz-入门							|
 
 		Trigger
 			* 触发器
-	
+		
+		JobBuilder
+			* 用于定义/构建JobDetail实例
+		
+		TriggerBuilder
+			* 用于定义/构建Trigger实例
+			
 		* 关系图
 
 							Scheduler

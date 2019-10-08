@@ -163,7 +163,7 @@ http://blog.csdn.net/xyang81/article/details/51759200
 		https://repo.mysql.com//mysql80-community-release-el7-1.noarch.rpm
 
 2,安装yum源
-	yum localinstall mysql57-community-release-el7-11.noarch.rpm
+	yum localinstall -y mysql57-community-release-el7-11.noarch.rpm
 
 	* 查看yum源是否安装成功/etc/yum.repos.d/mysql-community.repo
 		yum repolist enabled | grep "mysql.*-community.*"
@@ -191,7 +191,7 @@ http://blog.csdn.net/xyang81/article/details/51759200
 		enabled=0		//表示不安装
 
 3,安装mysql服务器
-	yum install mysql-community-server
+	yum install -y mysql-community-server
 
 4,启动mysql服务
 	systemctl start mysqld
