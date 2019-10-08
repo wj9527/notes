@@ -274,12 +274,25 @@ http://blog.csdn.net/xyang81/article/details/51759200
 	* 编辑:vim /etc/my.cnf,在 [mysqld] 配置项中添加配置
 		character_set_server=utf8
 		init_connect='SET NAMES utf8'
+my.cnf-----------------------------------------
+[client]
+default-character-set = utf8mb4
+
+[mysql]
+default-character-set = utf8mb4
+
+[mysqld]
+character-set-server = utf8mb4
+collation-server = utf8mb4_general_ci
+-----------------------------------------------
+
 	
 	* 重启mysql服务
 		systemctl restart mysqld
 
 	* 登录,查看编码
 		show variables like '%character%';
+
 
 
 8,默认配置文件路径
