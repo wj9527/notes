@@ -48,9 +48,10 @@ session						|
 			
 
 	# Session的相关spring事件
-		SessionCreatedEvent		创建
-		SessionExpiredEvent		过期
-		SessionDeletedEvent		删除
+		SessionCreatedEvent				创建
+		SessionDestroyedEvent
+			|-SessionExpiredEvent		过期
+			|-SessionDeletedEvent		删除
 	
 
 	# 自定义Session的解析方式
