@@ -46,7 +46,9 @@ Trigger						|
 	# 常用的子接口
 		SimpleTrigger
 		CronTrigger
-
+	
+	# 错过触发(misfire Instructions)
+		
 ----------------------------
 TriggerBuilder				|
 ----------------------------
@@ -58,12 +60,16 @@ TriggerBuilder				|
 	# 实例方法
 		T build()
 		TriggerBuilder<T> endAt(Date triggerEndTime)
+			* 表示trigger失效的时间点
+
 		TriggerBuilder<T> forJob(JobDetail jobDetail)
 		TriggerBuilder<T> forJob(JobKey keyOfJobToFire)
 		TriggerBuilder<T> forJob(String jobName)
 		TriggerBuilder<T> forJob(String jobName, String jobGroup)
 		TriggerBuilder<T> modifiedByCalendar(String calName)
 		TriggerBuilder<T> startAt(Date triggerStartTime)
+			* 设置trigger第一次触发的时间
+
 		TriggerBuilder<T> startNow()
 		TriggerBuilder<T> usingJobData(JobDataMap newJobDataMap)
 		TriggerBuilder<T> usingJobData(String dataKey, Boolean value)
@@ -72,12 +78,26 @@ TriggerBuilder				|
 		TriggerBuilder<T> usingJobData(String dataKey, Integer value)
 		TriggerBuilder<T> usingJobData(String dataKey, Long value)
 		TriggerBuilder<T> usingJobData(String dataKey, String value)
+
 		TriggerBuilder<T> withDescription(String triggerDescription)
+
 		TriggerBuilder<T> withIdentity(String name)
 		TriggerBuilder<T> withIdentity(String name, String group)
 		TriggerBuilder<T> withIdentity(TriggerKey triggerKey)
 		TriggerBuilder<T> withPriority(int triggerPriority)
+			* 优先级, 本质上就是设置了线程的优先级
+			* 如果没有为trigger设置优先级，trigger使用默认优先级，值为5
+			* priority属性的值可以是任意整数，正数、负数都可以
+			* 注意：只有同时触发的trigger之间才会比较优先级。
+
 
 		<SBT extends T> TriggerBuilder<SBT> withSchedule(ScheduleBuilder<SBT> schedBuilder)
 
+----------------------------
+SimpleTrigger				|
+----------------------------
 
+
+----------------------------
+CronTrigger					|
+----------------------------

@@ -167,3 +167,30 @@ Redis - 自定义Template序列化		|
 			// jsonRedisTemplate.setHashValueSerializer();
 			return jsonRedisTemplate;
 		}
+
+------------------------------------
+Redis-Redisson						|
+------------------------------------
+	# 使用Redsson作为客户端
+	# Maven
+		<dependency>
+			 <groupId>org.redisson</groupId>
+			 <artifactId>redisson-spring-boot-starter</artifactId>
+			 <version>3.11.3</version>
+		 </dependency>
+		
+	# 配置
+		spring.redis.database=
+		spring.redis.host=
+		spring.redis.port=
+		spring.redis.password=
+		spring.redis.ssl=
+		spring.redis.timeout=
+		spring.redis.cluster.nodes=
+		spring.redis.sentinel.master=
+		spring.redis.sentinel.nodes=
+
+		# Redisson settings
+
+		#path to redisson.yaml or redisson.json
+		spring.redis.redisson.config=classpath:redisson.yaml
