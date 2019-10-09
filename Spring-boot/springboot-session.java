@@ -52,12 +52,33 @@ session						|
 		SessionDestroyedEvent
 			|-SessionExpiredEvent		过期
 			|-SessionDeletedEvent		删除
+		
+		* 过期和删除事件, 依赖于REDIS的通知事件
+			notify-keyspace-events "Egx"
+		
+		* 如果使用了: @EnableRedisHttpSession, SessionMessageListener则会自动完成管理和启用必要的Redis Keyspace事件
+		* 在安全的Redis环境中, 会禁用config命令, 这意味着Spring Session无法为配置Redis Keyspace事件
+		* 要禁用自动配置, 添加配置
+			@Bean
+			public static ConfigureRedisAction configureRedisAction() {
+				return ConfigureRedisAction.NO_OP;
+			}
 	
 
 	# 自定义Session的解析方式
 		* Session的解析依赖于一个接口: HttpSessionIdResolver
+
 			CookieHttpSessionIdResolver	使用Cookie(默认)
 			HeaderHttpSessionIdResolver	使用Header
+
+			List<String> resolveSessionIds(HttpServletRequest request)
+				* 根据请求读取到会话id
+
+			void setSessionId(HttpServletRequest request, HttpServletResponse response,String sessionId)
+				* 设置会话id
+
+			void expireSession(HttpServletRequest request, HttpServletResponse response);
+				* 过期会话id
 
 		* 通过自定义配置类来实现自定义的解析
 			@Bean
@@ -76,13 +97,7 @@ session						|
 		* 也可以自定义请求头, 通过构造方法创建
 			HeaderHttpSessionIdResolver(String headerName)
 
-		* 它还提供了一些其他的方法
-			List<String> resolveSessionIds(HttpServletRequest request)
-				* 根据请求读取到会话id
-			void setSessionId(HttpServletRequest request, HttpServletResponse response,String sessionId)
-				* 设置会话id, 本质上就是给客户端响应Token头
-			void expireSession(HttpServletRequest request, HttpServletResponse response);
-				* 过期会话id, 本质上就是给客户端响应空的Token头
+			
 
 
 			
@@ -105,7 +120,8 @@ spring:
 	  flush-mode: on-save
 	  namespace: 
 
-
+	
+	* 如果使用了注解: @EnableRedisHttpSession, 则该配置失效, 默认使用注解的属性配置
 
 
 -------------------------------------

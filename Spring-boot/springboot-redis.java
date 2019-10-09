@@ -82,7 +82,7 @@ Redis- scan 代替 keys *				|
 Redis- 过期key的监听				|
 ------------------------------------
 	# redis必须开启配置
-		 notify-keyspace-events "Ex"  # 监听key的过期事件
+		 notify-keyspace-events "Egx"  # 监听key的过期事件
 
 	# configuration的配置
 		@Configuration
