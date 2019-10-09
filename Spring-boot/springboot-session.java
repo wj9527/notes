@@ -57,7 +57,7 @@ session						|
 			notify-keyspace-events "Egx"
 		
 		* 如果使用了: @EnableRedisHttpSession, SessionMessageListener则会自动完成管理和启用必要的Redis Keyspace事件
-		* 在安全的Redis环境中, 会禁用config命令, 这意味着Spring Session无法为配置Redis Keyspace事件
+		* 在安全的Redis环境中, 一般会禁用config命令 (这意味着Spring Session无法为配置Redis Keyspace事件)
 		* 要禁用自动配置, 添加配置
 			@Bean
 			public static ConfigureRedisAction configureRedisAction() {
