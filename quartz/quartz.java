@@ -15,10 +15,13 @@ Quartz-入门							|
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz-jobs</artifactId>
 		</dependency>   
+
+		* jobs模块提供的主要是一些工具
 
 	# 核心接口
 		Scheduler
@@ -32,6 +35,10 @@ Quartz-入门							|
 
 		Trigger
 			* 触发器
+			SimpleTrigger
+			CronTrigger
+			CalendarIntervalTrigger
+			DailyTimeIntervalTrigger
 		
 		JobBuilder
 			* 用于定义/构建JobDetail实例

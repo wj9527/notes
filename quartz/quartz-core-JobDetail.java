@@ -55,9 +55,45 @@ JobBuilder						|
 		JobBuilder withDescription(String jobDescription)
 
 		JobBuilder withIdentity(JobKey jobKey)
+
 		JobBuilder withIdentity(String name)
 		JobBuilder withIdentity(String name, String group)
+			* name, 表示job唯一的名称
+			* group, 表示job所属的分组
+			
+			* 如果没设置 group, 默认为: DEFAULT
+
+
+
+--------------------------------
+JobKey							|
+--------------------------------
+	# 该类描述了一个job的name和groups属性, 它继承类: Key
+		class JobKey extends Key<JobKey> 
+
+	# 构造方法
+		public JobKey(String name) {
+		public JobKey(String name, String group) {
+	
+	# 静态的工厂方法
+		public static JobKey jobKey(String name) {
+		public static JobKey jobKey(String name, String group) 
+	
+	# 实例方法(从Key继承)
+		String getName()
+		String getGroup()
+	
+	# Key的静态方法
+		static String createUniqueName(String group)
+			* 创建一个唯的group名称
+			* 源码
+			    public static String createUniqueName(String group) {
+					if(group == null)
+						group = DEFAULT_GROUP;
+					
+					String n1 = UUID.randomUUID().toString();
+					String n2 = UUID.nameUUIDFromBytes(group.getBytes()).toString();
+					
+					return String.format("%s-%s", n2.substring(24), n1);
+				}
 		
-
-
-
