@@ -47,23 +47,6 @@ session						|
 		}
 			
 
-	# Session的相关spring事件
-		SessionCreatedEvent				创建
-		SessionDestroyedEvent
-			|-SessionExpiredEvent		过期
-			|-SessionDeletedEvent		删除
-		
-		* 过期和删除事件, 依赖于REDIS的通知事件
-			notify-keyspace-events "Egx"
-		
-		* 如果使用了: @EnableRedisHttpSession, SessionMessageListener则会自动完成管理和启用必要的Redis Keyspace事件
-		* 在安全的Redis环境中, 一般会禁用config命令 (这意味着Spring Session无法为配置Redis Keyspace事件)
-		* 要禁用自动配置, 添加配置
-			@Bean
-			public static ConfigureRedisAction configureRedisAction() {
-				return ConfigureRedisAction.NO_OP;
-			}
-	
 
 	# 自定义Session的解析方式
 		* Session的解析依赖于一个接口: HttpSessionIdResolver
@@ -98,12 +81,19 @@ session						|
 			HeaderHttpSessionIdResolver(String headerName)
 
 			
+	# Redis的key结构
+		spring:session:expirations:1570672200000
+		spring:session:index:org.springframework.session.FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME:1
+		spring:session:sessions:d82bf2bb-deb3-474c-89bb-96c2bfa646c4
+		spring:session:sessions:expires:94b2ce1f-053e-4c20-a8b7-f4d69102a114
 
 
 			
 ----------------------------
 配置						|
 ----------------------------
+# 配置类: RedisSessionProperties
+
 spring:
   session:
     timeout: 1800
@@ -117,11 +107,13 @@ spring:
 			HAZELCAST
 			NONE
     redis:
-	  flush-mode: on-save
-	  namespace: 
+      namespace: "spring:session"
+      flush-mode: IMMEDIATE
+      cleanup-cron: "0 * * * * *"
 
 	
 	* 如果使用了注解: @EnableRedisHttpSession, 则该配置失效, 默认使用注解的属性配置
+	* 使用配置, 不需要手动添加注解
 
 
 -------------------------------------
@@ -185,4 +177,95 @@ FindByIndexNameSessionRepository|
 
 	
 
+----------------------------
+事件监听						|
+----------------------------
+	# Session的相关spring事件
+		SessionCreatedEvent				创建
+		SessionDestroyedEvent
+			|-SessionExpiredEvent		过期
+			|-SessionDeletedEvent		删除(用户主动 invalidate())
+		
+		* 过期和删除事件, 依赖于REDIS的通知事件
+			notify-keyspace-events "Egx"
+		
+		* 如果使用了: @EnableRedisHttpSession, SessionMessageListener 则会自动完成管理和启用必要的Redis Keyspace事件
+		* 在安全的Redis环境中, 一般会禁用config命令 (这意味着Spring Session无法为配置Redis Keyspace事件)
+		* 要禁用自动配置, 添加配置
+			@Bean
+			public static ConfigureRedisAction configureRedisAction() {
+				return ConfigureRedisAction.NO_OP;
+			}
 	
+	# 使用Spring的Event监听
+		@Component
+		public class SpringSessionListener {
+			
+			private static final Logger LOGGER = LoggerFactory.getLogger(SpringSessionListener.class);
+			
+			@EventListener(SessionCreatedEvent.class)
+			public void sessionCreatedEvent(SessionCreatedEvent sessionCreatedEvent) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("创建了新的session:{}", sessionCreatedEvent.getSessionId());
+				}
+			}
+			
+			@EventListener(SessionExpiredEvent.class)
+			public void sessionExpiredEvent(SessionExpiredEvent sessionCreatedEvent) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("session到期:{}", sessionCreatedEvent.getSessionId());
+				}
+			}
+			
+			@EventListener(SessionDeletedEvent.class)
+			public void sessionDeletedEvent(SessionDeletedEvent sessionCreatedEvent) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("删除了session:{}", sessionCreatedEvent.getSessionId());
+				}
+			}
+		}
+	
+	# 也可以使用 Servlet的监听器
+		* 需要添加Bean到ioc, 通过这个bean的构造函数, 添加多个 HttpSessionListener 实现
+			SessionEventHttpSessionListenerAdapter
+			SessionEventHttpSessionListenerAdapter(List<HttpSessionListener> listeners)
+		
+		* 但是这个Bean其实已经帮我们自动添加了, 我没再次添加会导致异常
+		* 曲线救国, 从IOC里面读取到这个bean, 通过反射, 对私有属性 listeners 添加监听器
+			@Configuration
+			public class SpringSessionConfiguration {
+				
+				private static final Logger LOGGER = LoggerFactory.getLogger(SpringSessionConfiguration.class);
+				
+				@Autowired SessionEventHttpSessionListenerAdapter sessionEventHttpSessionListenerAdapter;
+				
+				@PostConstruct
+				public void addHttpSessionListener() {
+					try {
+						Field field = SessionEventHttpSessionListenerAdapter.class.getDeclaredField("listeners");
+						field.setAccessible(Boolean.TRUE);
+						
+						@SuppressWarnings("unchecked")
+						List<HttpSessionListener> listeners = (List<HttpSessionListener>) field.get(sessionEventHttpSessionListenerAdapter);
+						listeners.add(new SessionListener());
+						
+						if (LOGGER.isDebugEnabled()) {
+							LOGGER.debug("添加SESSION监听器");
+						}
+						
+					} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				
+			//	@Bean
+			//	public SessionEventHttpSessionListenerAdapter sessionEventHttpSessionListenerAdapter() {
+			//		SessionEventHttpSessionListenerAdapter sessionEventHttpSessionListenerAdapter = new SessionEventHttpSessionListenerAdapter(Arrays.asList(new SessionListener()));
+			//		return sessionEventHttpSessionListenerAdapter;
+			//	}
+			}
+	
+	# BUG
+		* 使用 redisson 作为redis的客户端(redisson-spring-boot-starter), 发现不能监听到SESSION的过期事件, 版本号: 3.11.4
+		
