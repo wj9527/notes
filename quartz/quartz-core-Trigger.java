@@ -121,7 +121,7 @@ ScheduleBuilder				|
 ----------------------------
 SimpleTrigger				|
 ----------------------------
-	# 简单的触发器, 固定时间单位执行, 可以限制执行次数
+	# 简单的触发器, 在具体的时间点执行一次, 或者在具体的时间点执行, 并且以指定的间隔重复执行若干次
 	# 通过 SimpleScheduleBuilder 创建
 	# 静态工厂方法
 		SimpleScheduleBuilder simpleSchedule()
@@ -158,7 +158,14 @@ SimpleTrigger				|
 		SimpleScheduleBuilder withMisfireHandlingInstructionNextWithRemainingCount()
 		SimpleScheduleBuilder withMisfireHandlingInstructionNowWithExistingCount()
 		SimpleScheduleBuilder withMisfireHandlingInstructionNowWithRemainingCount()
-		
+	
+	# misfire相关的策略(常量)
+		MISFIRE_INSTRUCTION_FIRE_NOW
+		MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT
+		MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_REMAINING_REPEAT_COUNT
+		MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT
+		MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT
+
 
 
 ----------------------------
