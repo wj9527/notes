@@ -69,6 +69,8 @@ TriggerBuilder				|
 		TriggerBuilder<T> forJob(String jobName)
 		TriggerBuilder<T> forJob(String jobName, String jobGroup)
 		TriggerBuilder<T> modifiedByCalendar(String calName)
+			* 根据设置到Scheduler中的 Calendar , 修改执行计划
+
 		TriggerBuilder<T> startAt(Date triggerStartTime)
 			* 设置trigger第一次触发的时间
 
@@ -119,30 +121,27 @@ ScheduleBuilder				|
 ----------------------------
 SimpleTrigger				|
 ----------------------------
+	# 简单的触发器, 固定时间单位执行, 可以限制执行次数
 	# 通过 SimpleScheduleBuilder 创建
 	# 静态工厂方法
 		SimpleScheduleBuilder simpleSchedule()
 
 		SimpleScheduleBuilder repeatMinutelyForever()
 		SimpleScheduleBuilder repeatMinutelyForever(int minutes)
-			* 按照多少分重复执行, 默认1分
-
 		SimpleScheduleBuilder repeatSecondlyForever() 
 		SimpleScheduleBuilder repeatSecondlyForever(int seconds)
-			* 按照多少秒重复执行, 默认1秒
-
 		SimpleScheduleBuilder repeatHourlyForever()
 		SimpleScheduleBuilder repeatHourlyForever(int hours)
-			* 按照多少小时重复执行, 默认1小时
+			* 按照多少时间单位重复执行, 时间单位默认1(秒/分/时)
 
 		SimpleScheduleBuilder repeatMinutelyForTotalCount(int count)
 		SimpleScheduleBuilder repeatMinutelyForTotalCount(int count, int minutes)
-
 		SimpleScheduleBuilder repeatSecondlyForTotalCount(int count)
 		SimpleScheduleBuilder repeatSecondlyForTotalCount(int count, int seconds)
-
 		SimpleScheduleBuilder repeatHourlyForTotalCount(int count)
 		SimpleScheduleBuilder repeatHourlyForTotalCount(int count, int hours)
+			* 按照多少时间单位重复执行, 时间单位默认1(秒/分/时)
+			* count 限制执行次数
 
 	# 实例方法
 		MutableTrigger build()
@@ -165,7 +164,80 @@ SimpleTrigger				|
 ----------------------------
 CronTrigger					|
 ----------------------------
+	# Cron表达式的调度
+	# 通过 CronScheduleBuilder 构建
+	# 静态工厂方法
+		CronScheduleBuilder atHourAndMinuteOnGivenDaysOfWeek(int hour, int minute, Integer... daysOfWeek)
+		CronScheduleBuilder cronSchedule(String cronExpression)
+		CronScheduleBuilder cronSchedule(CronExpression cronExpression)
+		CronScheduleBuilder cronScheduleNonvalidatedExpression(String cronExpression)
+		CronScheduleBuilder dailyAtHourAndMinute(int hour, int minute)
+		CronScheduleBuilder monthlyOnDayAndHourAndMinute(int dayOfMonth, int hour, int minute)
+		CronScheduleBuilder weeklyOnDayAndHourAndMinute(int dayOfWeek, int hour, int minute)
 
+	# 实例方法
+		CronScheduleBuilder inTimeZone(TimeZone timezone)
+		CronScheduleBuilder withMisfireHandlingInstructionDoNothing()
+		CronScheduleBuilder withMisfireHandlingInstructionFireAndProceed()
+		CronScheduleBuilder withMisfireHandlingInstructionIgnoreMisfires()
+
+----------------------------
+DailyTimeIntervalTrigger	|
+----------------------------
+	# 通过 DailyTimeIntervalScheduleBuilder 构建
+	# 静态工厂方法
+		DailyTimeIntervalScheduleBuilder dailyTimeIntervalSchedule()
+
+	# 实例方法
+		DailyTimeIntervalScheduleBuilder endingDailyAfterCount(int count)
+		DailyTimeIntervalScheduleBuilder endingDailyAt(TimeOfDay timeOfDay)
+		DailyTimeIntervalScheduleBuilder onDaysOfTheWeek(Integer ... onDaysOfWeek)
+		DailyTimeIntervalScheduleBuilder onDaysOfTheWeek(Set<Integer> onDaysOfWeek)
+		DailyTimeIntervalScheduleBuilder onEveryDay()
+		DailyTimeIntervalScheduleBuilder onMondayThroughFriday()
+		DailyTimeIntervalScheduleBuilder onSaturdayAndSunday()
+		DailyTimeIntervalScheduleBuilder startingDailyAt(TimeOfDay timeOfDay)
+		DailyTimeIntervalScheduleBuilder withInterval(int timeInterval, IntervalUnit unit)
+		DailyTimeIntervalScheduleBuilder withIntervalInHours(int intervalInHours)
+		DailyTimeIntervalScheduleBuilder withIntervalInMinutes(int intervalInMinutes)
+		DailyTimeIntervalScheduleBuilder withIntervalInSeconds(int intervalInSeconds)
+		DailyTimeIntervalScheduleBuilder withMisfireHandlingInstructionDoNothing()
+		DailyTimeIntervalScheduleBuilder withMisfireHandlingInstructionFireAndProceed()
+		DailyTimeIntervalScheduleBuilder withMisfireHandlingInstructionIgnoreMisfires()
+		DailyTimeIntervalScheduleBuilder withRepeatCount(int repeatCount)
+	
+	# TimeOfDay
+		* 主要就是维护了3个变量
+			private final int hour;
+			private final int minute;
+			private final int second;
+		
+		* 构造方法
+			TimeOfDay(int hour, int minute, int second) 
+	
+
+----------------------------
+CalendarIntervalTrigger		|
+----------------------------
+	# 通过 CalendarIntervalScheduleBuilder 创建
+	# 工厂方法
+		static CalendarIntervalScheduleBuilder calendarIntervalSchedule()
+	# 实例方法
+		CalendarIntervalScheduleBuilder inTimeZone(TimeZone timezone)
+		CalendarIntervalScheduleBuilder preserveHourOfDayAcrossDaylightSavings(boolean preserveHourOfDay)
+		CalendarIntervalScheduleBuilder skipDayIfHourDoesNotExist(boolean skipDay)
+		CalendarIntervalScheduleBuilder withInterval(int timeInterval, IntervalUnit unit)
+		CalendarIntervalScheduleBuilder withIntervalInDays(int intervalInDays)
+		CalendarIntervalScheduleBuilder withIntervalInHours(int intervalInHours)
+		CalendarIntervalScheduleBuilder withIntervalInMinutes(int intervalInMinutes)
+		CalendarIntervalScheduleBuilder withIntervalInMonths(int intervalInMonths)
+		CalendarIntervalScheduleBuilder withIntervalInSeconds(int intervalInSeconds)
+		CalendarIntervalScheduleBuilder withIntervalInWeeks(int intervalInWeeks)
+		CalendarIntervalScheduleBuilder withIntervalInYears(int intervalInYears)
+		CalendarIntervalScheduleBuilder withMisfireHandlingInstructionDoNothing()
+		CalendarIntervalScheduleBuilder withMisfireHandlingInstructionFireAndProceed()
+		CalendarIntervalScheduleBuilder withMisfireHandlingInstructionIgnoreMisfires()
+		
 ----------------------------
 TriggerKey					|
 ----------------------------

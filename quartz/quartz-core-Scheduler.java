@@ -4,8 +4,14 @@ Scheduler					|
 ----------------------------
 	# 接口方法
 		void addCalendar(String calName, Calendar calendar, boolean replace, boolean updateTriggers)
+			* 添加一个日期对象
+
 		void addJob(JobDetail jobDetail, boolean replace)
 		void addJob(JobDetail jobDetail, boolean replace, boolean storeNonDurableWhileAwaitingScheduling)
+			* 添加一个trigger和job关联
+			* replace: 
+			* storeNonDurableWhileAwaitingScheduling: 
+
 		boolean checkExists(JobKey jobKey) 
 		boolean checkExists(TriggerKey triggerKey)
 		void clear() 
