@@ -90,7 +90,7 @@ TriggerBuilder				|
 		TriggerBuilder<T> withIdentity(String name)
 		TriggerBuilder<T> withIdentity(String name, String group)
 		TriggerBuilder<T> withIdentity(TriggerKey triggerKey)
-			* name, 表示trigger唯一的名称
+			* name, 表示trigger唯一的名称, 如果不曾调用, 则会默认生成一个默认的: 6da64b5bd2ee-05f824d5-50e9-438b-b72b-a2350c08ee65
 			* group, 表示trigger所属的分组
 			
 			* 如果没设置 group, 默认为: DEFAULT
@@ -152,19 +152,21 @@ SimpleTrigger				|
 		SimpleScheduleBuilder withIntervalInHours(int intervalInHours)
 		SimpleScheduleBuilder withRepeatCount(int triggerRepeatCount)
 		SimpleScheduleBuilder repeatForever()
+
 		SimpleScheduleBuilder withMisfireHandlingInstructionIgnoreMisfires()
 		SimpleScheduleBuilder withMisfireHandlingInstructionFireNow() 
 		SimpleScheduleBuilder withMisfireHandlingInstructionNextWithExistingCount()
 		SimpleScheduleBuilder withMisfireHandlingInstructionNextWithRemainingCount()
 		SimpleScheduleBuilder withMisfireHandlingInstructionNowWithExistingCount()
 		SimpleScheduleBuilder withMisfireHandlingInstructionNowWithRemainingCount()
+			* Misfire的处理策略
 	
 	# misfire相关的策略(常量)
-		MISFIRE_INSTRUCTION_FIRE_NOW
-		MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT
-		MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_REMAINING_REPEAT_COUNT
-		MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT
-		MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT
+		SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW
+		SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT
+		SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_REMAINING_REPEAT_COUNT
+		SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT
+		SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT
 
 
 
@@ -184,9 +186,15 @@ CronTrigger					|
 
 	# 实例方法
 		CronScheduleBuilder inTimeZone(TimeZone timezone)
+
 		CronScheduleBuilder withMisfireHandlingInstructionDoNothing()
 		CronScheduleBuilder withMisfireHandlingInstructionFireAndProceed()
 		CronScheduleBuilder withMisfireHandlingInstructionIgnoreMisfires()
+			* Misfire的处理策略
+	
+	# misfire相关的策略(常量)
+		CronTrigger.MISFIRE_INSTRUCTION_FIRE_ONCE_NOW
+		CronTrigger.MISFIRE_INSTRUCTION_DO_NOTHING
 
 ----------------------------
 DailyTimeIntervalTrigger	|

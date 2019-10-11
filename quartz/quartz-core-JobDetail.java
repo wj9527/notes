@@ -58,7 +58,7 @@ JobBuilder						|
 
 		JobBuilder withIdentity(String name)
 		JobBuilder withIdentity(String name, String group)
-			* name, 表示job唯一的名称
+			* name, 表示job唯一的名称, 如果不曾调用, 则会默认生成一个默认的: 6da64b5bd2ee-05f824d5-50e9-438b-b72b-a2350c08ee65
 			* group, 表示job所属的分组
 			
 			* 如果没设置 group, 默认为: DEFAULT

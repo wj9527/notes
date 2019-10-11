@@ -3,8 +3,10 @@
 Scheduler					|
 ----------------------------
 	# 接口方法
+		Calendar getCalendar(String calName)
+		boolean deleteCalendar(String calName) 
 		void addCalendar(String calName, Calendar calendar, boolean replace, boolean updateTriggers)
-			* 添加一个日期对象
+			* 添加/删除一个日期对象
 
 		void addJob(JobDetail jobDetail, boolean replace)
 		void addJob(JobDetail jobDetail, boolean replace, boolean storeNonDurableWhileAwaitingScheduling)
@@ -14,12 +16,16 @@ Scheduler					|
 
 		boolean checkExists(JobKey jobKey) 
 		boolean checkExists(TriggerKey triggerKey)
+
 		void clear() 
-		boolean deleteCalendar(String calName) 
+		
 		boolean deleteJob(JobKey jobKey)
 		boolean deleteJobs(List<JobKey> jobKeys)
-		Calendar getCalendar(String calName)
+
+		
+
 		List<String> getCalendarNames()
+
 		SchedulerContext getContext()
 
 		void start()
@@ -44,6 +50,7 @@ Scheduler					|
 			* 设置 Job 实例的创建工厂类
 
 		ListenerManager getListenerManager()
+			* 返回监听器管理器
 
 		Date scheduleJob(JobDetail jobDetail, Trigger trigger)
 		Date scheduleJob(Trigger trigger)
