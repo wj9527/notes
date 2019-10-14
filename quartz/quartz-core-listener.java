@@ -4,6 +4,8 @@ Listener				|
 	# 通过 Scheduler 获取到 ListenerManager 来管理监听器
 		Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
         ListenerManager listenerManager = scheduler.getListenerManager();
+	
+	# Listener也可以通过 quartz.properties 形式配置
 
 ------------------------
 ListenerManager			|

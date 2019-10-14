@@ -68,6 +68,8 @@ TriggerBuilder				|
 		TriggerBuilder<T> forJob(JobKey keyOfJobToFire)
 		TriggerBuilder<T> forJob(String jobName)
 		TriggerBuilder<T> forJob(String jobName, String jobGroup)
+			* 关联job, 可以指定类, 或者指定名称(从Scheduler中查询)
+
 		TriggerBuilder<T> modifiedByCalendar(String calName)
 			* 根据设置到Scheduler中的 Calendar , 修改执行计划
 
@@ -181,8 +183,13 @@ CronTrigger					|
 		CronScheduleBuilder cronSchedule(CronExpression cronExpression)
 		CronScheduleBuilder cronScheduleNonvalidatedExpression(String cronExpression)
 		CronScheduleBuilder dailyAtHourAndMinute(int hour, int minute)
+			* 在每天的指定小时, 指定分钟触发
+
 		CronScheduleBuilder monthlyOnDayAndHourAndMinute(int dayOfMonth, int hour, int minute)
+			* 在每个月的指定天, 的指定小时, 指定分钟触发
+
 		CronScheduleBuilder weeklyOnDayAndHourAndMinute(int dayOfWeek, int hour, int minute)
+			* 在每个周的指定星期, 的指定小时, 指定分钟触发
 
 	# 实例方法
 		CronScheduleBuilder inTimeZone(TimeZone timezone)

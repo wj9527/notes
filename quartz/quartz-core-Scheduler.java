@@ -27,6 +27,7 @@ Scheduler					|
 		List<String> getCalendarNames()
 
 		SchedulerContext getContext()
+			* 获取上下文对象, 就是一个Map结构, String 为Key
 
 		void start()
 			* 启动
@@ -35,15 +36,21 @@ Scheduler					|
 			* 在指定秒后启动
 
 		boolean isStarted()
+			* 判断是否启动
+
 		void standby()
-			* 暂停
+			* 暂停任务的执行, 如果需要继续执行, 执行方法: start();
 
 		boolean isInStandbyMode()
-		void shutdown()
-			* 关闭应用
+			* 判断当前的状态是否是暂停的
 
+		void shutdown()
 		void shutdown(boolean waitForJobsToComplete)
+			* 关闭应用, waitForJobsToComplete 控制是否要等待任务执行完毕
+
 		boolean isShutdown()
+			* 判断是否已经关闭
+
 		SchedulerMetaData getMetaData()
 		List<JobExecutionContext> getCurrentlyExecutingJobs()
 		void setJobFactory(JobFactory factory)
@@ -56,13 +63,21 @@ Scheduler					|
 		Date scheduleJob(Trigger trigger)
 		void scheduleJobs(Map<JobDetail, Set<? extends Trigger>> triggersAndJobs, boolean replace) 
 		void scheduleJob(JobDetail jobDetail, Set<? extends Trigger> triggersForJob, boolean replace)
+
 		boolean unscheduleJob(TriggerKey triggerKey)
 		boolean unscheduleJobs(List<TriggerKey> triggerKeys)
+			* 移除指定的Trigger以及job
+
 		Date rescheduleJob(TriggerKey triggerKey, Trigger newTrigger)
+
 		void addJob(JobDetail jobDetail, boolean replace)
 		void addJob(JobDetail jobDetail, boolean replace, boolean storeNonDurableWhileAwaitingScheduling)
+			* 添加job到 Scheduler, 以备使用
+
 		boolean deleteJob(JobKey jobKey)
 		boolean deleteJobs(List<JobKey> jobKeys)
+			* 移除指定的join
+
 		void triggerJob(JobKey jobKey)
 		void triggerJob(JobKey jobKey, JobDataMap data)
 		void pauseJob(JobKey jobKey)
@@ -109,6 +124,14 @@ SchedulerFactory			|
 		DirectSchedulerFactory
 		StdSchedulerFactory
 	
+	# StdSchedulerFactory 实例方法
+		void initialize()
+		void initialize(InputStream propertiesStream)
+		void initialize(String filename) 
+		void initialize(Properties props)
+			* 根据配置初始化
+	
+
 
 	
 ----------------------------

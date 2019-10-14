@@ -14,10 +14,13 @@ quartz	整合					|
 				* 存储任务
 				* 枚举:MEMORY(默认),JDBC
 			scheduler-name:
+				* 集群的名称(单机环境无所谓)
 			auto-startup: true
+				* 初始化后立即执行
 			startup-delay: 0
 				* 系统启动后延迟多久开始执行定时任务
 			wait-for-jobs-to-complete-on-shutdown: false
+				* 在系统关闭的时候, 是否等待任务执行完毕
 			overwrite-existing-jobs: false
 				* 是否要覆盖已经存在的任务记录
 			properties: 
@@ -86,7 +89,8 @@ org:
 	  clusterCheckinInterval: 10000 
 		* 分布式节点有效性检查时间间隔，单位：毫秒
 	  useProperties: false 
-		* 是否使用配置
+		* 表示JDBCJobStore JobDataMaps中的所有值都是字符串
+
 	threadPool:
 	  class: org.quartz.simpl.SimpleThreadPool 
 		* 线程池实现类
@@ -101,6 +105,7 @@ org:
 quartz	整合					|
 --------------------------------
 	# 任务类继承:QuartzJobBean 
+		
 	# JobDetail
 	# Calendar
 	# Trigger

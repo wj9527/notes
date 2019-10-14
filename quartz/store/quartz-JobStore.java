@@ -16,4 +16,8 @@ JobStore					|
 		TerracottaJobStoreExtensions
 			|-PlainTerracottaJobStore
 	
+	# 通过配置设置实现
+		org.quartz.jobStore.class=org.quartz.simpl.RAMJobStore
+	
+
 	
