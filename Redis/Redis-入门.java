@@ -129,7 +129,8 @@ Redis-关于版本号		|
 	
 	# Windows 官方是不支持Windos平台的,我们现在使用的Windos平台的Redis,是微软自己从github上把源码扒下来,编译,发布,维护的!
 	  所以,windos的 Redis的版本都会低于 Linux 版
-
+	
+		https://github.com/microsoftarchive/redis
 
 -----------------------
 Redis-安装-针对3.0		|
