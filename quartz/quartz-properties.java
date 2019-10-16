@@ -4,6 +4,13 @@ quartz.properties	|
 -------------------
 	# 放在classpath下
 
+	# 配置项的属性名称以常量形式定义在StdSchedulerFactory类中
+		public static final String PROPERTIES_FILE = "org.quartz.properties";
+		public static final String PROP_SCHED_INSTANCE_NAME = "org.quartz.scheduler.instanceName";
+		public static final String PROP_SCHED_INSTANCE_ID = "org.quartz.scheduler.instanceId";
+		public static final String PROP_SCHED_INSTANCE_ID_GENERATOR_PREFIX = "org.quartz.scheduler.instanceIdGenerator";
+		...
+	
 -------------------
 配置项				|
 -------------------

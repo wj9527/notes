@@ -46,7 +46,7 @@ Scheduler					|
 
 		void shutdown()
 		void shutdown(boolean waitForJobsToComplete)
-			* 关闭应用, waitForJobsToComplete 控制是否要等待任务执行完毕
+			* 关闭应用, waitForJobsToComplete 控制是否要等待正在执行的任务执行完毕
 
 		boolean isShutdown()
 			* 判断是否已经关闭
