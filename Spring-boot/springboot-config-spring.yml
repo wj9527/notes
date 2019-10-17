@@ -1,0 +1,4 @@
+
+spring.main.lazy-initialization=false
+	* 是否延迟初始化bean
+	* 启用延迟初始化可以大大减少启动时间

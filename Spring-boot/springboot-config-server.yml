@@ -4,7 +4,12 @@ server:
   # È«¾ÖÅäÖÃ
   port: 1024
   address: 
-  use-forward-headers: true
+  use-forward-headers: NATIVE
+	* Ã¶¾Ù
+		NATIVE
+		FRAMEWORK
+		NONE
+
   server-header:     
   max-http-header-size: 
   connection-timeout:
