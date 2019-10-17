@@ -4,11 +4,13 @@ server:
   # È«¾ÖÅäÖÃ
   port: 1024
   address: 
-  use-forward-headers: NATIVE
+  forward-headers-strategy: NONE
 	* Ã¶¾Ù
 		NATIVE
 		FRAMEWORK
 		NONE
+  use-forward-headers: true
+	
 
   server-header:     
   max-http-header-size: 
