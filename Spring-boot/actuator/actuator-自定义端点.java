@@ -15,3 +15,12 @@
 		@EndpointJmxExtension
 
 		@ServletEndpoint
+		@ControllerEndpoint
+		@RestControllerEndpoint
+
+		@Selector
+
+		
+	
+	# ½Ó¿Ú
+		EndpointFilter
