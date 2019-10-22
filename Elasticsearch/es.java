@@ -25,6 +25,7 @@ Elasticsearch-目录结构		 |
 -----------------------------
 	bin
 		|-elasticsearch
+		|-elasticsearch-plugin
 	config
 		|-elasticsearch.yml
 		|-jvm.options
@@ -39,11 +40,33 @@ Elasticsearch-目录结构		 |
 	modules
 	plugins
 
------------------------------
-Elasticsearch-启动			 |
------------------------------
-	# 执行脚本
-		bin/elasticsearch
+------------------------------
+Linux安装启动					|
+------------------------------
+	# 下载指定的版本
+		https://www.elastic.co/cn/downloads/elasticsearch
+	
+	# 解压到目录
+
+	# 创建运行用户, 执行目录授权
+		* ES不允许直接使用root账户进行启动, 会给出异常:can not run elasticsearch as root
+
+		useradd -r elasticsearch
+
+		chown elasticsearch:elasticsearch [path] -R
+
+		* 如果指定了其他的志数据目录, 也需要进行授权
+
+	
+	# 启动脚本
+		/bin/elasticsearch
+			-d
+				* 在后台执行
+			-E
+				* 设置配置参数, 覆盖 elasticsearch.yml
+					-E path.data=node1_data
+				* 可以出现多个
+		
 	
 	# 访问:http://127.0.0.1:9200/
 		{
