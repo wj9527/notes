@@ -37,5 +37,16 @@
 
 
 
+----------------------------
+伪集群的启动				|
+----------------------------
+	# 同一个程序启动多个集群节点
+		./bin/elasticsearch -E node.name=node1 -E cluster.name=cluster -E path.data=node1_data -d
+		./bin/elasticsearch -E node.name=node2 -E cluster.name=cluster -E path.data=node2_data -d
+		./bin/elasticsearch -E node.name=node3 -E cluster.name=cluster -E path.data=node3_data -d
 
-
+	
+	# 多个程序, 启动多个集群节点
+		* 设置不同的节点名称
+		* 配置相同的集群名称
+		* 配置不同的数据目录
