@@ -14,14 +14,18 @@ index	- 创建		   |
 		{
 			"acknowledged" : true,
 			"shards_acknowledged" : true,
-			"index" : "<index>"
+			"index" : "<index>",
+			"settings": {	
+				"number_of_shards": 5			// 设置 primary shard的数量
+				"number_of_replicas": 1			// 设置 relicas shard的数量
+			}
 		}
 
 -----------------------
 index	- 删除		   |
 -----------------------
 	# 请求
-		DELETE /<index> ?pretty
+		DELETE /<index>?pretty
 	
 		{
 		  "acknowledged" : true

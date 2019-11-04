@@ -11,3 +11,5 @@
 		./bin/elasticsearch-plugin install analysis-icu
 
 	
+	# 离线安装插件
+		
