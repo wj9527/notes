@@ -172,7 +172,7 @@ Spring-boot 注册WEB三大组件		|
 		
 
 		* 也可以在 组件实现上添加 @Component 注解,
-		* 如果是 Filter, 还可以通过 @Order 来定义多个 Filter 的执行顺序
+		* 如果是 Filter, 还可以通过 @Order 来定义多个 Filter 的执行顺序, order 越小, 优先级越高
 
 	# 注册对应的 RegistrationBean
 		* 他们可以进行'参数'设置等操作
