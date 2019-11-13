@@ -281,6 +281,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.session.web.http.DefaultCookieSerializer;
+import org.springframework.util.StringUtils;
 
 // @Component
 public class DynamicCookieMaxAgeCookieSerializer extends DefaultCookieSerializer {
@@ -294,20 +295,29 @@ public class DynamicCookieMaxAgeCookieSerializer extends DefaultCookieSerializer
 	
 	@Override
 	public void writeCookieValue(CookieValue cookieValue) {
-		HttpServletRequest request = cookieValue.getRequest();
-		Object attribute = request.getAttribute(COOKIE_MAX_AGE);
-		if (attribute != null) {
-			cookieValue.setCookieMaxAge((int) attribute);
-		}else {
-			// 默认cookie的生命周期
-			cookieValue.setCookieMaxAge(this.cookieMaxAge);
+		
+		// if ("".equals(this.cookieValue) this.cookieMaxAge = 0;
+		if (!StringUtils.isEmpty(cookieValue.getCookieValue())) {
+			
+			HttpServletRequest request = cookieValue.getRequest();
+			
+			// 从request域读取到cookie的maxAge属性
+			Object attribute = request.getAttribute(COOKIE_MAX_AGE);
+			if (attribute != null) {
+				cookieValue.setCookieMaxAge((int) attribute);
+			} else {
+				cookieValue.setCookieMaxAge(this.cookieMaxAge);
+			}
+			
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("动态设置cooke.max-age={}", cookieValue.getCookieMaxAge());
+			}
 		}
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("动态设置cooke.max-age={}", cookieValue.getCookieMaxAge());
-		}
+		
 		super.writeCookieValue(cookieValue);
 	}
 }
+
 
 # 配置到IOC
 import org.springframework.beans.factory.annotation.Value;
