@@ -5,6 +5,14 @@ image					 |
 		docker search [name]
 			name
 				* 查询指定的镜像
+			
+			--filter=stars=10000
+				* 用于过滤, 仅仅查看收藏大于10000的镜像
+			
+			 --filter=is-automated=true
+				* 仅仅显示automated build的镜像
+			
+
 		————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 		NAME                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
 		mysql                                  MySQL is a widely used, open-source relation…   7649                [OK]                [ok]
@@ -42,16 +50,19 @@ image					 |
 				* 镜像名称
 			tag
 				* 标签(版本号)
+				* 如果省略, 默认拉取 latest 版本
 			-a
 				* 下载指定镜像的所有tag(版本)到本地
 	
 	# 删除镜像
-		docker rmi [name]
-			* 仅仅只会删除 last 版本
+		docker rmi [name]:[tag]
+			* 如果不指定tag, 默认删除 last 版本
 			* 也可以把name换成指定的image id
 			* 删除所有的镜像
 				docker rmi `docker images -q`
-
+		
+			-f
+				* 强制删除, 就算是还有正在运行的容器
 	
 	# 导出镜像
 		docker save [name]:[tag] > /[path].image
