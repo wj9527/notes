@@ -61,5 +61,16 @@ public class QueryParamRenderFunction implements TemplateMethodModelEx {
 // 配置
 this.configuration.setSharedVariable("_queryParam", new QueryParamRenderFunction());
 
+// Servlet 数据
+Map<String, String[]> parameter = request.getParameterMap();
+parameter.remove("page");
+parameter.remove("rows");
+
+
+ModelAndView modelAndView = new ModelAndView("test/test");
+modelAndView.addObject("params", parameter);
+modelAndView.addObject("page", page);
+modelAndView.addObject("rows", rows);
+
 // 页面使用
 ${_queryParam("/test?page=${page + 1}&rows=${rows + 1}", params)}
