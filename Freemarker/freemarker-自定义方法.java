@@ -93,19 +93,32 @@
 				TemplateDateModel.DATE;
 				TemplateDateModel.DATETIME;
 
-		
+	# 在通过参数获取到原始Java对象
 		* 这设计感觉咋那么瓜皮???
-		* 所有的参数被封装为Freemarker定义的类型 BeanModel 后,都有2个方法 (BeanModel implements TemplateModel )
+		* 参数是Java对象, 会被封装为Freemarker定义的类型 BeanModel 后,都有2个方法 (BeanModel implements TemplateModel )
+			/**
+			 * Returns the same as {@link #getWrappedObject()}; to ensure that, this method will be final starting from 2.4.
+			 * This behavior of {@link BeanModel} is assumed by some FreeMarker code. 
+			 */
+			public Object getAdaptedObject(Class<?> hint) {
+				return object;  // return getWrappedObject(); starting from 2.4
+			}
 
-			Object getAdaptedObject(Class<?> hint)
-			Object getWrappedObject()
+			public Object getWrappedObject() {
+				return object;
+			}
+	
 
-			* 通过这俩方法,可以获取到调用时传递的原生对象
-			
+		* 通过这俩方法,可以获取到调用时传递的原生对象
+			// 调用
 			${localDateTimeFormatter(paste.createDate)}
 
-			StringModel stringModel = (StringModel) arguments.get(0);
-			LocalDateTime localDateTime = (LocalDateTime) stringModel.getAdaptedObject(LocalDateTime.class);
+			// 获取
+			BeanModel beanModel = (BeanModel) arguments.get(0);
+			LocalDateTime localDateTime = (LocalDateTime) beanModel.getAdaptedObject(LocalDateTime.class);
+		
+		* 获取到 Map 参数的原始对象
+			Map<String, String[]> params = ((SimpleHash)arguments.get(1)).toMap(); // SimpleHash 有一个 toMap() 方法, 可以获取到原始的Map对象
 
 
 ----------------------------

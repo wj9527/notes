@@ -1,198 +1,198 @@
 ------------------------
-CSP»úÖÆ					|
+CSPæœºåˆ¶					|
 -----------------------
-	# ²Î¿¼µØÖ·
+	# å‚è€ƒåœ°å€
 		http://www.ruanyifeng.com/blog/2016/09/csp.html
 		https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP
 	
-	# »¹¿ÉÒÔÍ¨¹ı meta ±êÇ©À´ÏŞÖÆ
+	# è¿˜å¯ä»¥é€šè¿‡ meta æ ‡ç­¾æ¥é™åˆ¶
 		<meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none'; style-src cdn.example.org third-party.org; child-src https:">
 	
-	# Í¨¹ıHttpHeaderÀ´ÏŞÖÆ
+	# é€šè¿‡HttpHeaderæ¥é™åˆ¶
 		Content-Security-Policy
 	
-	# ¿ÉÏŞÖÆµÄ×ÊÔ´ÁĞ±í
-		script-src		Íâ²¿½Å±¾
-		style-src		ÑùÊ½±í
-		img-src			Í¼Ïñ
-		media-src		Ã½ÌåÎÄ¼ş£¨ÒôÆµºÍÊÓÆµ£©
-		font-src		×ÖÌåÎÄ¼ş
-		object-src		²å¼ş£¨±ÈÈç Flash£©
-		child-src		¿ò¼Ü
-		frame-ancestors	Ç¶ÈëµÄÍâ²¿×ÊÔ´£¨±ÈÈç<frame>¡¢<iframe>¡¢<embed>ºÍ<applet>£©
-		connect-src		HTTP Á¬½Ó£¨Í¨¹ı XHR¡¢WebSockets¡¢EventSourceµÈ£©
-		worker-src		worker½Å±¾
-		manifest-src	manifest ÎÄ¼ş
-		form-action		Form±íµ¥µÄaction
-		frame-src		Ê¹ÓÃÔªËØ(Èç<frame>ºÍ<iframe>)¼ÓÔØµÄÇ¶Ì×ä¯ÀÀÉÏÏÂÎÄÖ¸¶¨ÓĞĞ§À´Ô´
+	# å¯é™åˆ¶çš„èµ„æºåˆ—è¡¨
+		script-src		å¤–éƒ¨è„šæœ¬
+		style-src		æ ·å¼è¡¨
+		img-src			å›¾åƒ
+		media-src		åª’ä½“æ–‡ä»¶ï¼ˆéŸ³é¢‘å’Œè§†é¢‘ï¼‰
+		font-src		å­—ä½“æ–‡ä»¶
+		object-src		æ’ä»¶ï¼ˆæ¯”å¦‚ Flashï¼‰
+		child-src		æ¡†æ¶
+		frame-ancestors	åµŒå…¥çš„å¤–éƒ¨èµ„æºï¼ˆæ¯”å¦‚<frame>ã€<iframe>ã€<embed>å’Œ<applet>ï¼‰
+		connect-src		HTTP è¿æ¥ï¼ˆé€šè¿‡ XHRã€WebSocketsã€EventSourceç­‰ï¼‰
+		worker-src		workerè„šæœ¬
+		manifest-src	manifest æ–‡ä»¶
+		form-action		Formè¡¨å•çš„action
+		frame-src		ä½¿ç”¨å…ƒç´ (å¦‚<frame>å’Œ<iframe>)åŠ è½½çš„åµŒå¥—æµè§ˆä¸Šä¸‹æ–‡æŒ‡å®šæœ‰æ•ˆæ¥æº
 
-	# default-src Ä¬ÈÏÖµ
-		* default-srcÓÃÀ´ÉèÖÃÉÏÃæ¸÷¸öÑ¡ÏîµÄÄ¬ÈÏÖµ
+	# default-src é»˜è®¤å€¼
+		* default-srcç”¨æ¥è®¾ç½®ä¸Šé¢å„ä¸ªé€‰é¡¹çš„é»˜è®¤å€¼
 			Content-Security-Policy: default-src 'self'
 		
-		* Èç¹ûÍ¬Ê±ÉèÖÃÄ³¸öµ¥ÏîÏŞÖÆ,ÄÇÃ´»á¸²¸ÇÄ¬ÈÏµÄÖµ
+		* å¦‚æœåŒæ—¶è®¾ç½®æŸä¸ªå•é¡¹é™åˆ¶,é‚£ä¹ˆä¼šè¦†ç›–é»˜è®¤çš„å€¼
 	
-	# URL ÏŞÖÆ
-		frame-ancestors	ÏŞÖÆÇ¶Èë¿ò¼ÜµÄÍøÒ³
-		base-uri		ÏŞÖÆ<base#href>
-		form-action		ÏŞÖÆ<form#action>
+	# URL é™åˆ¶
+		frame-ancestors	é™åˆ¶åµŒå…¥æ¡†æ¶çš„ç½‘é¡µ
+		base-uri		é™åˆ¶<base#href>
+		form-action		é™åˆ¶<form#action>
 	
 	
-	# ÆäËûÏŞÖÆ
-		block-all-mixed-content		HTTPS ÍøÒ³²»µÃ¼ÓÔØ HTTP ×ÊÔ´£¨ä¯ÀÀÆ÷ÒÑ¾­Ä¬ÈÏ¿ªÆô£©
-		upgrade-insecure-requests	×Ô¶¯½«ÍøÒ³ÉÏËùÓĞ¼ÓÔØÍâ²¿×ÊÔ´µÄ HTTP Á´½Ó»»³É HTTPS Ğ­Òé
-		plugin-types				ÏŞÖÆ¿ÉÒÔÊ¹ÓÃµÄ²å¼ş¸ñÊ½
-		sandbox						ä¯ÀÀÆ÷ĞĞÎªµÄÏŞÖÆ£¬±ÈÈç²»ÄÜÓĞµ¯³ö´°¿ÚµÈ¡£
+	# å…¶ä»–é™åˆ¶
+		block-all-mixed-content		HTTPS ç½‘é¡µä¸å¾—åŠ è½½ HTTP èµ„æºï¼ˆæµè§ˆå™¨å·²ç»é»˜è®¤å¼€å¯ï¼‰
+		upgrade-insecure-requests	è‡ªåŠ¨å°†ç½‘é¡µä¸Šæ‰€æœ‰åŠ è½½å¤–éƒ¨èµ„æºçš„ HTTP é“¾æ¥æ¢æˆ HTTPS åè®®
+		plugin-types				é™åˆ¶å¯ä»¥ä½¿ç”¨çš„æ’ä»¶æ ¼å¼
+		sandbox						æµè§ˆå™¨è¡Œä¸ºçš„é™åˆ¶ï¼Œæ¯”å¦‚ä¸èƒ½æœ‰å¼¹å‡ºçª—å£ç­‰ã€‚
 	
-	# report-uri ±¨¸æ
-		* report-uri¾ÍÓÃÀ´¸æËßä¯ÀÀÆ÷£¬Ó¦¸Ã°Ñ×¢ÈëĞĞÎª±¨¸æ¸øÄÄ¸öÍøÖ·
+	# report-uri æŠ¥å‘Š
+		* report-uriå°±ç”¨æ¥å‘Šè¯‰æµè§ˆå™¨ï¼Œåº”è¯¥æŠŠæ³¨å…¥è¡Œä¸ºæŠ¥å‘Šç»™å“ªä¸ªç½‘å€
 			report-uri /csp_report_parser;
 		
-		* ä¯ÀÀÆ÷»áÊ¹ÓÃPOST·½·¨£¬·¢ËÍÒ»¸öJSON¶ÔÏó
+		* æµè§ˆå™¨ä¼šä½¿ç”¨POSTæ–¹æ³•ï¼Œå‘é€ä¸€ä¸ªJSONå¯¹è±¡
 			{
 			  "csp-report": {
-				"document-uri": "http://example.org/page.html",	//·¢ÉúÎ¥¹æµÄÎÄµµµÄURI¡£
+				"document-uri": "http://example.org/page.html",	//å‘ç”Ÿè¿è§„çš„æ–‡æ¡£çš„URIã€‚
 				"referrer": "http://evil.example.com/",	//referrer
-				"blocked-uri": "http://evil.example.com/evil.js",	//±»CSP×èÖ¹µÄ×ÊÔ´URI¡£Èç¹û±»×èÖ¹µÄURIÀ´×Ô²»Í¬µÄÔ´¶ø·ÇÎÄµµURI£¬ÄÇÃ´±»×èÖ¹µÄ×ÊÔ´URI»á±»É¾¼õ£¬½ö±£ÁôĞ­Òé£¬Ö÷»úºÍ¶Ë¿ÚºÅ¡£
-				"violated-directive": "script-src 'self' https://apis.google.com", //Î¥·´µÄ²ßÂÔÃû³Æ¡£
-				"original-policy": "script-src 'self' https://apis.google.com; report-uri http://example.org/my_amazing_csp_report_parser" // ÔÚ Content-Security-Policy HTTP Í·²¿ÖĞÖ¸Ã÷µÄÔ­Ê¼²ßÂÔ¡£
+				"blocked-uri": "http://evil.example.com/evil.js",	//è¢«CSPé˜»æ­¢çš„èµ„æºURIã€‚å¦‚æœè¢«é˜»æ­¢çš„URIæ¥è‡ªä¸åŒçš„æºè€Œéæ–‡æ¡£URIï¼Œé‚£ä¹ˆè¢«é˜»æ­¢çš„èµ„æºURIä¼šè¢«åˆ å‡ï¼Œä»…ä¿ç•™åè®®ï¼Œä¸»æœºå’Œç«¯å£å·ã€‚
+				"violated-directive": "script-src 'self' https://apis.google.com", //è¿åçš„ç­–ç•¥åç§°ã€‚
+				"original-policy": "script-src 'self' https://apis.google.com; report-uri http://example.org/my_amazing_csp_report_parser" // åœ¨ Content-Security-Policy HTTP å¤´éƒ¨ä¸­æŒ‡æ˜çš„åŸå§‹ç­–ç•¥ã€‚
 			  }
 			}
 
 	# Content-Security-Policy-Report-Only
-		* ²»Ö´ĞĞÏŞÖÆÑ¡Ïî£¬Ö»ÊÇ¼ÇÂ¼Î¥·´ÏŞÖÆµÄĞĞÎª
-		* ÒòÎªÖ»¼ÇÂ¼,ËùÒÔËü±ØĞëÓëreport-uriÑ¡ÏîÅäºÏÊ¹ÓÃ
+		* ä¸æ‰§è¡Œé™åˆ¶é€‰é¡¹ï¼Œåªæ˜¯è®°å½•è¿åé™åˆ¶çš„è¡Œä¸º
+		* å› ä¸ºåªè®°å½•,æ‰€ä»¥å®ƒå¿…é¡»ä¸report-urié€‰é¡¹é…åˆä½¿ç”¨
 			Content-Security-Policy-Report-Only: default-src 'self'; ...; report-uri /my_amazing_csp_report_parser;
 	
-	# ¿ÉÒÔÏŞÖÆµÄÑ¡ÏîÖµ
-		Ö÷»úÃû: 
+	# å¯ä»¥é™åˆ¶çš„é€‰é¡¹å€¼
+		ä¸»æœºå: 
 			example.org
 			https://example.com:443
 
-		Â·¾¶Ãû: 
+		è·¯å¾„å: 
 			example.org/resources/js/
 
-		Í¨Åä·û: 
-			*.example.org,	±íÊ¾ÈÎÒâĞ­Òé
-			*://*.example.com:* ÈÎÒâ×ÓÓòÃû,ÈÎÒâ¶Ë¿Ú
-		Ğ­ÒéÃû:
+		é€šé…ç¬¦: 
+			*.example.org,	è¡¨ç¤ºä»»æ„åè®®
+			*://*.example.com:* ä»»æ„å­åŸŸå,ä»»æ„ç«¯å£
+		åè®®å:
 			https:
 			data:
-		¹Ø¼ü×Ö: 'self' µ±Ç°ÓòÃû£¬ĞèÒª¼ÓÒıºÅ
-		¹Ø¼ü×Ö: 'none' ½ûÖ¹¼ÓÔØÈÎºÎÍâ²¿×ÊÔ´£¬ĞèÒª¼ÓÒıºÅ
+		å…³é”®å­—: 'self' å½“å‰åŸŸåï¼Œéœ€è¦åŠ å¼•å·
+		å…³é”®å­—: 'none' ç¦æ­¢åŠ è½½ä»»ä½•å¤–éƒ¨èµ„æºï¼Œéœ€è¦åŠ å¼•å·
 	
-		* ¿ÉÒÔÓĞ¶à¸öÖµ,Ê¹ÓÃ¿Õ¸ñ·Ö¸î,Ã¿¸öÑ¡ÏîÊ¹ÓÃ;·Ö¸î
+		* å¯ä»¥æœ‰å¤šä¸ªå€¼,ä½¿ç”¨ç©ºæ ¼åˆ†å‰²,æ¯ä¸ªé€‰é¡¹ä½¿ç”¨;åˆ†å‰²
 			Content-Security-Policy: default-src 'none'; img-src 'self' data:; script-src 'self'
 
-		* Èç¹ûÍ¬Ò»¸öÏŞÖÆÑ¡ÏîÊ¹ÓÃ¶à´Î,Ö»ÓĞµÚÒ»´Î»áÉúĞ§
+		* å¦‚æœåŒä¸€ä¸ªé™åˆ¶é€‰é¡¹ä½¿ç”¨å¤šæ¬¡,åªæœ‰ç¬¬ä¸€æ¬¡ä¼šç”Ÿæ•ˆ
 
-	# script-src µÄÌØÊâÖµ
-		* ×¢Òâ£¬ÏÂÃæÕâĞ©Öµ¶¼±ØĞë·ÅÔÚµ¥ÒıºÅÀïÃæ
+	# script-src çš„ç‰¹æ®Šå€¼
+		* æ³¨æ„ï¼Œä¸‹é¢è¿™äº›å€¼éƒ½å¿…é¡»æ”¾åœ¨å•å¼•å·é‡Œé¢
 
-		'unsafe-inline':ÔÊĞíÖ´ĞĞÒ³ÃæÄÚÇ¶µÄ<script>±êÇ©ºÍÊÂ¼ş¼àÌıº¯Êı
+		'unsafe-inline':å…è®¸æ‰§è¡Œé¡µé¢å†…åµŒçš„<script>æ ‡ç­¾å’Œäº‹ä»¶ç›‘å¬å‡½æ•°
 
-		unsafe-eval:ÔÊĞí½«×Ö·û´®µ±×÷´úÂëÖ´ĞĞ£¬±ÈÈçÊ¹ÓÃeval¡¢setTimeout¡¢setIntervalºÍFunctionµÈº¯Êı¡£
+		unsafe-eval:å…è®¸å°†å­—ç¬¦ä¸²å½“ä½œä»£ç æ‰§è¡Œï¼Œæ¯”å¦‚ä½¿ç”¨evalã€setTimeoutã€setIntervalå’ŒFunctionç­‰å‡½æ•°ã€‚
 
-		nonceÖµ:Ã¿´ÎHTTP»ØÓ¦¸ø³öÒ»¸öÊÚÈ¨token£¬Ò³ÃæÄÚÇ¶½Å±¾±ØĞëÓĞÕâ¸ötoken£¬²Å»áÖ´ĞĞ
+		nonceå€¼:æ¯æ¬¡HTTPå›åº”ç»™å‡ºä¸€ä¸ªæˆæƒtokenï¼Œé¡µé¢å†…åµŒè„šæœ¬å¿…é¡»æœ‰è¿™ä¸ªtokenï¼Œæ‰ä¼šæ‰§è¡Œ
 			Content-Security-Policy: script-src 'nonce-EDNnf03nceIOfn39fn3e9h3sdfa'
 			<script type="text/javascript" nonce="EDNnf03nceIOfn39fn3e9h3sdfa">
-				console.log('ÄÚÁª´úÂëÖ´ĞĞ');
+				console.log('å†…è”ä»£ç æ‰§è¡Œ');
 			</script>
 
-		hashÖµ:ÁĞ³öÔÊĞíÖ´ĞĞµÄ½Å±¾´úÂëµÄHashÖµ£¬Ò³ÃæÄÚÇ¶½Å±¾µÄ¹şÏ£ÖµÖ»ÓĞÎÇºÏµÄÇé¿öÏÂ£¬²ÅÄÜÖ´ĞĞ¡£
+		hashå€¼:åˆ—å‡ºå…è®¸æ‰§è¡Œçš„è„šæœ¬ä»£ç çš„Hashå€¼ï¼Œé¡µé¢å†…åµŒè„šæœ¬çš„å“ˆå¸Œå€¼åªæœ‰å»åˆçš„æƒ…å†µä¸‹ï¼Œæ‰èƒ½æ‰§è¡Œã€‚
 			Content-Security-Policy: script-src 'sha256-qznLcsROx4GACP2dm0UCKCzCG-HiZ1guq6ZZDob_Tng='
 		
-		* nonceºÍhash»¹¿ÉÒÔÓÃÔÚstyle-src
+		* nonceå’Œhashè¿˜å¯ä»¥ç”¨åœ¨style-src
 	
-	# script-srcºÍobject-srcÊÇ±ØÉèµÄ£¬³ı·ÇÉèÖÃÁËdefault-src
-		* object-src±ØÉèÊÇÒòÎª Flash ÀïÃæ¿ÉÒÔÖ´ĞĞÍâ²¿½Å±¾
+	# script-srcå’Œobject-srcæ˜¯å¿…è®¾çš„ï¼Œé™¤éè®¾ç½®äº†default-src
+		* object-srcå¿…è®¾æ˜¯å› ä¸º Flash é‡Œé¢å¯ä»¥æ‰§è¡Œå¤–éƒ¨è„šæœ¬
 	
-	# script-src²»ÄÜÊ¹ÓÃunsafe-inline¹Ø¼ü×Ö£¨³ı·Ç°éËæÒ»¸önonceÖµ£©£¬Ò²²»ÄÜÔÊĞíÉèÖÃdata:URL¡£
-		<img src="x" onerror="evil()">					//unsafe-inline »áµ¼ÖÂËüÖ´ĞĞ
-		<script src="data:text/javascript,evil()"></script>	//ÔÊĞí data:Ğ­Òé,»áµ¼ÖÂËüÖ´ĞĞ
+	# script-srcä¸èƒ½ä½¿ç”¨unsafe-inlineå…³é”®å­—ï¼ˆé™¤éä¼´éšä¸€ä¸ªnonceå€¼ï¼‰ï¼Œä¹Ÿä¸èƒ½å…è®¸è®¾ç½®data:URLã€‚
+		<img src="x" onerror="evil()">					//unsafe-inline ä¼šå¯¼è‡´å®ƒæ‰§è¡Œ
+		<script src="data:text/javascript,evil()"></script>	//å…è®¸ data:åè®®,ä¼šå¯¼è‡´å®ƒæ‰§è¡Œ
 	
-	# ĞèÒª×¢ÒâjsonpÒ²ÓĞ¿ÉÄÜµ¼ÖÂxss
+	# éœ€è¦æ³¨æ„jsonpä¹Ÿæœ‰å¯èƒ½å¯¼è‡´xss
 		<script
 			src="/path/jsonp?callback=alert(document.domain)//">
 		</script>
 
 
 ------------------------
-CSP»úÖÆ	×Ü½á			|
+CSPæœºåˆ¶	æ€»ç»“			|
 -----------------------
-	# httpÍ·Ãû³Æ
+	# httpå¤´åç§°
 		Content-Security-Policy
 	
-	# ¿ÉÒÔÉèÖÃµÄÑ¡Ïî
-		script-src		Íâ²¿½Å±¾
-		style-src		ÑùÊ½±í
-		img-src			Í¼Ïñ
-		media-src		Ã½ÌåÎÄ¼ş£¨ÒôÆµºÍÊÓÆµ£©
-		font-src		×ÖÌåÎÄ¼ş
-		object-src		²å¼ş£¨±ÈÈç Flash£©
-		child-src		¿ò¼Ü
-		frame-ancestors	Ç¶ÈëµÄÍâ²¿×ÊÔ´£¨±ÈÈç<frame>¡¢<iframe>¡¢<embed>ºÍ<applet>£©
-		connect-src		HTTP Á¬½Ó£¨Í¨¹ı XHR¡¢WebSockets¡¢EventSourceµÈ£©
-		worker-src		worker½Å±¾
-		manifest-src	manifest ÎÄ¼ş
-		default-src		ËùÓĞÑ¡ÏîµÄÄ¬ÈÏÑ¡Ïî(¿ÉÒÔ±»¸²¸Ç)
-		form-action		Form±íµ¥µÄaction
+	# å¯ä»¥è®¾ç½®çš„é€‰é¡¹
+		script-src		å¤–éƒ¨è„šæœ¬
+		style-src		æ ·å¼è¡¨
+		img-src			å›¾åƒ
+		media-src		åª’ä½“æ–‡ä»¶ï¼ˆéŸ³é¢‘å’Œè§†é¢‘ï¼‰
+		font-src		å­—ä½“æ–‡ä»¶
+		object-src		æ’ä»¶ï¼ˆæ¯”å¦‚ Flashï¼‰
+		child-src		æ¡†æ¶
+		frame-ancestors	åµŒå…¥çš„å¤–éƒ¨èµ„æºï¼ˆæ¯”å¦‚<frame>ã€<iframe>ã€<embed>å’Œ<applet>ï¼‰
+		connect-src		HTTP è¿æ¥ï¼ˆé€šè¿‡ XHRã€WebSocketsã€EventSourceç­‰ï¼‰
+		worker-src		workerè„šæœ¬
+		manifest-src	manifest æ–‡ä»¶
+		default-src		æ‰€æœ‰é€‰é¡¹çš„é»˜è®¤é€‰é¡¹(å¯ä»¥è¢«è¦†ç›–)
+		form-action		Formè¡¨å•çš„action
 
-	# ¿ÉÒÔÉèÖÃµÄÖµ
-		* Ö÷»úÃû: 
+	# å¯ä»¥è®¾ç½®çš„å€¼
+		* ä¸»æœºå: 
 			example.org
 			https://example.com:443
 
-		* Â·¾¶Ãû: 
+		* è·¯å¾„å: 
 			example.org/resources/js/
 
-		* Í¨Åä·û: 
-			*.example.org,				//±íÊ¾ÈÎÒâĞ­Òé
-			*:/\/\*.example.com:*			//ÈÎÒâĞ­Òé,ÈÎÒâ×ÓÓòÃû,ÈÎÒâ¶Ë¿Ú
+		* é€šé…ç¬¦: 
+			*.example.org,				//è¡¨ç¤ºä»»æ„åè®®
+			*:/\/\*.example.com:*			//ä»»æ„åè®®,ä»»æ„å­åŸŸå,ä»»æ„ç«¯å£
 
-		* Ğ­ÒéÃû:
+		* åè®®å:
 			https:
 			data:
 
-		* ¹Ø¼ü×Ö: 'self' µ±Ç°ÓòÃû£¬ĞèÒª¼ÓÒıºÅ
-		* ¹Ø¼ü×Ö: 'none' ½ûÖ¹¼ÓÔØÈÎºÎÍâ²¿×ÊÔ´£¬ĞèÒª¼ÓÒıºÅ
+		* å…³é”®å­—: 'self' å½“å‰åŸŸåï¼Œéœ€è¦åŠ å¼•å·
+		* å…³é”®å­—: 'none' ç¦æ­¢åŠ è½½ä»»ä½•å¤–éƒ¨èµ„æºï¼Œéœ€è¦åŠ å¼•å·
 	
-	# script-src µÄÌØÊâÖµ
-		* ×¢Òâ£¬ÏÂÃæÕâĞ©Öµ¶¼±ØĞë·ÅÔÚµ¥ÒıºÅÀïÃæ
+	# script-src çš„ç‰¹æ®Šå€¼
+		* æ³¨æ„ï¼Œä¸‹é¢è¿™äº›å€¼éƒ½å¿…é¡»æ”¾åœ¨å•å¼•å·é‡Œé¢
 
-		'unsafe-inline':ÔÊĞíÖ´ĞĞÒ³ÃæÄÚÇ¶µÄ<script>±êÇ©ºÍÊÂ¼ş¼àÌıº¯Êı
+		'unsafe-inline':å…è®¸æ‰§è¡Œé¡µé¢å†…åµŒçš„<script>æ ‡ç­¾å’Œäº‹ä»¶ç›‘å¬å‡½æ•°
 
-		unsafe-eval:ÔÊĞí½«×Ö·û´®µ±×÷´úÂëÖ´ĞĞ£¬±ÈÈçÊ¹ÓÃeval¡¢setTimeout¡¢setIntervalºÍFunctionµÈº¯Êı¡£
+		unsafe-eval:å…è®¸å°†å­—ç¬¦ä¸²å½“ä½œä»£ç æ‰§è¡Œï¼Œæ¯”å¦‚ä½¿ç”¨evalã€setTimeoutã€setIntervalå’ŒFunctionç­‰å‡½æ•°ã€‚
 
-		nonceÖµ:Ã¿´ÎHTTP»ØÓ¦¸ø³öÒ»¸öÊÚÈ¨token£¬Ò³ÃæÄÚÇ¶½Å±¾±ØĞëÓĞÕâ¸ötoken£¬²Å»áÖ´ĞĞ
+		nonceå€¼:æ¯æ¬¡HTTPå›åº”ç»™å‡ºä¸€ä¸ªæˆæƒtokenï¼Œé¡µé¢å†…åµŒè„šæœ¬å¿…é¡»æœ‰è¿™ä¸ªtokenï¼Œæ‰ä¼šæ‰§è¡Œ
 			Content-Security-Policy: script-src 'nonce-EDNnf03nceIOfn39fn3e9h3sdfa'
 			<script type="text/javascript" nonce="EDNnf03nceIOfn39fn3e9h3sdfa">
-				console.log('ÄÚÁª´úÂëÖ´ĞĞ');
+				console.log('å†…è”ä»£ç æ‰§è¡Œ');
 			</script>
 
-		hashÖµ:ÁĞ³öÔÊĞíÖ´ĞĞµÄ½Å±¾´úÂëµÄHashÖµ£¬Ò³ÃæÄÚÇ¶½Å±¾µÄ¹şÏ£ÖµÖ»ÓĞÎÇºÏµÄÇé¿öÏÂ£¬²ÅÄÜÖ´ĞĞ¡£
+		hashå€¼:åˆ—å‡ºå…è®¸æ‰§è¡Œçš„è„šæœ¬ä»£ç çš„Hashå€¼ï¼Œé¡µé¢å†…åµŒè„šæœ¬çš„å“ˆå¸Œå€¼åªæœ‰å»åˆçš„æƒ…å†µä¸‹ï¼Œæ‰èƒ½æ‰§è¡Œã€‚
 			Content-Security-Policy: script-src 'sha256-qznLcsROx4GACP2dm0UCKCzCG-HiZ1guq6ZZDob_Tng='
 		
-		* nonceºÍhash»¹¿ÉÒÔÓÃÔÚstyle-src
+		* nonceå’Œhashè¿˜å¯ä»¥ç”¨åœ¨style-src
 	
-	# ÆäËûÏŞÖÆÑ¡Ïî(Ã»ÓĞÖµ)
-		block-all-mixed-content		HTTPS ÍøÒ³²»µÃ¼ÓÔØ HTTP ×ÊÔ´(ä¯ÀÀÆ÷ÒÑ¾­Ä¬ÈÏ¿ªÆô)
-		upgrade-insecure-requests	×Ô¶¯½«ÍøÒ³ÉÏËùÓĞ¼ÓÔØÍâ²¿×ÊÔ´µÄ HTTP Á´½Ó»»³É HTTPS Ğ­Òé
-		plugin-types				ÏŞÖÆ¿ÉÒÔÊ¹ÓÃµÄ²å¼ş¸ñÊ½
-		sandbox						ä¯ÀÀÆ÷ĞĞÎªµÄÏŞÖÆ,±ÈÈç²»ÄÜÓĞµ¯³ö´°¿ÚµÈ
+	# å…¶ä»–é™åˆ¶é€‰é¡¹(æ²¡æœ‰å€¼)
+		block-all-mixed-content		HTTPS ç½‘é¡µä¸å¾—åŠ è½½ HTTP èµ„æº(æµè§ˆå™¨å·²ç»é»˜è®¤å¼€å¯)
+		upgrade-insecure-requests	è‡ªåŠ¨å°†ç½‘é¡µä¸Šæ‰€æœ‰åŠ è½½å¤–éƒ¨èµ„æºçš„ HTTP é“¾æ¥æ¢æˆ HTTPS åè®®
+		plugin-types				é™åˆ¶å¯ä»¥ä½¿ç”¨çš„æ’ä»¶æ ¼å¼
+		sandbox						æµè§ˆå™¨è¡Œä¸ºçš„é™åˆ¶,æ¯”å¦‚ä¸èƒ½æœ‰å¼¹å‡ºçª—å£ç­‰
 
 	
-	# report-uri ±¨¸æ
-		* report-uri¾ÍÓÃÀ´¸æËßä¯ÀÀÆ÷,Ó¦¸Ã°Ñ×¢ÈëĞĞÎª±¨¸æ¸øÄÄ¸öÍøÖ·
+	# report-uri æŠ¥å‘Š
+		* report-uriå°±ç”¨æ¥å‘Šè¯‰æµè§ˆå™¨,åº”è¯¥æŠŠæ³¨å…¥è¡Œä¸ºæŠ¥å‘Šç»™å“ªä¸ªç½‘å€
 			report-uri /csp_report_parser;
 		
-		* ä¯ÀÀÆ÷»áÊ¹ÓÃPOST·½·¨£¬·¢ËÍÒ»¸öJSON¶ÔÏó
+		* æµè§ˆå™¨ä¼šä½¿ç”¨POSTæ–¹æ³•ï¼Œå‘é€ä¸€ä¸ªJSONå¯¹è±¡
 			{
 			  "csp-report": {
-				"document-uri": "http://example.org/page.html",	//·¢ÉúÎ¥¹æµÄÎÄµµµÄURI¡£
+				"document-uri": "http://example.org/page.html",	//å‘ç”Ÿè¿è§„çš„æ–‡æ¡£çš„URIã€‚
 				"referrer": "http://evil.example.com/",	//referrer
-				"blocked-uri": "http://evil.example.com/evil.js",	//±»CSP×èÖ¹µÄ×ÊÔ´URI¡£Èç¹û±»×èÖ¹µÄURIÀ´×Ô²»Í¬µÄÔ´¶ø·ÇÎÄµµURI£¬ÄÇÃ´±»×èÖ¹µÄ×ÊÔ´URI»á±»É¾¼õ£¬½ö±£ÁôĞ­Òé£¬Ö÷»úºÍ¶Ë¿ÚºÅ¡£
-				"violated-directive": "script-src 'self' https://apis.google.com", //Î¥·´µÄ²ßÂÔÃû³Æ¡£
-				"original-policy": "script-src 'self' https://apis.google.com; report-uri http://example.org/my_amazing_csp_report_parser" // ÔÚ Content-Security-Policy HTTP Í·²¿ÖĞÖ¸Ã÷µÄÔ­Ê¼²ßÂÔ¡£
+				"blocked-uri": "http://evil.example.com/evil.js",	//è¢«CSPé˜»æ­¢çš„èµ„æºURIã€‚å¦‚æœè¢«é˜»æ­¢çš„URIæ¥è‡ªä¸åŒçš„æºè€Œéæ–‡æ¡£URIï¼Œé‚£ä¹ˆè¢«é˜»æ­¢çš„èµ„æºURIä¼šè¢«åˆ å‡ï¼Œä»…ä¿ç•™åè®®ï¼Œä¸»æœºå’Œç«¯å£å·ã€‚
+				"violated-directive": "script-src 'self' https://apis.google.com", //è¿åçš„ç­–ç•¥åç§°ã€‚
+				"original-policy": "script-src 'self' https://apis.google.com; report-uri http://example.org/my_amazing_csp_report_parser" // åœ¨ Content-Security-Policy HTTP å¤´éƒ¨ä¸­æŒ‡æ˜çš„åŸå§‹ç­–ç•¥ã€‚
 			  }
 			}
