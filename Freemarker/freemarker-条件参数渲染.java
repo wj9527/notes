@@ -42,7 +42,7 @@ public class QueryParamRenderFunction implements TemplateMethodModelEx {
 					String[] values = entry.getValue();
 					if (values != null && values.length > 0) {
 						for (String value : values) {
-							stringBuilder.append(key).append("=").append(UriUtils.encodeQueryParam(value, StandardCharsets.UTF_8)).append("&");
+							stringBuilder.append(key).append("=").append(UriUtils.encode(value, StandardCharsets.UTF_8)).append("&");
 						}
 					} else {
 						stringBuilder.append(key).append("=").append("").append("&");
