@@ -1,6 +1,8 @@
 ------------------------------------
 Redis-整合单机版					|
 ------------------------------------
+	# 文档
+		https://docs.spring.io/spring-data/redis/docs/current/reference/html/#reference
 	# 使用lettuce
 	# 依赖
 		<dependency>
