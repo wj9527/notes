@@ -211,6 +211,15 @@
 			-it
 				* 在交互模式下进行
 			
+			* 不需要进入到容器内部, 直接在宿主机上执行
+
+	
+	# 快速的进入到容器内部
+		docker attach [id]
+			id
+				* 容器id或者name
+		
+
 	
 	# 查看容器的详细信息(返回json信息)
 		docker inspect [id]
