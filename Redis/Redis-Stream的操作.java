@@ -4,9 +4,18 @@ Stream					|
 	# redis5的新特性, 类似于一个MQ系统, Stream是Redis的数据类型中最复杂的
 
 	# 添加数据到stream
-		XADD [stream] [id] [key] [value] [key] [value]
+		XADD [stream] MAXLEN [maxLen] [id] [key] [value] [key] [value]
 			stream
 				* 指定stream名称
+			
+			MAXLEN [maxLen]
+				* 可选的参数
+				* stream中最大存储的条目, 自动驱逐旧的条目
+					XADD mystream MAXLEN 2 * value 1
+				* 可以使用一个中间参数(~), 表示至少保存n个项目就行(000或者1010或者1030)
+				* 通过使用这个参数, 仅当移除整个节点的时候才执行修整, 这使得命令更高效
+					XADD mystream MAXLEN ~ 1000 * value 1
+
 			id
 				* 指定消息id, 如果需要系统生成, 可以使用: * (自增长)
 				* 如果是自定义id, 在这种情况下, 最小ID为: 0-1, 并且命令不接受等于或小于前一个ID的ID
@@ -66,6 +75,16 @@ Stream					|
 		* 因此XREVRANGE的实际用途是检查一个Stream中的最后一项是什么
 			XREVRANGE [stream] + - COUNT 1
 	
+	# 删除单个元素
+		XDEL [stream] ID [ID ...]
+			ID [ID ...]
+				* 要删除的id, 可以是多个
+	
+	# 修剪stream的数据
+		XTRIM [stream] MAXLEN [maxLen]
+			MAXLEN [maxLen]
+				* 删除指定stream中的数据, 只留新的 maxLen 条
+		
 
 	# 监听消费
 		XREAD COUNT [count] BLOCK [milliseconds] STREAMS [stream...] ID [id...]
@@ -148,4 +167,83 @@ Stream					|
 		
 	
 
+	# 获取指定消费组中, 待消费的消息
+		XPENDING [stream] [group] [start] [end] [count] [consumer]
+		
+		* 返回数据的详细信息: 
+			1) 1) 1526569498055-0			// 消息id
+			   2) "Bob"						// 消费者名称
+			   3) (integer) 74170458		// 空闲的毫秒值
+			   4) (integer) 1				// 消息被传递的次数
+			2) 1) 1526569506935-0
+			   2) "Bob"
+			   3) (integer) 74170458
+			   4) (integer) 1
 	
+	# 改变消息的消费者
+		XCLAIM [stream] [greoup] [consumer] [min-idle-time] [ID ...] [IDLE ms] [TIME ms-unix-time] [RETRYCOUNT count] [force] [justid]
+			[stream] [greoup] [consumer]
+				* 分别指定stream, 消费组, 以及消费组中的消费者(也就是消息认领者)
+			
+			[justid]
+				* 执行成功后仅仅返回消息的id, 不返回消息的详情
+	
+
+	
+	# stream的相关信息
+		XINFO [CONSUMERS key groupname] [GROUPS key] [STREAM key] [HELP]
+		
+		* 查看stream的信息
+			XINFO STREAM [stream]
+				 1) "length"
+				 2) (integer) 12
+				 3) "radix-tree-keys"
+				 4) (integer) 1
+				 5) "radix-tree-nodes"
+				 6) (integer) 2
+				 7) "groups"
+				 8) (integer) 1
+				 9) "last-generated-id"
+				10) "1574135225847-0"
+				11) "first-entry"
+				12) 1) "1574131352064-0"
+					2) 1) "sensor-id"
+					   2) "1234"
+					   3) "temperature"
+					   4) "19.8"
+				13) "last-entry"
+				14) 1) "1574135225847-0"
+					2) 1) "name"
+					   2) "KevinBlandy"
+					   3) "age"
+					   4) "23"574135225847-0"
+		
+		* 查看stream消费组的信息
+			XINFO GROUPS [stream]
+				1) 1) "name"
+				   2) "group-1"
+				   3) "consumers"
+				   4) (integer) 1
+				   5) "pending"
+				   6) (integer) 6
+				   7) "last-delivered-id"
+				   8) "1574135225847-0"
+		
+		* 查看stream消费组中消费者的信息
+			XINFO CONSUMERS [stream] [group]
+				1) 1) "name"
+				   2) "consumer-1"
+				   3) "pending"
+				   4) (integer) 6
+				   5) "idle"
+				   6) (integer) 2916753
+		
+
+		* 帮助
+			XINFO HELP
+				1) XINFO <subcommand> arg arg ... arg. Subcommands are:
+				2) CONSUMERS <key> <groupname>  -- Show consumer groups of group <groupname>.
+				3) GROUPS <key>                 -- Show the stream consumer groups.
+				4) STREAM <key>                 -- Show information about the stream.
+				5) HELP                         -- Print this help.
+		
