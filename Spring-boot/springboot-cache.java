@@ -41,7 +41,7 @@ springboot-cache	|
 		RedisCacheManager
 			* 使用Redis作为缓存技术
 	
-	# SpringBoot的配置类
+	# SpringBoot的配置类, 对于不同的cache实现, 有不同的配置
 		CacheProperties
 	
 --------------------
@@ -149,6 +149,10 @@ springboot-cache	|
 
 	# 配置
 		spring.cache.type=redis
+		spring.cache.redis.time-to-live=
+		spring.cache.redis.cache-null-values=
+		spring.cache.redis.key-pre-fix=
+
 	
 	# 注解配置
 		@Cacheable(value = "name")

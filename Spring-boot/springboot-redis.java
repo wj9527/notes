@@ -92,6 +92,9 @@ Redis- 过期key的监听				|
 		 
 			@Autowired 
 			private RedisConnectionFactory redisConnectionFactory;
+
+			@Autowired
+			private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 			
 			@Bean
 			public RedisMessageListenerContainer redisMessageListenerContainer() {
@@ -99,9 +102,12 @@ Redis- 过期key的监听				|
 				RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
 				//设置连接工厂
 				redisMessageListenerContainer.setConnectionFactory(redisConnectionFactory);
+				// 设置执行的线程池
+				redisMessageListenerContainer.setTaskExecutor(this.threadPoolTaskExecutor);
 				return redisMessageListenerContainer;
 			}
 			
+			// 创建key的过期监听
 			@Bean
 			public KeyExpiredListener keyExpiredListener() {
 				return new KeyExpiredListener(this.redisMessageListenerContainer());
@@ -132,6 +138,63 @@ Redis- 过期key的监听				|
 				LOGGER.info("redis key 过期：channel={},key={}", channel, key);
 			}
 		}
+
+------------------------------------
+Redis-发布订阅						|
+------------------------------------
+	# 创建 RedisMessageListenerContainer
+		@Configuration
+		public class RedisConfiguration {
+			
+			@Autowired 
+			private RedisConnectionFactory redisConnectionFactory;
+			
+			@Autowired
+			private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+			
+			@Bean
+			public RedisMessageListenerContainer redisMessageListenerContainer () {
+				RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
+				// 连接工厂
+				redisMessageListenerContainer.setConnectionFactory(this.redisConnectionFactory);
+				// 线程池
+				redisMessageListenerContainer.setTaskExecutor(this.threadPoolTaskExecutor);
+				// 监听器
+				redisMessageListenerContainer.addMessageListener(new TestMessageListener(), Arrays.asList(new ChannelTopic("test")));
+				return redisMessageListenerContainer;
+			}
+		}
+	
+	# 创建监听器
+		* 实现接口:MessageListener
+			public interface MessageListener {
+				void onMessage(Message message, @Nullable byte[] pattern);
+			}
+		
+		* 实现
+			public class TestMessageListener implements MessageListener {
+				private static final Logger LOGGER = LoggerFactory.getLogger(TestMessageListener.class);
+				
+				@Override
+				public void onMessage(Message message, byte[] pattern) {
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("redis channel: channel={}, messgae={}, pattern={}", 
+								new String(message.getChannel()), new String(message.getBody()), new String(pattern));
+					}
+				}
+			}
+	
+	# 不同的Topic实现
+		* Topic接口有2个实现
+			public interface Topic {
+				String getTopic();	
+			}
+		
+		* ChannelTopic
+			* 一次监听一个通道
+
+		* PatternTopic
+			* 可以一次监听N个通道
 
 ------------------------------------
 Redis - 自定义Template序列化		|
@@ -196,3 +259,4 @@ Redis-Redisson						|
 
 		#path to redisson.yaml or redisson.json
 		spring.redis.redisson.config=classpath:redisson.yaml
+
