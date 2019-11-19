@@ -57,8 +57,12 @@ Zookeeper数据模型		|
 			- 当容器节点的最后一个孩子节点被删除之后, 容器节点将被标注并在一段时间后删除。 
 			- 由于容器节点的该特性,当在容器节点下创建一个子节点时, 应该始终准备捕获 KeeperException.NoNodeException, 如果捕获了该异常, 则需要重新创建容器节点
 
-		* TTL节点(3.5新特性, 还未实现???)
-			- 目前还没仔细看官网的资料, 猜测就是一个节点在经过多少时间没访问后, 就会被删除
+		* TTL节点(3.5.3新特性)
+			- 创建 PERSISTENT 或 PERSISTENT_SEQUENTIAL znode 时, 可以选择为znode设置TTL(以毫秒为单位)
+			- 如果znode在TTL内未修改且没有子代, 它将成为将来服务器上将被删除的候选者(进入待删除的队列)
+			- TTL节点必须通过"系统属性"启用, 默认情况下它们是禁用的(没有正确设置系统属性的情况下创建TTL节点,则服务器将抛出 KeeperException.UnimplementedException
+				znode.container.checkIntervalMs=60000
+				znode.container.maxPerMinute=10000
 		
 		* 节点的类型在创建的时候就已经确定,并且不能被改变
 	
