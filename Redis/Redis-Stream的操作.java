@@ -215,6 +215,7 @@ Stream					|
 			
 			consumer
 				* 指定消费组中, 当前消费者的名称
+				* 消费组是在使用的时候自动创建, 不需要预先创建
 			
 			ID [id...]
 				* 消费组中的id, 有一个特殊符号 >
@@ -226,107 +227,84 @@ Stream					|
 
 			* 跟 XREAD 一样, 多了俩参数: GROUP [group], consumer
 			* 一个消息, 一次性只能被同一个消费组中一个消费者消费
+			
+			* XREADGROUP虽然是个读取操作, 本质上是一个写命令,
+			* 因为在读取的时候, XREADGROUP内部会把读取到的消息添加到消费者的pending消息队列, 并且会修改消费者分组中的last_delivered_id等数据结构
+			* 所以这是一个写命令, 如果在开启了读写分离的环境中, 这个命令只能在master节点上进行操作
+			
+			* XREADGROUP支持多个streams的读取, 但是有一个前提条件: 所有的streams都预先创建了同名的消费者分组
 		
 	# 消费组中的消费者, 确认消息消费
-		 XACK [stream] [greoup] ID [ID ...]
+		 XACK [stream] [group] ID [ID ...]
 			[stream]
 				* 指定stream
 			
-			[greoup]
+			[group]
 				* 指定group
 			
 			ID [ID ...]
 				* 指定多个id, 表示已经消费
-		
-	
+			
+			* demo
+				XACK mystream mygroup 1542355396362-0
 
 	# 获取指定消费组中, 待消费的消息
 		XPENDING [stream] [group] [start] [end] [count] [consumer]
+			[stream] [group]
+				* 指定stream和消费组,
+				
+			[start] [end] [count]
+				* 指定开始结束显示数量, 非必须参数
+			
+			[consumer]
+				* 指定消费者, 非必须参数
+				* 如果不指定, 则返回该消费组的pending队列
 		
-		* 返回数据的详细信息: 
-			1) 1) 1526569498055-0			// 消息id
-			   2) "Bob"						// 消费者名称
-			   3) (integer) 74170458		// 空闲的毫秒值
-			   4) (integer) 1				// 消息被传递的次数
-			2) 1) 1526569506935-0
-			   2) "Bob"
-			   3) (integer) 74170458
-			   4) (integer) 1
+		* 只带stream和group参数时, 表示获取整个消费者分组的概要信息
+			1) (integer) 4				// 分组的pending消息的总个数
+			2) "1542355421051-0"		// pending消息队列中起始的消息ID和结束的消息ID
+			3) "1542355444220-0"
+			4) 1) 1) "consumer_1"		// 分组下面每个消费者的pending消息队列中消息的个数
+				  2) "1"
+		
+		* 带上start end count参数时, 这时会显示消费者分组pending消息的详情
+			1) 1) "1542355421051-0"		// 消息id
+			   2) "consumer_1"			// 所属消费者
+			   3) (integer) 4109624		// 息自从被消费者获取后到现在过去的时间(毫秒) - idle time
+			   4) (integer) 7			// 消息被获取的次数	- delivery counter
 	
 	# 改变消息的消费者
-		XCLAIM [stream] [greoup] [consumer] [min-idle-time] [ID ...] [IDLE ms] [TIME ms-unix-time] [RETRYCOUNT count] [force] [justid]
-			[stream] [greoup] [consumer]
+		XCLAIM [stream] [group] [consumer] [min-idle-time] [ID ...] [IDLE ms] [TIME ms-unix-time] [RETRYCOUNT count] [force] [justid]
+			[stream] [group] [consumer]
 				* 分别指定stream, 消费组, 以及消费组中的消费者(也就是消息认领者)
+			
+			[min-idle-time]
+			
+			
+			[ID ...]
+				* 指定一个或者多个id
+			
+			[IDLE ms]
+				* 毫秒值, 表示仅仅转移 idle time 大于该值的记录
+				
+			[TIME ms-unix-time]
+			
+			[RETRYCOUNT count]
+			
+			[force]
 			
 			[justid]
 				* 执行成功后仅仅返回消息的id, 不返回消息的详情
 	
-
+			
+			* 在一条消息的拥有权发生转移的时候, 会把该消息的idle time重置，这样做是有原因的:防止该消息被重复消费
+			* demo
+				- 把 consumer_2 中的消息 1542355436365-0 所有权转移给 consumer_3, 并且当 idle time > 10 Hour 时才转移
+					XCLAIM mystream mygroup consumer_3 36000000 1542355436365-0
+			
+				- 把 consumer_2 中的消息 1542355427899-0 所有权转移给 consumer_1, 并且当 idle time > 1 Hour时才转移
+					XCLAIM mystream mygroup consumer_1 3600000 1542355427899-0
 	
-	# stream的相关信息
-		XINFO [CONSUMERS key groupname] [GROUPS key] [STREAM key] [HELP]
-		
-		* 查看stream的信息
-			XINFO STREAM [stream]
-				 1) "length"
-				 2) (integer) 12
-				 3) "radix-tree-keys"
-				 4) (integer) 1
-				 5) "radix-tree-nodes"
-				 6) (integer) 2
-				 7) "groups"
-				 8) (integer) 1
-				 9) "last-generated-id"
-				10) "1574135225847-0"
-				11) "first-entry"
-				12) 1) "1574131352064-0"
-					2) 1) "sensor-id"
-					   2) "1234"
-					   3) "temperature"
-					   4) "19.8"
-				13) "last-entry"
-				14) 1) "1574135225847-0"
-					2) 1) "name"
-					   2) "KevinBlandy"
-					   3) "age"
-					   4) "23"574135225847-0"
-		
-		* 查看stream消费组的信息
-			XINFO GROUPS [stream]
-				1) 1) "name"
-				   2) "group-1"
-				   3) "consumers"			// 有多少个消费者
-				   4) (integer) 1
-				   5) "pending"				// 消费者分组本身pending消息列表,
-							* 这个消息列表就是该分组下面所有consumer的pending消息列表集合
-							
-				   6) (integer) 6
-				   7) "last-delivered-id"  // group最后消费的那条消息的ID
-							* 不同的消费者做到消费的消息不重复的, 主要原因就是last_delivered_id的存在
-							* 消费者从队列中获取还未被消费的消息的时候, 都会从last_delivered_id这个位置开始(不包含)
-							* 因此只要last_delivered_id这个位置信息个值随着变化, 不同的消费者获取到的消息就不会重复
-
-
-				   8) "1574135225847-0"
-		
-		* 查看stream消费组中消费者的信息
-			XINFO CONSUMERS [stream] [group]
-				1) 1) "name"
-				   2) "consumer-1"
-				   3) "pending"					// consumer的pending消息列表集合
-				   4) (integer) 6			
-				   5) "idle"					// 该consumer空闲了多久
-				   6) (integer) 2916753
-		
-
-		* 帮助
-			XINFO HELP
-				1) XINFO <subcommand> arg arg ... arg. Subcommands are:
-				2) CONSUMERS <key> <groupname>  -- Show consumer groups of group <groupname>.
-				3) GROUPS <key>                 -- Show the stream consumer groups.
-				4) STREAM <key>                 -- Show information about the stream.
-				5) HELP                         -- Print this help.
-
 	
 ------------------------
 Stream - 消费组			|
@@ -335,8 +313,31 @@ Stream - 消费组			|
 		1, 不同的消费者（通过消费者ID区分）互不影响，相互隔离，它们彼此看不到各自的历史消费消息
 		2, 不同的消费者（通过消费者ID区分）只能看到整个消息队列的一部分消息，也就是说一个消费者只消费整个消息队列的一个子集，并且这些子集绝不会出现重合的消息
 		2, 所有消费者消费的消息子集的交集就是整个消息队列集合
-
+	
+	# 消费者pending消息
+		* 当consumer获取到消息之后, stream就会把这条消息加入到pending消息列表
+		* 如果这条消息被consumer成功处理, 需要通过ACK机制告诉stream成功消费并且从consumer的pending消息列表中删除, 不然一条消息就会占用2倍的内存了
+			- stream中保存一份, consumer的pending消息列表中保存一份
+	
+	# 消费组的pending消息
+		* 就是消费者pending消息的集合
+	
+	# [idle time] 和 [delivery counter]
+		* idle time
+			- 表示消费者获取到这条消息, 到ACK之前, 经过了多久
+			- 当该消息被成功转移后, 该属性会被重置
 			
+		* delivery counter
+			- 每使用XREADGROUP读取到该消息一次, 这个消息的delivery counter就会增加1
+			- 多次读取, 都没ACK, 它可能是一条死信
+	
+	# 死信队列
+		* XPENDING命令的时候会返回消息的一个特性: delivery counter
+		* 这个信息就是该消息被消费者获取到的次数
+		* 因此可以通过该信息来做一些抉择:当发现一条消息的delivery counter大于某个阈值的时候, 就说明这条消息不可能再被处理成功了
+		* 这个时候可以把这条消息从队列中删除, 然后给管理员或者系统发送一条告警日志, 这就是所谓dead letter的处理过程
+
+
 ------------------------
 Stream	- 队列的遍历	|
 ------------------------
@@ -354,5 +355,87 @@ Stream	- 队列的遍历	|
 		4, 重复步骤2和3
 		5, 迭代结束
 
+------------------------
+Stream	- 监控			|
+------------------------
 
+	# 监控命令
+		XINFO [CONSUMERS key groupname] [GROUPS key] [STREAM key] [HELP]
+		
+	#  查看stream的信息
+		XINFO STREAM [stream]
+			 1) "length"
+			 2) (integer) 12				// 总共存储的消息长度
+			 3) "radix-tree-keys"			// 存储消息的field个数
+			 4) (integer) 1					
+			 5) "radix-tree-nodes"			// 消息共占用了几个radix-tree节点
+			 6) (integer) 2					
+			 7) "groups"					// 有几个消费组
+			 8) (integer) 1		
+			 9) "last-generated-id"			// 最后一条消息id
+			10) "1574135225847-0"
+			11) "first-entry"				// 第一条消息
+			12) 1) "1574131352064-0"
+				2) 1) "sensor-id"
+				   2) "1234"
+				   3) "temperature"
+				   4) "19.8"
+			13) "last-entry"				// 最后一条消息
+			14) 1) "1574135225847-0"
+				2) 1) "name"
+				   2) "KevinBlandy"
+				   3) "age"
+				   4) "23"574135225847-0"
+		
+	#  查看stream消费组的信息
+		XINFO GROUPS [stream]
+			1) 1) "name"				// 分组名称
+			   2) "group-1"
+			   3) "consumers"			// 有多少个消费者
+			   4) (integer) 1
+			   5) "pending"				// 消费者分组本身pending消息数量,
+						* 这个消息列表就是该分组下面所有consumer的pending消息列表集合
+						
+			   6) (integer) 6
+			   7) "last-delivered-id"  // group最后消费的那条消息的ID
+						* 不同的消费者做到消费的消息不重复的, 主要原因就是last_delivered_id的存在
+						* 消费者从队列中获取还未被消费的消息的时候, 都会从last_delivered_id这个位置开始(不包含)
+						* 因此只要last_delivered_id这个位置信息个值随着变化, 不同的消费者获取到的消息就不会重复
+
+
+			   8) "1574135225847-0"
+		
+	# 查看stream消费组中消费者的信息
+		XINFO CONSUMERS [stream] [group]
+			1) 1) "name"					// 消费者名称
+			   2) "consumer-1"
+			   3) "pending"					// consumer的pending消息列表集合
+			   4) (integer) 6			
+			   5) "idle"					// pending消息队列中最小的idle time
+			   6) (integer) 2916753
+		
+
+	# 帮助
+		XINFO HELP
+			1) XINFO <subcommand> arg arg ... arg. Subcommands are:
+			2) CONSUMERS <key> <groupname>  -- Show consumer groups of group <groupname>.
+			3) GROUPS <key>                 -- Show the stream consumer groups.
+			4) STREAM <key>                 -- Show information about the stream.
+			5) HELP                         -- Print this help.
+
+------------------------
+Stream	- 配置			|
+------------------------
+	# 存储相关
+		* stream中的消息是使用radix tree来组织的, 为了节省内存, stream使用了"大节点"的概念
+		* 就是stream会把若干的消息进行编码, 然后放在一个radix tree的节点中, 这一组消息用一个macro node来表示
+		* 因此在stream的内部, 并不是一条消息就用一个节点表示
+		* 相反的，是用一个大节点存放若干条消息, 那么这个大节点能够存放多少条消息呢, 可以在redis的配置文件中进行配置
+
+		stream-node-max-bytes 4096
+			* 一个节点最大存储多少数据
+			
+		stream-node-max-entries 100
+			* 一个节点最多存储多少条消息
+	
 
