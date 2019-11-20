@@ -1,4 +1,59 @@
 ------------------------
+Stream	- 命令总结		|
+------------------------
+	XADD 
+		* XADD key ID field string [field string ...]
+		* 添加一条消息到stream, 如果该命令携带了 MAXLEN 参数, 那么stream是定长的
+		
+	XDEL
+		* XDEL key ID [ID ...]
+		* 从stream删除一条或者多条消息
+	
+	XTRIM
+		* XTRIM key MAXLEN [~] count
+		* 把stream中的消息裁剪到指定的数量, 跟XADD中的 MAXLEN 参数作用一样
+		
+	XLEN
+		* XLEN key
+		* 获取stream中的消息数量
+		
+	XRANGE
+		* XRANGE key start end [COUNT count]
+		* 从stream中根据指定范围条件获取一段范围内的消息
+		
+	XREVRANGE
+		* XREVRANGE key end start [COUNT count]
+		* 跟 XRANGE 一样, 不过是反向获取
+		
+	XREAD
+		* XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] ID [ID ...]
+		* 从stream中根据指定id的位置, 阻塞/非阻塞的读取一条/多条消息
+		
+	XGROUP
+		* XGROUP [CREATE key groupname id-or-$] [SETID key id-or-$] [DESTROY key groupname] [DELCONSUMER key groupname consumername]
+		* 创建/删除消费组
+		
+	XREADGROUP
+		* XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] ID [ID ...]
+		* 分组消费, 从stream中根据group和consumer读取若干未被消费的消息
+		
+	XPENDING
+		* XPENDING key group [start end count] [consumer]
+		* 从stream中读取一个group,consumer已经获取但是还未通知消费成功的消息队列
+		
+	XACK
+		* XACK key group ID [ID ...]
+		* 通知一条或者多条消息已经被成功的消费, 通知仅仅会从 XPENDING 中删除消息, 不会从stream中删除消息
+
+	XCLAIM
+		* XCLAIM key group consumer min-idle-time ID [ID ...] [IDLE ms] [TIME ms-unix-time] [RETRYCOUNT count] [force] [justid]
+		* 把一条/多条消息, 从一个consumer的XPENDING列表, 转移到另一个consumer的XPENDING列表
+		
+	XINFO
+		* XINFO [CONSUMERS key groupname] [GROUPS key] [STREAM key] [HELP]
+		* 监控命令, 可以检测各种指标, 命令比较复杂
+	
+------------------------
 Stream					|
 ------------------------
 	# redis5的新特性, 类似于一个MQ系统, Stream是Redis的数据类型中最复杂的
@@ -42,9 +97,10 @@ Stream					|
 	# 查询数据
 		 XRANGE [stream] [start] [end] COUNT [count]
 			start, end
-				* 开始时间戳和结束时间戳(id的前一部分)
+				* 开始时间戳和结束时间戳
 					XRANGE mystream 1518951480106 1518951480107
 				* 两个特殊的符号:-,+ 分别表示可能的最小ID和最大ID
+				* 如果没有指定seq部分, 在start参数中默认:0, 在end参数中默认: 正无穷大
 			
 			COUNT [count]
 				* 返回的数量, 非必须参数
@@ -112,14 +168,18 @@ Stream					|
 				* id的特殊值: $ , 这个特殊的ID意思是XREAD应该使用流已经存储的最大ID作为最后一个ID, 以便我们仅接收从我们开始监听时间以后的新消息
 				* 这在某种程度上相似于Unix命令tail -f(阻塞消费)
 					XREAD BLOCK 0 STREAMS mystream $
+				* 对于非阻塞模式来说$参数是无意义的, 因为读取的消息总是为空
+				* 阻塞模式下, 如果参数ID指定为$, 那么COUNT参数不起作用, 只有有数据, 就会立即返回, 阻塞结束
+					- 在阻塞模式下如果指定的ID不是$, 比如是0，并且stream中有数据可读, 此时阻塞模式可以简单地认为退化成非阻塞模式, COUNT参数起作用
 
 				* 可以一次性监听N个stream的n个id, 只要其中一个有新的数据, 就会返回
 					XREAD BLOCK 0 STREAMS mystream foo $ $
+					
+				* 在集群环境下, 要注意所有的stream的key必须在同一个slot上否则报错
 	
 				
-	# 创建消费组
+	# 消费组管理
 		XGROUP [CREATE key groupname id-or-$] [SETID key id-or-$] [DESTROY key groupname] [DELCONSUMER key groupname consumername]
-		XGROUP CREATE [stream] [group] [id]
 			[stream]
 				* 指定stream的名称
 			
@@ -130,11 +190,22 @@ Stream					|
 				* 表示从大于哪条消息开始消费
 				* 如果设置为了0, 表示从头开始消费, 设置为 $ , 只会消费在消费组创建以后的消息
 			
+			[CREATE]
+				* 创建一个消费组(目前创建消费组, stream必须存在)
+					XGROUP CREATE mystream mygroup $
+				
+			[SETID]
+				* 修改消费组的消费ID(修改消息分组创建的时候指定的ID起始位置)
+					XGROUP SETID mystream mygroup $
 			
-
-			* 创建一个消费组(目前创建消费组, stream必须存在)
-				 XGROUP CREATE mystream mygroup $
+			[DESTROY] 
+				* 删除消费组
+					XGROUP DESTROY mystream mygroup
 			
+			[DELCONSUMER]
+				* 删除消费者
+					XGROUP DELCONSUMER mystream mygroup consumer
+		
 	
 	
 	# 消费组的形式监听消费
@@ -146,9 +217,11 @@ Stream					|
 				* 指定消费组中, 当前消费者的名称
 			
 			ID [id...]
-				* 消费组中的id, 有一个特殊符号: >
+				* 消费组中的id, 有一个特殊符号 >
 				* 这个特殊的ID只在消费者组的上下文中有效, 其意思是: 到目前为止从未传递给其他消费者的消息
-				* 如果id设置为了:> 表示, 仅仅消费当前消费组中, 其他消费者未消费的消息, 通过这个特殊id,达到: 同一个消费组中, 只有一个消费组可以消费消息
+				* 如果id设置为了 > 表示, 仅仅消费当前消费组中, 其他消费者未消费的消息, 通过这个特殊id, 达到: 同一个消费组中, 只有一个消费组可以消费消息
+				* 这个特殊的ID其实就是 last_delivered_id
+				* 当ID不是特殊字符>时, XREADGROUP不再是从消息队列中读取消息, 而是从consumer的pending消息列表中读取历史消息
 
 
 			* 跟 XREAD 一样, 多了俩参数: GROUP [group], consumer
@@ -222,20 +295,27 @@ Stream					|
 			XINFO GROUPS [stream]
 				1) 1) "name"
 				   2) "group-1"
-				   3) "consumers"
+				   3) "consumers"			// 有多少个消费者
 				   4) (integer) 1
-				   5) "pending"
+				   5) "pending"				// 消费者分组本身pending消息列表,
+							* 这个消息列表就是该分组下面所有consumer的pending消息列表集合
+							
 				   6) (integer) 6
-				   7) "last-delivered-id"
+				   7) "last-delivered-id"  // group最后消费的那条消息的ID
+							* 不同的消费者做到消费的消息不重复的, 主要原因就是last_delivered_id的存在
+							* 消费者从队列中获取还未被消费的消息的时候, 都会从last_delivered_id这个位置开始(不包含)
+							* 因此只要last_delivered_id这个位置信息个值随着变化, 不同的消费者获取到的消息就不会重复
+
+
 				   8) "1574135225847-0"
 		
 		* 查看stream消费组中消费者的信息
 			XINFO CONSUMERS [stream] [group]
 				1) 1) "name"
 				   2) "consumer-1"
-				   3) "pending"
-				   4) (integer) 6
-				   5) "idle"
+				   3) "pending"					// consumer的pending消息列表集合
+				   4) (integer) 6			
+				   5) "idle"					// 该consumer空闲了多久
 				   6) (integer) 2916753
 		
 
@@ -246,4 +326,33 @@ Stream					|
 				3) GROUPS <key>                 -- Show the stream consumer groups.
 				4) STREAM <key>                 -- Show information about the stream.
 				5) HELP                         -- Print this help.
-		
+
+	
+------------------------
+Stream - 消费组			|
+------------------------
+	# 特点
+		1, 不同的消费者（通过消费者ID区分）互不影响，相互隔离，它们彼此看不到各自的历史消费消息
+		2, 不同的消费者（通过消费者ID区分）只能看到整个消息队列的一部分消息，也就是说一个消费者只消费整个消息队列的一个子集，并且这些子集绝不会出现重合的消息
+		2, 所有消费者消费的消息子集的交集就是整个消息队列集合
+
+			
+------------------------
+Stream	- 队列的遍历	|
+------------------------
+	# XRANGE 遍历
+		1, 使用 XRANGE key - + COUNT count 试图获取count个消息
+		2, 如果发现返回的消息数量ret < count，那么说明所有的消息已经被获取，迭代结束，转5
+		3, 如果ret==count，那么说明队列中还有元素，记录返回的消息中最后一个消息的ID为last_id，然后继续迭代，使用命令 XRANGE key last_id + COUNT count
+		4, 重复步骤2和3
+		5, 迭代结束
+	
+	# XREAD 遍历
+		1, 使用 XREAD COUNT count STREAMS key 0 试图获取count个消息
+		2, 如果发现返回的消息个数ret<count，那么说明所有的消息已经被读取完毕，迭代结束
+		3, 如果发现返回的消息个数ret==count，那么说明队列中还有元素，记录返回的消息中最后一个消息的ID为last_id，然后继续迭代，使用命令 XREAD COUNT count STREAMS key last_id
+		4, 重复步骤2和3
+		5, 迭代结束
+
+
+
