@@ -8,7 +8,13 @@ discourse			 |
 		https://github.com/discourse/discourse_docker
 		https://github.com/discourse/discourse/blob/master/docs/INSTALL-cloud.md
 	
-
+	# 已知的站
+		https://springboot.io/
+		https://forum.realm.io/
+		https://forum.vuejs.org/
+		https://discuss.python.org/
+		
+	
 	# Docker安装
 		* 移除旧版本
 yum remove docker \
