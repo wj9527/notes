@@ -3,10 +3,11 @@ dataclasses					 |
 -----------------------------
 	* 3.7的新模块
 
------------------------------
-dataclasses-自动生成类属性   |
------------------------------
-	* 模块函数
+------------------------------------------
+dataclasses.dataclass                     |
+------------------------------------------
+    # 自动生成属性
+	# 模块函数
 		dataclass(_cls=None, *, init=True, repr=True, eq=True, order=False,unsafe_hash=False, frozen=False)
 
 		- init 生成__init__方法
@@ -23,9 +24,19 @@ dataclasses-自动生成类属性   |
 			* 如果类已经定义任何的__lt__,__le__,__gt__,或__ge__,然后ValueError异常升高(???)
 
 		- unsafe_hash
+            * 如果是False, 将根据eq和frozen参数来生成__hash__:
+                1. eq和frozen都为True, __hash__将会生成
+                2. eq为True而frozen为False, __hash__被设为None
+                3. eq为False, frozen为True, __hash__将使用超类(object)的同名属性(通常就是基于对象id的hash)
+            
+            * 当设置为True时将会根据类属性自动生成__hash__, 然而这是不安全的
+            * 因为这些属性是默认可变的, 这会导致hash的不一致, 所以除非能保证对象属性不可随意改变, 否则应该谨慎地设置该参数为True
+            
 		- frozen
+            * 设为True时对field赋值将会引发错误, 对象将是不可变的
+            * 如果已经定义了__setattr__和__delattr__将会引发TypeError
 
-	*  demo
+	# demo
 		import dataclasses
 
 		@dataclasses.dataclass
@@ -41,3 +52,39 @@ dataclasses-自动生成类属性   |
 
 		print(User(1, 'KevinBlandy'))  # id=1,name=KevinBlandy,join=True
 		print(User(1, 'KevinBlandy', False))  # id=1,name=KevinBlandy,join=False
+ 
+------------------------------------------
+dataclasses 其他模块方法                  |
+------------------------------------------
+    dataclasses.field 
+        * 方法原型
+            dataclasses.field(*, default=MISSING, default_factory=MISSING, repr=True, hash=None, init=True, compare=True, metadata=None)
+        
+     dataclasses.asdict
+     dataclasses.astuple
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
