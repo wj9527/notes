@@ -98,7 +98,7 @@ smtpd_sasl_local_domain = $myhostname
 smtpd_recipient_restrictions = permit_mynetworks,permit_auth_destination,permit_sasl_authenticated,reject 
 	
 	# ÖØÆô
-		systemctl  restart  postfix
+		systemctl restart postfix
 	
 
 	# °²×°dovecot
