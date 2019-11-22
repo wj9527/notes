@@ -82,7 +82,16 @@ Spring-Boot 入门			|
 		public class ParkApplication extends SpringBootServletInitializer{
 
 			public static void main(String[] args){
-				SpringApplication.run(ParkApplication.class,args);
+				// SpringApplication.run(ParkApplication.class,args);  // 可以直接启动
+
+
+				SpringApplication springApplication = new SpringApplication(VideoManagerApplication.class);
+
+				// 添加一个或者多个设置
+				springApplication.addListeners(new ApplicationPidFileWriter());
+
+				// 启动
+				springApplication.run(args);
 			}
 		}
 
