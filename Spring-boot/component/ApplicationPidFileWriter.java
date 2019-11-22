@@ -13,7 +13,9 @@ ApplicationPidFileWriter |
 		spring.pid.file=D://app.pid
 			* 写入pid的文件
 
-		spring.pid.fail-on-write-error=D://app.error
-			* 如果pid文件写入失败, 则会把异常信息写入到这个文件
+		spring.pid.fail-on-write-error=true
+			* 当无法写入pid文件的时候, 是否抛出异常
+		
+
 		
 	
