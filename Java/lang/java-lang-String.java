@@ -9,6 +9,8 @@ String					|
 	String format(String format, Object... args) 
 		# 格式化指定的字符串
 	
+	String join(CharSequence delimiter, CharSequence... elements) ;
+		# 把多个 elements 用 delimiter 符号连接起来,组成新的字符串返回
 
 ------------------------
 实例方法				|
