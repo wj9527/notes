@@ -86,3 +86,5 @@ logback	- ≈‰÷√œÍΩ‚		|
 			<param-name>logbackConfigLocation</param-name>
 			<param-value>classpath:logback.xml</param-value>
 		</context-param>
+
+${CONSOLE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}{faint} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- }{magenta} ---{faint} [%15.15t]{faint} %-40.40logger{39}{cyan} :{faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
