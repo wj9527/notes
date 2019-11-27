@@ -39,9 +39,29 @@
 			
 			* 子实现类
 				User
+					private String password;							// 密码
+					private final String username;						// 用户名
+					private final Set<GrantedAuthority> authorities;	// 授权信息
+					private final boolean accountNonExpired;			// 账户未过期
+					private final boolean accountNonLocked;				// 账户未锁定
+					private final boolean credentialsNonExpired;		// 密码未过期
+					private final boolean enabled;						// 账户未禁用
 		
 		PasswordEncoder
 			* 密码的编码接口
 			* 实现类
 				BCryptPasswordEncoder
 				DelegatingPasswordEncoder
+		
+
+		RememberMeServices
+			* 记住我的接口
+				Authentication autoLogin(HttpServletRequest request, HttpServletResponse response);
+				void loginFail(HttpServletRequest request, HttpServletResponse response);
+				void loginSuccess(HttpServletRequest request, HttpServletResponse response, Authentication successfulAuthentication);
+			
+			* 实现类
+				NullRememberMeServices
+				PersistentTokenBasedRememberMeServices
+				TokenBasedRememberMeServices
+			
