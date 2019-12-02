@@ -30,7 +30,7 @@ v2ry						|
 			/etc/init.d/v2ray: SysV
 		
 	
-	# 编辑文件
+	# 配置文件
 		/etc/v2ray/config.json
 	
 	# 启动和维护
@@ -46,7 +46,9 @@ v2ry						|
 
 	
 	# 升级和更新
-		* 再次下载脚本,重新安装就OK
+		* 再次执行安装脚本, 就OK
+		* 这个脚本会自动检测有没有安装过 V2Ray, 如果没有, 则进行完整的安装和配置
+		* 如果之前安装过 V2Ray, 则只更新 V2Ray 二进制程序而不更新配置
 	
 	# 客户端的下载
 		https://github.com/v2ray/v2ray-core/releases
