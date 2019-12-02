@@ -13,6 +13,7 @@
 	  "outbounds": [],
 	  "transport": {}
 	}
+
 	# 的传入协议
 		HTTP,SOCKS,VMess,Shadowsocks,Dokodemo-door
 
