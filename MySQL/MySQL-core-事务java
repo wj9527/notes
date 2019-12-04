@@ -374,3 +374,10 @@ Read Committed, 是否能彻底解决幻读的问题		 |
 				- 但是这样一来这条新记录的 trx_id 隐藏列就变成了T1的事务id, 之后T1中再使用普通的SELECT语句去查询这条记录时就可以看到这条记录了
 				- 也就把这条记录返回给客户端了, 因为这个特殊现象的存在, 也可以认为InnoDB中的MVCC并不能完完全全的禁止幻读
 
+
+---------------------------------------------------------
+T1									T2
+SELECT IN SHARE MODE `m`				
+									DELETE FROM `m`
+INSERT INTO `s`					
+									DELETE FROM `s`
