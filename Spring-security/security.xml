@@ -9,9 +9,31 @@
 	
 	<!-- 授权管理器 -->
 	<security:authentication-manager>
-		<security:authentication-provider>
+		<!--认证管理
+			user-service-ref
+				* 指向 UserDetailsService 接口实现
+				* 通过该接口获取到 UserDetailsService 
+		 -->
+		<security:authentication-provider user-service-ref="">
+			<!-- 指定密码的编码器
+				ref
+					* 编码器接口: PasswordEncoder 的实现
+				base64
+					* 
+				hash
+			 -->
+			<security:password-encoder ref="" base64="true" hash="bcrypt">
+				<!-- 配置盐 
+					ref
+					system-wide
+					user-property
+				 -->
+				<security:salt-source ref="" system-wide="" user-property=""/>
+			</security:password-encoder>
+			<!-- 如果[security:authentication-provider]没配置 [user-service-ref] 属性，那么可以通过该标签配置在内存中的用户信息
+			 -->
 			<security:user-service>
-				<!-- 
+				<!-- 配置多个用户
 					name
 						* 用户名
 					password
@@ -39,6 +61,16 @@
 	 -->
 	<security:http pattern="/static/**" security="none"/>
 	<security:http auto-config="true" use-expressions="true">
+		<!-- 记住我的配置 
+			data-source-ref
+				* 配置数据源，在需要持久化，存储到DB的时候配置
+			remember-me-parameter
+				* 记住我的参数
+			token-validity-seconds
+				* 设置在记住我的设置下，token的存储时间，单位是秒
+		 -->
+		<security:remember-me data-source-ref="" remember-me-parameter=""
+						token-validity-seconds="60"/>
 		<!-- 配置权限拦截没，可以有多个配置节点出现，建议匹配范围越广的，越在下面。
 			pattern
 				* 拦截路径，/**：表示所有
@@ -95,7 +127,29 @@
 				* 指定验证匹配器，该匹配器匹配哪些请求要经过csrf验证。接口：RequestMatcher
 			token-repository-ref
 				* 指定 token的生成，解析实现。接口：CsrfTokenRepository
-		-->
-		<security:csrf disabled="true" request-matcher-ref=""/>
+		 
+		<security:csrf disabled="true" request-matcher-ref=""/> -->
+	
+		<!-- 设置异常的处理器 
+			error-page
+				* 异常的处理页面
+			ref
+							
+		 -->
+		<security:access-denied-handler error-page="" ref=""/>
 	</security:http>
+	
+	<!-- 开启动态的注解权限支持
+		secured-annotations
+			* 启用 spring-security内置的权限控制注解
+		pre-post-annotations
+			* 启用 spring 指定的权限控制注解
+		jsr250-annotations
+			* 启用 jsr250 标准定制的权限控制注解
+			* java 提供的标准
+		
+		！！！ 此项配置应该配置ioc的子容器(DispaterServlet加载的ioc)中，因为权限控制注解需要标识在@Controller 
+	 -->
+	<security:global-method-security secured-annotations="disabled" pre-post-annotations="disabled" jsr250-annotations="disabled">
+	</security:global-method-security>
 </beans>
