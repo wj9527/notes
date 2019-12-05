@@ -32,12 +32,22 @@ stage				 |
 		void initModality(Modality modality)
 			* 设置模态, 枚举
 				NONE
+					* 默认, 什么也没
+
 				WINDOW_MODAL
+					* 该窗口会一直在父级容器的最前面, 如果不关闭, 则无法操作父级容器
+					* 局部警告框
+
 				APPLICATION_MODAL  
+					* 当前应用, 该窗口会一直在最前面, 如果不关闭, 无法操作应用的其他窗口
+					* 全局警告框
+			
+			* primaryStage 不能设置 modalitymodality (Cannot set modality for the primary stage)
 				
 
 
 		void initOwner(Window owner)
+			* 设置当前组件, 为 owner 的子组件
 
 		void initStyle(StageStyle style)
 			* 设置窗体的类型, 枚举
