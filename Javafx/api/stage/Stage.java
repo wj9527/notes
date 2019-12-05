@@ -8,7 +8,10 @@ stage				 |
 		Stage(@Default("javafx.stage.StageStyle.DECORATED") StageStyle style)
 	
 	# 实例方法
+		boolean isAlwaysOnTop()
 		void setAlwaysOnTop(boolean value)
+			* 窗体是否一直处于最前面
+
 		ReadOnlyBooleanProperty alwaysOnTopProperty()
 		void close()
 			* 关闭窗口
@@ -27,9 +30,24 @@ stage				 |
 		StageStyle getStyle()
 		
 		void initModality(Modality modality)
+			* 设置模态, 枚举
+				NONE
+				WINDOW_MODAL
+				APPLICATION_MODAL  
+				
+
+
 		void initOwner(Window owner)
+
 		void initStyle(StageStyle style)
-		boolean isAlwaysOnTop()
+			* 设置窗体的类型, 枚举
+				DECORATED(默认)
+				UNDECORATED(纯透明的窗体)
+				TRANSPARENT(纯透明的窗体)
+				UTILITY(无最大化, 缩小摁钮, 只有关闭)
+				UNIFIED(无边框)
+
+		
 		boolean isMaximized()
 		
 		DoubleProperty maxHeightProperty()
@@ -38,7 +56,7 @@ stage				 |
 		DoubleProperty minHeightProperty()
 		DoubleProperty minWidthProperty()
 		BooleanProperty resizableProperty()
-		void setAlwaysOnTop(boolean value)
+		
 		void setFullScreenExitHint(String value)
 		void setFullScreenExitKeyCombination(KeyCombination keyCombination)
 		

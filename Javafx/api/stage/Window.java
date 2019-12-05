@@ -25,7 +25,7 @@ Window				  |
 		EventHandler<WindowEvent> getOnHiding()
 		EventHandler<WindowEvent> getOnShowing()
 		EventHandler<WindowEvent> getOnShown()
-		double getOpacity()
+		
 		ObservableMap<Object, Object> getProperties()
 		Scene getScene()
 		Object getUserData()
@@ -51,20 +51,28 @@ Window				  |
 		void setOnHiding(EventHandler<WindowEvent> value)
 		void setOnShowing(EventHandler<WindowEvent> value)
 		void setOnShown(EventHandler<WindowEvent> value)
+
 		void setOpacity(double value)
+		double getOpacity()
+			* 透明度, 取值范围: 0f..1f ,0 是完全透明
+
 		void setUserData(Object value)
 		void setWidth(double value)
 		ReadOnlyBooleanProperty showingProperty() 
 		void sizeToScene()
 		ReadOnlyDoubleProperty widthProperty()
+		
+		
 		ReadOnlyDoubleProperty xProperty()
 		ReadOnlyDoubleProperty yProperty()
-		
+			* xy,坐标的property
 		void setX(double value)
 		void setY(double value)
 		double getX()
 		double getY()
 			* 设置/读取x,y坐标
+			* x 屏幕的横向, 左上角是0
+			* y 屏幕的纵向, 坐上角是0
 	
 		void setHeight(double value)
 		double getHeight()
