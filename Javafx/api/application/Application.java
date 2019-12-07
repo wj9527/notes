@@ -27,6 +27,8 @@ Application			|
 			* 生命周期方法, 在app的启动和关闭之前执行
 		
 		HostServices getHostServices()
+			* 返回 HostServices
+		
 		Parameters getParameters()
 		void notifyPreloader(PreloaderNotification info)
 
