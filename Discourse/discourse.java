@@ -13,6 +13,7 @@ discourse			 |
 		https://forum.realm.io/
 		https://forum.vuejs.org/
 		https://discuss.python.org/
+		https://community.jenkins-zh.cn/
 
 		https://discourse.mailinabox.email/
 		http://www.react-china.org/

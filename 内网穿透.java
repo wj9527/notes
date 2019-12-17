@@ -12,6 +12,8 @@
 bind_port = 7000
 # 80端口的http服务
 vhost_http_port = 80
+# 客户端的链接token
+token = aabbcc123456
 
 log_file = ./frps.log
 log_level = info
@@ -34,6 +36,8 @@ dashboard_pwd = frV1n123456
 [common]
 server_addr = [服务器公网ip]
 server_port = 7000
+# 服务端设置的token
+token = aabbcc123456
 
 [web]
 type = http
