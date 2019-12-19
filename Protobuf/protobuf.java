@@ -6,6 +6,7 @@
 	https://colobu.com/2017/03/16/Protobuf3-language-guide
 	https://github.com/protocolbuffers/protobuf
 	https://blog.csdn.net/u011518120/article/details/54604615
+	https://skyao.gitbooks.io/learning-proto3/
 
 
 # 指定版本号
@@ -15,20 +16,15 @@
 		* 如果不指定，默认使用版本：2.x
 
 # 属性的规则
+	* 属性的规则, 可以是: 
+		单数: 一个定义良好的消息可以有0个或1个此字段(但是不能超过1个), 默认选项不需要声明
+		重复: 这个字段可以在定义良好的消息中重复任意次(包括0次).重复值的顺序将被维持原状. 类似于 list 数据类型
 
-	required
-		* 必须出现1次
-
-	singular
-		* 可以出现0次或者1次
-	
 	repeated
 		* 可以出现0次或者N次, 重复的值的顺序会被保留
-		* 由于一些历史原因，默认情况下，数值类型的可重复（repeated）字段的编码性能没有想象中的好
-		* 你应该在其后用特殊选项 [packed=true] 来申明以获得更高效的编码
+		* 由于一些历史原因，默认情况下, 数值类型的可重复(repeated)字段的编码性能没有想象中的好
+		* 应该在其后用特殊选项 [packed=true] 来申明以获得更高效的编码
 			repeated int32 samples = 4 [packed=true];
-	
-	optional
 		
 
 
@@ -113,4 +109,34 @@
 	* oneof 的字段可以使用任何类型的字段，但是不要使用 repeated 可重复字段。
 
 	
+# Map
+	* 语法
+		map<key_type, value_type> map_field = N;
+
+		key_type 可以任意整数类型或字符串类型(除浮点类型或 bytes 类型意外的任意标准类型 )
+		value_Type 可以是任意类型
+	
+	* map 类型的字段不可重复(不能用 repeated 修饰)
+	* 在传输介质上, 下面的代码等效于 map 语法的实现
+		message MapFieldEntry {
+			key_type key = 1;
+			value_type value = 2;
+		}
+		repeated MapFieldEntry map_field = N;
+	* 因此, 即使目前 ProtoBuf 不支持 map 可重复的特性依然可以用上面这种(变通的)方式来处理
+
+
+# 包
+	* 可以在.proto 文件中选择使用 package 说明符 避免 ProtoBuf 消息类型之间的名称冲突(命名空间)
+		package foo.bar;
+	
+	* 在 Java 里面, 除非在 .proto 文件中显示声明了 option java_package ,否则这个包名会被 Java 直接采用
+
+	* 包和名称解析, 最内层的最先被查找, 然后是次内层 ,以此类推
+	* 每个包对于其父包来说都是"内部"的以一个'.'(英文句点)开头的包和名称 
+		例如(.foo.bar.Baz)表示从最外层开始查找
+	
+	
+		
+
 
