@@ -86,10 +86,15 @@
 	* 一个 Any 类型的消息是一个包含任意字节数的序列化消息，拥有一个 URL 地址作为全局唯一标识符来解决消息的类型。
 	* 为了使用 Any 类型的消息，需要import google/protobuf/any.proto
 		import "google/protobuf/any.proto";
-		message ErrorStatus {
-				string message = 1;
-				repeated Any details = 2;
+
+		message Messae {
+			int32 timestamp = 1;
+			bool success = 2;
+			string message = 3;
+			repeated google.protobuf.Any data = 4;
+			google.protobuf.Any foo = 5;
 		}
+
 	* Any 消息类型的默认 URL 是: type.googleapis.com/packagename.messagename
 	* 不同的语言实现都会支持运行库帮助通过类型安全的方式来封包或解包 Any 类型的消息。
 	* 在 Java 语言中，Any 类型有专门的访问函数 pack()和unpack()

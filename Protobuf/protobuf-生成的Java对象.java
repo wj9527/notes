@@ -5,9 +5,14 @@ Java代码生成
 		* .proto文件中定义的类, 以内部类的形式存在
 		* 这个文件包含一个单一的outer class定义,包含一些内嵌类和静态字段
 
+
 	# 生成的类
 		* 实现 Message 接口, 并且被标识为 final
 			public static final class Person extends com.google.protobuf.GeneratedMessageV3 implements PersonOrBuilder
+
+		* 还会为类生成一个builder对象, builder没有任何静态方法, 仅仅用来初始化类属性
+		* builer对象还会根据字段的类型不同, 提供不同的操作方法
+
 	
 	# 字段
 		* 下划线会转换为驼峰
@@ -17,9 +22,33 @@ Java代码生成
 		
 		* 编译器为每个字段生成一个包含它的字段编号的整型常量
 		* 常量名是: 转换为大写并加上 _FIELD_NUMBER 字段名字
-				optional int32 foo_bar = 5 -> public static final int FOO_BAR_FIELD_NUMBER = 5;。
+				optional int32 foo_bar = 5 -> public static final int FOO_BAR_FIELD_NUMBER = 5;
+		
+		
+		* 重复字段生成为 List
+	
+	# Map字段
+		* 生成为 Map , map字段默认是不能修改的
+		* 可以通过Builder获取到可更改的map, 但是这个map是新的,每次调用都会生成新的map
+			getMutableXXX()
+		
+	# Any 子弹
+		* Any字段变成了 Any 对象
+		* Any 类有序列化的静态api, 以及反序列化的实例api
+			public static <T extends com.google.protobuf.Message> Any pack(T message)
+			public static <T extends com.google.protobuf.Message> Any pack(T message, String typeUrlPrefix)
+				* 打包数据
 
+			public <T extends com.google.protobuf.Message> T unpack(java.lang.Class<T> clazz)
+				* 解包数据
+			public <T extends Message> boolean is(class<T> clazz);
+				* 判断消息是否是指定的 Message 类实现
+		
+		
+	# Oneof
 
+	
+		
 -----------------------
 Outer类的静态方法
 -----------------------
@@ -72,3 +101,13 @@ Outer类的静态方法
 	void writeTo(CodedOutputStream output)
 		* 把当前类序列化到指定的OutputStream
 	
+	XXXOrBuilder getXXXOrBuilder();
+		* 如果字段的builder已经存在则返回字段的builder
+		* 如果不存在则返回字段
+	
+	Builder toBuilder()
+		* 转换当前对象为builder
+	
+	
+	boolean hasOneof(OneofDescriptor oneof)
+		
