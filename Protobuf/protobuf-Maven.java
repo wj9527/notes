@@ -25,7 +25,7 @@ Maven 插件
 					<!-- 生成类的文件夹 -->
 					<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
 					<!-- 是否每次编译前都清空生成文件夹 -->
-					<clearOutputDirectory>true</clearOutputDirectory>
+					<clearOutputDirectory>false</clearOutputDirectory>
 					<!-- 临时文件夹 -->
 					<temporaryProtoFileDirectory>${project.build.directory}/protoc-dependencies</temporaryProtoFileDirectory>
 				</configuration>
