@@ -26,6 +26,8 @@
 		* 应该在其后用特殊选项 [packed=true] 来申明以获得更高效的编码
 			repeated int32 samples = 4 [packed=true];
 		
+		* proto3已经默认使用了, 不需要手动声明
+		
 
 
 # 字段编号
