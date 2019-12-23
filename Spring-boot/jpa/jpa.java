@@ -12,9 +12,9 @@ jpa					 |
         </dependency>
 	
 	# 使用
-		1,自定义接口继承:Repository
+		1,自定义接口继承:JpaRepository 和 JpaSpecificationExecutor
+			public interface UserRepository extends JpaRepository<UserEntity, Integer>, JpaSpecificationExecutor <UserEntity> {}
 
-			public interface UserRepository extends JpaRepository<UserDTO,Integer> {}
 
 		2,配置扫描Repository和Entity
 			@EnableJpaRepositories(basePackages = {"io.springboot.jpa.repository"})
@@ -31,10 +31,4 @@ jpa					 |
 			private UserRepository userRepository;
 			
 		
-	# 核心的 Repository
-		Repository
-			|-CrudRepository
-				|PagingAndSortingRepository
-			|-QueryByExampleExecutor
-					|-JpaRepository
-
+	

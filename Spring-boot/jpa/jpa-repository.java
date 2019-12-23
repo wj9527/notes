@@ -1,47 +1,49 @@
 ----------------------
+Repository			  |
+----------------------
+	# 核心的 Repository
+		Repository
+			|-CrudRepository
+				|PagingAndSortingRepository
+			|-QueryByExampleExecutor
+					|-JpaRepository
+		JpaSpecificationExecutor
+	
+----------------------
 CrudRepository		  |
 ----------------------
 
 public interface CrudRepository<T, ID> extends Repository<T, ID> {
-	// 保存实体
 	<S extends T> S save(S entity);
-	// 批量保存
 	<S extends T> Iterable<S> saveAll(Iterable<S> entities);
-	/**
-		* 自增长的id会回写到对象
-	**/
+		* 持久化, 如果是自增id, id的值会回写到对象中
 
-	// 根据id检索
 	Optional<T> findById(ID id);
+		* 根据ID检索
 
-	// 根据id判断是否存在
 	boolean existsById(ID id);
+		* 根据ID判断是否存在
 
-	// 检索所有
 	Iterable<T> findAll();
-	// 根据多个id检索
 	Iterable<T> findAllById(Iterable<ID> ids);
+		* 检索所有或者根据ID检索一批记录
 
-	// 总记录数量
 	long count();
+		* 获取记录的总数量
 
 
-	// 根据id 删除
 	void deleteById(ID id);
-	// 删除指定的实体(会根据id删除)
 	void delete(T entity);
-	// 删除所有(会根据id删除)
 	void deleteAll(Iterable<? extends T> entities);
-	/***
+	
 		* 执行删除的时候,会先根据ID检索记录
 		* 如果记录不存在(如果执行的是:deleteById,会抛出异常 EmptyResultDataAccessException ),先插入,再删除
-		* 如果记录已经存在,直接删除
-	***/
+		* 如果记录已经存在,直接删除, 删除操作都是根据ID来删除
 
 
-
-	// 清空表
 	void deleteAll();
+		* 直接删除表
+	
 }
 ----------------------
 JpaRepository		  |
