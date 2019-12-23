@@ -19,6 +19,7 @@ imap		CNAME	mail.springcloud.io
 @			TXT		"v=spf1 mx ~all"
 
 s20191223631._domainkey TXT "DKIM key
+_dmarc.springcloud.io	TXT "v=DMARC1; p=none; rua=mailto:dmarc-reports@springcloud.io"
 
 
 
