@@ -59,13 +59,20 @@ docker run \
 			imap.springcloud.io
 
 
-		* 重启docker服务
-			docker restart PosteServer
+	# 页面
+		* 总管理后台
+			https://mail.undefined.design/admin/ 
+		
+		* 邮件管理后台
+			https://mail.undefined.design/webmail
+			
 	
-	
+	# 开启邮件加密
+		设置 -> 选项 -> 加密 -> 除了[默认附加我的公共 PGP 密钥]选项以外, 都勾上
+
 	# 日志
 		* 查看日志
-			docker logs --tail=100 mailserver
+			docker logs -f PosteServer
 		
 		* 日志目录
 			data/logs

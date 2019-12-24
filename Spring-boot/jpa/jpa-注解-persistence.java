@@ -56,3 +56,6 @@
 
 @MappedSuperclass
 	* 标识在实体类的父类, 用于JPA注解的继承、
+
+@Transient
+	* 表示该字段不是数据表的映射字段

@@ -15,13 +15,24 @@ spring.data.jpa.repositories.enabled=true
 
 # JPA的配置
 spring.jpa.database=
+	* 指定数据库, 默认可以检测到
+
 spring.jpa.database-platform=
+	* 指定数据库的类型, Dialect 的实现类, 例如: org.hibernate.dialect.MySQL57Dialect
+
 spring.jpa.generate-ddl=false
-spring.jpa.open-in-view=false
+	* 是否在启动时初始化schema, 默认为false
+
+spring.jpa.open-in-view=true
+	* 是否注册 OpenEntityManagerInViewInterceptor, 绑定JPA EntityManager 到请求线程中, 默认为: true
+
 spring.jpa.show-sql=false
+	* 是否打印SQL
+
 spring.jpa.properties.*
 spring.jpa.mapping-resources=
 
+# Hibernate的配置
 spring.jpa.hibernate.ddl-auto=
 	* 枚举
 		create				不管表是否存在, 每次启动都会重新建表(会导致数据丢失)

@@ -2,11 +2,11 @@
 Repository			  |
 ----------------------
 	# 核心的 Repository
-		Repository
-			|-CrudRepository
-				|PagingAndSortingRepository
-			|-QueryByExampleExecutor
-					|-JpaRepository
+		Repository		// 标识接口，spring会加载
+			|-CrudRepository // 基本的CRUD
+				|PagingAndSortingRepository // 排序和分页查询
+			|-QueryByExampleExecutor // 可以根据Example条件查询
+					|-JpaRepository  // 继承分页,条件,crud的接口
 		JpaSpecificationExecutor
 	
 ----------------------
@@ -15,6 +15,9 @@ CrudRepository		  |
 
 public interface CrudRepository<T, ID> extends Repository<T, ID> {
 	<S extends T> S save(S entity);
+		* 保存和修改, 都是使用 sava 方法
+		* 区别就是看实体entity是否有主键, 有则是更新, 无则是创建
+
 	<S extends T> Iterable<S> saveAll(Iterable<S> entities);
 		* 持久化, 如果是自增id, id的值会回写到对象中
 
@@ -49,28 +52,16 @@ public interface CrudRepository<T, ID> extends Repository<T, ID> {
 JpaRepository		  |
 ----------------------
 	public interface JpaRepository<T, ID> extends PagingAndSortingRepository<T, ID>, QueryByExampleExecutor<T> {
-
 		List<T> findAll();
-
 		List<T> findAll(Sort sort);
-
 		List<T> findAllById(Iterable<ID> ids);
-
 		Iterable<T> findAll(Sort sort);
-
 		Page<T> findAll(Pageable pageable);
-
-
 		<S extends T> List<S> saveAll(Iterable<S> entities);
-
 		void flush();
-
 		<S extends T> S saveAndFlush(S entity);
-
 		void deleteInBatch(Iterable<T> entities);
-
 		void deleteAllInBatch();
-
 		T getOne(ID id);
 
 		@Override
