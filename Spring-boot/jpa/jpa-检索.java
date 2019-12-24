@@ -1,25 +1,44 @@
 -----------------------------
-各种检索					 |
+检索的方式					 |
+----------------------------
+	# JPA父接口定义的检索方法
+	# 方法命名规则检索
+	# JPQL检索
+	# 本地SQL检索
+	# Specification 动态查询
+
 -----------------------------
-	List<T> findAll();
-	List<T> findAll(Sort sort);
+JPA父接口定义的检索方法		 |
+----------------------------
 
-	List<T> findAllById(Iterable<ID> ids);
-	T getOne(ID id);
-	@Override
-	<S extends T> List<S> findAll(Example<S> example);
-	@Override
-	<S extends T> List<S> findAll(Example<S> example, Sort sort);
+    List<UserEntity> findAllById(Iterable<Integer> integers);
+    Optional<UserEntity> findById(Integer integer);
+	UserEntity getOne(Integer integer);
+	
+	Optional<UserEntity> findOne(Specification<UserEntity> spec);
+    <S extends UserEntity> Optional<S> findOne(Example<S> example);
 
+	List<UserEntity> findAll();
+    List<UserEntity> findAll(Sort sort);
+    Page<UserEntity> findAll(Pageable pageable);
 
-	Iterable<T> findAll(Sort sort);
-	Page<T> findAll(Pageable pageable);
+	<S extends UserEntity> List<S> findAll(Example<S> example);
+    <S extends UserEntity> List<S> findAll(Example<S> example, Sort sort);
+    <S extends UserEntity> Page<S> findAll(Example<S> example, Pageable pageable);
 
-	Optional<T> findById(ID id);
-	boolean existsById(ID id);
-	Iterable<T> findAll();
-	Iterable<T> findAllById(Iterable<ID> ids);
+    List<UserEntity> findAll(Specification<UserEntity> spec);
+    Page<UserEntity> findAll(Specification<UserEntity> spec, Pageable pageable);
+    List<UserEntity> findAll(Specification<UserEntity> spec, Sort sort);
+	
 	long count();
+	<S extends UserEntity> long count(Example<S> example);
+    long count(Specification<UserEntity> spec); 
+
+	<S extends UserEntity> boolean exists(Example<S> example);
+	boolean existsById(Integer integer);
+    
+	
+	* 无非就是, 分页, Specification动态条件, Example条件, Sort 各种组合查询
 
 
 -----------------------------
@@ -61,72 +80,3 @@
 
 		// 不排序
 		Sort unsorted = Sort.unsorted();
------------------------------
-分页						 |
------------------------------
-	# 类库(接口)
-		Pageable
-			|-PageRequest
-		Page
-	
-	# PageRequest的静态方法来创建实例
-		PageRequest of(int page, int size) 
-		PageRequest of(int page, int size, Sort sort)
-		PageRequest of(int page, int size, Direction direction, String... properties)
-	
-	# demo
-		// 创建一个分页,不排序
-		PageRequest.of(1,10);
-
-		// 创建一个分页,根据name升序排序
-        PageRequest.of(1,10,Sort.by(Sort.Order.asc("name")));
-
-		// 创建一个分页,根据name,age,gender升序排序
-        PageRequest.of(1,10, Sort.Direction.ASC,"name","age","gender");
-	
-	# 分页结果 Page(接口)
-		int getNumber();
-		int getNumberOfElements();
-		int getSize();			 // 每页显示的记录数
-		int getTotalPages();	 // 总页数
-		long getTotalElements(); // 总记录数
-		<U> Page<U> map(Function<? super T, ? extends U> converter);	// 数据转换接口
-		List<T> getContent();	// 获取到数据
-		boolean hasContent();	// 是否有数据
-		Sort getSort();			// 获取排序策略
-		boolean isFirst();		// 是否是第一个
-		boolean isLast();		// 是否是最后一个
-		boolean hasNext();		// 是否还有下一个
-		boolean hasPrevious();	// 是否还有上一个
-		
-		* json结构
-			{
-				"content": [],					//分页的数据
-				"pageable": {
-					"sort": {
-						"sorted": true,
-						"unsorted": false,
-						"empty": false
-					},
-					"offset": 10,
-					"pageSize": 10,
-					"pageNumber": 1,
-					"paged": true,
-					"unpaged": false
-				},
-				"totalPages": 1,
-				"totalElements": 6,
-				"last": true,
-				"number": 1,
-				"size": 10,
-				"sort": {
-					"sorted": true,
-					"unsorted": false,
-					"empty": false
-				},
-				"numberOfElements": 0,
-				"first": false,
-				"empty": true
-			}
-
-

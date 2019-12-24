@@ -2,8 +2,8 @@
 jpa					 |
 ---------------------
 	# 参考
-		https://ityouknow.gitbooks.io/spring-data-jpa-reference-documentation/content/
 		https://docs.spring.io/spring-data/jpa/docs/current-SNAPSHOT/reference/html/#reference
+		https://ityouknow.gitbooks.io/spring-data-jpa-reference-documentation/content/
 	
 	# Maven
 		<dependency>
@@ -18,6 +18,12 @@ jpa					 |
 
 		2,配置扫描Repository和Entity
 			@EnableJpaRepositories(basePackages = {"io.springboot.jpa.repository"})
+				basePackages
+					* 指定 Repository 所在的包
+				repositoryBaseClass
+					* 仅仅加载该属性指定的 class 的子类
+
+
 			@EntityScan(basePackages = {"io.springboot.jpa.dto"})
 
 		4,Entit添加注解
@@ -25,6 +31,9 @@ jpa					 |
 			@Table(name = "user")
 			@Id
 			@Column
+
+			
+
 
 		5,在需要的地方注入
 			@Autowired

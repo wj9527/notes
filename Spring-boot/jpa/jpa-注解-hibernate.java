@@ -6,3 +6,9 @@
 @AttributeAccessor
 @BatchSize
 @UpdateTimestamp
+@Table
+	appliesTo
+		* ±íÃû³Æ
+	comment
+		* ±í×¢ÊÍ
+	

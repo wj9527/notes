@@ -34,8 +34,9 @@
 	boolean updatable() default true;
 
 	String columnDefinition() default "";
-		* 设置列类型以及约束, 例如: columnDefinition="timestamp", columnDefinition="varchar(100)" 
-		* 还可以通过它来设置列注释: columnDefinition="bigint COMMENT '主键，自动生成'"
+		* 设置列类型以及约束以及注释, 例如: 
+			columnDefinition = "int(20) unsigned COMMENT 'id'"
+			columnDefinition = "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'"
 
 	String table() default "";
 

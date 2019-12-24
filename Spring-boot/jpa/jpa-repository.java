@@ -7,8 +7,15 @@ Repository			  |
 				|PagingAndSortingRepository // 排序和分页查询
 			|-QueryByExampleExecutor // 可以根据Example条件查询
 					|-JpaRepository  // 继承分页,条件,crud的接口
-		JpaSpecificationExecutor
+						|-JpaRepositoryImplementation (实现了 JpaSpecificationExecutor 接口) // 接口
+							|-SimpleJpaRepository // 集大成于一身，它是一个实现类
+
+		JpaSpecificationExecutor // Specification动态查询接口
 	
+	# SimpleJpaRepository
+		* 它其实就是 Repository 接口, 动态代理的类
+		* 它是通过操作 EntityManager 来完成对数据库的操作
+
 ----------------------
 CrudRepository		  |
 ----------------------
@@ -38,39 +45,51 @@ public interface CrudRepository<T, ID> extends Repository<T, ID> {
 	void deleteById(ID id);
 	void delete(T entity);
 	void deleteAll(Iterable<? extends T> entities);
+	void deleteAll();
 	
-		* 执行删除的时候,会先根据ID检索记录
-		* 如果记录不存在(如果执行的是:deleteById,会抛出异常 EmptyResultDataAccessException ),先插入,再删除
+		* 执行这些删除的时候,会先根据ID检索记录 (deleteAll 会先检索所有记录)
+		* 如果记录不存在(如果执行的是:deleteById,会直接抛出异常 EmptyResultDataAccessException ),会先插入,再删除
 		* 如果记录已经存在,直接删除, 删除操作都是根据ID来删除
 
-
-	void deleteAll();
-		* 直接删除表
 	
 }
 ----------------------
 JpaRepository		  |
 ----------------------
 	public interface JpaRepository<T, ID> extends PagingAndSortingRepository<T, ID>, QueryByExampleExecutor<T> {
-		List<T> findAll();
-		List<T> findAll(Sort sort);
+		
+		<S extends T> Optional<S> findOne(Example<S> example);
+		T getOne(ID id);
 		List<T> findAllById(Iterable<ID> ids);
-		Iterable<T> findAll(Sort sort);
-		Page<T> findAll(Pageable pageable);
+			
+		
 		<S extends T> List<S> saveAll(Iterable<S> entities);
+
 		void flush();
 		<S extends T> S saveAndFlush(S entity);
-		void deleteInBatch(Iterable<T> entities);
-		void deleteAllInBatch();
-		T getOne(ID id);
-
-		@Override
+			* 保存并且立即刷新
+		
+		
+		
+		
+		List<T> findAll();
+		List<T> findAll(Sort sort);
+		Iterable<T> findAll(Sort sort);
+		Page<T> findAll(Pageable pageable);
 		<S extends T> List<S> findAll(Example<S> example);
-		@Override
 		<S extends T> List<S> findAll(Example<S> example, Sort sort);
-
-		<S extends T> Optional<S> findOne(Example<S> example);
 		<S extends T> Page<S> findAll(Example<S> example, Pageable pageable);
+
+
+		
+		
 		<S extends T> long count(Example<S> example);
 		<S extends T> boolean exists(Example<S> example);
+
+		void deleteAllInBatch();
+		void deleteInBatch(Iterable<T> entities);
+			* 批量删除, 不会先执行查询,
+			* deleteAllInBatch 直接执行: DELETE FROM `table`;
+			* deleteInBatch 如果有多个参数, 通过or条件删除: DELETE FRROM `table` WHERE `id` = ? OR `id` = ? OR `id` = ?;
+			
 	}
