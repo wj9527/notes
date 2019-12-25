@@ -4,6 +4,8 @@ jpa					 |
 	# ²Î¿¼
 		https://docs.spring.io/spring-data/jpa/docs/current-SNAPSHOT/reference/html/#reference
 		https://ityouknow.gitbooks.io/spring-data-jpa-reference-documentation/content/
+		https://www.ibm.com/developerworks/cn/java/j-typesafejpa/
+		https://my.oschina.net/zhaoqian/blog/133500
 	
 	# Maven
 		<dependency>
