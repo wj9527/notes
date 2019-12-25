@@ -105,3 +105,18 @@ JPQL检索注解
 	# @QueryHints
 		QueryHint[] value() default {};
 		boolean forCounting() default true;
+	
+	# @Lock
+		LockModeType value();
+
+		* 加锁模式
+		* LockModeType 枚举
+			READ,
+			WRITE,
+			OPTIMISTIC,
+			OPTIMISTIC_FORCE_INCREMENT,
+			PESSIMISTIC_READ,
+			PESSIMISTIC_WRITE,
+			PESSIMISTIC_FORCE_INCREMENT,
+			NONE
+
