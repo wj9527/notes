@@ -1,6 +1,55 @@
 ----------------
 JPQL检索
 ----------------
+	# 参数的绑定
+		* 通过位置绑定	WHERE id = ?1
+		* 通过名称绑定	WHERE id = :id
+	
+----------------
+JPQL检索语法
+----------------
+	# 语法
+		* 操作的是对象 @Entity, 不是表, 操作的是对象属性, 也不是字段
+		* 默认Entity就是类名称大写
+
+		* 不支持使用 `` 符号
+
+	# 基本
+		FROM User u WHERE u.id = :id
+	
+	# LIKE
+		FROM User u WHERE u.name LIKE %:name%
+	
+	# IN
+		FROM User u WHERE u.id in :ids
+
+		* ids是一个集合
+	
+	# ORDER BY
+		FROM User u WHERE u.id = :id ORDER BY id DESC
+	
+	
+----------------
+SPEL
+----------------
+	# 支持使用spel表达式进行对象属性的导航
+		@Query(value = "FROM user u WHERE u.id = :#{#user.id}")
+		Page<UserEntity> testSelect (@Param("user")UserEntity userEntity, Pageable pageable);
+	
+	# 支持使用SPEL表达式读取某些特殊的变量
+		@Entity
+		class User
+
+		@Query("select u from #{#entityName} u where u.lastname = ?1")
+		List<User> findByLastname(String lastname);
+
+		#{#entityName}	
+			* 读取到entity实体的名称, 默认是实体名称的小写
+			* 也可以在 @Entity(name = "user")中, 通过name属性设置
+
+----------------
+JPQL检索注解
+----------------
 	# Query
 		String value() default "";
 			* 执行语句, 可以是CREUD, 可以是本地SQL, JPQL
@@ -20,18 +69,6 @@ JPQL检索
 		String name() default "";
 		String countName() default "";
 
-		* 支持使用SPEL表达式读取某些变量
-			@Entity
-			class User
-
-			@Query("select u from #{#entityName} u where u.lastname = ?1")
-			List<User> findByLastname(String lastname);
-
-			#{#entityName}	
-				* 读取到entity实体的名称, 默认是实体名称的小写
-				* 也可以在 @Entity(name = "user")中, 通过name属性设置
-			
-	
 	
 	# @Param
 		* 通过命名参数的绑定 , 可以忽略参数的位置

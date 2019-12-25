@@ -2,7 +2,9 @@
 
 # 一般注解
 	@Entity
-		* 标识当前类是一个被DB管理的实体类
+		String name() default "";
+			* 实体的名称, 可以用于JPQL检索
+			* 默认是当前类名
 
 	@Table
 		String name() default "";
