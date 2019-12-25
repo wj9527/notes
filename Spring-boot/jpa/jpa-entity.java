@@ -1,19 +1,31 @@
 ------------------
 entity
 ------------------
-	Persistable
-		ID getId();
-		boolean isNew();
-			
-	EntityInformation
-		boolean isNew(T entity);
-
-		@Nullable
-		ID getId(T entity);
-		Class<ID> getIdType();
-
-		ID getRequiredId(T entity)
-		Class<T> getJavaType();
 	
+------------------
+Persistable
+------------------
+	# 一个用于标识实体类是不是新的实体类的接口
+	# 最佳的实践, 就是公共的父类实现该接口, 并且设置回调方法, 来修改对象的状态
+		@MappedSuperclass
+		public abstract class AbstractBaseEntity<ID> implements Persistable<ID> {
 
-		
+			@Transient
+			private boolean isNew = true; 
+
+			@Override
+			public boolean isNew() {
+				return isNew; 
+			}
+
+			@PrePersist			// 在存储之前执行
+			@PostLoad			// 在加载之后执行
+			void markNotNew() {
+				this.isNew = false;
+			}
+			// More code…
+		}
+
+------------------
+EntityInformation
+------------------
