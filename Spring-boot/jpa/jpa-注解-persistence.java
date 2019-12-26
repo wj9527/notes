@@ -2,6 +2,7 @@
 
 # 一般注解
 	@Entity
+		* 表示类, 被EntityManager管理
 		String name() default "";
 			* 实体的名称, 可以用于JPQL检索
 			* 默认是当前类名
@@ -64,10 +65,14 @@
 	@Transient
 		* 表示该字段不是数据表的映射字段
 
+	@Version
+		* 标识版本号字段
+
 
 # 生命周期相关的注解
 	@PrePersist
 	@PostPersist
+
 		* 在save前后后调用
 	
 	@PreUpdate

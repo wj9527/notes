@@ -25,6 +25,8 @@ public interface CrudRepository<T, ID> extends Repository<T, ID> {
 		* 保存和修改, 都是使用 sava 方法
 		* 区别就是看实体entity是否有主键, 有则是更新, 无则是创建
 
+		* 执行修改之前, 会先根据id执行一次读, 如果不存在, 则插入(???)
+
 	<S extends T> Iterable<S> saveAll(Iterable<S> entities);
 		* 持久化, 如果是自增id, id的值会回写到对象中
 
