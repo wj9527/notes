@@ -8,7 +8,7 @@ JPQL检索
 	# JPQL的修改要在事务下进行否则可能异常: InvalidDataAccessApiUsageException
 		 Executing an update/delete query; nested exception is javax.persistence.TransactionRequiredException: Executing an update/delete query
 
-	# 支持返回对象使用 Optional 封装
+	# 抽象方法返回值支持使用 Optional 封装
 
 	
 	
@@ -74,7 +74,9 @@ JPQL检索语法
 				}
 	
 	# 仅仅检索部分字段
-		* 上述的 new 对象方法和使用Map作为结果集就可以完成
+		SELECT u.name, u.id FROM User AS u
+			* 返回 List<Object[]>
+			* 上述的 new 对象方法和使用Map作为结果集也可以完成
 	
 	
 	# 仅仅检索单个字段
