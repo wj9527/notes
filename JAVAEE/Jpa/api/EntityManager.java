@@ -4,18 +4,30 @@ EntityManager
 	# 实体对象管理接口
 	# 抽象方法
 		public void persist(Object entity);
+			* 持久化一个对象
+
 		public <T> T merge(T entity);
+			* 更新一个对象
+
 		public void remove(Object entity);
+			* 删除一个对象
+
 		public <T> T find(Class<T> entityClass, Object primaryKey);
 		public <T> T find(Class<T> entityClass, Object primaryKey, Map<String, Object> properties); 
 		public <T> T find(Class<T> entityClass, Object primaryKey, LockModeType lockMode);
 		public <T> T find(Class<T> entityClass, Object primaryKey, LockModeType lockMode, Map<String, Object> properties);
+
 		public <T> T getReference(Class<T> entityClass, Object primaryKey);
+			* 根据id检索一个对象
+
 		public void flush();
 		public void setFlushMode(FlushModeType flushMode);
 		public FlushModeType getFlushMode();
+
 		public void lock(Object entity, LockModeType lockMode);
 		public void lock(Object entity, LockModeType lockMode, Map<String, Object> properties);
+		public LockModeType getLockMode(Object entity);
+
 		public void refresh(Object entity);
 		public void refresh(Object entity, Map<String, Object> properties); 
 		public void refresh(Object entity, LockModeType lockMode);
@@ -23,9 +35,10 @@ EntityManager
 		public void clear();
 		public void detach(Object entity);
 		public boolean contains(Object entity);
-		public LockModeType getLockMode(Object entity);
+		
 		public void setProperty(String propertyName, Object value);
 		public Map<String, Object> getProperties();
+
 		public Query createQuery(String qlString);
 		public <T> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery);
 		public Query createQuery(CriteriaUpdate updateQuery);

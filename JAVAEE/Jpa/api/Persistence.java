@@ -4,7 +4,7 @@ Persistence
 	# 静态方法
 		static EntityManagerFactory createEntityManagerFactory(String persistenceUnitName)
 		static EntityManagerFactory createEntityManagerFactory(String persistenceUnitName, Map properties)
-			* 加载 META-INF/persistence.xml, 创建 EntityManagerFactory
+			* 加载 META-INF/persistence.xml, 根据 persistence-unit 创建 EntityManagerFactory
 
 		static void generateSchema(String persistenceUnitName, Map map)
 		static PersistenceUtil getPersistenceUtil()

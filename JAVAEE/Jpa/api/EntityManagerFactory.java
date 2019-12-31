@@ -2,6 +2,7 @@
 EntityManagerFactory
 -----------------------
 	# 实体管理器的工厂类
+	# 它的实现应该是线程安全的, 一般来说, 一个application, 只会有一个 EntityManagerFactory
 	# 抽象方法
 		EntityManager createEntityManager();
 		EntityManager createEntityManager(Map map);

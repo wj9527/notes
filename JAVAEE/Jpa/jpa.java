@@ -86,8 +86,11 @@ jpa
 		6.释放资源
 	
 	# 代码执行步骤
+		// 加载 META-INF/persistence.xml, 根据 persistence-unit 创建 EntityManagerFactory
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("mysql");
+		// 获取到实体管理器
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		// 创建事务管理器
 		EntityTransaction entityTransaction = entityManager.getTransaction();
 		
 		// 开始事务
