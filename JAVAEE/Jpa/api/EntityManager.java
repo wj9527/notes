@@ -52,10 +52,15 @@ EntityManager
 		public Map<String, Object> getProperties();
 
 		public Query createQuery(String qlString);
-		public <T> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery);
+		public <T> TypedQuery<T> createQuery(String qlString, Class<T> resultClass);	
+			* 使用jpql语句, 创建query查询
+				
 		public Query createQuery(CriteriaUpdate updateQuery);
 		public Query createQuery(CriteriaDelete deleteQuery);
-		public <T> TypedQuery<T> createQuery(String qlString, Class<T> resultClass);
+		public <T> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery);
+		
+			
+
 
 
 		public Query createNamedQuery(String name);
