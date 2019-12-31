@@ -20,14 +20,15 @@ JPQL检索语法
 
 	
 	# LIKE
-		FROM User u WHERE u.name LIKE %:name%
+		FROM User u WHERE u.name LIKE :name
+			* 参数填充, 需要自己添加 % 符号
 	
 	# IN
 		FROM User u WHERE u.id in :ids
 			* ids是一个集合
 	
 	# COUNT
-		SELECT COUNT(1) FROM User AS u WHERE u.name LIKE %:#{#user.name}%
+		SELECT COUNT(1) FROM User
 	
 	# ORDER BY
 		FROM User u WHERE u.id = :id ORDER BY id DESC
