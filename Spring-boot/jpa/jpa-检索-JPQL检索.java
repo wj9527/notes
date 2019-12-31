@@ -130,7 +130,7 @@ SPEL
 ----------------
 JPQL检索注解
 ----------------
-	# Query
+	Query
 		String value() default "";
 			* 执行语句, 可以是CREUD, 可以是本地SQL, JPQL
 
@@ -150,7 +150,7 @@ JPQL检索注解
 		String countName() default "";
 
 	
-	# @Param
+	@Param
 		* 通过命名参数的绑定 , 可以忽略参数的位置
 			@Query(value = "select * from #{#entityName} where id > :id", nativeQuery = true)
 			Page<UserEntity> testSelect (@Param("id")Integer id, Pageable pageable);
@@ -158,7 +158,7 @@ JPQL检索注解
 		* 如果在JDK8中保留了参数名称, 可以省略该注解
 	
 	
-	# @Modifying
+	@Modifying
 		boolean flushAutomatically() default false;
 		boolean clearAutomatically() default false;
 
@@ -166,7 +166,7 @@ JPQL检索注解
 		* 标识在某个 repository 的方法上,表示当前的 @Query 是一个UPDATE 语句
 		* 该方法返回的 int 值标签受到影响的行数
 
-	# @NamedQuery
+	@NamedQuery
 		String name();
 		String query();
 		LockModeType lockMode() default NONE;
@@ -177,16 +177,16 @@ JPQL检索注解
 		* query	String类书的属性,用于HQL,例如 "FROM User WHERE name = :name"
 		* 在该 Entity 的接口中定义的 findByName 方法,就是通过 query 属性的HQL来进行检索的
 	
-	# @QueryHint
+	@QueryHint
 		 String name(); 
 		 String value();
 		
 
-	# @QueryHints
+	@QueryHints
 		QueryHint[] value() default {};
 		boolean forCounting() default true;
 	
-	# @Lock
+	@Lock
 		LockModeType value();
 
 		* 加锁模式

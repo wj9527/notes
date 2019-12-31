@@ -11,7 +11,7 @@ Query
 			* 如果结果有多条, 会抛出异常: javax.persistence.NonUniqueResultException
 
 		int executeUpdate();
-			* 执行修改, 返回受到影响的行数
+			* 执行修改/删除, 返回受到影响的行数
 		
 		Query setFirstResult(int startPosition);
 		int getFirstResult();
@@ -57,12 +57,14 @@ Query
 
 		Query setFlushMode(FlushModeType flushMode);
 		FlushModeType getFlushMode();
-
-		Query setLockMode(LockModeType lockMode);
-		LockModeType getLockMode();
 			* 刷新模式, 枚举
 				COMMIT
 				AUTO
+
+		Query setLockMode(LockModeType lockMode);
+		LockModeType getLockMode();
+			* 设置锁类型
+			
 
 		<T> T unwrap(Class<T> cls);
 	

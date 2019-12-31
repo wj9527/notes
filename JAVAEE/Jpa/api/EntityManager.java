@@ -58,8 +58,6 @@ EntityManager
 		public Query createQuery(CriteriaUpdate updateQuery);
 		public Query createQuery(CriteriaDelete deleteQuery);
 		public <T> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery);
-		
-			
 
 
 
@@ -69,6 +67,8 @@ EntityManager
 		public Query createNativeQuery(String sqlString);
 		public Query createNativeQuery(String sqlString, Class resultClass);
 		public Query createNativeQuery(String sqlString, String resultSetMapping);
+			* 创建本地SQL
+
 		public StoredProcedureQuery createNamedStoredProcedureQuery(String name);
 
 		public StoredProcedureQuery createStoredProcedureQuery(String procedureName);
