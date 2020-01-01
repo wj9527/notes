@@ -8,7 +8,11 @@ EntityManagerFactory
 		EntityManager createEntityManager(Map map);
 		EntityManager createEntityManager(SynchronizationType synchronizationType);
 		EntityManager createEntityManager(SynchronizationType synchronizationType, Map map);
+			* 获取EntityManager
+
 		CriteriaBuilder getCriteriaBuilder();
+			* 获取CriteriaBuilder
+
 		Metamodel getMetamodel();
 		boolean isOpen();
 		void close();
