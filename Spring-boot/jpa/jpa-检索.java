@@ -39,6 +39,7 @@ JPA父接口定义的检索方法		 |
     
 	
 	* 无非就是, 分页, Specification动态条件, Example条件, Sort 各种组合查询
+	* findOne 是立即加载, getOne 是延迟加载
 
 
 -----------------------------
