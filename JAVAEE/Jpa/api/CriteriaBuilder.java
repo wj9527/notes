@@ -5,14 +5,20 @@ CriteriaBuilder
 	# ³éÏó·½·¨
 		CriteriaQuery<Object> createQuery();
 		<T> CriteriaQuery<T> createQuery(Class<T> resultClass);
+
 		CriteriaQuery<Tuple> createTupleQuery();
+
 		<T> CriteriaUpdate<T> createCriteriaUpdate(Class<T> targetEntity);
 		<T> CriteriaDelete<T> createCriteriaDelete(Class<T> targetEntity);
+
 		<Y> CompoundSelection<Y> construct(Class<Y> resultClass, Selection<?>... selections);
 		CompoundSelection<Tuple> tuple(Selection<?>... selections);
+
 		CompoundSelection<Object[]> array(Selection<?>... selections);
+
 		Order asc(Expression<?> x);
 		Order desc(Expression<?> x);
+
 		<N extends Number> Expression<Double> avg(Expression<N> x);
 		<N extends Number> Expression<N> sum(Expression<N> x);
 		Expression<Long> sumAsLong(Expression<Integer> x);

@@ -9,6 +9,7 @@ Query
 		Object getSingleResult();
 			* 查询, 唯一结果集
 			* 如果结果有多条, 会抛出异常: javax.persistence.NonUniqueResultException
+			* 如果结果为null, 会抛出异常: javax.persistence.NoResultException
 
 		int executeUpdate();
 			* 执行修改/删除, 返回受到影响的行数

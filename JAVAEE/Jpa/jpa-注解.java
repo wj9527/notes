@@ -54,6 +54,14 @@ annotation
 		int precision() default 0;
 
 		int scale() default 0;
+	
+	@TemporalType
+		TemporalType value();
+			* 指定日期字段的日期类型
+			* 枚举值
+				DATE
+				TIME
+				TIMESTAMP
 
 	@Id
 	@GeneratedValue
@@ -64,9 +72,9 @@ annotation
 			GenerationType.IDENTITY		主键由数据库自动生成(主要是自动增长型）)
 			GenerationType.AUTO			主键由程序控制
 
-	@MappedSuperclass
-		* 标识在实体类的父类, 用于JPA注解的继承、
-
+	@Embeddable
+		
+	
 	@Transient
 		* 表示该字段不是数据表的映射字段
 
