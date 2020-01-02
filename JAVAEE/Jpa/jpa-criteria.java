@@ -54,11 +54,32 @@ criteriaQuery
 	# 检索单个字段
 		CriteriaQuery<String> criteriaQuery = criteriaBuilder.createQuery(String.class);
 		Root<User> root = criteriaQuery.from(User.class);
-		criteriaQuery.select(root.get(User_.name));
+		criteriaQuery.select(root.get(User_.name));  // 如果多次执行 select, 只有最后一个生效
 		criteriaQuery.where(criteriaBuilder.equal(root.get("id"), 1));
 		String result = entityManager.createQuery(criteriaQuery).getSingleResult();
 	
-	# 检索多个字段
+	# 检索多个字段, 结果封装为对象
+		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		Root<User> root = criteriaQuery.from(User.class);
+		criteriaQuery.multiselect(root.get("id"), root.get("name"));
+		criteriaQuery.where(criteriaBuilder.equal(root.get("id"), 1));
+		User user = entityManager.createQuery(criteriaQuery).getSingleResult();
+
+		select
+			user0_.id as col_0_0_,
+			user0_.name as col_1_0_ 
+		from
+			user user0_ 
+		where
+			user0_.id=1
 		
+		* 对象必须要有指定的构造函数(根据检索的属性定义)
+	
+	# 检索多个字段, 结果封装为 List<Object[]>
+		CriteriaQuery<Object> criteriaQuery = criteriaBuilder.createQuery();
+		Root<User> root = criteriaQuery.from(User.class);
+		criteriaQuery.multiselect(root.get("id"), root.get("name"));
+		criteriaQuery.where(criteriaBuilder.equal(root.get("id"), 1));
+		List<Object> results = entityManager.createQuery(criteriaQuery).getResultList();
 
 	# 子查询
