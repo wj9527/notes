@@ -1,11 +1,26 @@
 ------------------
-criteriaQuery
+criteria
 ------------------
 	# 核心的接口
+		Predicate
+		Root	
+			* 查询的根对象, 从根对象中获取到要查询的属性
+			* 通过 AbstractQuery <T> 抽象类的方法获取
+				<X> Root<X> from(Class<X> entityClass);
+				<X> Root<X> from(EntityType<X> entity);
+		
+		CriteriaBuilder
+			* 查询的构造器, 封装了很多的查询方式
+			* 从 EntityManager 的方法获取
+				CriteriaBuilder getCriteriaBuilder();
+
 		CriteriaQuery
-		Root
-	
-	
+			* 查询对象
+				从 CriteriaBuilder 的方法获取
+
+---------------------
+常用
+---------------------
 	# 检索所有
 		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 		List<User> users = entityManager.createQuery(criteriaQuery).getResultList();
@@ -83,3 +98,19 @@ criteriaQuery
 		List<Object> results = entityManager.createQuery(criteriaQuery).getResultList();
 
 	# 子查询
+
+	
+	
+---------------------
+Predicate
+---------------------
+---------------------
+root
+---------------------
+---------------------
+criteriaBuilder
+---------------------
+---------------------
+CriteriaQuery
+---------------------
+	

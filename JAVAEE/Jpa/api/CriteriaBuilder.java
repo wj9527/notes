@@ -25,14 +25,21 @@ CriteriaBuilder
 		Expression<Double> sumAsDouble(Expression<Float> x);
 		<N extends Number> Expression<N> max(Expression<N> x);
 		<N extends Number> Expression<N> min(Expression<N> x);
+
 		<X extends Comparable<? super X>> Expression<X> greatest(Expression<X> x);
+
 		<X extends Comparable<? super X>> Expression<X> least(Expression<X> x);
+
 		Expression<Long> count(Expression<?> x);
 		Expression<Long> countDistinct(Expression<?> x);
+			* count查询
+
 		Predicate exists(Subquery<?> subquery);
+
 		<Y> Expression<Y> all(Subquery<Y> subquery);
 		<Y> Expression<Y> some(Subquery<Y> subquery);
 		<Y> Expression<Y> any(Subquery<Y> subquery);
+
 		Predicate and(Expression<Boolean> x, Expression<Boolean> y);
 		Predicate and(Predicate... restrictions);
 		Predicate or(Expression<Boolean> x, Expression<Boolean> y);
@@ -40,14 +47,21 @@ CriteriaBuilder
 		Predicate not(Expression<Boolean> restriction);
 		Predicate conjunction();
 		Predicate disjunction();
+
 		Predicate isTrue(Expression<Boolean> x);
 		Predicate isFalse(Expression<Boolean> x);
+			* boolean 匹配
+
 		Predicate isNull(Expression<?> x);
 		Predicate isNotNull(Expression<?> x);
+			* null 匹配
+
 		Predicate equal(Expression<?> x, Expression<?> y);
 		Predicate equal(Expression<?> x, Object y);
 		Predicate notEqual(Expression<?> x, Expression<?> y);
 		Predicate notEqual(Expression<?> x, Object y);
+			* 精准匹配
+
 		<Y extends Comparable<? super Y>> Predicate greaterThan(Expression<? extends Y> x, Expression<? extends Y> y);
 		<Y extends Comparable<? super Y>> Predicate greaterThan(Expression<? extends Y> x, Y y);
 		<Y extends Comparable<? super Y>> Predicate greaterThanOrEqualTo(Expression<? extends Y> x, Expression<? extends Y> y);
@@ -56,8 +70,10 @@ CriteriaBuilder
 		<Y extends Comparable<? super Y>> Predicate lessThan(Expression<? extends Y> x, Y y);
 		<Y extends Comparable<? super Y>> Predicate lessThanOrEqualTo(Expression<? extends Y> x, Expression<? extends Y> y);
 		<Y extends Comparable<? super Y>> Predicate lessThanOrEqualTo(Expression<? extends Y> x, Y y);
+
 		<Y extends Comparable<? super Y>> Predicate between(Expression<? extends Y> v, Expression<? extends Y> x, Expression<? extends Y> y);
 		<Y extends Comparable<? super Y>> Predicate between(Expression<? extends Y> v, Y x, Y y);
+
 		Predicate gt(Expression<? extends Number> x, Expression<? extends Number> y);
 		Predicate gt(Expression<? extends Number> x, Number y);
 		Predicate ge(Expression<? extends Number> x, Expression<? extends Number> y);
@@ -66,6 +82,8 @@ CriteriaBuilder
 		Predicate lt(Expression<? extends Number> x, Number y);
 		Predicate le(Expression<? extends Number> x, Expression<? extends Number> y);
 		Predicate le(Expression<? extends Number> x, Number y);
+			* 数值关系计算
+
 		<N extends Number> Expression<N> neg(Expression<N> x);
 		<N extends Number> Expression<N> abs(Expression<N> x);
 		<N extends Number> Expression<N> sum(Expression<? extends N> x, Expression<? extends N> y);
@@ -77,6 +95,7 @@ CriteriaBuilder
 		<N extends Number> Expression<N> diff(Expression<? extends N> x, Expression<? extends N> y);
 		<N extends Number> Expression<N> diff(Expression<? extends N> x, N y);
 		<N extends Number> Expression<N> diff(N x, Expression<? extends N> y);
+
 		Expression<Number> quot(Expression<? extends Number> x, Expression<? extends Number> y);
 		Expression<Number> quot(Expression<? extends Number> x, Number y);
 		Expression<Number> quot(Number x, Expression<? extends Number> y);
@@ -84,6 +103,7 @@ CriteriaBuilder
 		Expression<Integer> mod(Expression<Integer> x, Integer y);
 		Expression<Integer> mod(Integer x, Expression<Integer> y);
 		Expression<Double> sqrt(Expression<? extends Number> x);
+
 		Expression<Long> toLong(Expression<? extends Number> number);
 		Expression<Integer> toInteger(Expression<? extends Number> number);
 		Expression<Float> toFloat(Expression<? extends Number> number);
@@ -105,6 +125,7 @@ CriteriaBuilder
 		<E, C extends Collection<E>> Predicate isNotMember(E elem, Expression<C> collection);
 		<V, M extends Map<?, V>> Expression<Collection<V>> values(M map);
 		<K, M extends Map<K, ?>> Expression<Set<K>> keys(M map);
+
 		Predicate like(Expression<String> x, Expression<String> pattern);
 		Predicate like(Expression<String> x, String pattern);
 		Predicate like(Expression<String> x, Expression<String> pattern, Expression<Character> escapeChar);
@@ -117,6 +138,8 @@ CriteriaBuilder
 		Predicate notLike(Expression<String> x, Expression<String> pattern, char escapeChar);
 		Predicate notLike(Expression<String> x, String pattern, Expression<Character> escapeChar);
 		Predicate notLike(Expression<String> x, String pattern, char escapeChar);
+			* LIKE 关系, 需要自己对值添加 %% 符号
+				
 		Expression<String> concat(Expression<String> x, Expression<String> y);
 		Expression<String> concat(Expression<String> x, String y);
 		Expression<String> concat(String x, Expression<String> y);
@@ -140,7 +163,10 @@ CriteriaBuilder
 		Expression<java.sql.Date> currentDate();
 		Expression<java.sql.Timestamp> currentTimestamp();
 		Expression<java.sql.Time> currentTime();
+
 		<T> In<T> in(Expression<? extends T> expression);
+			* IN 匹配
+
 		<Y> Expression<Y> coalesce(Expression<? extends Y> x, Expression<? extends Y> y);
 		<Y> Expression<Y> coalesce(Expression<? extends Y> x, Y y);
 		<Y> Expression<Y> nullif(Expression<Y> x, Expression<?> y);

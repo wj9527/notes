@@ -8,8 +8,15 @@ CriteriaQuery
 		CriteriaQuery<T> select(Selection<? extends T> selection);
 		CriteriaQuery<T> multiselect(Selection<?>... selections);
 		CriteriaQuery<T> multiselect(List<Selection<?>> selectionList);
+			* 设置要检索的对象, 或者是部分字段
+				criteriaQuery.select(criteriaQuery.from(User.class));
+				criteriaQuery.select(criteriaQuery.from(User.class).get("name"));
+			
+
 		CriteriaQuery<T> where(Expression<Boolean> restriction);
 		CriteriaQuery<T> where(Predicate... restrictions);
+			* 条件
+
 		CriteriaQuery<T> groupBy(Expression<?>... grouping);
 		CriteriaQuery<T> groupBy(List<Expression<?>> grouping);
 		CriteriaQuery<T> having(Expression<Boolean> restriction);
@@ -22,6 +29,7 @@ CriteriaQuery
 		
 		<X> Root<X> from(Class<X> entityClass);
 		<X> Root<X> from(EntityType<X> entity);
+
 		AbstractQuery<T> where(Expression<Boolean> restriction);
 		AbstractQuery<T> where(Predicate... restrictions);
 		AbstractQuery<T> groupBy(Expression<?>... grouping);
