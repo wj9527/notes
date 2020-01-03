@@ -96,6 +96,12 @@ criteria
 		criteriaQuery.multiselect(root.get("id"), root.get("name"));
 		criteriaQuery.where(criteriaBuilder.equal(root.get("id"), 1));
 		List<Object> results = entityManager.createQuery(criteriaQuery).getResultList();
+	
+	# IN 查询
+		In<Integer> in = criteriaBuilder.in(root.get("id"));
+		in.value(1);		// 添加多个字段
+		in.value(2);		// 添加多个in
+		
 
 	# 子查询
 

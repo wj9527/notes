@@ -79,3 +79,9 @@ JPQL检索语法
 			* 通过 默认值 AS 属性 定义
 
 	
+	# JOIN 查询
+		SELECT u.name AS userName, a.name AS addressName FROM User AS u INNER JOIN Address AS a ON u.id = a.userId
+		SELECT u.name AS userName, a.name AS addressName FROM User AS u LEFT JOIN Address AS a ON u.id = a.userId
+		SELECT u.name AS userName, a.name AS addressName FROM User AS u RIGHT JOIN Address AS a ON u.id = a.userId
+
+		* 一样的 inner, left, right
