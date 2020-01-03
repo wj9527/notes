@@ -2,7 +2,9 @@
 CriteriaQuery
 --------------------------
 	# Criteria 查询接口
-	# CriteriaQuery<T> extends AbstractQuery<T>
+		CommonAbstractCriteria
+			|-AbstractQuery<T>
+				|-CriteriaQuery<T>
 
 	# 抽象方法
 		CriteriaQuery<T> select(Selection<? extends T> selection);
