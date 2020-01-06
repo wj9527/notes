@@ -39,8 +39,10 @@ annotation
 			* 是否可以为null
 
 		boolean insertable() default true;
+			* 执行插入的时候, 是否插入该字段
 
 		boolean updatable() default true;
+			* 执行更新的时候, 是否更新该字段
 
 		String columnDefinition() default "";
 			* 设置列类型以及约束以及注释, 例如: 
@@ -50,6 +52,7 @@ annotation
 		String table() default "";
 
 		int length() default 255;
+			* 字段约束的长度
 
 		int precision() default 0;
 
@@ -64,6 +67,8 @@ annotation
 				TIMESTAMP
 
 	@Id
+		* 标识id字段, 每个实体类都必须至少有一个 @id 字段
+	
 	@GeneratedValue
 		* 标识ID字段,并且指定其生成策略
 		* strategy ,指定生成策略
@@ -72,11 +77,36 @@ annotation
 			GenerationType.IDENTITY		主键由数据库自动生成(主要是自动增长型）)
 			GenerationType.AUTO			主键由程序控制
 
-	@Embeddable
-		
+	@Enumerated
+		EnumType value() default ORDINAL;
+			* 枚举
+				ORDINAL		使用 ordinal 映射为 int
+				STRING		使用 枚举的 name() 映射为 varchar
+
+		* 定义枚举字段和数据库的映射方式
 	
+	@Lob
+		* 映射字段为数据库所支持的大对象数据类型
+		* 它支持如下的类型
+			Clob		长字符串类型
+			Blob		长字节类型
+
+		* Clob 和 Blob 占用内存都比较大, 可以考虑配合: @Basic(fetch = FetchType.LAZY) 延迟加载
+		
+
+
+	@Basic
+		* 标识字段, 是映射到数据库的(不标识默认就是)
+
+		FetchType fetch() default EAGER;
+			* 该字段的抓取策略
+				LAZY		延迟加载
+				EAGER		立即加载
+		boolean optional() default true;
+			* 该字段是否可以为null
+
 	@Transient
-		* 表示该字段不是数据表的映射字段
+		* 表示该字段不是数据表的映射字段, 在映射的时候会忽略它
 
 	@Version
 		* 标识版本号字段
@@ -112,6 +142,8 @@ annotation
 		QueryHint[] hints() default {};
 		Class resultClass() default void.class; 
 		String resultSetMapping() default "";
+			* 使用指定的 @@SqlResultSetMapping 封装结果集
+			* 指定@SqlResultSetMapping 的name属性
 
 		* 根据 @NamedQuery 一样, 只是使用的是本地SQL
 	
@@ -120,26 +152,8 @@ annotation
 		 String value();
 
 		 * query hint 检索
+	
 
----------------------
-生命周期相关的注解
----------------------
-	@PrePersist
-	@PostPersist
 
-		* 在save前后后调用
-	
-	@PreUpdate
-	@PostUpdate 
-		* 在修改前后调用
-	
-	@PreRemove 
-	@PostRemove 
-		* 在删除前后调用
 
-	@EntityListeners
-		* 指定外部周期的实现类
-	
-	@PostLoad
-		* entity被映射(find, load....)之后调用
-	
+
