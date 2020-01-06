@@ -80,7 +80,46 @@ annotation
 
 	@Version
 		* 标识版本号字段
+	
+	@NamedStoredProcedureQuery
+		String name();
+			* JPA中定义的存储过程名称
+		String procedureName();
+			* 数据库里面的存储过程的名称
+		StoredProcedureParameter[] parameters() default {};
+			* 存储过程的IN/OUT参数
+		Class[] resultClasses() default {}; 
+		String[] resultSetMappings() default {};
+		QueryHint[] hints() default {};
 
+		* 存储过程的定义, 它必须定义在 Entity 类上
+
+	@NamedQuery
+		String name();
+			* query的名称:实体.方法
+		String query();
+			* 具体的JPQL语句
+		LockModeType lockMode() default NONE;
+		QueryHint[] hints() default {};
+
+		* 预定义查询, 定义在实体类上
+		* 可以通过	@NamedQueries 注解同时定义多个
+			NamedQuery [] value ();
+
+	@NamedNativeQuery
+		String name();
+		String query();
+		QueryHint[] hints() default {};
+		Class resultClass() default void.class; 
+		String resultSetMapping() default "";
+
+		* 根据 @NamedQuery 一样, 只是使用的是本地SQL
+	
+	@QueryHint
+		 String name(); 
+		 String value();
+
+		 * query hint 检索
 
 ---------------------
 生命周期相关的注解

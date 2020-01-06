@@ -96,6 +96,12 @@ JPQL检索语法
 			* 通过 默认值 AS 属性 定义
 
 ----------------
+JPQL检索函数
+----------------
+	LENGTH()
+		* 计算长度: @Query("SELECT LENGTH(u.name) AS length FROM User AS u WHERE id = :id")
+
+----------------
 JPQL锁
 ----------------
 	# 在执行方法添加注解: @Lock
@@ -119,15 +125,18 @@ SPEL
 		Page<UserEntity> testSelect (@Param("user")UserEntity userEntity, Pageable pageable);
 	
 	# 支持使用SPEL表达式读取某些特殊的变量
-		@Entity
-		class User
-
-		@Query("select u from #{#entityName} u where u.lastname = ?1")
-		List<User> findByLastname(String lastname);
-
-		#{#entityName}	
+		#{#entityName}
+			
 			* 读取到entity实体的名称, 默认是实体名称的小写
 			* 也可以在 @Entity(name = "user")中, 通过name属性设置
+
+			@Entity
+			class User
+
+			@Query("select u from #{#entityName} u where u.lastname = ?1")
+			List<User> findByLastname(String lastname);
+
+				
 
 ----------------
 JPQL检索注解
@@ -145,11 +154,20 @@ JPQL检索注解
 				Page<User> findByLastname(String lastname, Pageable pageable);
 
 		String countProjection() default "";
+			* 根据哪个字段计算count
+
 		boolean nativeQuery() default false;
 			* 是否是本地SQL查询
+			* 本地查询, 不支持使用动态的排序: Sort api
+			* 本地查询, 不直接支持 Pageable 自动检索总记录数, 需要自己通过 countQuery, 属性设置统计查询
 
 		String name() default "";
+			* 指定当前query的名称, 必须唯一
+			* 默认: ${domainClass}.${queryMethodName}
+
 		String countName() default "";
+			* 指定一个 countQuery 的名称, 必须唯一
+			* 默认: ${domainClass}.${queryMethodName}.count
 
 	
 	@Param
@@ -163,6 +181,8 @@ JPQL检索注解
 	@Modifying
 		boolean flushAutomatically() default false;
 		boolean clearAutomatically() default false;
+			* 如果配置了一级缓存, 并且该属性=true, 更新操作, 就会立即刷新一级缓存
+			* 如果设置为 false, 可能会导致一个问题, 在同一个接口中, 更新一个对象, 再次查询, 可能读取到的是缓存中没刷新的对象
 
 		* 和 @Query 组合使用
 		* 标识在某个 repository 的方法上,表示当前的 @Query 是一个UPDATE 语句
@@ -178,15 +198,17 @@ JPQL检索注解
 		* name	Sring类型的属性,用于指定检索名,例如 "User.findByName"
 		* query	String类书的属性,用于HQL,例如 "FROM User WHERE name = :name"
 		* 在该 Entity 的接口中定义的 findByName 方法,就是通过 query 属性的HQL来进行检索的
-	
-	@QueryHint
-		 String name(); 
-		 String value();
-		
 
 	@QueryHints
 		QueryHint[] value() default {};
 		boolean forCounting() default true;
+		
+		* QueryHint 就俩属性
+			String name(); 
+			String value();
+
+		* 很多数据库都支持 query hints 语法(逐渐被淘汰)
+		* 可以配置的选项都在: QueryHints 类中定义
 	
 	@Lock
 		LockModeType value();
@@ -201,6 +223,18 @@ JPQL检索注解
 			PESSIMISTIC_WRITE,					FOR UPDATE
 			PESSIMISTIC_FORCE_INCREMENT,
 			NONE
+
+	@Procedure
+		String value() default "";
+		String procedureName() default "";
+			* 指定数据库存储过程的名称
+		String name() default "";
+			* 指定 @NamedStoredProcedureQuery 中的 String name(); 的存储过程名称
+		String outputParameterName() default "";
+			* 输出参数的名字
+
+
+		* 调用存储过程, procedureName 和 name 可以只存在一个
 
 ----------------
 奇奇怪怪
