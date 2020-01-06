@@ -65,7 +65,7 @@ JPQL检索语法
 		SELECT new map(u.name AS name, u.id AS id) FROM User AS u WHERE id = :id
 			* 需要对检索的列, 使用AS起别名, 作为key的名称
 			* 多行多列返回的结果类型是: List<Map<String, Object>> (任何情况都适用)
-			* 单行单列返回的结果类型是: Map<String, Object>
+			* 单行多列返回的结果类型是: Map<String, Object>
 
 			* 如果不设置别名, 单行单列的情况下, key = null, 多行的情况下, key = 序号(从0开始)
 				{
