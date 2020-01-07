@@ -14,6 +14,7 @@
 			private String name;
 
 			@OneToMany(targetEntity = Address.class)
+			// 关联对方表的字段, 当前表的字段
 			@JoinColumn(name = "user_id", referencedColumnName = "id")
 			private Set<Address> addresses = new HashSet<>();
 		}
@@ -33,6 +34,7 @@
 			private String name;
 			
 			@ManyToOne(targetEntity = User.class)
+			// 当前表的字段 , 关联对方表的字段
 			@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 			private User user;
 		}
@@ -82,10 +84,10 @@
 		CascadeType[] cascade() default {};
 		FetchType fetch() default EAGER;
 		boolean optional() default true;
+			* 是否可以为null
 		
 		* 多对一关系, 属性同上
 
-	
 
 -----------------------------
 一对多的保存
