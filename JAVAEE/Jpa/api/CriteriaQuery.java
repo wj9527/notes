@@ -48,3 +48,5 @@ CriteriaQuery
 
 		<U> Subquery<U> subquery(Class<U> type);
 		Predicate getRestriction();
+			* 返回where对应的谓词, 如果没, 就返回null
+		

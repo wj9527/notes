@@ -10,13 +10,16 @@ criteria
 				<X> Root<X> from(EntityType<X> entity);
 		
 		CriteriaBuilder
-			* 查询的构造器, 封装了很多的查询方式
+			* 查询的构造器, 封装了很多的查询方式, 条件
 			* 从 EntityManager 的方法获取
 				CriteriaBuilder getCriteriaBuilder();
 
 		CriteriaQuery
-			* 查询对象
+			* 顶层查询对象
 				从 CriteriaBuilder 的方法获取
+			
+			* 包含了 select, from, where, group by, order by 等操作
+
 
 ---------------------
 常用
@@ -106,17 +109,4 @@ criteria
 	# 子查询
 
 	
-	
----------------------
-Predicate
----------------------
----------------------
-root
----------------------
----------------------
-criteriaBuilder
----------------------
----------------------
-CriteriaQuery
----------------------
 	
