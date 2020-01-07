@@ -3,7 +3,7 @@
 ---------------------
 	@JoinColumn
 		String name() default "";
-			* 目标表的字段, 必填
+			* 外键列的名称
 		String referencedColumnName() default "";
 			* 当前实体的字段, 非必填, 默认当表的id
 		boolean unique() default false;
@@ -61,16 +61,6 @@
 		
 		* 一对一的映射关系, 可以双向关联, 也可以只配置一方
 
-
-	@OneToMany
-	@ManyToOne
+	
 	@ManyToMany
 	@OrderBy
-
-
----------------------
-一对一映射
----------------------
-	class Us
-	{
-	}
