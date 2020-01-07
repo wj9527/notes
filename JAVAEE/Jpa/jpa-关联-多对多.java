@@ -103,5 +103,17 @@
 -----------------------------
 多对多的删除
 -----------------------------
-		
+	# 删除记录的时候, 肯定会去删除中间表的记录
+	# 是否要删除另一方的记录, 需要看删除方是否配置了级联删除: cascade = CascadeType.REMOVE
 
+		@ManyToMany(targetEntity = Role.class, cascade = CascadeType.REMOVE)
+		@JoinTable(name = "user_role", joinColumns = {
+			@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+		}, inverseJoinColumns = {
+			@JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+		})
+		private Set<Role> roles = new HashSet<>();
+
+		this.userRepository.deleteById(6);
+	
+		
