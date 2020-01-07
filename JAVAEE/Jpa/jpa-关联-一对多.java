@@ -39,11 +39,31 @@
 			private User user;
 		}
 	
-	# 单向的配置
-		* 可以仅配置一对多, 或者仅配置多对一
-		* 那么另一方需要手动的声明关联 @Column 字段
+	# 单向的配置1
+		// 用户
+		@OneToMany(targetEntity = Address.class, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+		@JoinColumn(name = "user_id", referencedColumnName = "id")
+		private Set<Address> addresses = new HashSet<>();
+
+
+		// 地址
+		@Column(name = "user_id", columnDefinition = "INT(11) unsigned COMMENT '用户id'", unique = false, nullable = false)
+		private Integer userId;
+
+		* 此时, 地址表中, 有设置 Foreign Key 
+	
+	# 单向的配置2
 		
 
+		// 仅仅在地址配置映射关系
+		@ManyToOne(targetEntity = User.class)
+		@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+		private User user;
+
+
+		* 此时, 地址表中, 有设置 Foreign Key 
+			
+		
 -----------------------------
 一对多的关系注解
 -----------------------------

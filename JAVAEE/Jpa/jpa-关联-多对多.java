@@ -59,6 +59,21 @@
 		  CONSTRAINT `FK859n2jvi8ivhui0rl0esws6o` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
 		  CONSTRAINT `FKa68196081fvovjhkek5m97n3y` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+	
+	# 可以只单向的配置一方
+		// 用户不配置
+
+		// 角色配置
+		@ManyToMany(targetEntity = User.class, cascade = CascadeType.PERSIST)
+		@JoinTable(name = "user_role", joinColumns = {
+			@JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+		}, inverseJoinColumns = {
+			@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+		})
+		private Set<User> users = new HashSet<>();
+
+		
+		* 此时创建的表, 还是会创建FOREIGN KEY外键
 
 -----------------------------
 多对多的关系注解

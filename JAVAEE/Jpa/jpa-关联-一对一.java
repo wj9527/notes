@@ -2,10 +2,72 @@
 一对一的关系
 -----------------------------
 	# 用户
+		@Entity
+		@Table(name = "user")
+		public class User implements Serializable {
+			
+			private static final long serialVersionUID = 8175166175439387541L;
+			
+			@Id
+			@Column(name = "id", columnDefinition = "INT(11) UNSIGNED COMMENT '用户id'")
+			@GeneratedValue(strategy = GenerationType.IDENTITY)
+			private Integer id;
+			
+			@Column(columnDefinition = "varchar(20) COMMENT '昵称'")
+			private String name;
+			
+			@OneToOne(targetEntity = UserSeting.class)
+			// 当前对象的关联字段, 对方对象的字段
+			@JoinColumn(name = "id", columnDefinition = "user_id", unique = true, nullable = false)
+			private UserSeting userSeting;
+		
+		}
 
-	# 角色
+	# 用户设置
+		@Entity
+		@Table(name = "user_seting")
+		public class UserSeting implements Serializable {
+			private static final long serialVersionUID = -1007318207008996614L;
+			@Id
+			@Column(name = "id", columnDefinition = "INT(11) unsigned COMMENT '设置id'")
+			@GeneratedValue(strategy = GenerationType.IDENTITY)
+			private Integer id;
+			
+			@Column(columnDefinition = "TINYINT(1) unsigned COMMENT '是否接受通知'")
+			private Boolean notify;
+			
+			@OneToOne(targetEntity = User.class)
+			// 当前对象的关联字段, 对方对象的字段
+			@JoinColumn(name = "user_id", referencedColumnName = "id", unique = true, nullable = false)
+			private User user;
+		}
+	
+	# 关系只绑定一方1
+		// 用户
+		@OneToOne(targetEntity = UserSeting.class, cascade = CascadeType.PERSIST)
+		@JoinColumn(name = "id", columnDefinition = "user_id", unique = true, nullable = false)
+		private UserSeting userSeting;
+		
+
+		// 用户设置
+		@Column(columnDefinition = "INT(11) unsigned COMMENT '用户id'", unique = true, nullable = false)
+		private Integer userId;
+		
+		* 此时, 用户设置表中, 没有设置 Foreign Key 
+	
+	# 关系只绑定一方2
+		// 用户
+
+		// 用户设置
+		@OneToOne(targetEntity = User.class)
+		@JoinColumn(name = "user_id", referencedColumnName = "id", unique = true, nullable = false)
+		private User user;
+
+		* 此时, 用户设置表中, 有设置 Foreign Key 
 
 
+
+	
 -----------------------------
 一对一的关系注解
 -----------------------------
@@ -45,6 +107,45 @@
 -----------------------------
 一对一的保存
 -----------------------------
+	# 分别保存
+		* 先保存其中一个, 再保存另外一个
+	
+		// 先存储用户
+		User user = new User();
+		user.setName("KevinBlandy");
+		this.userRepository.save(user);
+		
+		// 再存储设置
+		UserSeting userSeting = new UserSeting();
+		userSeting.setNotify(Boolean.FALSE);
+		userSeting.setUser(user);
+		
+		this.userSetingRepository.save(userSeting);
+		
+		* 两个insert, 先insert用户, 再insert设置
+
+	# 级联保存
+		* 执行保存的一方需要设置了级联保存: cascade = CascadeType.PERSIST 
+			@OneToOne(targetEntity = UserSeting.class, cascade = CascadeType.PERSIST)
+			@JoinColumn(name = "id", columnDefinition = "user_id", unique = true, nullable = false)
+
+		// 创建用户
+		User user = new User();
+		user.setName("KevinBlandy");
+		
+		// 创建设置
+		UserSeting userSeting = new UserSeting();
+		userSeting.setNotify(Boolean.FALSE);
+		
+		
+		// 设置关系
+		userSeting.setUser(user);
+		user.setUserSeting(userSeting);
+		
+		this.userRepository.save(user);
+
+		* 两个insert, 先insert用户, 再insert设置
+	
 
 -----------------------------
 一对一的删除
