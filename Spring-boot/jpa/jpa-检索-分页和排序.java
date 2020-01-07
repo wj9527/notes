@@ -1,4 +1,44 @@
 -----------------------------
+排序						 |
+-----------------------------
+	# 类库
+		Sort
+			|-JpaSort
+		Sort.Order
+		Sort.Direction
+
+		* 一个Sort对象包含N多个 Order 对象
+	
+	# Sort.Order
+		Order(@Nullable Direction direction, String property)
+		Order(@Nullable Direction direction, String property, NullHandling nullHandlingHint)
+		
+		direction
+			* 排序策略,枚举
+				ASC
+				DESC
+		property
+			* 排序字段名称
+		nullHandlingHint	
+			* 对于空值的排序处理,枚举
+				NATIVE				让DB决定
+				NULLS_FIRST			排在最前面
+				NULLS_LAST			排在最后面
+	
+	# demo
+		// 根据name升序排序
+		Sort nameAes = Sort.by(new Sort.Order(Sort.Direction.ASC,"name"));
+
+		// 根据age降序,createDate升序 排序
+        Sort ageDesccreateDateAes = Sort.by(Sort.Order.desc("age"),Sort.Order.asc("createDate"));
+
+		// 根据gender排序,如果gender字段是空的,就排在记录的最前面
+        Sort genderAes = Sort.by(new Sort.Order(Sort.Direction.ASC,"gender",Sort.NullHandling.NULLS_FIRST));
+
+		// 不排序
+		Sort unsorted = Sort.unsorted();
+
+-----------------------------
 分页						 |
 -----------------------------
 	# 类库(接口)
@@ -95,5 +135,4 @@
 				"first": false,
 				"empty": true
 			}
-
 

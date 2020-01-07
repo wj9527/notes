@@ -71,3 +71,44 @@
 		
 	@OrderBy
 		String value() default "";
+			
+		* 一般和 @OneToMany 一起使用
+			@OneToMany
+			@OrderBy(value = "role_name DESC")
+		
+
+	
+	@NamedEntityGraph
+		String name() default "";
+		NamedAttributeNode[] attributeNodes() default {};	
+
+			@NamedAttributeNode
+				|-String value();	
+					* 关联对象的属性名称
+				|-String subgraph() default "";
+				|-String keySubgraph() default "";
+
+			* 指定要join检索的属性
+
+		boolean includeAllAttributes() default false;
+
+		NamedSubgraph[] subgraphs() default {};
+			@NamedSubgraph
+				|-String name();
+				|-Class type() default void.class;
+				|-NamedAttributeNode[] attributeNodes();
+		
+		NamedSubgraph[] subclassSubgraphs() default {};
+			@NamedSubgraph
+					|-String name();
+					|-Class type() default void.class;
+					|-NamedAttributeNode[] attributeNodes();
+		
+
+		* 标识在实体类上
+		* 在关联检索的时候, FetchType怎么配置LAZY或者EAGER。SQL真正执行的时候是由一条主表查询和N条子表查询组成的
+		* 这种查询效率一般比较低下, 比如子对象有N个就会执行N+1条SQL
+
+		* 可以通过 @NamedEntityGraphs 配置多个
+			NamedEntityGraph[] value();
+		

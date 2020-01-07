@@ -38,3 +38,4 @@ JPAµÄ×¢½â			|
 
 		boolean flushAutomatically() default false;
 		boolean clearAutomatically() default false;
+	
