@@ -27,15 +27,16 @@
 		* 字段类型是什么, 结果集就是什么
 
 		
-		// 多个字段
+		// 多个字段封装为 Tuple
 		List<Tuple> tuples = queryFactory.select(QUser.user.name, QUser.user.id)
 				.from(QUser.user)
 				.fetch();
 		
-
-		* 结果集封装为 Tulple
-		* 结果集还可以封装为自定义的数据类型, 通过: Projections
-
+		// 多个字段封装为实体
+		List<User> users = queryFactory.select(Projections.bean(QUser.user, QUser.user.name, QUser.user.id))
+				.from(QUser.user)
+				.fetch();
+		
 
 --------------------
 分页
