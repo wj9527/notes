@@ -1,5 +1,5 @@
 --------------------
-基本的条件			|
+基本的检索			|
 --------------------
 	# 根据单个条件检索
 		User user = queryFactory.selectFrom(QUser.user).where(QUser.user.id.eq(1)).fetchFirst();
@@ -18,6 +18,23 @@
 
 		* 默认 where 中的多个参数关系都为 and
 	
+	# 检索部分字段
+		// 单个字段
+		List<String> names = queryFactory.select(QUser.user.name)
+				.from(QUser.user)
+				.fetch();
+	
+		* 字段类型是什么, 结果集就是什么
+
+		
+		// 多个字段
+		List<Tuple> tuples = queryFactory.select(QUser.user.name, QUser.user.id)
+				.from(QUser.user)
+				.fetch();
+		
+
+		* 结果集封装为 Tulple
+		* 结果集还可以封装为自定义的数据类型, 通过: Projections
 
 
 --------------------
