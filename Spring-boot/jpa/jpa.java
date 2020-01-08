@@ -30,6 +30,7 @@ jpa					 |
 
 
 			@EntityScan(basePackages = {"io.springboot.jpa.dto"})
+				* 指定 Entity 实体类所在的包
 
 		4,Entit添加注解
 			@Entity
