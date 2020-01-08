@@ -12,6 +12,7 @@ JPAExpressions
 		<A extends Comparable<? super A>> ComparableExpression<A> avg(CollectionExpression<?,A> col)
 		<A extends Comparable<? super A>> ComparableExpression<A> max(CollectionExpression<?,A> left)
 		<A extends Comparable<? super A>> ComparableExpression<A> min(CollectionExpression<?,A> left)
+
 		StringExpression type(EntityPath<?> path)
 	
 

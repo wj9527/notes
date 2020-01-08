@@ -9,12 +9,23 @@ Repository			  |
 					|-JpaRepository  // 继承分页,条件,crud的接口
 						|-JpaRepositoryImplementation (实现了 JpaSpecificationExecutor 接口) // 接口
 							|-SimpleJpaRepository // 集大成于一身，它是一个实现类
+			
+		QuerydslPredicateExecutor			// querydls的接口
+			|-QuerydslJpaPredicateExecutor	// querydls的接口实现
+			|-QuerydslKeyValueRepository
 
 		JpaSpecificationExecutor // Specification动态查询接口
 	
 	# SimpleJpaRepository
 		* 它其实就是 Repository 接口, 动态代理的类
 		* 它是通过操作 EntityManager 来完成对数据库的操作
+	
+	# JpaSpecificationExecutor
+		* 自成一排的Specification检索接口
+	
+	# QuerydslJpaPredicateExecutor
+		* querydls的接口实现
+	
 
 ----------------------
 CrudRepository		  |
