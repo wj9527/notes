@@ -4,12 +4,14 @@ respository抽象
 	// 抽象一个基础接口
 	import org.springframework.data.jpa.repository.JpaRepository;
 	import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+	import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 	import org.springframework.data.repository.NoRepositoryBean;
 
 	@NoRepositoryBean
-	public interface BaseRepository <T> extends JpaRepository<T, Integer>, JpaSpecificationExecutor <T> {
+	public interface BaseRepository <T> extends JpaRepository<T, Integer>, JpaSpecificationExecutor <T>, QuerydslPredicateExecutor<T> {
 
 	}
+
 
 -----------------------
 Service抽象
@@ -17,8 +19,9 @@ Service抽象
 	// 抽象一个  BaseService
 	import org.springframework.data.jpa.repository.JpaRepository;
 	import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+	import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-	public interface BaseService <T> extends JpaRepository<T, Integer>, JpaSpecificationExecutor <T> {
+	public interface BaseService <T> extends JpaRepository<T, Integer>, JpaSpecificationExecutor <T>, QuerydslPredicateExecutor<T> {
 
 	}
 
@@ -27,6 +30,8 @@ Service抽象
 	import java.util.List;
 	import java.util.Optional;
 
+	import com.querydsl.core.types.OrderSpecifier;
+	import com.querydsl.core.types.Predicate;
 	import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.data.domain.Example;
 	import org.springframework.data.domain.Page;
@@ -38,7 +43,7 @@ Service抽象
 	import io.springboot.jpa.repository.BaseRepository;
 
 
-	public class AbstractService <T> implements BaseService<T> {
+	public abstract class AbstractService <T> implements BaseService<T> {
 
 		@Autowired
 		protected BaseRepository<T> baseRepository;
@@ -214,5 +219,53 @@ Service抽象
 		@Transactional(readOnly = true, rollbackFor = Throwable.class)
 		public long count(Specification<T> spec) {
 			return this.baseRepository.count(spec);
+		}
+
+		@Override
+		@Transactional(readOnly = true, rollbackFor = Throwable.class)
+		public Optional<T> findOne(Predicate predicate) {
+			return this.baseRepository.findOne(predicate);
+		}
+
+		@Override
+		@Transactional(readOnly = true, rollbackFor = Throwable.class)
+		public Iterable<T> findAll(Predicate predicate) {
+			return this.baseRepository.findAll(predicate);
+		}
+
+		@Override
+		@Transactional(readOnly = true, rollbackFor = Throwable.class)
+		public Iterable<T> findAll(Predicate predicate, Sort sort) {
+			return this.baseRepository.findAll(predicate, sort);
+		}
+
+		@Override
+		@Transactional(readOnly = true, rollbackFor = Throwable.class)
+		public Iterable<T> findAll(Predicate predicate, OrderSpecifier<?>... orders) {
+			return this.baseRepository.findAll(predicate, orders);
+		}
+
+		@Override
+		@Transactional(readOnly = true, rollbackFor = Throwable.class)
+		public Iterable<T> findAll(OrderSpecifier<?>... orders) {
+			return this.baseRepository.findAll(orders);
+		}
+
+		@Override
+		@Transactional(readOnly = true, rollbackFor = Throwable.class)
+		public Page<T> findAll(Predicate predicate, Pageable pageable) {
+			return this.baseRepository.findAll(predicate, pageable);
+		}
+
+		@Override
+		@Transactional(readOnly = true, rollbackFor = Throwable.class)
+		public long count(Predicate predicate) {
+			return this.baseRepository.count(predicate);
+		}
+
+		@Override
+		@Transactional(readOnly = true, rollbackFor = Throwable.class)
+		public boolean exists(Predicate predicate) {
+			return this.baseRepository.exists(predicate);
 		}
 	}
