@@ -3,6 +3,7 @@ querydsl			|
 -------------------
 	# ÎÄµµ
 		http://www.querydsl.com/static/querydsl/latest/reference/html_single/
+		https://fududu.gitbooks.io/querydsl-zh_cn/Introduction.html
 	
 	# Maven
 		<dependency>

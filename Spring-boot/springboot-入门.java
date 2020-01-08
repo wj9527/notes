@@ -30,6 +30,9 @@ Spring-Boot 入门			|
 			<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 			<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 			<java.version>1.8</java.version>
+			
+			<!-- 打包的时候，跳过测试 -->
+			<skipTests>true</skipTests>
 		</properties>
 
 		<dependencies>
