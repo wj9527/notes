@@ -1,4 +1,18 @@
 ---------------------------
+通用的结果集
+---------------------------
+	# Tuple 返回值作为通用的结果集
+	
+	# 同时检索多个对象记录
+		List<Tuple> tuples = queryFactory.select(QUser.user, QAddress.address)
+			.innerJoin(QAddress.address).on(QUser.user.id.eq(QAddress.address.user.id))
+			.fetch();
+		
+		* 此时, Tuple 转换为数组的类型是[User, Address]
+	
+
+
+---------------------------
 复杂结果映射为自定义对象
 ---------------------------
 	# 通过构造函数封装为自定义的对象
@@ -41,3 +55,5 @@
 				.fetch();
 		
 		* 多个相同类型的列, 封装为数组
+	
+	

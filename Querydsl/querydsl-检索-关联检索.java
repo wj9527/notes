@@ -19,8 +19,30 @@
 			LEFT OUTER JOIN role role3_ ON roles2_.role_id = role3_.id
 		
 
-		* join的时候, 会自动添加关联关系, 去除笛卡尔积
+		* join的时候, 如果有关系, 会自动添加关联关系, 去除笛卡尔积
 		* 能自动的判断多对多关系, 自动的去关联中间表去检索
+
+
+		List<Tuple> tuples = queryFactory.select(QUser.user, QAddress.address)
+					.from(QUser.user)
+					.innerJoin(QAddress.address).on(QUser.user.id.eq(QAddress.address.user.id))
+					.fetch();
+		for (Tuple tuple : tuples){
+			json(tuple.toArray());
+		}
+		
+		// sql
+		SELECT
+			user0_.id AS id1_2_0_,
+			address1_.id AS id1_0_1_,
+			user0_.NAME AS name2_2_0_,
+			user0_.version AS version3_2_0_,
+			address1_.NAME AS name2_0_1_,
+			address1_.user_id AS user_id3_0_1_ 
+		FROM
+			USER user0_
+			INNER JOIN address address1_ ON ( user0_.id = address1_.user_id )
+
 
 	
 	# 多表关联检索, where 条件过滤
@@ -76,5 +98,7 @@
 		inner join
 			user_seting userseting1_  on user0_.id=userseting1_.id 	and (userseting1_.notify= ? and userseting1_.notify=?) 
 
-		* join的时候, 除了会自动添加关联关系, 去除笛卡尔积, 还会添加一个子条件过滤
+		* join的时候, 如果有关系, 除了会自动添加关联关系, 去除笛卡尔积, 还会添加一个子条件过滤
+	
+
 	
