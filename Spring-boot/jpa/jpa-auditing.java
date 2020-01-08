@@ -11,8 +11,8 @@ Auditing
 		@LastModifiedDate
 
 		@CreatedBy
-		@Column(name = "create_by", columnDefinition = "INT(11) UNSIGNED NOT NULL COMMENT '创建用户'")
-		private Integer createBy;
+		@Column(name = "created_by", columnDefinition = "INT(11) UNSIGNED NOT NULL COMMENT '创建用户'")
+		private Integer createdBy;
 		
 		@CreatedDate
 		@Column(name = "created_date", columnDefinition = "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'")
