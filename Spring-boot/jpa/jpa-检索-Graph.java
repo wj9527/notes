@@ -12,7 +12,9 @@ EntityGraph
 			FETCH	
 
 		String[] attributePaths() default {};
-		
+			* 定义临时实体提供的内容 attributePaths 将转换为, EntityGraph
+			* 无需显式添加 @NamedEntityGraph 到实体
+
 
 		* 配合 @NamedEntityGraph 完成join检索, 避免在关联关系中进行n+1次检索的问题
 		* @NamedEntityGraph 指定要join检索的字段, @@EntityGraph 指定检索方式, 延迟还是立即
