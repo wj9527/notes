@@ -18,6 +18,7 @@
 			* 列约束
 		String table() default "";
 		ForeignKey foreignKey() default @ForeignKey(PROVIDER_DEFAULT);
+			* 外键的配置, 
 
 		* 它要配合 @OneToOne,@OneToMany,@ManyToOne,@ManyToMany 使用, 不然没意义
 
@@ -112,3 +113,17 @@
 		* 可以通过 @NamedEntityGraphs 配置多个
 			NamedEntityGraph[] value();
 		
+	@ForeignKey
+		String name() default "";
+		ConstraintMode value() default CONSTRAINT;
+			CONSTRAINT
+			NO_CONSTRAINT
+			PROVIDER_DEFAULT
+		String foreignKeyDefinition() default "";
+		 
+		* 主外键的关系设置
+		* 如果需要屏蔽实体之间的主外键关系, 可以设置它的 ConstraintMode 值为 NO_CONSTRAINT
+			
+			@JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+
+			@JoinTable(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT), inverseForeignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
