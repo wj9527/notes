@@ -1,20 +1,10 @@
 ---------------------
-继承关系
+继承
 ---------------------
 	@MappedSuperclass
 		* 标识在实体类的父类, 用于JPA注解的继承
-		* 一般用于抽象类, 抽取出所有实体类公用的字段
+		* 一般用于抽象类, 抽取出所有实体类公用的字段, 子实体类继承它
 		* 使用该注解标识的类, 不能再用  @Entity 注解标识
-
-	@AttributeOverride
-		String name();
-		Column column();
-	
-	@AssociationOverride
-		String name();
-		JoinColumn[] joinColumns() default {};
-		ForeignKey foreignKey() default @ForeignKey(PROVIDER_DEFAULT);
-		JoinTable joinTable() default @JoinTable;
 
 ---------------------
 继承策略
@@ -28,3 +18,35 @@
 		
 	
 	* 一般用于指定 entity 与 entity 之间的继承关系
+
+---------------------
+@Embedded 引用继承
+---------------------
+	@Embedded
+		* 标识在实体的属性上
+		* 一般这个属性是一个公共抽取出来的对象, 表示要把这个对象的属性拆分开来合并到当前的对象
+			class Common{
+				Integer id;
+				String name;
+			}
+			class User {
+				@Embedded
+				Common common;
+			}
+
+			user table:
+				id int
+				name varchar
+
+---------------------
+继承覆写
+---------------------
+	@AttributeOverride
+		String name();
+		Column column();
+	
+	@AssociationOverride
+		String name();
+		JoinColumn[] joinColumns() default {};
+		ForeignKey foreignKey() default @ForeignKey(PROVIDER_DEFAULT);
+		JoinTable joinTable() default @JoinTable;
