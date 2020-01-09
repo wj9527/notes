@@ -18,7 +18,7 @@
 			
 			@OneToOne(targetEntity = UserSeting.class)
 			// 当前对象的关联字段, 对方对象的字段
-			@JoinColumn(name = "id", columnDefinition = "user_id", unique = true, nullable = false)
+			@JoinColumn(name = "id", referencedColumnName = "user_id", unique = true, nullable = false)
 			private UserSeting userSeting;
 		
 		}
