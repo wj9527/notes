@@ -54,4 +54,29 @@ NamedParameterJdbcTemplate
 		public int update(String sql, SqlParameterSource paramSource, KeyHolder generatedKeyHolder)
 		public int update(String sql, SqlParameterSource paramSource, KeyHolder generatedKeyHolder, @Nullable String[] keyColumnNames)
 
+--------------------------------
+插入获取自增id
+--------------------------------
 
+GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+		
+String sql = "INSERT INTO `user`(`gender`, `name`, `version`) VALUES(:gender, :name, :version);";
+
+Map<String, Object> param = new HashMap<>();
+param.put("gender", Gender.BOY.ordinal());
+param.put("name", "Rocco");
+param.put("version", 0);
+
+int retVal = this.namedParameterJdbcTemplate.update(sql, new SqlParameterSource() {
+	@Override
+	public boolean hasValue(String paramName) {
+		return param.containsKey(paramName);
+	}
+	@Override
+	public Object getValue(String paramName) throws IllegalArgumentException {
+		return param.get(paramName);
+	}
+}, generatedKeyHolder);
+
+Integer id = generatedKeyHolder.getKey().intValue();
+System.err.println("受到影响的行数=" + retVal + ", 自增id=" + id);
