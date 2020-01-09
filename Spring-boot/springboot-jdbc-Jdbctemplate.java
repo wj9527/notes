@@ -127,4 +127,18 @@ Spring-boot jdbctemplate	|
 		public int[] batchUpdate(final String... sql)
 		
 
+---------------------
+查询结果封装为对象
+---------------------
+String sql = "SELECT * FROM users WHERE userName=?";
 
+//查询结果生成的对象的类类型, 需要保证对象属性和列名称一样, 可以通过别名 AS 解决这个问题
+RowMapper<User> rowMapper = new BeanPropertyRowMapper<User>(User.class);
+
+User user = jdbcTemplate.queryForObject(sql, rowMapper, new Object[]{"one"});
+
+---------------------
+单行单列记录
+---------------------
+String sql = "SELECT COUNT(*) FROM users";
+Long l = jdbcTemplate.queryForObject(sql,Long.class);

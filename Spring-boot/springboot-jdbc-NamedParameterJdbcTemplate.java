@@ -80,3 +80,10 @@ int retVal = this.namedParameterJdbcTemplate.update(sql, new SqlParameterSource(
 
 Integer id = generatedKeyHolder.getKey().intValue();
 System.err.println("受到影响的行数=" + retVal + ", 自增id=" + id);
+
+--------------------------------
+根据对象属性更新
+--------------------------------
+User user = new User("name","password",21,"boy");
+SqlParameterSource papramSource = new BeanPropertySqlParameterSource(user);
+namedParameterJdbcTemplate.update(sql, papramSource);
