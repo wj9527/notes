@@ -127,3 +127,17 @@
 			@JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 
 			@JoinTable(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT), inverseForeignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+	
+	@ElementCollection
+		Class targetClass() default void.class;
+		FetchType fetch() default LAZY;
+
+	@CollectionTable
+		String name() default "";
+		String catalog() default "";
+		String schema() default "";
+		JoinColumn[] joinColumns() default {};
+		ForeignKey foreignKey() default @ForeignKey(PROVIDER_DEFAULT);
+		UniqueConstraint[] uniqueConstraints() default {};
+		Index[] indexes() default {};
+

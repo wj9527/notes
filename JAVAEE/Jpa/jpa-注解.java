@@ -58,6 +58,20 @@ annotation
 
 		int scale() default 0;
 	
+	@MapKeyColumn
+		String name() default "";
+		boolean unique() default false;
+		boolean nullable() default false;
+		boolean insertable() default true;
+		boolean updatable() default true;
+		String columnDefinition() default "";
+		String table() default "";
+		int length() default 255;
+		int precision() default 0;
+		int scale() default 0;
+
+		* 映射map属性
+
 	@TemporalType
 		TemporalType value();
 			* 指定日期字段的日期类型
@@ -155,4 +169,5 @@ annotation
 	
 
 
-
+	
+		
