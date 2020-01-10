@@ -60,6 +60,14 @@
 		
 		* 需要创建多个检索对象, 一个检索对象表示一张表
 
+	
+	# 判断数据是否存在
+		Integer r = this.jpaQueryFactory.select(Expressions.ONE)
+			.from(QUser.user)
+			.where(QUser.user.id.eq(1)).fetchFirst();
+		
+		* 如果r为null, 则数据不存在
+
 
 --------------------
 分页
@@ -163,5 +171,4 @@
 --------------------
 	// 列(结果)别名 TODO
 	// 表别名 TODO
-
 
