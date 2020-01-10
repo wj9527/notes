@@ -141,3 +141,11 @@
 		UniqueConstraint[] uniqueConstraints() default {};
 		Index[] indexes() default {};
 
+	
+	@PrimaryKeyJoinColumn
+		String name() default "";
+		String referencedColumnName() default "";
+		String columnDefinition() default "";
+		ForeignKey foreignKey() default @ForeignKey(PROVIDER_DEFAULT);
+
+		* 在关联关系中, 一对一关系中, 使用对方的id, 作为自己的主键
