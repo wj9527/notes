@@ -21,3 +21,44 @@ querydsl
 			<version>1.6.1</version>
 		</dependency>
 	
+		<build>
+			<finalName>springboot-querydsl</finalName>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<executable>true</executable>
+						<includeSystemScope>true</includeSystemScope>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.querydsl</groupId>
+					<artifactId>querydsl-maven-plugin</artifactId>
+					<version>${querydsl.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>export</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<!-- 查询对象生成配置 -->
+						<jdbcDriver>com.mysql.cj.jdbc.Driver</jdbcDriver>
+						<jdbcUrl>jdbc:mysql://127.0.0.1:3306/querydsl?serverTimezone=GMT%2b8</jdbcUrl>
+						<jdbcUser>root</jdbcUser>
+						<jdbcPassword>root</jdbcPassword>
+						<packageName>io.springboot.querydsl.domain</packageName>
+						<targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>mysql</groupId>
+							<artifactId>mysql-connector-java</artifactId>
+							<version>8.0.18</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</build>
