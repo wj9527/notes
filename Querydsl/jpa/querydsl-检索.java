@@ -36,7 +36,30 @@
 		List<User> users = queryFactory.select(Projections.bean(QUser.user, QUser.user.name, QUser.user.id))
 				.from(QUser.user)
 				.fetch();
+	
+	# 一张表参与多次检索
+		QUser qUser = QUser.user;
+		QUser user1 = new QUser("user1");
 		
+		this.jpaQueryFactory.select(user1)
+			.from(qUser)
+			.innerJoin(user1).on(user1.id.eq(qUser.id))
+			.fetch();
+		
+		// SQL
+		SELECT
+			user1_.id AS id1_2_,
+			user1_.gender AS gender2_2_,
+			user1_.NAME AS name3_2_,
+			user1_.version AS version4_2_ 
+		FROM
+			USER user0_
+				INNER JOIN USER user1_ ON (
+				user1_.id = user0_.id 
+			)
+		
+		* 需要创建多个检索对象, 一个检索对象表示一张表
+
 
 --------------------
 分页
@@ -134,4 +157,11 @@
 	//TODO
 
 	SELECT 'CONST MNAME' AS `name` ...
+
+--------------------
+别名
+--------------------
+	// 列(结果)别名 TODO
+	// 表别名 TODO
+
 
