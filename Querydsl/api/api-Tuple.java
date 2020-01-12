@@ -8,6 +8,7 @@ Tuple
 			* 下标从0开始
 
 		<T> T get(Expression<T> expr);
+			* 根据实体属性获取到数据
 
 		int size();
 			* 条目数量
