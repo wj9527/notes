@@ -195,6 +195,15 @@ Redis-发布订阅						|
 
 		* PatternTopic
 			* 可以一次监听N个通道
+	
+	# 发送消息, 通过 StringRedisTemplate 发送
+		
+		public void convertAndSend(String channel, Object message)
+
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.add(id);
+		jsonArray.add(oldUser.getId());
+		this.stringRedisTemplate.convertAndSend(RedisChannels.EXIPRE_SESSION, jsonArray.toJSONString());
 
 ------------------------------------
 Redis - 自定义Template序列化		|
