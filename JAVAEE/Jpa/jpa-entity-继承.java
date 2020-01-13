@@ -45,8 +45,14 @@
 		String name();
 		Column column();
 	
+		* 可以通过 @AttributeOverrides 一次性定义多个 @AttributeOverride 注解
+	
 	@AssociationOverride
 		String name();
 		JoinColumn[] joinColumns() default {};
 		ForeignKey foreignKey() default @ForeignKey(PROVIDER_DEFAULT);
 		JoinTable joinTable() default @JoinTable;
+
+
+		* 可以通过 @AssociationOverrides 一次性定义多个 @AssociationOverride 注解
+	
