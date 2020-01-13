@@ -65,4 +65,43 @@ Querydsl				|
 	# 在需要 JPAQueryFactory 的地方, 注入
 		@Autowired
 		JPAQueryFactory jPAQueryFactory
+
+------------------------
+mvc 支持				|
+------------------------
+	# Spring 参数支持解析 com.querydsl.core.types.Predicate, 根据用户请求的参数自动生成 Predicate
+		@GetMapping("posts")
+		public Object posts(@QuerydslPredicate(root = Post.class) Predicate predicate) {
+			return postRepository.findAll(predicate);
+		}
+
+		// 或者顺便加上分页
+		@GetMapping("posts")
+		public Object posts(@QuerydslPredicate(root = Post.class) Predicate predicate, Pageable pageable) {
+			return postRepository.findAll(predicate, pageable);
+		}
+
+		/posts?title=title01				// 返回文章 title 为 title01 的文章
+		/posts?id=2							// 返回文章 id 为 2 的文章
+		/posts?category.name=Python			// 返回分类为 Python 的文章（可以嵌套，访问关系表中父类属性）
+		/posts?user.id=2&category.name=Java // 返回用户 ID 为 2 且分类为 Java 的文章
 	
+
+
+		@QuerydslPredicate
+			Class<?> root() default Object.class;
+				* 指定根查询对象
+
+			Class<? extends QuerydslBinderCustomizer> bindings() default QuerydslBinderCustomizer.class;
+				* 
+
+		
+	# 实现 QuerydslBinderCustomizer 自定义参数绑定, 检索逻辑,
+		void customize(QuerydslBindings bindings, T root);
+
+		@Repository
+		public interface PostRepository extends JpaRepository<Post, Long>, QueryDslPredicateExecutor<Post>, QuerydslBinderCustomizer<QPost> {
+			default void customize(QuerydslBindings bindings, QPost post) {
+				bindings.bind(post.title).first(StringExpression::containsIgnoreCase);
+			}
+		}
