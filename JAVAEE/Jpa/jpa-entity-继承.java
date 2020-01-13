@@ -43,8 +43,12 @@
 ---------------------
 	@AttributeOverride
 		String name();
+			* 父类的属性名称
+
 		Column column();
-	
+			* 重新定义
+		
+		* 用于重定义字段名或长度等属性
 		* 可以通过 @AttributeOverrides 一次性定义多个 @AttributeOverride 注解
 	
 	@AssociationOverride
