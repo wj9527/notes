@@ -7,7 +7,8 @@
 					JPAExpressions.select(QUser.user.id).from(QUser.user).where(QUser.user.name.eq("KevinBlandy")))
 				)
 				.fetch();
-	
+		
+		* 单行单列
 
 		QUser qUser = QUser.user;
 		queryFactory.select(qUser)
