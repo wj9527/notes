@@ -81,7 +81,7 @@
 		offset(1)	设置limit
 		limit(10)	设置每页显示的数量
 
-		* offset 不是页码, offset = (页码 - 1) * limit
+		* offset 不是页码, offset = (offset - 1) * limit
 		* 只要是使用了 fetchResults(), 就会进行总数量的统计查询
 	
 	# 结果集 QueryResults, 包含了属性
