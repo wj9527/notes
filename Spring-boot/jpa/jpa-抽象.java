@@ -8,7 +8,7 @@ respository抽象
 	import org.springframework.data.repository.NoRepositoryBean;
 
 	@NoRepositoryBean
-	public interface BaseRepository <T> extends JpaRepository<T, Integer>, JpaSpecificationExecutor <T>, QuerydslPredicateExecutor<T> {
+	public interface BaseRepository <T, ID> extends JpaRepository<T, ID>, JpaSpecificationExecutor <T>, QuerydslPredicateExecutor<T> {
 
 	}
 
@@ -21,7 +21,7 @@ Service抽象
 	import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 	import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-	public interface BaseService <T> extends JpaRepository<T, Integer>, JpaSpecificationExecutor <T>, QuerydslPredicateExecutor<T> {
+	public interface BaseService <T, ID> extends JpaRepository<T, ID>, JpaSpecificationExecutor <T>, QuerydslPredicateExecutor<T> {
 
 	}
 
@@ -29,9 +29,8 @@ Service抽象
 	// 抽象一个 AbstractService 基础实现类
 	import java.util.List;
 	import java.util.Optional;
+	import java.util.function.Function;
 
-	import com.querydsl.core.types.OrderSpecifier;
-	import com.querydsl.core.types.Predicate;
 	import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.data.domain.Example;
 	import org.springframework.data.domain.Page;
@@ -40,13 +39,19 @@ Service抽象
 	import org.springframework.data.jpa.domain.Specification;
 	import org.springframework.transaction.annotation.Transactional;
 
-	import io.springboot.jpa.repository.BaseRepository;
+	import com.querydsl.core.types.OrderSpecifier;
+	import com.querydsl.core.types.Predicate;
+	import com.querydsl.jpa.impl.JPAQueryFactory;
 
+	import io.streamer.common.repository.BaseRepository;
 
-	public abstract class AbstractService <T> implements BaseService<T> {
-
+	public class AbstractService<T, ID>  implements BaseService <T, ID>{
+		
 		@Autowired
-		protected BaseRepository<T> baseRepository;
+		protected BaseRepository<T,ID> baseRepository;
+		
+		@Autowired
+		protected JPAQueryFactory jpaQueryFactory;
 		
 		@Override
 		@Transactional(readOnly = true, rollbackFor = Throwable.class)
@@ -62,7 +67,7 @@ Service抽象
 
 		@Override
 		@Transactional(readOnly = true, rollbackFor = Throwable.class)
-		public List<T> findAllById(Iterable<Integer> ids) {
+		public List<T> findAllById(Iterable<ID> ids) {
 			return this.baseRepository.findAllById(ids);
 		}
 
@@ -97,7 +102,7 @@ Service抽象
 
 		@Override
 		@Transactional(readOnly = true, rollbackFor = Throwable.class)
-		public T getOne(Integer id) {
+		public T getOne(ID id) {
 			return this.baseRepository.getOne(id);
 		}
 
@@ -127,13 +132,13 @@ Service抽象
 
 		@Override
 		@Transactional(readOnly = true, rollbackFor = Throwable.class)
-		public Optional<T> findById(Integer id) {
+		public Optional<T> findById(ID id) {
 			return this.baseRepository.findById(id);
 		}
 
 		@Override
 		@Transactional(readOnly = true, rollbackFor = Throwable.class)
-		public boolean existsById(Integer id) {
+		public boolean existsById(ID id) {
 			return this.baseRepository.existsById(id);
 		}
 
@@ -145,7 +150,7 @@ Service抽象
 
 		@Override
 		@Transactional(rollbackFor = Throwable.class)
-		public void deleteById(Integer id) {
+		public void deleteById(ID id) {
 			this.baseRepository.deleteById(id);		
 		}
 
@@ -267,5 +272,15 @@ Service抽象
 		@Transactional(readOnly = true, rollbackFor = Throwable.class)
 		public boolean exists(Predicate predicate) {
 			return this.baseRepository.exists(predicate);
+		}
+		
+		@Transactional(rollbackFor = Throwable.class)
+		public <R> R apply(Function<JPAQueryFactory, R> function) {
+			return function.apply(this.jpaQueryFactory);
+		}
+		
+		@Transactional(readOnly = true, rollbackFor = Throwable.class)
+		public <R> R applyReadOnly(Function<JPAQueryFactory, R> function) {
+			return function.apply(this.jpaQueryFactory);
 		}
 	}
