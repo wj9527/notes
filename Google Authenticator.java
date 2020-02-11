@@ -4,6 +4,9 @@ Google Authenticator
 	# Google的二步验证
 		* 30秒会刷新出一个新的动态口令
 
+	# Github
+		https://github.com/google/google-authenticator
+
 	# 动态口令生成口令的算法, 主要分为两种
 		HOTP
 		TOTP(国内主要使用TOTP, 因为时间同步并不是太难的事)
