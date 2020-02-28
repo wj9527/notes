@@ -43,7 +43,7 @@ response						|
 		如果返回的是一个字符串,响应对象会用字符串数据和默认参数创建
 			return "Hello World"
 		如果返回的是一个元组,且元组中的元素可以提供额外的信息,这样的元组必须是 (response, status, headers) 的形式,且至少包含一个元素, status 值会覆盖状态代码, headers 可以是一个列表或字典,作为额外的消息标头值
-			 return ("{'name':'Kevin'}",201,{'ContentType':'application/json;charset=UTF-8'})
+			 return ("{'name':'Kevin'}",201,{'Content-Type':'application/json;charset=UTF-8'})
 		如果上述条件均不满足, Flask 会假设返回值是一个合法的 WSGI 应用程序,并转换为一个请求对象
 	
 	* 如果你想在视图里操纵上述步骤结果的响应对象,可以使用 make_response() 函数

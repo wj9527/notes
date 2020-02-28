@@ -9,8 +9,76 @@ recaptcha
 	
 	# 文档地址
 		https://developers.google.com/recaptcha/intro
+
+----------------------------------------------
+recaptcha v2 - “进行人机身份验证”复选框
+----------------------------------------------
+	# 注册的是选择类型
+		* “进行人机身份验证”复选框 √
+		* 隐形 reCAPTCHA 徽章
+		* reCAPTCHA Android
+	
+
+	# 自动渲染reCAPTCHA小部件
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+			* 必须使用https加载
+
+		<div class="g-recaptcha" data-sitekey="your_site_key"></div>
+	
+
+	# 手动渲染reCAPTCHA小部件
+		<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+			* onload参数设置为onload回调函数的名称，在这个回调函数中自己调用api来完成渲染
+			* 并将render参数设置为explicit。
+	
+	# 国内的用户，需要把js库的地址更换为: https://www.recaptcha.net/recaptcha/api.js
+	
+	# js库的查询参数
+		onload	可选参数。指定回调方法的名称
+		render	可选的。是否显式呈现窗口小部件。默认值为onload，它将在g-recaptcha找到的第一个标签中呈现窗口小部件。
+		hl		可选的。强制窗口小部件以特定语言呈现。如果未指定，则自动检测用户的语言。
+	
+	# 标签的属性
+		data-sitekey			站点密钥。
+
+		data-theme				可选的。小部件的颜色主题。
+			dark
+				* 深色，贼丑
+			light（默认）
+
+		data-size				可选的。小部件的大小。
+			compact				
+				* 方块儿？？
+			normal（默认）
+
+		data-tabindex			可选的。小部件和质询的tabindex。如果页面中的其他元素使用tabindex，则应将其设置为使用户导航更容易。
+			默认0
+
+		data-callback			可选的。验证后的回调函数，会把token作为参数传递进来
+		data-expired-callback	可选的。您的回调函数的名称，当reCAPTCHA响应到期且用户需要重新验证时执行。
+		data-error-callback		可选的。回调函数的名称，在reCAPTCHA遇到错误（通常是网络连接）时执行，并且在恢复连接之前无法继续执行。如果在此处指定功能，则负责通知用户应重试。
+	
+	# js的api
+		grecaptcha.render(container,parameters)
+			* 渲染容器
+				container 元素的id，或者dom对象
+				parameters 初始化参数（就是标签的属性），例如 {'siteKey': 'balababaaaa'}
+			
+			* 它会返回一个唯一的id，就是小部件的id(opt_widget_id)。
+
+		grecaptcha.reset(opt_widget_id)
+			* 重置验证码
+			* 可选的小部件id，如果没指定，则重置第一个
+
+		grecaptcha.getResponse(opt_widget_id)
+			* 获取小部件的响应
+			* 可选的小部件id，如果没指定，则获取第一个
 	
 	
+
+--------------------------
+recaptcha v3
+--------------------------
 	# 客户端集成
 		<script src="https://www.google.com/recaptcha/api.js?render=_reCAPTCHA_site_key"></script>
 		<script>
@@ -38,18 +106,31 @@ recaptcha
 
 		* (Fuck GFW)国内的用户，需要把js库的地址更换为: https://www.recaptcha.net/recaptcha/api.js
 
-			
 	
-	# 服务端继承
-		* POST 接口
-			https://www.google.com/recaptcha/api/siteverify
-				secret			服务端的 secret
-				response		客户端生成的token
-				remoteip		可选的参数，客户的ip地址
+	# 问题
+		* 尝试在控制台手动调用js的api生成token，该token也可以通过服务端的验证
+		* 如果一直尝试用程序去获取token，那这个人机验证不就失去意义了？
+
+--------------------------
+服务端接入
+--------------------------
+	#  POST 接口
+		https://www.google.com/recaptcha/api/siteverify
+			secret			服务端的 secret
+			response		客户端生成的token
+			remoteip		可选的参数，客户的ip地址
 		
 		* (Fuck GFW)国内的用户，需要把api地址更换为: https://www.recaptcha.net/recaptcha/api/siteverify
 		
-		* 响应
+
+		* v2版本的响应
+			{
+				success: true							是否验证通过
+				challenge_ts: "2020-02-28T03:52:03Z"
+				hostname: "localhost"
+			}
+		
+		* v3版本的响应
 			{
 			  "success": true|false,      // 此请求是否是站点的有效reCAPTCHA令牌
 			  "score": number             // 此请求的分数（0.0-1.0），人机判断的参考值。1 是人类，0是机器。
@@ -76,3 +157,54 @@ recaptcha
 			} 
 
 	
+
+----------------------------------------------
+recaptcha v2 - 前端demo
+----------------------------------------------
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>谷歌ReCaptcha</title>
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+	</head>
+	<body>
+		 <div id="recaptcha"></div>
+         <button>点击我完成验证</button>
+
+	<script type="text/javascript">
+        var id = null;
+        function onloadCallback (){
+            id = grecaptcha.render('recaptcha', {
+                sitekey: '{{ clientSecret }}',
+                callback: (token) => {
+                    console.log('验证码回调:' + token);
+                },
+                theme: 'light',
+            });
+        }
+
+        window.onload = () => {
+            document.querySelector('button').addEventListener('click', () => {
+                const token = grecaptcha.getResponse(id);
+                if (!token){
+                    alert('请先点击，“进行人机身份验证”');
+                    return;
+                }
+                fetch('/validate?token=' + token, {
+                    method: 'GET'
+                }).then(response => {
+                    if (response.ok) {
+                        response.json().then(message => {
+                           console.log(message);
+                           grecaptcha.reset(id);
+                        });
+                    }else {
+                        //TODO
+                    }
+                })
+            });
+        }
+	</script>
+	</body>
+</html>
