@@ -87,45 +87,81 @@ redis-stream 阻塞消费   |
 		<K, V extends Record<K, ?>> StreamMessageListenerContainer<K, V> create(RedisConnectionFactory connectionFactory,StreamMessageListenerContainerOptions<K, V> options)
 
 	# 也可以通过 Builder 创建
-		@Autowired
-		private RedisConnectionFactory redisConnectionFactory;
+		@Component
+		public class StreamConsumerRunner implements ApplicationRunner, DisposableBean {
 
-		@Autowired
-		private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+			static final Logger LOGGER = LoggerFactory.getLogger(StreamConsumerRunner.class);
 
-		@Bean
-		public StreamMessageListenerContainer<String, MapRecord<String, String, String>> StreamMessageListenerContainer() {
-			// 创建配置
-			StreamMessageListenerContainerOptions<String, MapRecord<String, String, String>> streamMessageListenerContainerOptions = StreamMessageListenerContainerOptions
-					.builder().batchSize(10)
-					.executor(this.threadPoolTaskExecutor)
-					.errorHandler(new ErrorHandler() {
-						@Override
-						public void handleError(Throwable t) {
-						}
-					})
-					// .hashKeySerializer(serializer)
-					// .hashValueSerializer(serializer)
-					// .keySerializer(serializer)
-					// .objectMapper(hashMapper)
-					.pollTimeout(Duration.ofSeconds(10))
-					// .serializer(serializer)
-					// .targetType(targetType)
-					.build();
+			@Value("${redis.stream.consumer}")
+			private String consumer;
 
-			// 创建 container
-			StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer = StreamMessageListenerContainer.create(this.redisConnectionFactory, streamMessageListenerContainerOptions);
-			// 开始监听
-			streamMessageListenerContainer.receive(Consumer.from("group", "consumer"), StreamOffset.latest("mystream"),
-					new StreamListener<String, MapRecord<String, String, String>>() {
-						@Override
-						public void onMessage(MapRecord<String, String, String> message) {
-							System.out.println("MessageId: " + message.getId());
-							System.out.println("Stream: " + message.getStream());
-							System.out.println("Body: " + message.getValue());
-						}
-					});
-			return streamMessageListenerContainer;
+			@Autowired
+			RedisConnectionFactory redisConnectionFactory;
+
+			@Autowired
+			ThreadPoolTaskExecutor threadPoolTaskExecutor;
+			
+			@Autowired
+			StreamMessageListener streamMessageListener;
+
+			@Autowired
+			StringRedisTemplate stringRedisTemplate;
+
+			private StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer;
+
+			@Override
+			public void run(ApplicationArguments args) throws Exception {
+				
+				RecordId recordId = this.stringRedisTemplate.opsForStream().add("channel", Collections.singletonMap("tryCreat", ""));
+				
+				LOGGER.info("stream {} 初始化：{}", "channel", recordId);
+				
+				try {
+					String result = this.stringRedisTemplate.opsForStream().createGroup("channel", "group");
+					LOGGER.info("消费组 {} 创建：{}", "group", result);
+				} catch (Exception e) {
+					LOGGER.error("消费组创建失败:{}", e.getMessage());
+				}
+
+				StreamMessageListenerContainerOptions<String, MapRecord<String, String, String>> streamMessageListenerContainerOptions = StreamMessageListenerContainerOptions
+						.builder()
+						// 一次最多拉取多少消息
+						.batchSize(10)
+						// 执行消费的线程池
+						.executor(this.threadPoolTaskExecutor)
+						// 异常处理器
+						.errorHandler(new ErrorHandler() {
+							@Override
+							public void handleError(Throwable t) {
+								// throw new RuntimeException(t);
+								t.printStackTrace();
+							}
+						})
+						// 阻塞消费，不超时
+						.pollTimeout(Duration.ZERO)
+						// 序列化器
+						.serializer(new StringRedisSerializer())
+						.build();
+
+				// 创建 Container
+				StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer = StreamMessageListenerContainer
+						.create(this.redisConnectionFactory, streamMessageListenerContainerOptions);
+				
+				// 开始接收消息，设置为手动消费
+				streamMessageListenerContainer.receive(Consumer.from("group", 
+						"consumer-1"), StreamOffset.create("chanel", ReadOffset.lastConsumed()), this.streamMessageListener);
+
+				this.streamMessageListenerContainer = streamMessageListenerContainer;
+				
+				this.streamMessageListenerContainer.start();
+
+			}
+
+			@Override
+			public void destroy() throws Exception {
+				this.streamMessageListenerContainer.stop();
+			}
+		}
 	
 	# 实例方法
 		Subscription receive(StreamOffset<K> streamOffset, StreamListener<K, V> listener)
@@ -136,15 +172,47 @@ redis-stream 阻塞消费   |
 		void remove(Subscription subscription)
 	
 	
-	# 自定义监听器: StreamListener
+	# 自定义监听器实现接口: StreamListener
 		@FunctionalInterface
 		public interface StreamListener<K, V extends Record<K, ?>> {
 			void onMessage(V message);
 		}
 	
+		import org.slf4j.Logger;
+		import org.slf4j.LoggerFactory;
+		import org.springframework.beans.factory.annotation.Autowired;
+		import org.springframework.data.redis.connection.stream.MapRecord;
+		import org.springframework.data.redis.core.StringRedisTemplate;
+		import org.springframework.data.redis.stream.StreamListener;
+		import org.springframework.stereotype.Component;
+
+		import io.streamer.common.constant.RedisStreamGroup;
+
+		@Component
+		public class StreamMessageListener implements StreamListener<String, MapRecord<String, String, String>>{
+			
+			static final Logger LOGGER = LoggerFactory.getLogger(StreamMessageListener.class);
+			
+			@Autowired
+			StringRedisTemplate stringRedisTemplate;
+			
+			@Override
+			public void onMessage(MapRecord<String, String, String> message) {
+				
+				LOGGER.info("MessageId: " + message.getId());
+				LOGGER.info("Stream: " + message.getStream());
+				LOGGER.info("Body: " + message.getValue());		
+				
+				this.stringRedisTemplate.opsForStream().acknowledge(RedisStreamGroup.CHANNEL, message);
+			}
+		}
+
 		
-
-
+------------------------
+redis-stream 消息确认   |
+------------------------
+	Long redisConnectionFactory.getConnection().streamCommands().xAck(key, group, recordIds);
+	Long stringRedisTemplate.acknowledge(K key, String group, String... recordIds);
 
 -----------------------------
 redis-stream apis			|
@@ -160,6 +228,7 @@ redis-stream apis			|
 		Long acknowledge(K key, String group, String... recordIds)
 		Long acknowledge(K key, String group, RecordId... recordIds)
 		Long acknowledge(String group, Record<K, ?> record)
+			* 收到确认消息
 
 		RecordId add(K key, Map<? extends HK, ? extends HV> content)
 		RecordId add(MapRecord<K, ? extends HK, ? extends HV> record)

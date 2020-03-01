@@ -205,7 +205,9 @@ Stream					|
 			[DELCONSUMER]
 				* 删除消费者
 					XGROUP DELCONSUMER mystream mygroup consumer
-		
+			
+			* 消费组需要预先创建, 并且stream key 是必须存在的
+			* 如果尝试对一个stream key 重复创建同名的key, 会抛出异常
 	
 	
 	# 消费组的形式监听消费
@@ -215,14 +217,17 @@ Stream					|
 			
 			consumer
 				* 指定消费组中, 当前消费者的名称
-				* 消费组是在使用的时候自动创建, 不需要预先创建
+				* 消费者是在使用的时候自动创建, 不需要预先创建
 			
 			ID [id...]
+				* 从哪个id的消息开始消费
 				* 消费组中的id, 有一个特殊符号 >
 				* 这个特殊的ID只在消费者组的上下文中有效, 其意思是: 到目前为止从未传递给其他消费者的消息
 				* 如果id设置为了 > 表示, 仅仅消费当前消费组中, 其他消费者未消费的消息, 通过这个特殊id, 达到: 同一个消费组中, 只有一个消费组可以消费消息
 				* 这个特殊的ID其实就是 last_delivered_id
 				* 当ID不是特殊字符>时, XREADGROUP不再是从消息队列中读取消息, 而是从consumer的pending消息列表中读取历史消息
+
+				* 消费组使用: $ 没有意义
 
 
 			* 跟 XREAD 一样, 多了俩参数: GROUP [group], consumer
@@ -248,7 +253,7 @@ Stream					|
 			* demo
 				XACK mystream mygroup 1542355396362-0
 
-	# 获取指定消费组中, 待消费的消息
+	# 获取指定消费组中, 待确认的消息
 		XPENDING [stream] [group] [start] [end] [count] [consumer]
 			[stream] [group]
 				* 指定stream和消费组,
