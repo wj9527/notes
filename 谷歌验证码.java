@@ -166,27 +166,16 @@ recaptcha v2 - 前端demo
 	<head>
 		<meta charset="UTF-8">
 		<title>谷歌ReCaptcha</title>
-        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+        <script src="https://www.recaptcha.net/recaptcha/api.js" async defer></script>
 	</head>
 	<body>
-		 <div id="recaptcha"></div>
+         <div class="g-recaptcha" data-sitekey="{{ clientSecret }}"></div>
          <button>点击我完成验证</button>
-
 	<script type="text/javascript">
-        var id = null;
-        function onloadCallback (){
-            id = grecaptcha.render('recaptcha', {
-                sitekey: '{{ clientSecret }}',
-                callback: (token) => {
-                    console.log('验证码回调:' + token);
-                },
-                theme: 'light',
-            });
-        }
-
         window.onload = () => {
             document.querySelector('button').addEventListener('click', () => {
-                const token = grecaptcha.getResponse(id);
+                // 获取验证码的token
+                const token = grecaptcha.getResponse();
                 if (!token){
                     alert('请先点击，“进行人机身份验证”');
                     return;
@@ -197,7 +186,8 @@ recaptcha v2 - 前端demo
                     if (response.ok) {
                         response.json().then(message => {
                            console.log(message);
-                           grecaptcha.reset(id);
+                           // 请求成功，重置验证码
+                           grecaptcha.reset();
                         });
                     }else {
                         //TODO
