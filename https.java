@@ -95,6 +95,10 @@ https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 		  echo "Sorry, you must have curl or wget installed first."
 		  echo "Please install either of them and try again."
 		fi
+	
+	7, acme.sh 的Github和中文文档
+		https://github.com/acmesh-official/acme.sh
+		https://github.com/acmesh-official/acme.sh/wiki/%E8%AF%B4%E6%98%8E
 
 ## Springboot单独配置
 	1,(在证书生成目录)生成keystore
