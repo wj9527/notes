@@ -159,8 +159,10 @@ recaptcha v3
 	
 
 ----------------------------------------------
-recaptcha v2 - 前端demo
+recaptcha v2 - 整合demo
 ----------------------------------------------
+# 客户端
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -198,3 +200,114 @@ recaptcha v2 - 前端demo
 	</script>
 	</body>
 </html>
+
+# 通用的服务端拦截器
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.method.HandlerMethod;
+
+import com.alibaba.fastjson.JSONObject;
+
+import io.streamer.common.Message;
+import io.streamer.common.annotations.ReCaptcha;
+import io.streamer.common.exception.ServiceException;
+import io.streamer.common.utils.WebUtils;
+/**
+ *  
+ *  reCaptcha
+ * 
+ */
+public class ReCaptchaInterceptor extends BaseHandlerInterceptor {
+	
+	static final Logger LOGGER = LoggerFactory.getLogger(ReCaptchaInterceptor.class);
+			
+	static final Double ROBOT = 0.0; 
+	
+	static final String SCORE_KEY = "score";
+	
+	static final String ACTION_KEY = "action";
+	
+	static final String TOKEN_PARAM_NAME = "_token";
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Value("${google.recaptcha.validate-api}")
+	private String validateApi;
+	
+	@Value("${google.recaptcha.server-secret}")
+	private String serverSecret;
+
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) throws Exception {
+		
+		ReCaptcha reCaptcha = handlerMethod.getMethodAnnotation(ReCaptcha.class);
+		if (reCaptcha == null) {
+			return true;
+		}
+		
+		String token = request.getParameter(TOKEN_PARAM_NAME);
+		
+		if (StringUtils.isEmpty(token)) {
+			throw new ServiceException(Message.fail(Message.Code.BAD_REQUEST, "非法 ReCaptcha Token"));
+		}
+		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+
+		MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
+		requestBody.add("secret", this.serverSecret);
+		requestBody.add("response", token);
+		requestBody.add("remoteip", WebUtils.getRemoteAddr(request)); // 客户的ip地址，不是必须的参数。
+		
+		ResponseEntity<JSONObject> responseEntity = restTemplate.postForEntity(this.validateApi, new HttpEntity<>(requestBody, httpHeaders), JSONObject.class);
+		
+		if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+			throw new ServiceException(Message.fail(Message.Code.BAD_REQUEST, "ReCaptcha 校验请求异常，HttpCode=" + responseEntity.getStatusCodeValue()));
+		}
+		
+		JSONObject body = responseEntity.getBody();
+		
+		LOGGER.debug("recaptcha response={}", body);
+		
+		
+		if (!body.getBoolean("success")){
+			throw new ServiceException(Message.fail(Message.Code.BAD_REQUEST, "ReCaptcha 校验请求失败，error-codes=" + body.getJSONArray("error-codes").toJSONString()));
+		}
+		
+		
+		/**
+		 * 包含“score”属性，是v3版本的ReCaptcha。
+		 * 需要校验“action”的合法性，以及机器人评分值
+		 */
+		Double source = body.getDouble(SCORE_KEY);
+		if (source != null) {
+			
+			// action 不匹配
+			if (!StringUtils.isEmpty(reCaptcha.value()) && !reCaptcha.value().equals(body.getString(ACTION_KEY))) {
+				throw new ServiceException(Message.fail(Message.Code.BAD_REQUEST, "人机验证失败。"));
+			}
+			
+			// 机器人，或者是评分低于接口的最低分
+			if (source.equals(ROBOT) || source < reCaptcha.minScore()) {
+				throw new ServiceException(Message.fail(Message.Code.BAD_REQUEST, "人机验证失败。"));
+			}
+		}
+		
+		return true;
+	}
+}
