@@ -147,9 +147,18 @@ redis-stream 阻塞消费   |
 				StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer = StreamMessageListenerContainer
 						.create(this.redisConnectionFactory, streamMessageListenerContainerOptions);
 				
-				// 开始接收消息，设置为手动消费
+				// 群组消费：开始接收消息，设置为手动消费
 				streamMessageListenerContainer.receive(Consumer.from("group", 
 						"consumer-1"), StreamOffset.create("chanel", ReadOffset.lastConsumed()), this.streamMessageListener);
+				
+
+				// 非群组消费
+				streamMessageListenerContainer.receive(StreamOffset.create("stream", ReadOffset.latest()), new StreamListener<String, MapRecord<String,String,String>>() {
+					@Override
+					public void onMessage(MapRecord<String, String, String> message) {
+						
+					}
+				});
 
 				this.streamMessageListenerContainer = streamMessageListenerContainer;
 				
