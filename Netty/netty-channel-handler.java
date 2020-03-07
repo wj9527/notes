@@ -216,3 +216,9 @@ ChannelPromise 机制			 |
 		* 继承:ChannelInboundHandlerAdapter/ChannelHandlerAdapter,覆写 exceptionCaught() 方法来处理全局的异常
 		* 根据不同的异常类型来做处理
 
+
+-----------------------------
+Handler统计					 |
+-----------------------------
+	ResolveAddressHandler 
+	SslClientHelloHandler 

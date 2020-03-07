@@ -22,7 +22,7 @@ Spring-Boot 入门			|
 		<parent>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-parent</artifactId>
-			<version>1.5.8.RELEASE</version>
+			<version>2.2.5.RELEASE</version>
 			<relativePath/> <!-- lookup parent from repository -->
 		</parent>
 
@@ -38,13 +38,23 @@ Spring-Boot 入门			|
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-web</artifactId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-test</artifactId>
-				<scope>test</scope>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-tomcat</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-undertow</artifactId>
 			</dependency>
 		</dependencies>
 
@@ -84,17 +94,20 @@ Spring-Boot 入门			|
 		@SpringBootApplication
 		public class ParkApplication extends SpringBootServletInitializer{
 
-			public static void main(String[] args){
-				// SpringApplication.run(ParkApplication.class,args);  // 可以直接启动
+			public static ApplicationContext applicationContext = null;
+	
+			public static void main(String[] args) {
 
-
-				SpringApplication springApplication = new SpringApplication(VideoManagerApplication.class);
-
-				// 添加一个或者多个设置
+				String configLocation = String.join(File.separator, "file:${user.home}", "app", "config", "");
+				
+				System.setProperty(ConfigFileApplicationListener.CONFIG_ADDITIONAL_LOCATION_PROPERTY, configLocation);
+				
+				SpringApplication springApplication = new SpringApplication(ParkApplication.class);
 				springApplication.addListeners(new ApplicationPidFileWriter());
-
-				// 启动
-				springApplication.run(args);
+				
+				applicationContext = springApplication.run(args);
+				
+				// SpringApplication.exit(applicationContext, () -> 0);
 			}
 		}
 
