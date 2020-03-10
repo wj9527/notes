@@ -16,3 +16,7 @@ Collections-静态字段/方法|
 	void shuffle(List<?> list, Random rnd)
 		* 同上,指定的 Random
 	
+	<E> Set<E> newSetFromMap(Map<E, Boolean> map) 
+		* 使用指定的Map来构造一个Set集合
+	
+	
