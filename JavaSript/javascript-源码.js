@@ -181,81 +181,101 @@ document.addEventListener('dragend', function (event) {
 });
 
 ----------------------------------------
-序列化表单为form字符串					|
+序列化表单为form/json字符串					|
 ----------------------------------------
-function serializationForm(form){
-	
-	const urlSearchParams = new URLSearchParams();
-	const formNodes = ['INPUT', 'TEXTAREA', 'SELECT']
-	const queue = [...form.childNodes]
+function formEncode(form, format='form') {
+    if (!form || form.nodeName !== 'FORM') {
+        console.log(form + ' is not form element');
+        return;
+    }
 
-	while (queue.length > 0){
-		const node = queue.shift()
-		if(formNodes.includes(node.nodeName)){
-			let name = node.getAttribute('name');
-			let value = null;
-			if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio'){
-				if (node.checked){
-					value = node.value;
-				}else{
-					continue;
-				}
-			}else {
-				value = node.value;
-			}
-
-			urlSearchParams.append(name, value);
-		}else {
-			for(let subNode of node.childNodes){
-				queue.push(subNode);
-			}
-		}
-	}
-	return urlSearchParams.toString();
-}
-
-----------------------------------------
-序列化表单为json字符串					|
-----------------------------------------
-function serializationJSON(form){
-
-    const requestBody = {};
-    const formNodes = ['INPUT', 'TEXTAREA', 'SELECT']
-    const queue = [...form.childNodes]
-
-    while (queue.length > 0){
-        const node = queue.shift()
-        if(formNodes.includes(node.nodeName)){
-            let name = node.getAttribute('name');
+    const FORM_ELEMENTS = ['INPUT', 'TEXTAREA', 'SELECT'];
+    const map = new Map();
+    const queue = [...form.childNodes];
+    while (queue.length > 0) {
+        const element = queue.shift();
+        if (FORM_ELEMENTS.includes(element.nodeName)) {
+            const name = element.name;
+            if (!name) {
+                // 忽略没有定义name属性的表单项
+                continue;
+            }
+            if (element.nodeName === 'INPUT' && element.type === 'file') {
+                // 忽略文件表单项
+                console.log('ignore file input, please use \'new FormData(form);\'');
+                continue;
+            }
             let value = null;
-            if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio'){
-                if (node.checked){
-                    value = node.value;
-                }else{
-                    continue;
+            if (element.nodeName === 'SELECT') {
+                // 下拉框
+                for (const option of element.selectedOptions) {
+                    const optionValue = option.value;
+                    if (value == null) {
+                        value = optionValue;
+                    } else {
+                        if (Array.isArray(value)){
+                            value.push(optionValue);
+                        } else {
+                            value = [value, optionValue]
+                        }
+                    }
                 }
-            }else {
-                value = node.value;
-            }
-
-            value = encodeURIComponent(value);
-
-            if (name in requestBody){
-                const existsValue = requestBody[name]
-                if (Array.isArray(existsValue)){
-                    existsValue.push(value)
-                }else {
-                    const arrValue = [existsValue, value]
-                    requestBody[name] = arrValue;
+            } else if (element.type === 'checkbox' || element.type === 'radio') {
+                // 多/单选框
+                if (element.checked){
+                    value = element.value;
                 }
-            }else {
-                requestBody[name] = value;
+            } else {
+                // 普通文本框
+                value = element.value;
             }
-        }else {
-            for(let subNode of node.childNodes){
-                queue.push(subNode);
+            if (value == null){
+                continue;
             }
+            if (map.has(name)) {
+                const existsVal = map.get(name);
+                if (Array.isArray(existsVal)) {
+                    if (Array.isArray(value)){
+                        existsVal.push(...value);
+                    } else {
+                        existsVal.push(value);
+                    }
+                } else {
+                    if (Array.isArray(value)){
+                        map.set(name, [existsVal, ...value]);
+                    } else {
+                        map.set(name, [existsVal, value]);
+                    }
+                }
+            } else {
+                map.set(name, value);
+            }
+        } else {
+            // 深度优先遍历
+            queue.unshift(...element.childNodes);
         }
     }
-    return JSON.stringify(requestBody);
+
+    if (format === 'form'){
+        const params = new URLSearchParams();
+        map.forEach(function(value, key, map) {
+            if (Array.isArray(value)){
+                value.forEach(item => params.append(key, item));
+            } else {
+                params.append(key, value);
+            }
+        });
+        return params.toString();
+    } else if (format === 'json'){
+        let object = Object.create(null);
+        for (let [key, value] of map) {
+            object[key] = value;
+        }
+        return JSON.stringify(object);
+    } else {
+        throw `unknow format type: ${format}`;
+    }
 }
+const retVal = formEncode(document.querySelector('form'), 'json');
+console.log(retVal);
+
