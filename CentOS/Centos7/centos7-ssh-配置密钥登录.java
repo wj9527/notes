@@ -39,7 +39,7 @@
 
 	* 千万记得要先把公钥添加到了服务器, 才重启
 
-# 配置Linux上的ssh客户端
+# 配置Linux客户端
 	* 使用Linux上的ssh客户端，登录远程服务器
 
 	vim /etc/ssh/ssh_config
