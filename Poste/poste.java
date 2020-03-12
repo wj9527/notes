@@ -19,7 +19,11 @@ imap		CNAME	mail.springcloud.io
 @			TXT		"v=spf1 mx ~all"
 
 s20191223631._domainkey TXT "DKIM key
+	* 该记录需要填写，通过控制台生成的key
+	* 先在控制台生成后，再填写
+
 _dmarc.springcloud.io	TXT "v=DMARC1; p=none; rua=mailto:dmarc-reports@springcloud.io"
+	* 该记录，不需要添加
 
 
 
