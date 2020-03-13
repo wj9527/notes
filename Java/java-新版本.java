@@ -25,4 +25,20 @@ java9						|
 	# 参考资料
 		https://www.ibm.com/developerworks/cn/java/the-new-features-of-Java-9/index.html
 	
+	
+	# JDK的目录变化
+		java
+		|-bin			可执行文件
+		|-conf			配置
+		|-include		c/c++ 头文件
+		|-jmods			模块（把原来的一个rt.jar拆分为不同的模块.jar）
+		|-legal			法律声明
+		|-lib			非windows平台的动态链接库
+		|-release
 
+
+	# JDK的环境变量
+		JAVA_HOME
+		CLASSPATH
+		PATH
+		
