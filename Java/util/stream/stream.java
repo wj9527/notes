@@ -170,6 +170,43 @@ JAVA8新特性-Stream接口方法	|
 		* 返回当前流中的任意元素
 		* 返回是的类型是 Optional
 	
+	Stream<T> dropWhile(Predicate<? super T> predicate)
+		* 从Stream中依次删除满足条件的元素, 直到不满足条件为止结束删除
+		
+		IntStream.of(12, 4, 3, 6, 8, 9).dropWhile(x -> x % 2 == 0).forEach(System.out::print);
+		// 3, 6, 8, 9
+
+	Stream<T> takeWhile(Predicate<? super T> predicate)
+		* 从Stream中依次获取满足条件的元素，直到不满足条件为止结束获取
+
+		IntStream.of(12, 4, 3, 6, 8, 9).takeWhile(x -> x % 2 == 0).forEach(System.out::print);
+		// 12
+
+----------------------------
+JAVA8新特性-Stream静态方法	|
+----------------------------
+	static<T> Stream<T> ofNullable(T t)
+		* 如果参数是 null,  返回空的流, 不会异常
+	
+	static<T> Stream<T> iterate(final T seed, final UnaryOperator<T> f)
+	static<T> Stream<T> iterate(T seed, Predicate<? super T> hasNext, UnaryOperator<T> next)
+		* 第一次生成的元素是UnaryOperator对seed执行apply后的返回值
+		* 之后所有生成的元素都是UnaryOperator对上一个apply的返回值再执行apply, 不断循环
+
+		seed
+			* 种子
+		
+		hasNext
+			* 终止的条件
+
+		UnaryOperator 
+			* 一元运算符
+			* 继承了 Function<T, T> 
+			* 提供唯一的一个唯静态方法
+				static <T> UnaryOperator<T> identity() {
+					return t -> t;
+				}
+
 ----------------------------
 JAVA8新特性-基本数据类型的	|
 ----------------------------

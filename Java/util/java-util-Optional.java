@@ -39,8 +39,19 @@ Optional-方法		  |
 	flatMap(Function function);
 		* 跟map差不多,要求返回值必须是 Optional
 	
-
 	
+	void ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction)
+
+	Optional<T> or(Supplier<? extends Optional<? extends T>> supplier)
+
+	Stream<T> stream()
+		* 如果对象为 null, 返回空的 Stream
+		* 源码
+			if (!isPresent()) {
+				return Stream.empty();
+			} else {
+				return Stream.of(value);
+			}
 
 
 	

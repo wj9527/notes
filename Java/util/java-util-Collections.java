@@ -20,3 +20,6 @@ Collections-静态字段/方法|
 		* 使用指定的Map来构造一个Set集合
 	
 	
+	<T> Collection<T> unmodifiableCollection(Collection<? extends T> c)
+		* 很多重载方法, 把一个集合, 变成一个不可修改的集合
+	
