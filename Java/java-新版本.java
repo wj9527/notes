@@ -93,6 +93,8 @@ java9						|
 	# 多分辨率图形API
 	# 全新的 HTTP 客户端 API
 	# Deprecated 相关API
+		* 主要删除了 applet 相关的一些api
+
 	# 智能Java编译工具
 	# 统一jvm日志系统
 	# javadoc的HTML5支持

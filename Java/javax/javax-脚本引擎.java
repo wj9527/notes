@@ -55,3 +55,9 @@ JAVA-脚本引擎		|
 		Object result = scriptEngine.eval("\"Hello \" + name");
 
 		System.out.println(result);	// Hello KevinBlandy
+	
+	
+
+	# JDK11 开始, 废弃了这个引擎
+		@Deprecated(since="11", forRemoval=true)
+		public final class NashornScriptEngine extends AbstractScriptEngine implements Compilable, Invocable
