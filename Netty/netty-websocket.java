@@ -145,6 +145,9 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 public class Server {
+
+	static final String ENDPOINT = "/channel";
+
 	public static void main(String[] args) throws InterruptedException {
 		EventLoopGroup bossGroup = new NioEventLoopGroup(1);
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -160,8 +163,24 @@ public class Server {
 					pipeline.addLast(new HttpServerCodec());
 					pipeline.addLast(new ChunkedWriteHandler());
 					pipeline.addLast(new HttpObjectAggregator(65536));
+					pipeline.addLast(new ChannelInboundHandlerAdapter() {
+						@Override
+						public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+							if(msg instanceof FullHttpRequest) {
+								FullHttpRequest fullHttpRequest = (FullHttpRequest) msg;
+								String uri = fullHttpRequest.uri();
+								if (!uri.equals(ENDPOINT)) {
+									// 访问的路径不是 websocket的端点地址，响应404
+									ctx.channel().writeAndFlush(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND))
+										.addListener(ChannelFutureListener.CLOSE);
+									return ;
+								}
+							}
+							super.channelRead(ctx, msg);
+						}
+					});
 					pipeline.addLast(new WebSocketServerCompressionHandler());
-					pipeline.addLast(new WebSocketServerProtocolHandler("/websocket", null, true));	// uri,子协议,是否支持扩展
+					pipeline.addLast(new WebSocketServerProtocolHandler(ENDPOINT, null, true));	// uri,子协议,是否支持扩展
 					pipeline.addLast(new SimpleChannelInboundHandler<WebSocketFrame>() {
 						@Override
 						protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) throws Exception {

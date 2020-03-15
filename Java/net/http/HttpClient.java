@@ -56,4 +56,6 @@ HttpClient
 	# 实例方法
 		WebSocket.Builder newWebSocketBuilder()
 
+			* 创建一个 WebScoket 的Builder
+
 
