@@ -1,8 +1,20 @@
 -------------------------
 HttpClient
 -------------------------
-	# 抽象类
+	# 抽象类, 主要负责管理如下组件
+		* 验证器
+		* cookie管理器
+		* 执行器
+		* 重定向策略
+		* 请求优先级
+		* 代理选择器
+		* SSL上下文
+		* SSL参数
+		* HTTP版本
+		
 
+		* 没有setter方法, 它是不可变的
+	
 	# 静态方法
 		 public static HttpClient newHttpClient()
 		 public static Builder newBuilder()
@@ -32,9 +44,16 @@ HttpClient
 				HTTP_2
 
 		abstract Optional<Executor> executor()
+
 		abstract <T> HttpResponse<T> send(HttpRequest request, HttpResponse.BodyHandler<T> responseBodyHandler)
+			* 同步请求
+
 		abstract <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, BodyHandler<T> responseBodyHandler)
 		abstract <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, BodyHandler<T> responseBodyHandler, PushPromiseHandler<T> pushPromiseHandler)
+			* 异步请求, 返回 CompletableFuture
+
 	
 	# 实例方法
 		WebSocket.Builder newWebSocketBuilder()
+
+
