@@ -101,4 +101,13 @@ Spring-Boot 注解			|
 			@Profile("dev")  // 只有激活了dev配置文件时,才会加载该controller
 			@RestController
 			public class ProdController
-			
+		
+		# 在程序中, 通过代码来判断当前的环境
+			@Autowired
+			Environment environment;
+
+			// 构建2个运行环境
+			Profiles profiles = Profiles.of("dev", "test");
+
+			// 判断当前环境, 是否在指定的运行环境中
+			boolean accept = environment.acceptsProfiles(profiles);
