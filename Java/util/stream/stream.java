@@ -343,8 +343,12 @@ JAVA8新特性-collector		|
 	
 		Collectors.joining(String a,String b,String c);
 			* 同上,不过会在连接的开头加上 b,结尾加上 c,每个连接点之间加上 a
-
 		
-			
-		
-
+		Collectors.toUnmodifiableSet()
+		Collectors.toUnmodifiableList():
+		Collectors.toUnmodifiableMap(Function, Function):
+		Collectors.toUnmodifiableMap(Function, Function, BinaryOperator):
+			* 转换为不能修改的集合
+					
+		Collectors.teeing(Collector<? super T, ?, R1> downstream1,Collector<? super T, ?, R2> downstream2,BiFunction<? super R1, ? super R2, R> merger)
+			* 用于聚合两个downstream的结果

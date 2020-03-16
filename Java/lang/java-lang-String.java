@@ -75,3 +75,8 @@ String					|
 		* 以Stream的形式返回, 字符中的每一行
 	
 
+	<R> R transform(Function<? super String, ? extends R> f)
+		* 把字符串流转换为其他的对象
+
+	String indent(int n)
+		* 调整每一行的缩进
