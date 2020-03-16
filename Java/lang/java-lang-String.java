@@ -52,3 +52,26 @@ String					|
 		
 		* JDK6 及其以前, 字符串常量池在永久区中
 		* JDK7 及其以后, 字符串常量池被移到了堆中
+	
+	boolean isEmpty()
+		* 是否是空字符串
+	
+	boolean isBlank()
+		* 判断字符串是否全是空白字符
+	
+	String strip()
+	String trim()
+		* 去除首尾的空格
+		* 这俩方法体一摸一样...
+	
+	String stripLeading()
+	String stripTrailing()
+		* 去除首尾的空格
+	
+	String repeat(int count)
+		* 把当前字符串重复多少次后返回
+	
+	Stream<String> lines()
+		* 以Stream的形式返回, 字符中的每一行
+	
+

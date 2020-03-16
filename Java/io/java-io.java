@@ -193,6 +193,7 @@ OutputStreamWriter			|
 		PrintWriter(Writer out, boolean autoFlush)
 		PrintWriter(String fileName)
 		PrintWriter(String fileName, String csn)
+		PrintWriter(OutputStream out, boolean autoFlush, Charset charset) 
 
 	PrintStream
 		PrintStream(File file)
@@ -297,6 +298,9 @@ ByteArrayOutputStream		|
 	# 方法
 		void writeTo(OutputStream out);
 			* 把当前流中的数据都写入到一个输出流
+		
+		String toString(Charset charset)
+			* 把字节数据, 以指定编码转换为字符串
 	
 	#　Demo
 		* 把内存中的字节,响应给客户端
