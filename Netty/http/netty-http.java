@@ -16,3 +16,8 @@ http								|
 			|-DefaultFullHttpRequest
 		FullHttpResponse
 			|-DefaultFullHttpResponse
+
+
+------------------------------------
+http - server
+------------------------------------
