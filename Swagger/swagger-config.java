@@ -52,7 +52,9 @@ swagger-Docket
 			// 根据文档类型创建 Docket
 			Docket docket = new Docket(DocumentationType.SWAGGER_2);
 			docket.additionalModels(first, remaining)
-			docket.alternateTypeRules(alternateTypeRules)
+			docket.alternateTypeRules(AlternateTypeRule... alternateTypeRules)
+				* 添加模型替换规则
+
 			docket.apiDescriptionOrdering(apiDescriptionOrdering)
 			docket.apiInfo(apiInfo);
 				* 设置 apiInfo
@@ -60,7 +62,10 @@ swagger-Docket
 			docket.apiListingReferenceOrdering(apiListingReferenceOrdering)
 			docket.configure(builder)
 			docket.consumes(consumes)
-			docket.directModelSubstitute(clazz, with)
+			docket.directModelSubstitute(final Class clazz, final Class with)
+				* 直接用提供的替换项替换模型类
+				* 例如:
+					directModelSubstitute(LocalDate.class, Date.class)
 
 			docket.enable(externallyConfiguredFlag)
 			docket.isEnabled()
@@ -85,12 +90,14 @@ swagger-Docket
 			docket.ignoredParameterTypes(classes)
 			
 			docket.operationOrdering(operationOrdering)
-			docket.pathMapping(path)
+			docket.pathMapping(String path)
+				* 可扩展性机制, 用于将servlet路径映射(如果有)添加到api根路径
+
 			docket.pathProvider(pathProvider)
 			docket.produces(produces)
 			docket.protocols(protocols)
 			docket.securityContexts(securityContexts)
-			docket.securitySchemes(securitySchemes)
+			docket.securitySchemes(List<? extends SecurityScheme> securitySchemes)
 
 			docket.select()
 				.apis(RequestHandlerSelectors.basePackage("io.springboot.swagger.controller"))
@@ -100,7 +107,10 @@ swagger-Docket
 
 			docket.supports(delimiter)
 			docket.tags(first, remaining)
-			docket.useDefaultResponseMessages(apply)
+			docket.useDefaultResponseMessages(boolean apply)
+				* 允许忽略预定义的响应消息默认值
+				* 默认 true
+				
 	
 
 	# 扫描器和过滤器的直接实现
@@ -118,6 +128,8 @@ swagger-Docket
 			static Predicate<String> ant(final String antPattern)
 	
 
+	
+	# 一个 Swagge的 Docket对象, 就是一个系列的文档, 通过 groupName 来区分
 
 ----------------------------------
 swagger-Configuration
@@ -155,6 +167,7 @@ public class SwaggerConfiguration {
 
 		// 根据文档类型创建 Docket
 		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("Swagger 接口文档")
 				// api info
 				.apiInfo(apiInfo)
 				// 启用
