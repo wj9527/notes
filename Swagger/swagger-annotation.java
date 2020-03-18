@@ -80,9 +80,13 @@
 	* 给controller方法添加的注释
 
 	String value();
+		* 名字
 	String notes() default "";
+		* 描述
 	String[] tags() default "";
+		* 标签
 	Class<?> response() default Void.class;
+		* 手动设置响应类型
 	String responseContainer() default "";
 	String responseReference() default "";
 	String httpMethod() default "";
