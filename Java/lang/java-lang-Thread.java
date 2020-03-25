@@ -73,5 +73,8 @@ Thread 的中断机制			|
 	# 此线程在运行中
 		* 此时如果别的进程调用此进程(Thread 对象)的 interrupt()方法,不会收到提醒,但是此线程的 "中断" 会被设置为 true
 		* 可以通过 isInterrupted() 查看并作出处理
-		
 
+	# 总结
+		interrupt()		实例方法	返回 void		中断调用该方法的当前线程
+		interrupted()	静态方法	返回 boolean	检测当前线程是否被中断，如已被中断过则清除中断状态
+		isInterrupted()	实例方法	返回 boolean	检测调用该方法的线程是否被中断，不清除中断标记
