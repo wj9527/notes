@@ -73,3 +73,18 @@ Spring-boot websocket整1	|
 			}
 
 		}
+	
+	# 可以手动的注册端点, 不使用 Spring 扫描
+		@Configuration
+		public class WebSocketConfiguration {
+			
+			@Bean  
+			public ServerEndpointExporter serverEndpointExporter (){  
+				ServerEndpointExporter serverEndpointExporter =  new ServerEndpointExporter();
+				// 添加多个标识了 @ServerEndpoint 注解的端点类
+				serverEndpointExporter.setAnnotatedEndpointClasses(TestChannel.class);
+				return serverEndpointExporter;
+			}  
+		}
+
+		* 不需要在 TestChannel 类上声明 @Component
