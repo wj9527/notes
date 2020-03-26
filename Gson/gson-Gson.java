@@ -36,7 +36,7 @@ Gson
 
 		JsonElement toJsonTree(Object src)
 		JsonElement toJsonTree(Object src, Type typeOfSrc)
-			* 转换为JSON树
+			* 把指定的对象, 转换为jsonElement
 
 		String toString()
 

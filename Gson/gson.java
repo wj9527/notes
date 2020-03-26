@@ -25,6 +25,7 @@ Gson
 			|-JsonNull
 			|-JsonObject
 			|-JsonPrimitive
+		JsonParser
 		
 ----------------------------
 Gson - 基本数据类型
@@ -48,10 +49,6 @@ Gson - 基本数据类型
 		String[]	retVal = gson.fromJson("[\"abc\"]", String[].class);// ["abc"]
 		int[]		retVal = gson.fromJson("[1, 2, 3]", int[].class);	// [1, 2, 3]
 	
-----------------------------
-Gson - 对象
-----------------------------
-
 	
 ----------------------------
 Gson - 泛型
@@ -78,3 +75,14 @@ Gson - 泛型
 
 		// 返序列化字符串为对象
 		List<String> target2 = gson.fromJson(json, listType);
+
+----------------------------
+JsonParser
+----------------------------
+	# 用于解析json字符串为 JsonElement
+	# 静态方法
+		static JsonElement parseString(String json)
+		static JsonElement parseReader(Reader reader)
+		static JsonElement parseReader(JsonReader reader)
+	
+		
