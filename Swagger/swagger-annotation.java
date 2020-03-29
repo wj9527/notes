@@ -101,6 +101,12 @@
 	Extension[] extensions() default @Extension(properties = @ExtensionProperty(name = "", value = ""));
 	boolean ignoreJsonView() default false;
 
+@ApiIgnore
+	
+	* 可以标识在类, 方法, 参数上, 用于在文档中忽略该controller, action, param
+
+	String value() default "";
+
 @ApiParam
 	* 给controller方法的请求参数添加的注释
 
@@ -120,3 +126,5 @@
 	boolean allowEmptyValue() default false;
 	boolean readOnly() default false;
 	String collectionFormat() default "";
+
+
