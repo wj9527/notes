@@ -84,6 +84,10 @@ LocalDate-api				|
 		
 		LocalDate withDateOfMonth(int day);
 			* 同上,返回的是不同月份的 LocalDate
+		
+		LocalDateTime atStartOfDay()
+		ZonedDateTime atStartOfDay(ZoneId zone)
+			* 返回今日开始的LocalDateTime 
 
 	# 格式化先关
 		String formar(DateTimeFormatter matter);

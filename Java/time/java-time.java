@@ -29,7 +29,7 @@ java.time demos			|
 ------------------------
 
 // 当天开始,结束
-LocalDateTime minDay = LocalDateTime.of(LocalDate.now(),LocalTime.MIN);
+LocalDateTime minDay = LocalDateTime.of(LocalDate.now(),LocalTime.MIN); // LocalDateTime minDay = LocalDate.now().atStartOfDay();
 LocalDateTime maxDay = LocalDateTime.of(LocalDate.now(),LocalTime.MAX);
 
 // 本周开始,结束
