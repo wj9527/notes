@@ -6,53 +6,61 @@ Spring boot-异常处理1		|
 	1,自动异常处理 Controller ,实现接口: org.springframework.boot.web.servlet.error.ErrorController
 	2,覆写方法
 		
+		import javax.servlet.http.HttpServletRequest;
+		import javax.servlet.http.HttpServletResponse;
+
+		import org.slf4j.Logger;
+		import org.slf4j.LoggerFactory;
+		import org.springframework.http.HttpStatus;
+		import org.springframework.http.ResponseEntity;
+		import org.springframework.stereotype.Controller;
+		import org.springframework.web.bind.annotation.RequestMapping;
+		import org.springframework.web.util.WebUtils;
+
+		/**
+		 * 
+		 * 处理静态资源 404 之类的异常
+		 * @author Administrator
+		 *
+		 */
 		@Controller
-		public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
+		@RequestMapping("/error")
+		public class ErrorHandler implements org.springframework.boot.web.servlet.error.ErrorController {
 
-			private static final Logger LOGGER = LoggerFactory.getLogger(ErrorController.class);
-
-			/**
-			 * 错误页面的目录/路径
-			 * classpatg:/templates/error/error.html
-			 */
-			private static final String ERROR_PATH = "error";
-
-			/**
-			 * 异常的时候,系统会自动跳转到这个路径,并且会在 request 域中存放很多关于异常的信息
-			 * 可以根据异常状态码来判断是什么异常
-			 * 也可以根据请求类型(ajax)决定是返回ModelAndView还是直接响应Ajax数据
-			 * @param modelAndView
-			 * @param request
-			 * @param response
-			 * @return
-			 */
-			@RequestMapping(value = ERROR_PATH,method = RequestMethod.GET)
-			public ModelAndView error(ModelAndView modelAndView,
-									  HttpServletRequest request,
-									  HttpServletResponse response){
-				Class exceptionType = (Class) request.getAttribute("javax.servlet.error.exception_type");   //异常类型
-				Throwable exception = (Throwable) request.getAttribute("javax.servlet.error.exception");    //异常类,只有在 500 异常的清空下,该值不为空
-				Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");     //HTTP异常状态码
-				String servletName = (String) request.getAttribute("javax.servlet.error.servlet_name");     //异常的Servlet
-				String erroPath = (String) request.getAttribute("javax.servlet.error.request_uri");         //发生了异常的请求地址(并不是当前地址-request.getRequestURI())
-				LOGGER.error("服务器异常, erroPath={}, message={}",erroPath,exception.getMessage());
-				/**
-				 * 防止部分浏览器、路由器（如小米）等劫持不显示自己的错误页面，强制将code设置为200
-				 * 但这样ajax就无法检测错误状态
-				 */
-				response.setStatus(HttpServletResponse.SC_OK);
-				return new ModelAndView(ERROR_PATH + "/error");
-			}
-
-			/**
-			 * 异常的时候,系统会自动调用这个方法,获取到异常的路径.然后对该路径执行请求
-			 * @return
-			 */
+			static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
+			
 			@Override
 			public String getErrorPath() {
-				return ERROR_PATH;
+				return "/error";
+			}
+			
+			@RequestMapping
+			public Object onError (HttpServletRequest request, HttpServletResponse response) {
+				
+				Integer statusCode = null;
+				
+				String forwardServletPath = (String) request.getAttribute(WebUtils.FORWARD_SERVLET_PATH_ATTRIBUTE);	
+				
+				if (forwardServletPath != null) {
+					/**
+					 * 非直接访问，由其他 Servlet forward过来
+					 */
+					Class<?> exceptionType = (Class<?>) request.getAttribute(WebUtils.ERROR_EXCEPTION_TYPE_ATTRIBUTE);   //异常类型
+					Throwable exception = (Throwable) request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE);    		//异常类,只有在 500 异常的清空下,该值不为空
+					statusCode = (Integer) request.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE);     				//HTTP异常状态码
+					String erroPath = (String) request.getAttribute(WebUtils.ERROR_REQUEST_URI_ATTRIBUTE);         		//发生了异常的请求地址(并不是当前地址-request.getRequestURI())
+					
+					LOGGER.error("exceptionType={}, exception={}, statusCode={}, erroPath={}", exceptionType, exception, statusCode, erroPath);
+				}
+				
+				return ResponseEntity.status(statusCode == null ? HttpStatus.NOT_FOUND.value() : statusCode).build();
 			}
 		}
+
+	
+	* @ControllerAdvice 不能处理到静态资源路径的 404 异常
+	* 可以使用这种方式处理
+	* 要注意拦截器 放行 /error 路径
 
 ----------------------------
 Spring boot-异常处理2		|
