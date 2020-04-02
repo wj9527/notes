@@ -76,7 +76,30 @@
                 return starDTO;
             }).collect(Collectors.toList());
 
-	
+		
+		* Qbean 可以有多个
+			QOrder qOrder = QOrder.order;
+			QUser qUser = QUser.user;
+			
+			// 封装订单信息
+			QBean<OrderDTO> orderQBean = Projections.bean(OrderDTO.class, qOrder.id, qOrder.amount, qOrder.orderNumber,
+											qOrder.createdDate, qOrder.paymentDate, qOrder.snapshot, qOrder.state);
+			
+			// 封装用户信息
+			QBean<User> userQBean = Projections.bean(User.class, qUser.account, qUser.id, qUser.avatar, qUser.name);
+			
+			JPAQuery<Tuple> jpaQuery = jpaQueryFactory.select(orderQBean, userQBean)
+				.from(qOrder)
+				.innerJoin(qUser).on(qOrder.userId.eq(qUser.id))
+				.orderBy(qOrder.createdDate.desc());
+			
+			QueryResults<Tuple> queryResults = jpaQuery.fetchResults();
+			List<OrderDTO> results = queryResults.getResults().stream().map(i -> {
+				// 从结果集Tuple中根据Qbean获取到数据
+				OrderDTO orderDTO = i.get(orderQBean);
+				orderDTO.setUser(i.get(userQBean));
+				return orderDTO;
+			}).collect(Collectors.toList());
 
 		
 	
