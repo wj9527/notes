@@ -279,3 +279,16 @@ function formEncode(form, format='form') {
 const retVal = formEncode(document.querySelector('form'), 'json');
 console.log(retVal);
 
+----------------------------------------
+对数据进行html编码
+----------------------------------------
+/**
+ * 对数据进行html编码
+ * @param input
+ * @returns
+ */
+function htmlEscape(input) {
+	const div = document.createElement("div");
+	div.innerText = input;
+	return div.innerHTML;
+}
