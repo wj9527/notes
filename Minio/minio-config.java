@@ -25,4 +25,5 @@
 		
 		* 在配置目录下有一个 certs 目录, 用于存放证书
 		* private.key 存储私钥, public.crt 存储公钥, 名称不能修改
-	
+			[root@localhost]# cp ./fullchain.pem /mnt/config/certs/public.crt
+			[root@localhost]# cp ./privkey.pem /mnt/config/certs/private.key
