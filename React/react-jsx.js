@@ -60,6 +60,12 @@ jsx
 		* 可以过滤掉某些属性先
 			const { kind, ...other } = props;
 			return <button {...other} />;  // button有keind属性以外的所有属性
+		
+		* 连 children 属性, 都可以通过这种方式来传递
+			function Foo(props){
+				return <div {...props}></div>
+			}
+			ReactDOM.render(<Foo>Hello</Foo>, element); // <div>Hello</div>
 
 ------------------
 jsx - 条件渲染
