@@ -90,6 +90,11 @@ GsonBuilder
 			* 默认不会序列化 null 字段
 
 		serializeSpecialFloatingPointValues()
+			* 是否允许序列化非json标准中定义的浮点数据, 如果不设置的话, 序列化非标准中定义的数据, 会抛出异常
+				例如 java 中的: Float.POSITIVE_INFINITY // 这个值是不能符合 JSON 标准的
+			
+			* 方法只会影响序列化结果, 不会影响反序列的结果
+		
 			
 		setDateFormat(int style)
 		setDateFormat(int dateStyle, int timeStyle)
@@ -113,7 +118,7 @@ GsonBuilder
 				String translateName(Field f);
 
 		setLenient()
-			* 是否开始宽松模式
+			* 解析json的试试, 是否开始宽松模式
 			* 默认是严格模式, 宽松模式, 可以解析部分不是很标准的json字符串
 
 		setLongSerializationPolicy(LongSerializationPolicy serializationPolicy)
