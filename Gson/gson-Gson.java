@@ -72,6 +72,9 @@ GsonBuilder
 			* 如果没有标识 @Expose(serialize = true, deserialize = true) , 则不会进行反序列化和序列化
 
 		generateNonExecutableJson()
+			* 生成不可执行的json
+			* 在前面多了: ')]}' 这4个字符
+
 		registerTypeAdapter(Type type, Object typeAdapter)
 			* 为指定的类型, 定制序列化/反序列化策略
 			* typeAdapter需要 实现 JsonSerializer 或 JsonDeserializer 接口
@@ -110,7 +113,15 @@ GsonBuilder
 				String translateName(Field f);
 
 		setLenient()
+			* 是否开始宽松模式
+			* 默认是严格模式, 宽松模式, 可以解析部分不是很标准的json字符串
+
 		setLongSerializationPolicy(LongSerializationPolicy serializationPolicy)
+			* 枚举, 设置 long/Long 类型的序列化策略
+				DEFAULT
+				STRING
+			* 可能是考虑到js之类的语言, 处理Java的long类型数据, 可能会丢失经度, 所以可以考虑用 String
+
 		setPrettyPrinting()
 			* 序列化后, 格式化json字符串
 

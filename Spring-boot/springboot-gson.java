@@ -34,7 +34,11 @@ Gson
 		spring.gson.long-serialization-policy=
 		spring.gson.pretty-printing=
 		spring.gson.serialize-nulls=
-	
+		
+
+		* 参考文档
+			https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#json-properties
+
 	# SpringBoot 通过 GsonAutoConfiguration 类来自动的装载 Gson
 		* 可以在组件中注入
 			@Autowired
