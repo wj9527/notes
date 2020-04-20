@@ -108,7 +108,7 @@ swagger-Docket
 			docket.supports(delimiter)
 			docket.tags(first, remaining)
 			docket.useDefaultResponseMessages(boolean apply)
-				* 允许忽略预定义的响应消息默认值
+				* 是否是否默认的响应状态码
 				* 默认 true
 				
 	
