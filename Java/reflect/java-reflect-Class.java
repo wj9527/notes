@@ -95,8 +95,6 @@ java.reflect.Class	 |
 				Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
 				Stream.of(actualTypeArguments).forEach(System.out::println);
 			}
-
-	
 	
 
 ---------------------

@@ -55,13 +55,20 @@ GsonBuilder
 			* 抽象方法
 				 boolean shouldSkipField(FieldAttributes f);
 				 boolean shouldSkipClass(Class<?> clazz);
-			
+		setExclusionStrategies(ExclusionStrategy... strategies)
+			* 同上, 它可以一次性添加多个, 并且不区分序列化,反序列化
+
 		GsonBuilder disableHtmlEscaping()
-			* 禁止html编码
+			* 禁止html编码(实际上是用 Unicode 编码, 对html字符进行编码)
 			* 默认会对html进行编码
 
 		disableInnerClassSerialization()
-			* 序列化时, 排除内部类
+			* 序列化时, 如果对象的属性, 是内部类, 则不会序列化(不是静态的内部类)
+				public class GsonTest {
+					private Foo foo = new Foo();  // Gson.toJson(new GsonTest()), foo属性不会被序列化
+					public class Foo { ... } // 内部类
+				}
+			* 默认会序列化内部类
 
 		enableComplexMapKeySerialization()
 		excludeFieldsWithModifiers(int... modifiers)
@@ -73,7 +80,7 @@ GsonBuilder
 
 		generateNonExecutableJson()
 			* 生成不可执行的json
-			* 在前面多了: ')]}' 这4个字符
+			* 在前面多了4个字符: )]}'
 
 		registerTypeAdapter(Type type, Object typeAdapter)
 			* 为指定的类型, 定制序列化/反序列化策略
@@ -83,8 +90,14 @@ GsonBuilder
 				JsonDeserializer
 					public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 
-		registerTypeAdapterFactory(TypeAdapterFactory factory)
 		registerTypeHierarchyAdapter(Class<?> baseType, Object typeAdapter)
+			* 同上, 但是这个方法注册的 baseType 类型, 对其子类也生效
+
+		registerTypeAdapterFactory(TypeAdapterFactory factory)
+			* 为指定的类型, 定制序列化/反序列化策略的工厂类
+			* 就一个抽象方法
+				<T> TypeAdapter<T> create(Gson gson, TypeToken<T> type);
+		
 		serializeNulls()
 			* 序列化 null 字段
 			* 默认不会序列化 null 字段
@@ -99,9 +112,23 @@ GsonBuilder
 		setDateFormat(int style)
 		setDateFormat(int dateStyle, int timeStyle)
 		setDateFormat(String pattern)
-			* 设置日期的格式化
+			* 设置 Date 类型日期的格式化
+			* Date 的默认情况下, 会被序列化为字符串: "createdDate": "Apr 21, 2020 10:50:45 AM"
+			* LocalDateTime 的默认情况下, 会被序列化为这种‘奇怪’的格式:
+				"createdDate": {
+					"date": {
+					  "year": 2020,
+					  "month": 4,
+					  "day": 21
+					},
+					"time": {
+					  "hour": 10,
+					  "minute": 49,
+					  "second": 10,
+					  "nano": 876000000
+					}
+				  }
 
-		setExclusionStrategies(ExclusionStrategy... strategies)
 		setFieldNamingPolicy(FieldNamingPolicy namingConvention)
 			* 设置字段名称的策略, 枚举
 				FieldNamingPolicy
