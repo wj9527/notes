@@ -50,6 +50,9 @@ https抓包失败处理
 
 	* 执行完之后 再去重新配置一次 就可以正确安装证书了
 
+	# 下载 FiddlerCertMaker & 执行
+		http://www.enhanceie.com/dl/FiddlerCertMaker.exe
+
 
 ----------------------
 firefox https抓包
