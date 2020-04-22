@@ -27,3 +27,14 @@ Annotation
 		double value();
 
 		* 版本号注解, 标识在类, 字段上
+	
+	@JsonAdapter 
+
+		Class<?> value();
+			* 指定 JsonDeserializer 或者 JsonSerializer 的实现类
+			* 用于自定义序列化或者反序列化的策略
+
+		boolean nullSafe() default true;
+
+		* 通过注解指定序列化策略, 标识在类, 字段上
+			
