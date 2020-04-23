@@ -63,13 +63,32 @@ context
 		* 这个函数接收当前的 context 值, 返回一个 React 节点
 		* 传递给函数的 value 值等同于往上组件树离这个 context 最近的 Provider 提供的 value 值
 		* 如果没有对应的 Provider, value 参数等同于传递给 createContext() 的 defaultValue
-
+	
+		* 在创建Context的时候, 参数是对象, 属性有多少个, 那么在 Consumer 回调函数函数中, 属性就有多少个(解构赋值)
+		* 可以利用这种方式, 完成在嵌套很深的组件树中更新 context
+			const ThemeContext =  React.createContext({ // 俩属性
+				theme: themes.light,		
+				toggleTheme: () => {}	
+			});
+			<ThemeContext.Consumer>
+            {
+                ({theme, toggleTheme}) => { // 俩属性
+                    return (
+                        <button onClick={toggleTheme} style={{backgroundColor: theme.background}}>Toggle Theme</button>
+                    )
+                }
+            }
+			</ThemeContext.Consumer>
 	
 	# 总结
-		使用 React.createContext(defaultValue); 创建默认值的 Context
-		设置组件类属性: contextType 值为指定的 Context;
-		Provider	用来覆写默认的Context值
-		Consumer	用来监听属性值的变化
+		* 定义
+			使用 React.createContext(defaultValue); 创建默认值的 Context
+			Provider	用来覆写默认的Context值
+		
+		* 使用
+			设置组件类属性: contextType 值为指定的 Context, 在组件中通过 this.context 读取到值
+			通过 Consumer, 定义函数体来读取到值
+
 
 ------------------------------
 context - api
