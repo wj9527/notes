@@ -37,6 +37,8 @@ Gson
 		JsonElement toJsonTree(Object src)
 		JsonElement toJsonTree(Object src, Type typeOfSrc)
 			* 把指定的对象, 转换为jsonElement
+			* 如果是json字符串, 那么转换后的对象一定是: JsonPrimitive
+			* 需要把字符串, 解析为json树, 一定要用 -> JsonParser
 
 		String toString()
 
