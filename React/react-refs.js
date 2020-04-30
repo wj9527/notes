@@ -1,5 +1,5 @@
 -------------------
-refs转发
+refs
 -------------------
 	
 	# 基本的创建, 绑定, 访问
@@ -62,15 +62,6 @@ refs转发
 
 			ReactDOM.render(<Test/>, element);
 	
-	# 将 DOM Refs 暴露给父组件
-		* 通常不建议这样做，因为它会打破组件的封装
-
-		* 如果使用 16.3 或更高版本的 React, 这种情况下推荐使用 ref 转发
-		* Ref 转发使组件可以像暴露自己的 ref 一样暴露子组件的 ref
-
-		* 版本过低的话, 使用这个方法: https://gist.github.com/gaearon/1a018a023347fe1c2476073330cc5509
-
-
 
 	# 回调 Refs
 		* React 支持另一种设置 refs 的方式，称为“回调 refs”。
@@ -135,3 +126,51 @@ refs转发
 		* 如果 ref 回调函数是以内联函数的方式定义的，在更新过程中它会被执行两次，第一次传入参数 null，然后第二次会传入参数 DOM 元素。
 		* 这是因为在每次渲染时会创建一个新的函数实例，所以 React 清空旧的 ref 并且设置新的。
 		* 通过将 ref 的回调函数定义成 class 的绑定函数的方式可以避免上述问题，但是大多数情况下它是无关紧要的。
+
+-------------------
+refs转发
+-------------------
+	# 将 DOM Refs 暴露给父组件
+		* 通常不建议这样做，因为它会打破组件的封装
+
+		* 如果使用 16.3 或更高版本的 React, 这种情况下推荐使用 refs 转发
+		* Ref 转发使组件可以像暴露自己的 ref 一样暴露子组件的 ref
+
+		* 版本过低的话, 使用这个方法: https://gist.github.com/gaearon/1a018a023347fe1c2476073330cc5509
+	
+
+	# 创建转发 React.forwardRef((props, ref) => {return ....});
+		const FancyButton = React.forwardRef((props, ref) => {
+		  return (
+			// 把父级组件的ref，绑定到button节点
+			<button ref={ref} {...props}></button>
+		  )
+		})
+
+		class App extends React.Component {
+		  constructor(props){
+			super(props);
+			// 创建ref
+			this.ref = React.createRef();
+		  }
+		  onClick = () => {
+			// 读取到子组件的ref
+			const node = this.ref.current;
+			console.log(node); // <button>点击我</button>
+		  }
+		  render(){
+			// 把ref给子组件
+			return <FancyButton ref={this.ref} onClick={this.onClick}>点击我</FancyButton>
+		  }
+		}
+
+		ReactDOM.render(<App></App>, element);
+
+		* React.forwardRef 参数是一个函数, 该函数第一个参数就是父组件给的 props, 第二个参数就是 ref
+		* 该函数返回的是可以组件, 也可以是html, ref 都可以进行绑定
+	
+--------------------------
+在高阶组件中转发 refs
+--------------------------
+
+

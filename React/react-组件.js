@@ -275,4 +275,32 @@
 
 
 		* 这能保证 tree shaking 不会出错, 并且不必引入不需要的组件
-	
+
+----------------------------	
+Fragments
+----------------------------
+	# 组件的 render, 只能返回一个节点, 但是一次性需要返回多个, 而又不能用html节点, 就用 Fragments
+		render (){
+			return (
+				<React.Fragment>
+					<td>Hello</td>
+					<td>World</td>
+				</React.Fragment>
+			)
+		}
+
+		* Fragment 可以有 key 的声明
+	 
+	# 可以使用段语法 <> </>
+		render (){
+			return (
+				<>
+					<td>Hello</td>
+					<td>World</td>
+				</>
+			)
+		}
+
+		* 注意, 段语法不支持 key 属性
+		
+			
