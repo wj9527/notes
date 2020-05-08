@@ -17,3 +17,23 @@ React 表单
 			ReactDOM.render(<input value={null} />, mountNode);
 	
 
+	# 在非受控组件的默认值
+		* 表单元素上的 value 将会覆盖 DOM 节点中的值
+		* 在非受控组件中，需要 React 能赋予组件一个初始值，但是不去控制后续的更新。
+		* 在这种情况下, 你可以指定一个 defaultValue 属性，而不是 value。
+			render() {
+			  return (
+				<form onSubmit={this.handleSubmit}>
+				  <label>
+					Name:
+					<input
+					  defaultValue="Bob"
+					  type="text"
+					  ref={this.input} />
+				  </label>
+				  <input type="submit" value="Submit" />
+				</form>
+			  );
+			}
+		
+			* 同样，<input type="checkbox"> 和 <input type="radio"> 支持 defaultChecked，<select> 和 <textarea> 支持 defaultValue。
