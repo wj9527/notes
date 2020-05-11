@@ -3,8 +3,12 @@ mongodb						  |
 ------------------------------
 	# 地址
 		https://mongodb.com/
+		https://www.mongodb.com/zh
 		https://docs.mongodb.com/
 		https://github.com/mongodb/mongo
+	
+	# 相关的教程
+		https://mongoing.com/docs4.2
 
 ------------------------------
 mongodb	- 目录结构			  |
