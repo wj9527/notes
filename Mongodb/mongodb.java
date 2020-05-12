@@ -9,6 +9,12 @@ mongodb						  |
 	
 	# 相关的教程
 		https://mongoing.com/docs4.2
+		https://www.runoob.com/mongodb/mongodb-tutorial.html
+	
+	# 版本号的含义: x.y.z
+		y 奇数的时候, 表示是开发版, 偶数的时候, 表示为稳定版
+		z 是修正版本号, 越大越好
+
 
 ------------------------------
 mongodb	- 目录结构			  |
@@ -44,10 +50,10 @@ mongodb	- 服务启动			  |
 		
 		--config
 			* 指定配置文件的地址
-		
 
+		--dbpath
+			* 指定数据存储目录
 
-	
 
 ------------------------------
 mongodb	- 客户端的使用		  |

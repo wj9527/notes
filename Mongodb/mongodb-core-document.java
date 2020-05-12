@@ -21,11 +21,19 @@ document - 基本命令
 		* 执行成功后返回插入成功的文档数量
 			WriteResult({"nInserted": 1});
 			
-	db.[collection].remove([condition]);
+	db.[collection].remove([condition], [config]);
 		* 根据条件移除数据
 		* 如果没有条件, 则移除所有数据
-
-
+		
+		* config
+			{
+				justOne: false,
+					* 如果设为 true 或 1，则只删除一个文档
+					* 如果不设置该参数，或使用默认值 false，则删除所有匹配条件的文档。
+				writeConcern: <document>
+					* 可选，抛出异常的级别。
+			}
+		
 -------------------------
 document - 更新
 -------------------------
@@ -37,44 +45,19 @@ document - 更新
 			{
 				upsert: true,
 					*  可选，如果不存在update的记录，是否插入objNew ,true为插入，默认是false，不插入。
-
 				multi: true,
 					* 可选，默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。
-
 				writeConcern: <document>
 					* 可选，抛出异常的级别。
 			}
 	
-	
--------------------------
-document - 查询相关
--------------------------
-	# 基本的查询
-		db.[collection].find([condition])
-			* 根据条件检索出结果
-			* 如果没有条件, 则检索出所有的数据
-			
-			* 该方法返回的对象是一个 '迭代器', 可以使用 while 来进行迭代
-				const it = db.foo.find();
-				while (it.hasNext()) {
-					printjson(it.next());
-				}
-		
-	
-	# 分页
-		db.[collection].find([condition]).limit([rows])
-			* 使用 limit 方法, 来限制结果集数量
-	
-	# 统计数量
-		db.[collection].count([condition]);
-			* 根据条件统计文档的数量
-			* 如果没有条件, 则统计所有的文档
+	db.[collection].save([document], [config]);
+		* 通过传入的文档来替换已有文档
 
-	# 排序
-		db.[collection].find().sort([row])
-			* 通过 sort 指定排序的字段以及策略
-				db.users.find().sort({name: -1}) // 根据name字段，逆序排序
-			
-			* 排序策略。-1: 逆序，1:升序
+		* config 选项
+			{
+				writeConcern: <document>
+					* 可选，抛出异常的级别。 
+			}
 		
 	
