@@ -36,6 +36,8 @@ document - 查询相关
 				db.users.find().sort({name: -1}) // 根据name字段，逆序排序
 			
 			* 排序策略。-1: 逆序，1:升序
+			* 如果它和 skip() 一起使用, 是先排序, 再分页
+
 	
 	# 投影查询, 仅仅检索部分列
 		db.[collection].find([condition], [props])
@@ -45,8 +47,7 @@ document - 查询相关
 		
 		* 仅仅查询对象的某些属性
 			db.user.find({}, {name: 1, _id: 0}) // 仅仅查询name属性，连id都不要
-		
-		
+	
 
 -------------------------
 document - 聚合检索
@@ -62,6 +63,11 @@ document - 条件语句
 		大于				{<key>:{$gt:<value>}}	db.col.find({"likes":{$gt: 50}}).pretty()		where likes > 50
 		大于或等于			{<key>:{$gte:<value>}}	db.col.find({"likes":{$gte: 50}}).pretty()		where likes >= 50
 		不等于				{<key>:{$ne:<value>}}	db.col.find({"likes":{$ne: 50}}).pretty()		where likes != 50
+		包含				{<key>:{$in:[<value>]}}	db.col.find({"likes":{$in: [10]}}).pretty()		where likes IN (10)
+	
+	# 正则查询
+		* 正则, 通过js的 /reg/ 正则来匹配数据
+			db.user.find({name: /^\d+$/});  // 匹配名称是数字的记录
 	
 	# $type 操作符
 		* $type操作符是基于BSON类型来检索集合中匹配的数据类型，并返回结果。
@@ -92,14 +98,17 @@ document - 条件语句
 			db.users.find({name: {$type: 2}});		// 同上
 
 	
-	# 条件关系
+	# AND条件关系
 		* AND 关系, 默认对象中的属性都是 AND 条件
 			db.col.find({name: "1", age: 23}); // WHERE name = '1' AND age = 23;
 		
-		* OR 关系
-			db.col.find({$or: [{name: "v"}, {name: "z"}]}); // WHERE name = 'v' OR `name` = `z`
+		* 可以使用 $and
+			db.col.find({$and: [{name: 'Kevin'}, {age: 27}]});
 		
-		* 组合关系
+	# OR 条件关系
+		db.col.find({$or: [{name: "v"}, {name: "z"}]}); // WHERE name = 'v' OR `name` = `z`
+		
+	# 组合关系
 			db.users.find({
 				name: "KevinBlandy",
 				$or: [{
@@ -112,4 +121,18 @@ document - 条件语句
 					}
 				}]
 			});  // WHERE name = 'KevinBlandy' AND (age > 18 OR age < 50)
+		
+
+			db.user.find({
+				$and: [{
+					name: "vin"
+				}, {
+					$or: [{
+						age: {
+							$lt: 25
+						}
+					}]
+				}]
+			}); //  WHERE name = 'KevinBlandy' AND (age < 50)
 			
+			db.user.find({$or: [{name: 'vin'}, {age: {$in: [1,2,3]}}]}); // WHERE name = 'vin' OR `age` IN (1,2,3)
