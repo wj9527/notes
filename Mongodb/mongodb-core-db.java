@@ -8,6 +8,10 @@ db - 命令
 	use [name]
 		* 创建或者切换到指定名称的数据库
 		* 此时db对象, 指向新的数据库
+
+	show dbs
+		* 查看所有的db
 	
-
-
+	db.dropDatabase()
+		* 删除当前的数据库
+	
