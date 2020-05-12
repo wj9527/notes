@@ -1,6 +1,13 @@
 -------------------------
 document 
 -------------------------
+	# 数据类型
+		* mongo中的数字, 默认是 double 数据类型, 如果需要存储整形, 必须使用函数 NumberInt(val)
+			db.user.insert({name: "n3", age: NumberInt(27)});
+		
+		* 插入当前日期使用: new Date();
+		* 如果字段为 null,  不应该声明
+
 
 -------------------------
 document - id
@@ -14,12 +21,21 @@ document - id
 -------------------------
 document - 基本命令
 -------------------------
-	db.[collection].insert([document]);
+	db.[collection].insert([document], [config]);
 		* 往指定的collection插入一个或者多个(参数用数组)document
 		* 如果 collection 不存在, 会创建
 
 		* 执行成功后返回插入成功的文档数量
 			WriteResult({"nInserted": 1});
+		
+		* config
+			{
+				writeConcern: <document>
+					* 可选，抛出异常的级别。
+				ordered: true
+					* 默认为 true, 按照顺序插入文档, 如果其中任何一个异常, 则立即返回, 剩余的文档不会处理
+					* 如果为 false, 如果插入文档异常, 跳过不会返回, 继续处理后面的文档
+			}
 			
 	db.[collection].remove([condition], [config]);
 		* 根据条件移除数据

@@ -26,6 +26,8 @@ collection - 命令
 				
 			}
 		
+		* 只有当集合中起码写入了一个document, collection才会真正的创建, 落盘存储
+
 	show tables
 		* 查看当前db下的所有collection
 		

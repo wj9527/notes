@@ -50,6 +50,7 @@ mongodb	- 服务启动			  |
 		
 		--config
 			* 指定配置文件的地址
+				mongod.exe --config=D:\mongodb\config\mongod.conf
 
 		--dbpath
 			* 指定数据存储目录

@@ -15,6 +15,11 @@ mongod.conf
 ---------------------------
 mongod.conf - 常用
 ---------------------------
+systemLog:
+  destination: file # 指定日志的输出目标为文件
+  path: <string> # 指定日志文件的地址
+  logAppend: <boolean> # 实例重启后，日志从末尾是否开始写入（否则，从头开始）
+
 processManagement:
   fork: true	# 是否在后台运行
   pidFilePath: /var/run/mongodb/mongod.pid  # pid 文件路径
@@ -28,3 +33,5 @@ net:
  
 storage:
   dbPath: /var/lib/mongo # 指定存储目录
+  journal:
+    enabled: <boolean> # 启用/禁用持久性日志，以确保文件数据有效和可恢复
