@@ -33,7 +33,7 @@ mongodb	- 服务启动			  |
 	# 执行 mongod 脚本
 
 	# 没有参数,默认会使用 /data/db 为数据目录 
-		* Windows 使用 C:\data\db
+		* Windows 使用当前磁盘根目录的 \data\db
 		* 需要先创建,否则会启动失败
 	
 	# Mongo启动成功会在 27017 端口提供服务
@@ -41,7 +41,9 @@ mongodb	- 服务启动			  |
 	# 启动参数
 		--noscripting
 			* 禁止服务端执行js代码
-	
+		
+		--config
+			* 指定配置文件的地址
 		
 
 
@@ -62,3 +64,12 @@ mongodb	- 客户端的使用		  |
 	
 	# 通过这个js shell 可以完成数据库的所有操作
 
+
+
+------------------------------
+mongodb	- 核心概念
+------------------------------
+	# 数据库 db
+	# 集合	collection
+	# 文档	document
+	# ID	id
