@@ -57,6 +57,10 @@ document - 更新
 		* 根据 condition 执行 update 修改一条文档
 			db.users.update({name: "KevinBlandy"}, {$set: {name: "new Name"}}); // UPDATE `users` SET `name` = 'new Name' WHERE `name` = 'KevinBlandy';
 		
+		* 如果不使用 $Set, 指令来对指定的字段进行修改, 那么就会变成覆盖修改, 使用新文档彻底覆盖旧文档
+			db.users.update({name: "KevinBlandy"}, {name: "ff"}); // 把name=KevinBlandy的文档，修改成只有 name=ff的文档
+		
+
 		* config 选项
 			{
 				upsert: true,
@@ -65,11 +69,13 @@ document - 更新
 					* 可选，默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。
 				writeConcern: <document>
 					* 可选，抛出异常的级别。
+				collation: <document>,
+				arrayFilters: [<filder-document>],
+				hint: <document|string>
 			}
 	
 	db.[collection].save([document], [config]);
-		* 通过传入的文档来替换已有文档
-
+		* 覆盖修改, 通过传入的文档来替换已有文档
 		* config 选项
 			{
 				writeConcern: <document>
@@ -77,3 +83,12 @@ document - 更新
 			}
 		
 	
+	
+	# 更新相关的指令
+		$set
+			* 设置值
+		
+		$inc
+			* 自增字段值
+				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$inc: {age: 1}}); // 对age字段 +1
+			

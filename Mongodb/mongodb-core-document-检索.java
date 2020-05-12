@@ -36,6 +36,17 @@ document - 查询相关
 				db.users.find().sort({name: -1}) // 根据name字段，逆序排序
 			
 			* 排序策略。-1: 逆序，1:升序
+	
+	# 投影查询, 仅仅检索部分列
+		db.[collection].find([condition], [props])
+			* 通过 props 指定查询的列
+			* props 中使用 key: val 描述是否要检索, val 如果是1：表示查询，0：表示不查询
+			* 默认会检索 _id 属性
+		
+		* 仅仅查询对象的某些属性
+			db.user.find({}, {name: 1, _id: 0}) // 仅仅查询name属性，连id都不要
+		
+		
 
 -------------------------
 document - 聚合检索
