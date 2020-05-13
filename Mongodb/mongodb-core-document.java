@@ -87,8 +87,25 @@ document - 更新
 	# 更新相关的指令
 		$set
 			* 设置值
+			* 如果 $set 的字段不存在, 会新创建
 		
 		$inc
 			* 自增字段值
 				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$inc: {age: 1}}); // 对age字段 +1
 			
+		$unset
+		$push
+		$pushAll
+			* 添加一个或者多个对象到数组尾部
+
+		$pop
+			* 从数组末尾删除记录
+
+		$pull
+			* 从数组中匹配值, 如果匹配到, 则会删除元素
+
+		$pullAll
+			* 从数组中匹配多个值, 如果匹配到任意一个, 就会删除元素
+
+		$addToSet
+			* 如果不存在, 则添加元素到数组

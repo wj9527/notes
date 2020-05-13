@@ -27,6 +27,10 @@ collection - 命令
 			}
 		
 		* 只有当集合中起码写入了一个document, collection才会真正的创建, 落盘存储
+	
+	db.getCollection([collection])
+		* 获取集合, 返回它的引用
+		* 但会不会创建, 只有在插入了记录后才会被创建
 
 	show tables
 		* 查看当前db下的所有collection
