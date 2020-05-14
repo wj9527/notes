@@ -94,18 +94,41 @@ document - 更新
 				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$inc: {age: 1}}); // 对age字段 +1
 			
 		$unset
+			* 用户删除指定的字段
+				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$unset: {age: 1}}) // 删除age字段
+
 		$push
+			* 添加一个元素到数组尾部
+			* 如果field不存在，会自动插入一个数组类型
+				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$push: {skills: "ruby"}}) // 添加 ruby 到对象的 skills 集合中
+			* 元素可以是任意数据类型
+
 		$pushAll
-			* 添加一个或者多个对象到数组尾部
+			* 添加多个对象到数组尾部
+			* 参数是一个数组
+			
 
 		$pop
-			* 从数组末尾删除记录
+			* 从数组中删除元素
+				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$pop: {skills: -1}}); // 删除 skills 中的第一个值
+			* 删除位置的值
+				-1: 第一个
+				 1: 最后一个
 
 		$pull
-			* 从数组中匹配值, 如果匹配到, 则会删除元素
+			* 从数组删除第一个匹配到的值
+				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$pull: {skills: "java"}}); // 删除 skills 中的 java 元素
 
 		$pullAll
-			* 从数组中匹配多个值, 如果匹配到任意一个, 就会删除元素
+			* 从数组删除多个匹配到的值
+				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$pull: {skills: ["java", "python"]}}); // 删除 skills 中的 java, python 元素
 
 		$addToSet
-			* 如果不存在, 则添加元素到数组
+			* 加一个值到数组内，而且只有当这个值在数组中不存在时才增加
+			* 如果参数是对象, 或者数组, 那么会进行深比较
+		
+		$rename
+			* 对字段进行重命名
+				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$pull: {skills: "_skills"}});  // 把 skills 属性修改为 _skills
+			
+		

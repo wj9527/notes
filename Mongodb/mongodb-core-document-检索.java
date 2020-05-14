@@ -67,7 +67,10 @@ document - 条件语句
 	
 	# 正则查询
 		* 正则, 通过js的 /reg/ 正则来匹配数据
-			db.user.find({name: /^\d+$/});  // 匹配名称是数字的记录
+			db.user.find({name: /^\d+$/});				// 匹配 name 是数字的记录
+		
+		* 也可以通过 $regex 指令
+			db.user.find({name: {$regex: "^\\d+$"}});  // 匹配 name 是数字的记录
 	
 	# $type 操作符
 		* $type操作符是基于BSON类型来检索集合中匹配的数据类型，并返回结果。
