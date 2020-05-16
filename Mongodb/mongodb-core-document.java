@@ -89,11 +89,11 @@ document - 更新
 			* 设置值
 			* 如果 $set 的字段不存在, 会新创建
 		
-		$inc
+		$inc (原子命令)
 			* 自增字段值
 				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$inc: {age: 1}}); // 对age字段 +1
 			
-		$unset
+		$unset (原子命令)
 			* 用户删除指定的字段
 				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$unset: {age: 1}}) // 删除age字段
 
@@ -115,20 +115,26 @@ document - 更新
 				-1: 第一个
 				 1: 最后一个
 
-		$pull
+		$pull (原子命令)
 			* 从数组删除第一个匹配到的值
 				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$pull: {skills: "java"}}); // 删除 skills 中的 java 元素
 
-		$pullAll
+		$pullAll (原子命令)
 			* 从数组删除多个匹配到的值
 				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$pull: {skills: ["java", "python"]}}); // 删除 skills 中的 java, python 元素
 
-		$addToSet
+		$addToSet (原子命令)
 			* 加一个值到数组内，而且只有当这个值在数组中不存在时才增加
 			* 如果参数是对象, 或者数组, 那么会进行深比较
 		
-		$rename
+		$rename (原子命令)
 			* 对字段进行重命名
 				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$pull: {skills: "_skills"}});  // 把 skills 属性修改为 _skills
+		
+		$bit (原子命令)
+			* 位操作，integer类型
+				db.user.update({_id: ObjectId("5eba69c51e2bb3537a710e0b")}, {$bit: {val: {and: NumberInt(5)}}}); // UPDATE `val` SET `val` = (`val` and 5)
+			
+			* 位移操作:and,or,not.....
 			
 		
