@@ -15,6 +15,11 @@ server:
   server-header:     
   max-http-header-size: 
   connection-timeout:
+  shutdown: IMMEDIATE
+  	* 优雅停机, 枚举值
+		IMMEDIATE	// 立即关闭
+		GRACEFUL // 优雅的关闭服务器（拒绝新的请求，等待任务线程执行完毕）
+	* 等待任务执行完毕的最长时间, 通过: spring.lifecycle.timeout-per-shutdown-phase 配置
 
   # 异常配置
   error:
