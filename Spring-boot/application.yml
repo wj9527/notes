@@ -6,24 +6,29 @@
 server:
   compression:
     enabled: true
-  mime-types: 
-    - application/json
-    - application/xml
-    - application/javascript
-    - text/html
-    - text/xml
-    - text/plain
-    - text/css
-    - text/javascript
-  min-response-size: 2048
+    mime-types: 
+      - application/json
+      - application/xml
+      - application/javascript
+      - text/html
+      - text/xml
+      - text/plain
+      - text/css
+      - text/javascript
+    min-response-size: 2048
   forward-headers-strategy: native
+  server-header: "PHP/7.3.1"
   shutdown: GRACEFUL
   undertow:
     direct-buffers: true
+  servlet:
+    encoding:
+      enabled: true
+      charset: UTF-8
 
 # logback»’÷æ
 logging:
-  config: classpath:logback.xml
+   config: classpath:logback-spring.xml
 
 spring:
   application:
@@ -33,9 +38,8 @@ spring:
   profiles:
     active: dev
   http:
-    encoding:
-      charset: utf-8
-      enabled: true
+    converters:
+      preferred-json-mapper: gson
   servlet:
     multipart:
       enabled: true
@@ -44,9 +48,9 @@ spring:
       location: D:\\temp
       file-size-threshold: 10MB
   mvc:
-    favicon:
-      enabled: true
-    date-format: yyyy-MM-dd HH:mm:ss
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+      date: yyyy-MM-dd
     throw-exception-if-no-handler-found: true
     static-path-pattern: /static/**
   resources:
@@ -83,9 +87,9 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL57Dialect
     open-in-view: false
-    show-sql: true
+    show-sql: false
     properties:
-      hibernate.format_sql: true
+      hibernate.format_sql: false
     hibernate:
       ddl-auto: none
       
@@ -121,7 +125,10 @@ spring:
   pid:
     file: D:\\zebra-manager.pid
     fail-on-write-error: true
-  
+
+  gson:
+    pretty-printing: true
+
   servlet:
     multipart:
       location: D:\\temp
@@ -149,3 +156,11 @@ spring:
 
   freemarker:
     cache: false
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+    hibernate:
+      ddl-auto: update
+
