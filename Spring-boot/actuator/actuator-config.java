@@ -24,6 +24,10 @@
 	management.endpoint.<id>.enabled=true
 		* 启用/禁用指定id的端点
 
+	management.endpoint.beans.cache.time-to-live=10s
+		* 端点对不带任何参数的读取操作的响应自动缓存
+		* 通过该配置，配置端点的缓存时间
+
 ------------------ 
 CORS的配置		  |
 ------------------ 
