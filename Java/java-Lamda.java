@@ -171,6 +171,22 @@ JAVA8-	java.util.functin 	|
 	
 	# 这几个类都定义了一些静态方法,在使用 Lambda 表达式的时候可以用到
 	# 还有许多许多的
+	# 为了避免泛型的拆装箱带来的性能消耗，java提供了原始数据类型的各种函数接口
+		IntPredicate  // boolean test(int value);
+		LongConsumer  // void accept(long value);
+		...
+
+		* 不同的数据类型，和不同的函数接口，都有对应的基本数据类型版本实现
+	
+	# 为了避免在返回数据的时候，有拆装箱的问题，还提供了不同基本数据类型返回值的函数接口
+		 ToIntFunction<T> // int applyAsInt(T value);
+		 ToDoubleBiFunction<T, U>	// double applyAsDouble(T t, U u);
+		 ...
+		
+	# 甚至还有各种基本数据类型转换的函数接口
+		DoubleToLongFunction // long applyAsLong(double value);
+		....
+
 	
 ----------------------------
 JAVA8-	方法引用			|
