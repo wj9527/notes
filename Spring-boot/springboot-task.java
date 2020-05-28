@@ -75,3 +75,6 @@ task					|
 			}, new CronTrigger("0/2 * * * * ?")));
 		}
 	}
+
+	* 使用线程池的配置之后，再执行不仅以多线程来启动定时任务，而且也不会出现定时任务重复并发执行的问题
+	* Executors.newScheduledThreadPool(20) // 很重要
