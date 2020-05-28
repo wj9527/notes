@@ -1,7 +1,25 @@
 -----------------------------
 WebSocketSession
 -----------------------------
-	# session会话接口
+	# session会话接口 WebSocketSession extends Closeable
+		WebSocketSession
+			|-AbstractClientSockJsSession
+				|-WebSocketClientSockJsSession
+				|-XhrClientSockJsSession
+			|-WebSocketSessionDecorator
+				|-ConcurrentWebSocketSessionDecorator
+			|-NativeWebSocketSession
+				|-AbstractWebSocketSession
+					|-JettyWebSocketSession
+					|-StandardWebSocketSession
+				|-WebSocketClientSockJsSession
+				|-WebSocketServerSockJsSession
+			|-SockJsSession
+				|-AbstractSockJsSession
+					|-AbstractHttpSockJsSession
+						|-PollingSockJsSession
+						|-StreamingSockJsSession
+					|-WebSocketServerSockJsSession
 	
 	# 抽象方法
 		String getId();
