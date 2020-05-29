@@ -16,6 +16,12 @@ WebSocketHandler
 
 		boolean supportsPartialMessages();
 			* 是否支持分片消息
+			* 如果返回 true, 会导致 WebSocketSession 和 ServletServerContainerFactoryBean 中对于消息大小的限制失效
+				void setTextMessageSizeLimit(int messageSizeLimit);
+				void setBinaryMessageSizeLimit(int messageSizeLimit);
+
+				void setMaxTextMessageBufferSize(8192);
+				void setMaxBinaryMessageBufferSize(8192);
 	
 	# 核心关系
 		WebSocketHandler
@@ -52,4 +58,13 @@ WebSocketHandlerDecorator
 			* 尝试对一个 WebSocketHandler 进行剥丝，返回它真正干活儿的handler
 			* 源码很简单
 
+	
+	
+	# 系统提供的实现
+		ExceptionWebSocketHandlerDecorator
+			* 所有的事件方法都被 try catch 
+			* 除了 afterConnectionClosed 方法以外。其他的方法，都会在 catch 中尝试关闭session，响应：CloseStatus.SERVER_ERROR
+
+		LoggingWebSocketHandlerDecorator
+			* 记录日志。各种事件日志
 		

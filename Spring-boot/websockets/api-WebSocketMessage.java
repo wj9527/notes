@@ -11,4 +11,11 @@ WebSocketMessage
 		boolean isLast();
 			* 分配消息, 是否是最后一帧
 		
+	# 类组织
+		WebSocketMessage
+			|-AbstractWebSocketMessage
+			|-BinaryMessage<ByteBuffer> 
+			|-PingMessage<ByteBuffer> 
+			|-PongMessage<ByteBuffer> 
+			|-TextMessage<String>
 	

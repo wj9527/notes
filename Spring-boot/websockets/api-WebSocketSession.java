@@ -44,12 +44,10 @@ WebSocketSession
 		String getAcceptedProtocol();
 
 		void setTextMessageSizeLimit(int messageSizeLimit);
-
 		int getTextMessageSizeLimit();
-
 		void setBinaryMessageSizeLimit(int messageSizeLimit);
-
 		int getBinaryMessageSizeLimit();
+			* 设置/读取 最大的文本/二进制消息大小
 
 		List<WebSocketExtension> getExtensions();
 

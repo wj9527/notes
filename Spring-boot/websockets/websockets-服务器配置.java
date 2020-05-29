@@ -10,16 +10,16 @@ ServletServerContainerFactoryBean
 	
 	# 属性
 		@Nullable
-		private Long asyncSendTimeout;
+		private Long asyncSendTimeout;				// 异步发送消息的超时时间
 
 		@Nullable
-		private Long maxSessionIdleTimeout;
+		private Long maxSessionIdleTimeout;			// session超时时间
 
 		@Nullable
-		private Integer maxTextMessageBufferSize;
+		private Integer maxTextMessageBufferSize;	// 最大文本消息缓冲区大小
 
 		@Nullable
-		private Integer maxBinaryMessageBufferSize;
+		private Integer maxBinaryMessageBufferSize;	// 最大二进制消息缓冲区大小
 
 		@Nullable
 		private ServletContext servletContext;
