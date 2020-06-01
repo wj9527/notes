@@ -226,10 +226,15 @@ JAVA8新特性-基本数据类型的	|
 	* 特殊的静态方法
 		IntStream.range(int b,int e)
 			* 跟python中的range一样,留头不留尾
-			for (int i : IntStream.range(0, 2).toArray()) {
-				System.out.println(i);//0 1
-			}
-	
+				for (int i : IntStream.range(0, 2).toArray()) {
+					System.out.println(i);//0 1
+				}
+
+		IntStream.rangeClosed(int startInclusive, int endInclusive)
+			* 留头又留尾
+		
+		IntStream.concat(IntStream a, IntStream b)
+			* 链接两个流
 
 
 ----------------------------
