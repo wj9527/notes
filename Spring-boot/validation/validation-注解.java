@@ -5,7 +5,12 @@
 		Class<? extends ConstraintValidator<?, ?>>[] validatedBy();
 	
 	@Valid
-		
+	@ReportAsSingleViolation
+	@OverridesAttribute
+		Class<? extends Annotation> constraint();
+		String name() default "";
+		int constraintIndex() default -1;
+
 --------------------
 Ô¼Êø×¢½â
 --------------------

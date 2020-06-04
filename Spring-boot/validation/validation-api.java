@@ -46,3 +46,11 @@ ConstraintViolation
 		Object getInvalidValue();
 		ConstraintDescriptor<?> getConstraintDescriptor();
 		<U> U unwrap(Class<U> type);
+
+---------------------------------------------------
+ConstraintValidator<A extends Annotation, T>
+---------------------------------------------------
+	# 接口方法
+		void initialize(A constraintAnnotation)
+		boolean isValid(T value, ConstraintValidatorContext context);
+
