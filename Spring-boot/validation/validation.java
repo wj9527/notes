@@ -25,6 +25,7 @@ validation			|
 	# ²Î¿¼ÎÄµµ
 		https://www.ibm.com/developerworks/cn/java/j-lo-beanvalid/
 		http://imushan.com/2018/01/18/java/language/%E6%8E%8C%E6%8F%A1Java-Bean-Validation/
+		http://hibernate.org/validator/documentation/
 	
 
 		
