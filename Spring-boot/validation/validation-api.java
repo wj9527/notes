@@ -25,8 +25,14 @@ Validator
 -----------------------
 	# 接口方法
 		<T> Set<ConstraintViolation<T>> validate(T object, Class<?>... groups);
+			* 验证对象，可以指定group
+
 		<T> Set<ConstraintViolation<T>> validateProperty(T object, String propertyName, Class<?>... groups);
+			* 验证对象的指定属性，可以指定group
+
 		<T> Set<ConstraintViolation<T>> validateValue(Class<T> beanType, String propertyName, Object value, Class<?>... groups);
+			* 通过value验证对象的指定属性是否合法，可以指定group
+			
 		BeanDescriptor getConstraintsForClass(Class<?> clazz);
 		<T> T unwrap(Class<T> type);
 		ExecutableValidator forExecutables();
@@ -46,6 +52,7 @@ ConstraintViolation
 		Object getInvalidValue();
 		ConstraintDescriptor<?> getConstraintDescriptor();
 		<U> U unwrap(Class<U> type);
+
 
 ---------------------------------------------------
 ConstraintValidator<A extends Annotation, T>

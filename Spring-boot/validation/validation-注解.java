@@ -2,16 +2,18 @@
 注解
 --------------------
 	@Constraint
+		* 指定校验器的实现
 		Class<? extends ConstraintValidator<?, ?>>[] validatedBy();
+
 	
 	@Valid
 
-	@ReportAsSingleViolation
-
-	@OverridesAttribute
-		Class<? extends Annotation> constraint();
-		String name() default "";
-		int constraintIndex() default -1;
+	@SupportedValidationTarget
+		ValidationTarget[] value();
+			* 枚举
+				ANNOTATED_ELEMENT
+				PARAMETERS
+	
 
 --------------------
 约束注解
@@ -24,11 +26,16 @@
 			* 指定Group
 
 		Class<? extends Payload>[] payload() default { };
-			* 获取消息体
-	
+			* 指定payload
+			* 在验证的过程中，可以通过API获取到注解上定义的payload
+			* 子接口
+				Unwrapping.Unwrap
+				Unwrapping.Skip
+
 	@AssertTrue
 	@AssertFalse
 		* 可以为null,如果不为null的话必须为 true/false
+		* 可以标识在 某些 方法上, 方法通过一系列的校验逻辑 返回 true/false
 
 	@DecimalMax
 	@DecimalMin
