@@ -1,11 +1,13 @@
 --------------------
-约束注解
+注解
 --------------------
 	@Constraint
 		Class<? extends ConstraintValidator<?, ?>>[] validatedBy();
 	
 	@Valid
+
 	@ReportAsSingleViolation
+
 	@OverridesAttribute
 		Class<? extends Annotation> constraint();
 		String name() default "";
@@ -14,46 +16,72 @@
 --------------------
 约束注解
 --------------------
-	@AssertFalse
-		* 可以为null,如果不为null的话必须为false
-			String message() default "{javax.validation.constraints.AssertFalse.message}";
-			Class<?>[] groups() default { };
-			Class<? extends Payload>[] payload() default { };
+	# 通用的属性
+		String message() default "{javax.validation.constraints....message}";
+			* 数据校验失败的时候提示信息
 
-			@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
-			@Retention(RUNTIME)
-			@Documented
-			@interface List {
+		Class<?>[] groups() default { };
+			* 指定Group
 
-				AssertFalse[] value();
-			}
-
+		Class<? extends Payload>[] payload() default { };
+			* 获取消息体
+	
 	@AssertTrue
-		* 可以为null,如果不为null的话必须为true
+	@AssertFalse
+		* 可以为null,如果不为null的话必须为 true/false
 
 	@DecimalMax
-		* 设置不能超过最大值
-
 	@DecimalMin
-		* 设置不能超过最小值
+		* 不能超过最大, 最小值
+		* 可以用在: BigDecimal, BigInteger, CharSequence, byte, short, int, long
+
+		String value();
+			* 限制值
+		boolean inclusive() default true;
+			* 是否包含指定的值
+	
+	@Max
+	@Min
+		* 最大不得小于此最小值
+		* 可以用在: BigDecimal, BigInteger, byte, short, int, long
+
+		long value();
+			* 指定值
 
 	@Digits
 		* 设置必须是数字且数字整数的位数和小数的位数必须在指定范围内
 
+		int integer();
+			* 最大整数
+
+		int fraction();
+			* 最大小数位
+	@Email
+		* 必须是邮件
+
+		String regexp() default ".*";
+			* 默认的邮件验证表达式
+		Pattern.Flag[] flags() default { };
+			* 指定正则的选项
+
 	@Future
-		* 日期必须在当前日期的未来
-
 	@Past
-		* 日期必须在当前日期的过去
-
-	@Max
-		* 最大不得超过此最大值
-
-	@Min
-		* 最大不得小于此最小值
+	@FutureOrPresent
+	@PastOrPresent
+		* 日期必须在当前日期的 将来/过去/未来或者现在/过去或者现在
+		* 支持几乎现在java的所有日期相关的对象
+	
+	@Negative
+	@NegativeOrZero
+	@Positive
+	@PositiveOrZero
+		* 数据必须是: 负数/负数或0/正数/正数或0
+		* 支持数据类型: BigDecimal, BigInteger, byte, short, int, long, float
+	
+	
 
 	@NotNull
-		* 不能为null，可以是空
+		* 不能为null
 
 	@Null
 		* 必须为null
@@ -61,23 +89,23 @@
 	@Pattern
 		* 必须满足指定的正则表达式
 
+		String regexp();
+			* 指定正则
+		Flag[] flags() default { };
+			* 指定表达式的flag
+
 	@Size
 		* 集合、数组、map等的size()值必须在指定范围内
 
-	@Email
-		* 必须是email格式
-
-	@Length
-		* 长度必须在指定范围内
+		int min() default 0;
+			* 最小长度
+		int max() default Integer.MAX_VALUE;
+			* 最大长度
 
 	@NotBlank
-		* 字符串不能为null,字符串trin()后也不能等于“”
+		* 字符串不能为null,字符串trin()后也不能等于""
 
 	@NotEmpty
 		* 不能为null，集合、数组、map等size()不能为0；字符串trin()后可以等于 ""
 
-	@Range
-		* 值必须在指定范围内
 
-	@URL
-		* 必须是一个URL

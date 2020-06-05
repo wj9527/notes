@@ -2,7 +2,7 @@
 validation			|
 --------------------
 	# Maven
-		* JavaEE ¹æ·¶
+		* JavaEE ¹æ·¶£¨JSR 303 - Bean Validation¹æ·¶£©
 			<dependency>
 				<groupId>jakarta.validation</groupId>
 				<artifactId>jakarta.validation-api</artifactId>

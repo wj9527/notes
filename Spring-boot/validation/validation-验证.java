@@ -12,3 +12,11 @@
 
 	
 
+-----------------------
+Object Graph验证
+-----------------------
+	# Object Graph是指对象的拓扑结构，比如对象的引用关系
+		* Bean Validation支持Object Graph验证
+	
+	# 默认如果A对象引用B对象是不会对B对象进行校验的。需要在B对象的字段或者getter标识 @Valid 注解才行
+

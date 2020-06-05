@@ -50,6 +50,7 @@ ConstraintViolation
 ---------------------------------------------------
 ConstraintValidator<A extends Annotation, T>
 ---------------------------------------------------
+	# 负责的校验逻辑的接口
 	# 接口方法
 		void initialize(A constraintAnnotation)
 		boolean isValid(T value, ConstraintValidatorContext context);
