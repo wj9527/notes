@@ -26,3 +26,39 @@ Group
 	
 	# 校验的时候，指定Group
 		validation.validate(user, UpdateGroup.class);
+	
+
+----------------------------------
+GroupSequence
+----------------------------------
+	# GroupSequence 注解的作用是，一次性把N个Group聚集在一起，形成一个Group
+		* 并会严格按照声明顺序执行校验
+
+		@Target({ TYPE })
+		@Retention(RUNTIME)
+		@Documented
+		public @interface GroupSequence {
+
+			Class<?>[] value();
+		}
+	
+	# 定义多个Group
+		public interface UserNameCheck {
+		}
+		public interface PasswordCheck {
+		}
+	
+	# 定义 GroupSequence
+		@GroupSequence({PasswordCheck.class, UserNameCheck.class})
+		public interface UserCheckSequence {
+		}
+
+		* 在value属性，声明N个 Group
+	
+	# 校验的时候，指定 Group 组
+
+		// 原生
+		validation.validate(user, UserCheckSequence.class);
+
+		// Spring
+		@RequestBody @Validated({UserCheckSequence.class}) User user

@@ -12,6 +12,15 @@
 	
 	# 支持验证的地方
 		* 属性, 方法, 构造函数, 泛型, 返回值, 方法
+
+		* 注意注意，如果是对方法，进行验证。那么方法名称需要满足JavaBean的规范:名称以 getter/is 开头
+			@AssertTrue(message = "手机和邮箱必须填写其中一项")
+			public boolean isEmailAndPhoneValid () {
+				if (this.email == null && this.phone == null) {
+					return false;
+				}
+				return true;
+			}
 	
 	# 验证
 		// SPI加载启动类
@@ -40,4 +49,6 @@ Object Graph验证
 		* Bean Validation支持Object Graph验证
 	
 	# 默认如果A对象引用B对象是不会对B对象进行校验的。需要在B对象的字段或者getter标识 @Valid 注解才行
+		* 可以标识在集合上，会对集合用的元素挨个执行校验
+	
 

@@ -15,13 +15,8 @@ SpringBoot
 		public @interface Validated {
 			Class<?>[] value() default {};  // 通过valu指定要执行校验的Group
 		}
-		
-		* 在这里指定的Group，具有继承性
 
-			例如: @Validated(value = Create.class)
-
-			1. Create 继承了Default，那么 @Validated(value = Create.class)的校验范畴就为【Create】和【Default】
-			2. Create 没继承Default，那么 @Validated(value = Create.class)的校验范畴只为【Create】，而@Validated(value = {Create.class, Default.class})的校验范畴才为【Create】和【Default】。
+		* 形参对象，一定要给上 getter/setter 方法
 	
 
 	# 通过捕获 BindException 处理校验的异常信息
@@ -42,8 +37,7 @@ SpringBoot
 	
 	# 通过全局异常处理器，处理校验的异常信息
 		* 如果没有定义 BindingResult ，那么在校验失败的时候会抛出异常
-		* 捕获异常: BindException
-		
+		* 捕获异常: BindException/MethodArgumentNotValidException 
 			@ExceptionHandler(value = {
 				BindException.class
 			})
@@ -52,3 +46,13 @@ SpringBoot
 				String errorMessage = e.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining("|"));
 				return this.errorHandler(request, response, Message.fail(Message.Code.BAD_REQUEST, errorMessage), e);
 			}
+	
+	# 声明式参数校验
+		@GetMapping("/get")
+		public RspDTO getUser(@RequestParam("userId") @NotNull(message = "用户id不能为空") Long userId) {
+			User user = userService.selectById(userId);
+			if (user == null) {
+				return new RspDTO<User>().nonAbsent("用户不存在");
+			}
+			return new RspDTO<User>().success(user);
+		}
