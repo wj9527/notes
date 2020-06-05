@@ -121,7 +121,7 @@
 
 		* @ReportAsSingleViolation 返回单一验证信息
 			* 使用了组合约束注解，可以为每个注解单独设置: message 异常信息
-			* 默认情况下，会返回所有校验失败注解的 message 异常信息（ @NotNull 情况下，数据为 null 只会返回 @NotNull 的唯一一条 ）				
+			* 默认情况下，会返回所有校验失败注解的 message 异常信息（有 @NotNull 情况下，数据为 null 只会返回 @NotNull 的唯一一条 ）				
 
 			* 使用这个注解后，会在任何验证失败后返回当前注解中的 message 信息
 			* 就算组合注解中标识了 @NotNull ，数据在null的情况下，也还是返回当前注解的 message 消息
