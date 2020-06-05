@@ -120,12 +120,21 @@
 		
 
 		* @ReportAsSingleViolation 返回单一验证信息
-			* 使用了组合约束注解，默认情况下会返回组合中各个约束的错误信息
-			* 如果希望该注解仅返回一条验证失败信息，可以使用这个注解，会在验证失败后返回 message() 的默认信息。
+			* 使用了组合约束注解，可以为每个注解单独设置: message 异常信息
+			* 默认情况下，会返回所有校验失败注解的 message 异常信息（ @NotNull 情况下，数据为 null 只会返回 @NotNull 的唯一一条 ）				
+
+			* 使用这个注解后，会在任何验证失败后返回当前注解中的 message 信息
+			* 就算组合注解中标识了 @NotNull ，数据在null的情况下，也还是返回当前注解的 message 消息
+
 	
 		* @ConstraintComposition 来表示组合注解中的关系
+			* 组合注解中的关系, 默认是 AND, 意思是所有的注解，都必须是验证成功
+
 			CompositionType value() default AND;
 				* 枚举
-					OR
-					AND
-					ALL_FALSE
+					OR				// or关系，组合注解中，任何一个通过则认为是通过
+					AND				// 
+					ALL_FALSE		// 必须注解全部都没通过，则认为最终的结果是通过
+			
+
+		
