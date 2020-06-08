@@ -24,7 +24,7 @@ Gson
 		* 自动装配类: GsonAutoConfiguration
 	
 	# 配置(配置类: GsonProperties)
-		spring.http.converters.preferred-json-mapper=gson
+		spring.mvc.converters.preferred-json-mapper=gson
 		spring.gson.date-format=
 		spring.gson.disable-html-escaping=
 		spring.gson.disable-inner-class-serialization=
