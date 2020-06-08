@@ -56,3 +56,13 @@ SpringBoot
 			}
 			return new RspDTO<User>().success(user);
 		}
+		
+		* 声明式子参数校验，需要在Controller上声明:@Validated
+		* 如果形参的参数验证失败，抛出异常: ConstraintViolationException
+			@ExceptionHandler(value = { ConstraintViolationException.class })
+			public Object validateFail(HttpServletRequest request, HttpServletResponse response, ConstraintViolationException e)
+					throws IOException {
+				//	e.getMessage();   提示信息会包含前缀：[方法名].[参数名]: 
+				String errorMessage = e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).limit(1).collect(Collectors.toList()).get(0);
+				return this.errorHandler(request, response, Message.fail(Message.Code.BAD_REQUEST, errorMessage), e);
+			}
