@@ -6,19 +6,34 @@ CompletableFuture<T>			|
 
 	# 支持以回调的形式去处理执行结果,而不用需要通过阻塞当前线程来获取执行结果
 
+	# 执行器
+		* 大多数方法都支持配置自定义的 Executor
+		* 如果不配置，那么使用默认的
+
+
+
 	# 构造函数
 		CompletableFuture()
 	
 	# 静态工厂函数
 		CompletableFuture<Void> allOf(CompletableFuture<?>... cfs)
+			* 所有任务中，必须所有任务都执行完毕才会返回
+
 		CompletableFuture<Object> anyOf(CompletableFuture<?>... cfs)
+			* 所有任务中，只要有一个任务完成返回，那么就会返回
+
 		<U> CompletableFuture<U> completedFuture(U value)
+			* 返回一个已经是完成状态的 CompletableFuture
 		
 		CompletableFuture<Void> runAsync(Runnable runnable)
-		CompletableFuture<Void> runAsync(Runnable runnable,Executor executor)
+		CompletableFuture<Void> runAsync(Runnable runnable, Executor executor)
+			* 异步执行某个任务，返回它的 CompletableFuture
+			* 不需要返回值
 		
 		<U> CompletableFuture<U> supplyAsync(Supplier<U> supplier)
-		<U> CompletableFuture<U> supplyAsync(Supplier<U> supplier,Executor executor)
+		<U> CompletableFuture<U> supplyAsync(Supplier<U> supplier, Executor executor)
+			* 异步执行某个任务，返回它的 CompletableFuture
+			* 需要返回值
 	
 	# 实例方法
 		CompletableFuture<Void> acceptEither(CompletionStage<? extends T> other, Consumer<? super T> action)
@@ -30,7 +45,7 @@ CompletableFuture<T>			|
 		<U> CompletableFuture<U> applyToEitherAsync(CompletionStage<? extends T> other, Function<? super T, U> fn,Executor executor)
 
 		boolean cancel(boolean mayInterruptIfRunning)
-		boolean complete(T value)
+		boolean (T value)
 		boolean completeExceptionally(Throwable ex)
 		CompletableFuture<T> exceptionally(Function<Throwable, ? extends T> fn)
 		T get()
@@ -59,12 +74,15 @@ CompletableFuture<T>			|
 		<U> CompletableFuture<Void> thenAcceptBoth(CompletionStage<? extends U> other,BiConsumer<? super T, ? super U> action)
 		<U> CompletableFuture<Void> thenAcceptBothAsync(CompletionStage<? extends U> other,BiConsumer<? super T, ? super U> action)
 		<U> CompletableFuture<Void> thenAcceptBothAsync(CompletionStage<? extends U> other,BiConsumer<? super T, ? super U> action, Executor executor)
+
 		<U> CompletableFuture<U> thenApply(Function<? super T,? extends U> fn)
 		<U> CompletableFuture<U> thenApplyAsync(Function<? super T,? extends U> fn)
 		<U> CompletableFuture<U> thenApplyAsync(Function<? super T,? extends U> fn, Executor executor)
+
 		<U,V> CompletableFuture<V> thenCombine(CompletionStage<? extends U> other,BiFunction<? super T,? super U,? extends V> fn)
 		<U,V> CompletableFuture<V> thenCombineAsync(CompletionStage<? extends U> other,BiFunction<? super T,? super U,? extends V> fn)
 		<U,V> CompletableFuture<V> thenCombineAsync(CompletionStage<? extends U> other,BiFunction<? super T,? super U,? extends V> fn, Executor executor)
+
 		<U> CompletableFuture<U> thenCompose(Function<? super T, ? extends CompletionStage<U>> fn)
 		<U> CompletableFuture<U> thenComposeAsync(Function<? super T, ? extends CompletionStage<U>> fn) 
 		<U> CompletableFuture<U> thenComposeAsync(Function<? super T, ? extends CompletionStage<U>> fn,Executor executor)
@@ -124,3 +142,47 @@ CompletableFuture<T>			|
 					System.out.println(r); //  最后都执行完毕了,获取到执行的结果
 				});
 		
+-------------------------------
+Demo1
+-------------------------------
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+public class Main {
+	
+	public static String func (String value) {
+		try {
+			Thread.sleep(1000);			// 模拟耗时操作
+		} catch (InterruptedException e) {
+			
+		}
+		return value + ":" + value;
+	}
+	
+	public static Future<String> funcAsync (String value) {
+		CompletableFuture<String> completableFuture = new CompletableFuture<String>();
+		new Thread(() -> {
+			try {
+				String retVal = func(value);
+				completableFuture.complete(retVal); // 计算完成，设置结果
+			} catch (Exception e) {
+				completableFuture.completeExceptionally(e); // 计算异常，设置异常
+			}
+		}).start();
+		return completableFuture;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("开始调用方法....");
+		Future<String> future = funcAsync("Hello");
+		System.out.println("方法调用完毕....");
+		System.out.println("等待获取返回值...");
+		try {
+			System.out.println(future.get());  // 阻塞，等等程序执行完毕
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+}
