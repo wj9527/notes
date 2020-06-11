@@ -49,6 +49,13 @@ LocalDate-api				|
 				ChronoField.MONTH_OF_YEAR		//月
 				ChronoField.DAT_OF_MONYH		//日
 
+		int lengthOfMonth()
+			* 获取当前月的天数
+		
+		int lengthOfYear()
+			* 获取当前年的天数
+
+
 	# 设置调整相关
 
 		LocalDateTime atTime(int hour, int minute, int second)
