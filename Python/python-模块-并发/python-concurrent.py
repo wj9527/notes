@@ -26,10 +26,12 @@ concurrent.futures.thread.ThreadPoolExecutor			|
 			* fn:就是任务函数
 			* *args, **kwargs 是运行该函数时,传递的参数
 			* 返回值是一个 Future 对象
+
+			* Future 方法
 				add_done_callback()
 					* 添加线程结束,执行的回调函数
 					* 会自动的把当前 future(this),传递给该函数的第一个参数
 					* future.add_done_callback(lambda x: print('线程执行完毕,结果是:%s'%(x.result())))
-
+				
 				result()
 					* 获取线程执行完毕后,返回(return)的数据
