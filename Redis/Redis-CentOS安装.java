@@ -61,3 +61,30 @@
 		cp ./redis-5.0.3/redis.conf /usr/local/redis/conf
 
 	
+------------------------
+6.x版本的安装			|
+------------------------
+	# 下载源码
+
+	# 解压源码
+
+	# 进入源码目录执行安装
+		make PREFIX=/usr/local/redis install
+	
+	# 异常处理
+	# 查看gcc版本是否在5.3以上，centos7.6默认安装4.8.5
+		* 查看version
+			gcc -v
+
+		* 升级到gcc 9.3
+			yum -y install centos-release-scl
+			yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils
+			scl enable devtoolset-9 bash
+
+		* 需要注意的是scl命令启用只是临时的，退出shell或重启就会恢复原系统gcc版本。
+
+		* 如果要长期使用gcc 9.3的话：
+			echo "source /opt/rh/devtoolset-9/enable" >>/etc/profile
+		* 这样退出shell重新打开就是新版的gcc了
+	
+	# 再把源目录中的配置文件复制一份出来
