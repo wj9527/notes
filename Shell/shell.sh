@@ -4,6 +4,19 @@ shell							|
 	# 第一行指定运行的 bash
 		#!/bin/bash
 	
+	# 查看系统的所有 shell处理器: cat /etc/shells
+		/bin/sh
+		/bin/bash
+		/sbin/nologin
+		/usr/bin/sh
+		/usr/bin/bash
+		/usr/sbin/nologin
+		/bin/tcsh
+		/bin/csh
+	
+	# 查看系统使用的shell
+		echo $SHELL
+	
 	# 运行方式
 		* 直接运行(需要设置可执行权限:chdmo 775)
 			./hello.sh
