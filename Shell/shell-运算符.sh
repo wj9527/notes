@@ -3,16 +3,102 @@
 --------------------------------
 	+ - * / %
 
-	* 原生的bash不支持数学运算,可以通过其他的命令来实现
+	# 原生的bash不支持数学运算,可以通过其他的命令来实现
 		awk
 		expr(常用)
 	
-	* 乘号必须要用转义符
+	# 乘号必须要用转义符
 		val=`expr 4 \* 5`
 	
-	* 在[]中进行计算
+	# 在[]中进行计算
 		val=$[1-5]
 		echo $val
+
+		* $[...]是以前的语法，也可以做整数运算，不建议使用。
+	
+	# 在 (()) 中进行计算
+		((r = 1 + 3))
+		echo ${r} # 4
+
+		val=$((5 * 20))
+		echo ${val} # 100
+		
+		* 这个语法只能计算整数，否则会报错。
+		* (...))会自动忽略内部的空格
+		* 语法支持的算术运算符如下。
+			+：加法
+			-：减法
+			*：乘法
+			/：除法（整除）
+			%：余数
+			**：指数
+			++：自增运算（前缀或后缀）
+			--：自减运算（前缀或后缀
+		
+		* $((...))的圆括号之中，不需要在变量名之前加上$，不过加上也不报错
+		* 如果在$((...))里面使用字符串，Bash 会认为那是一个变量名。
+		* 如果不存在同名变量，Bash 就会将其作为空值，因此不会报错，而$((...))会将空值当作0
+			v1=1
+			v2=$((v1 + 1))
+			echo ${v2} # 2
+		
+		* 内部可以用圆括号改变运算顺序
+		* 支持以下的二进制位运算符。
+			<<：位左移运算，把一个数字的所有位向左移动指定的位。
+			>>：位右移运算，把一个数字的所有位向右移动指定的位。
+			&：位的“与”运算，对两个数字的所有位执行一个AND操作。
+			|：位的“或”运算，对两个数字的所有位执行一个OR操作。
+			~：位的“否”运算，对一个数字的所有位取反。
+			^：位的异或运算（exclusive or），对两个数字的所有位执行一个异或操作
+		
+		* 支持10进制, 8进制, 16进制
+		* 指定进制
+			base#number # base进制的number
+			val=$((4#22))
+			echo ${val} # 10
+		
+		* 逻辑运算，支持以下的逻辑运算符。
+			<：小于
+			>：大于
+			<=：小于或相等
+			>=：大于或相等
+			==：相等
+			!=：不相等
+			&&：逻辑与
+			||：逻辑或
+			!：逻辑否
+			expr1?expr2:expr3：三元条件运算符。若表达式expr1的计算结果为非零值（算术真），则执行表达式expr2，否则执行表达式expr3。
+				v1=1
+				v2=2
+				v3=$((v1 > v2 ? v1 : v2))
+				echo ${v3}
+
+			* 逻辑表达式为真，返回1，否则返回0。
+		
+		* $((...))支持的赋值运算符，有以下这些。
+			echo $((a=1))	# 1
+			echo ${a}		# 1
+
+			parameter = value：简单赋值。
+			parameter += value：等价于parameter = parameter + value。
+			parameter -= value：等价于parameter = parameter – value。
+			parameter *= value：等价于parameter = parameter * value。
+			parameter /= value：等价于parameter = parameter / value。
+			parameter %= value：等价于parameter = parameter % value。
+			parameter <<= value：等价于parameter = parameter << value。
+			parameter >>= value：等价于parameter = parameter >> value。
+			parameter &= value：等价于parameter = parameter & value。
+			parameter |= value：等价于parameter = parameter | value。
+			parameter ^= value：等价于parameter = parameter ^ value。
+		
+		* 逗号,在$((...))内部是求值运算符，执行前后两个表达式，并返回后一个表达式的值。
+			echo $((foo = 1 + 2, 3 * 4))	# 12
+			echo $foo						# 3
+	
+	# 除法运算符的返回结果总是整数
+		
+	
+		
 	
 --------------------------------
 数值比较						|
@@ -149,12 +235,15 @@
 --------------------------------
 expr							|
 --------------------------------
-	# 表达式计算工具
+	# 表达式计算工具,支持算术运算，可以不使用((...))语法。
+
 	V1=1
 	V2=2
 	SUM=`expr $V1 + $V2`
 	echo $SUM	# 3
 	echo `expr ${V1} - ${V2}` # -1
 	echo `expr $V1 % $V2`	# 1
+
+	# expr命令也不支持非整数参数
 
 

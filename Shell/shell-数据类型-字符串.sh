@@ -90,6 +90,10 @@
 			$ cat <<< 'hi there'	->	$ echo 'hi there' | cat
 			$ md5sum <<< 'ddd'	->	$ echo 'ddd' | md5sum
 	
+	# 大小写转换
+		* 转换为大写 ${varname^^}
+		* 转换为小写 ${varname,,}
+
 	# 字符串头部的模式匹配
 		* 两种语法可以检查字符串开头，是否匹配给定的模式。
 		* 如果匹配成功，就删除匹配的部分，返回剩下的部分。原始变量不会发生变化
@@ -115,6 +119,30 @@
 			echo ${foo/#JPG/jpg} # jpg.JPG
 
 
+	# 字符串尾部的模式匹配
+		* 两种语法可以检查字符串结尾，是否匹配给定的模式。
+		* 如果匹配成功，就删除匹配的部分，返回剩下的部分。原始变量不会发生变化。
+			${variable%pattern}
+				* 如果 pattern 匹配变量 variable 的结尾，
+				* 删除最短匹配（非贪婪匹配）的部分，返回剩余部分
+
+			${variable%%pattern}
+				* 如果 pattern 匹配变量 variable 的结尾
+				* 删除最长匹配（贪婪匹配）的部分，返回剩余部分
+		
+		* 其他的同上
+	
+	# 任意位置的模式匹配
+		* 两种语法可以检查字符串内部，是否匹配给定的模式。
+		* 如果匹配成功，就删除匹配的部分，换成其他的字符串返回。原始变量不会发生变化。
+			${variable/pattern/string}
+				* 如果 pattern 匹配变量 variable 的一部分，
+				* 最长匹配（贪婪匹配）的那部分被 string 替换，但仅替换第一个匹配
+
+			${variable//pattern/string}
+				* 如果 pattern 匹配变量 variable 的一部分，
+				* 最长匹配（贪婪匹配）的那部分被 string 替换，所有匹配都替换 
 		
 
-			
+
+				
