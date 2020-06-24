@@ -80,8 +80,16 @@
 	# Here 文档 
 		* 是一种输入多行字符串的方法，格式如下
 			<< token
-			text
+			我就是多行
+				字符串
 			token
+
+			[root@KevinBlandy ~]# <<token
+			> 我就是
+			>         多行字符串
+			> token
+			[root@KevinBlandy ~]# 
+
 		* token自定义
 		* Here 文档也不能作为变量的值，只能用于命令的参数。
 

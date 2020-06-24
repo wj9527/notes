@@ -308,6 +308,10 @@
 			echo "超时"
 		fi
 	
+	# 允许用户输入的时候，使用readline库提供的快捷键，添加 -e 参数
+		read -e fileName
+		echo $fileName # 在输入文件名称的时候，可以通过 tab 键补充文件名称
+	
 	# 使用 -n 限制输入的字符数
 		* 当达到指定的数量后,read自动返回(无需回车)
 	
@@ -331,6 +335,16 @@
 		echo
 		echo "$password"
 	
+	# 把参数封装为数组, 使用 -s 选项
+		read -a info
+		echo "${info[0]}, ${info[1]}"
+	
+	# 其他的一些参数
+		-d delimiter:	定义字符串delimiter的第一个字符作为用户输入的结束，而不是一个换行符。
+		-r:				raw 模式，表示不把用户输入的反斜杠字符解释为转义字符。
+		-u fd:			使用文件描述符fd作为输入。
+
+	
 	# 从文件读取
 		* 可以用read命令来读取Linux系统上文件里保存的数据
 		* 每次调用read命令,它都会从文件中读取一行文本
@@ -347,7 +361,51 @@
 
 
 
+	# IFS 变量
+		* read命令读取的值，默认是以空格分隔。可以通过自定义环境变量IFS（内部字段分隔符，Internal Field Separator 的缩写），修改分隔标志。
+			FILE=/etc/passwd
 
+			# 读取用户输入的用户名
+			read -p "Enter a username > " user_name
+
+			# 根据用户名从  /etc/passwd 文件中找到行
+			file_info="$(grep "^$user_name:" $FILE)"
+
+			# 如果找到
+			if [ -n "$file_info" ]; then
+			  # 设置分隔符为:并且使用
+			  # 巧妙的修改分隔符
+			  IFS=":" read user pw uid gid name home shell <<< "$file_info"
+			  echo "User = '$user'"
+			  echo "UID = '$uid'"
+			  echo "GID = '$gid'"
+			  echo "Full Name = '$name'"
+			  echo "Home Dir. = '$home'"
+			  echo "Shell = '$shell'"
+			else
+			  echo "No such user '$user_name'" >&2
+			  exit 1
+			fi
+
+		* IFS的赋值命令和read命令写在一行，这样的话，IFS的改变仅对后面的命令生效
+		* 该命令执行后IFS会自动恢复原来的值
+			IFS=":" read user pw uid gid name home shell <<< "$file_info"
+		
+		* 如果不写在一行，就要采用下面的写法
+			# 备份旧的
+			OLD_IFS="$IFS"
+			# 重新设置
+			IFS=":"
+			read user pw uid gid name home shell <<< "$file_info"
+			# 还原
+			IFS="$OLD_IFS"
+	
+		* 如果IFS设为空字符串，就等同于将整行读入一个变量。
+			input="/path/to/txt/file"
+			while IFS= read -r line
+			do
+			  echo "$line" # 逐行读取文件，每一行存入变量line
+			done < "$input"
 
 
 	
