@@ -22,6 +22,10 @@ if then				 |
 				echo "success"
 			fi
 	
+	# if 后面可以跟多个命令(使用分号隔开), 但是只要最后一个命令返回0，就会执行then的部分
+		if false; true; then echo 'hello world'; fi
+		hello world # 会被执行
+	
 ---------------------
 if then else		 |
 ---------------------
@@ -98,6 +102,27 @@ test				 |
 	
 	# 不能在test命令中使用浮点数
 
+	# 三种写法
+		test expression
+		[ expression ]
+		[[ expression ]]
+		
+		* 三种写法是等价的, 但是第三种支持正则, 其他的不支持
+		* 注意[] 和表达式之间有空格
+	
+	# test命令内部的>和<，必须用引号引起来（或者是用反斜杠转义）。否则，它们会被 shell 解释为重定向操作符。
+
+	# 使用否定操作符!时，最好用圆括号确定转义的范围
+		if [ ! \( $INT -ge $MIN_VAL -a $INT -le $MAX_VAL \) ]; then
+			echo "$INT is outside $MIN_VAL to $MAX_VAL."
+		else
+			echo "$INT is in range."
+		fi
+
+		* test命令内部使用的圆括号，必须使用引号或者转义，否则会被 Bash 解释
+	
+
+
 ----------------------------
 if-then 的高级特性			|
 ----------------------------
@@ -149,6 +174,18 @@ if-then 的高级特性			|
 		* 这种特性就是可以在[[]]里面使用正则表达式
 		* 不是所有的shell都支持双方括号
 
+	
+	# 正则
+		[[ string1 =~ regex ]]
+
+		INT=-5
+		if [[ "$INT" =~ ^-?[0-9]+$ ]]; then
+		  echo "INT is an integer."
+		  exit 0
+		else
+		  echo "INT is not an integer." >&2
+		  exit 1
+		fi
 
 ----------------------------
 case						|
@@ -182,6 +219,32 @@ case						|
 			*) 
 				echo "都不是";;
 			esac 
+
+	# case的匹配模式可以使用各种通配符，下面是一些例子。
+			a)：			匹配a。
+			a|b)：			匹配a或b。
+			[[:alpha:]])：	匹配单个字母。
+			???)：			匹配3个字符的单词。
+			*.txt)：		匹配.txt结尾。
+			*)：			匹配任意输入，通过作为case结构的最后一个模式。
+		
+	# Bash 4.0之前，case结构只能匹配一个条件，然后就会退出case结构。
+		* Bash 4.0之后，允许匹配多个条件，这时可以用 ;;& 终止每个条件块
+
+			read -n 1 -p "Type a character > "
+			echo
+			case $REPLY in
+			  [[:upper:]])    echo "'$REPLY' is upper case." ;;&
+			  [[:lower:]])    echo "'$REPLY' is lower case." ;;&
+			  [[:alpha:]])    echo "'$REPLY' is alphabetic." ;;&
+			  [[:digit:]])    echo "'$REPLY' is a digit." ;;&
+			  [[:graph:]])    echo "'$REPLY' is a visible character." ;;&
+			  [[:punct:]])    echo "'$REPLY' is a punctuation symbol." ;;&
+			  [[:space:]])    echo "'$REPLY' is a whitespace character." ;;&
+			  [[:xdigit:]])   echo "'$REPLY' is a hexadecimal digit." ;;&
+			esac
+
+		* 条件语句结尾添加了;;&以后，在匹配一个条件之后，并没有退出case结构，而是继续判断下一个条件。
 
 
 ----------------------------
