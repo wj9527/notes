@@ -1,6 +1,9 @@
 --------------------------------
 shell							|
 --------------------------------
+	# 官方手册
+		https://www.gnu.org/software/bash/manual/html_node/
+	
 	# 第一行指定运行的 bash
 		#!/bin/bash
 	
