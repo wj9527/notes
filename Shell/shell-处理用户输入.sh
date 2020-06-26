@@ -335,7 +335,7 @@
 		echo
 		echo "$password"
 	
-	# 把参数封装为数组, 使用 -s 选项
+	# 把参数封装为数组, 使用 -a 选项
 		read -a info
 		echo "${info[0]}, ${info[1]}"
 	

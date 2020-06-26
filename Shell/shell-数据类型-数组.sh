@@ -52,6 +52,91 @@
 
 		* 这种方式不会计算数组中空元素的个数
 	
+	# 定义数组的时候，可以使用通配符
+		files=(.*)				# 当前目录下的所有文件
+		echo "${files[*]}"
+	
+	# 获取到数组的序号
+		* ${!array[@]}或${!array[*]}，可以返回数组的成员序号，即哪些位置是有值的。
+
+		arr=([5]=a [9]=b [23]=c)
+		echo ${!arr[@]} # 5 9 23
+		echo ${!arr[*]}	# 5 9 23
+
+		* 利用这个语法，也可以通过for循环遍历数组。
+			for i in ${!arr[@]};do
+				echo ${arr[i]}
+			done
+	
+
+	# 提取数组成员
+		* ${array[@]:position:length}的语法可以提取数组成员。
+			${food[@]:1:1}	# 返回从数组1号位置开始的1个成员
+			${food[@]:1:3}	# 返回从1号位置开始的3个成员。
+		
+		* 如果省略长度参数length，则返回从指定位置开始的所有成员
+	
+	# 追加数组成员
+		* 数组末尾追加成员，可以使用+=赋值运算符
+			foo=(a b c)
+			echo ${foo[@]} # a b c
+
+			foo+=(d e f)
+			echo ${foo[@]} # a b c d e f
+	
+	# 删除数组
+		foo=(a b c d e f)
+		echo ${foo[@]} # a b c d e f
+
+		unset foo[2]
+		echo ${foo[@]} # a b d e f
+	
+		
+		* 将某个成员设为空值，可以从返回值中“隐藏”这个成员。
+			foo=(a b c d e f)
+			foo[1]=''		# 不角标1的值, 设置为''即可
+			echo ${foo[@]} # a c d e f
+		
+		* 这里是“隐藏”，而不是删除，因为这个成员仍然存在，只是值变成了空值。
+	
+		* unset ArrayName可以清空整个数组
+
+------------------------------
+关联数组
+------------------------------
+	# 类似于对象
+	# declare -A可以声明关联数组。
+		declare -A colors
+		colors["red"]="#ff0000"
+		colors["green"]="#00ff00"
+		colors["blue"]="#0000ff"
+	
+	# 访问关联数组成员的方式，几乎与整数索引数组相同
+		echo ${colors["blue"]}
+	
+	# 遍历
+		declare -A langs
+		langs["java"]="System.out.println(\"Hello\")"
+		langs["Python"]="print('Hello')"
+		langs["Javascript"]="console.log('Hello')"
+
+		*  遍历key
+			for i in ${!langs[*]}; do
+				echo "${i}"
+			done
+	
+		* 变量val
+			for i in ${langs[*]}; do
+				echo "${i}"
+			done
+	
+		* 遍历Key和Val
+			for i in ${!langs[*]}; do
+				key="${i}"
+				val="${langs[${i}]}"
+				echo "key=${key}, val=${val}"
+			done
+
 ------------------------------
 数组		遍历				  
 ------------------------------
