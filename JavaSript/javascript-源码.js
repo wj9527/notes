@@ -292,3 +292,34 @@ function htmlEscape(input) {
 	div.innerText = input;
 	return div.innerHTML;
 }
+
+
+----------------------------------------
+Array-分片上传文件
+----------------------------------------
+	const CHUNK_SIZE = 1024 * 500;  // 文件分片大小
+	function upload (file) {
+		if (!(file instanceof File)){
+			// TODO 不是文件对象
+			return ;
+		}
+		// 文件名称
+		const name = file.name;
+		// 文件类型
+		const type = file.type;
+		// 文件总大小
+		const size = file.size;
+		if (size == 0){
+			// TODO 空文件
+			return null;
+		}
+		// 总分片数量
+		let totalChunk = Math.ceil(size / CHUNK_SIZE);
+		
+		for (let i = 0; i < totalChunk; i ++){
+			let start = i * CHUNK_SIZE;
+	        let end = ((start + CHUNK_SIZE) >= size) ? size : start + CHUNK_SIZE;
+	        // 分片的文件
+	        let chunk = file.slice(start, end);
+		}
+	}
