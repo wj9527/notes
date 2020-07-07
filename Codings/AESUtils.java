@@ -8,6 +8,10 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.SecureRandom;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 /**
  * 
  * AES
@@ -25,6 +29,14 @@ public class AESUtils {
 		cipher.init(model, secretKeySpec);
 		return cipher;
     }
+
+	// 生成随机的密钥
+	public static byte[] generateKey(int keySize) throws NoSuchAlgorithmException {
+		KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+		keyGenerator.init(keySize, new SecureRandom());
+		SecretKey secretKey = keyGenerator.generateKey();
+		return secretKey.getEncoded();
+	}
 	
     //AES加密
 	public static byte[] encrypt(byte[] data,byte[] key) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
