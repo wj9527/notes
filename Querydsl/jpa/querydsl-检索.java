@@ -1,5 +1,5 @@
 --------------------
-基本的检索			|
+基本的检索	
 --------------------
 	# 根据单个条件检索
 		User user = queryFactory.selectFrom(QUser.user).where(QUser.user.id.eq(1)).fetchFirst();
@@ -67,7 +67,13 @@
 			.where(QUser.user.id.eq(1)).fetchFirst();
 		
 		* 如果r为null, 则数据不存在
+	
 
+	# 类似于SQL的检索
+		QVideo qVideo = QVideo.video;
+		this.jpaQueryFactory.selectFrom(qVideo)  // 指定要检索的表
+			.select(qVideo.id, qVideo.title)	// 指定要检索的列
+			.fetch();					
 
 --------------------
 分页
@@ -167,9 +173,48 @@
 
 	SELECT 'CONST MNAME' AS `name` ...
 
---------------------
-别名
---------------------
-	// 列(结果)别名 TODO
-	// 表别名 TODO
+----------------------------------------
+CASE 表达式, IF 语句, IFNULL 语句
+----------------------------------------
+	QVideo qVideo = QVideo.video;
+	
+	// nullif 语句，在为空的情况下返回指定值
+	SimpleExpression<Integer> c2 = qVideo.playCount.nullif(22);
+	
+	// is null 语句，如果结果是NULL，返回1, 如果结果不是NULL，返回 0
+	// 还有一个 isNotNull(); 刚好相反
+	BooleanExpression c4 = qVideo.poster.isNull();
+	
+	// CASE 语句
 
+	// 如果 playCount 是-1，则返回0，否则返回 999
+	NumberExpression<Integer> c1 = qVideo.playCount.when(-1).then(0).otherwise(999);
+	// 如果 title 是 字符串“null”，“none”，返回 0，否则返回 1
+	BooleanExpression c3 = qVideo.title.lower().when("null").then(false).when("none").then(false).otherwise(true);
+	// 如果 coin 是1，返回为null,否则返回coin值
+	Expression<Object> c5 = qVideo.coin.when(0).thenNull().otherwise(qVideo.coin);
+	
+	this.jpaQueryFactory
+		.select(c1, c2, c3, c4, c5)
+		.from(qVideo)
+		.fetch();
+	
+	// SQL
+	SELECT
+		CASE 
+			WHEN video0_.play_count =? THEN ? 
+			ELSE 999 
+		END AS col_0_0_,
+		nullif( video0_.play_count, ? ) AS col_1_0_,
+		CASE
+			WHEN lower( video0_.title ) =? THEN ? 
+			WHEN lower( video0_.title ) =? THEN? 
+			ELSE 1 
+		END AS col_2_0_,
+			video0_.poster IS NULL AS col_3_0_,
+		CASE
+			WHEN video0_.coin =? THEN NULL 
+			ELSE 'video.coin' 
+		END AS col_4_0_ 
+	FROM
+		video video0_

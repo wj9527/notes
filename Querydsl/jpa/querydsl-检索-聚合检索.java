@@ -34,4 +34,21 @@
 
 	
 	# 根据日期字段的聚合检索
+		QVideo qVideo = QVideo.video;
+		NumberExpression<Integer> year = qVideo.createdDate.year();  // 从日期字段读取年份
+		this.jpaQueryFactory
+			.select(year, qVideo.count())
+			.from(qVideo)
+			.groupBy(year)		// 根据年份分组
+			.fetch();
+
+		
+		// SQL
+		select
+			year(video0_.created_date) as col_0_0_,
+			count(video0_.id) as col_1_0_ 
+		from
+			video video0_ 
+		group by
+			year(video0_.created_date)
 		
