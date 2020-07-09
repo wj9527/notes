@@ -58,7 +58,41 @@ spring:
 	  health-check-registry: 
       health-check-properties: 
 	  sealed: 
-	
+
+	# 官方支持的配置项
+		spring.datasource.hikari.allow-pool-suspension=
+		spring.datasource.hikari.auto-commit=
+		spring.datasource.hikari.catalog=
+		spring.datasource.hikari.connection-init-sql=
+		spring.datasource.hikari.connection-test-query=
+		spring.datasource.hikari.connection-timeout=
+		spring.datasource.hikari.data-source-class-name=
+		spring.datasource.hikari.data-source-j-n-d-i=
+		spring.datasource.hikari.data-source-properties=
+		spring.datasource.hikari.driver-class-name=
+		spring.datasource.hikari.exception-override-class-name=
+		spring.datasource.hikari.health-check-properties=
+		spring.datasource.hikari.health-check-registry=
+		spring.datasource.hikari.idle-timeout=
+		spring.datasource.hikari.initialization-fail-timeout=
+		spring.datasource.hikari.isolate-internal-queries=
+		spring.datasource.hikari.jdbc-url=
+		spring.datasource.hikari.leak-detection-threshold=
+		spring.datasource.hikari.login-timeout=
+		spring.datasource.hikari.max-lifetime=
+		spring.datasource.hikari.maximum-pool-size=
+		spring.datasource.hikari.metric-registry=
+		spring.datasource.hikari.metrics-tracker-factory=
+		spring.datasource.hikari.minimum-idle=
+		spring.datasource.hikari.password=
+		spring.datasource.hikari.pool-name=
+		spring.datasource.hikari.read-only=
+		spring.datasource.hikari.register-mbeans=
+		spring.datasource.hikari.scheduled-executor=
+		spring.datasource.hikari.schema=
+		spring.datasource.hikari.transaction-isolation=
+		spring.datasource.hikari.username=
+		spring.datasource.hikari.validation-timeout=
 
 ------------------------
 编码配置				|
