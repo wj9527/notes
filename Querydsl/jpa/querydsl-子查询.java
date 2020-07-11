@@ -1,14 +1,21 @@
 -------------------
-子查询
+WHERE 条件子查询
 -------------------
-	# 单行单列检索
+	# WHERE条件中单行单列检索
 		queryFactory.selectFrom(QUser.user)
 				.where(QUser.user.id.eq(
 					JPAExpressions.select(QUser.user.id).from(QUser.user).where(QUser.user.name.eq("KevinBlandy")))
 				)
 				.fetch();
+	
+	# WHERE条件中多列单行
+		where(QUser.user.id.in(
+				JPAExpressions.select(QUser.user.id).from(QUser.user).where(...))
+			)
 		
-	# 条件 exists 检索
+		* 就是用in计算多列结果
+		
+	# WHERE条件中 exists 检索
 		QUser qUser = QUser.user;
 		queryFactory.select(qUser)
 				.from(qUser)
@@ -17,7 +24,11 @@
 					.exists()
 				)
 				.fetch();
-			
+		
+
+-------------------
+结果集子查询
+-------------------
 	# count检索
 		QCategory qCategory = QCategory.category;
 		QVideoCategory qVideoCategory = QVideoCategory.videoCategory;
@@ -28,14 +39,29 @@
 				qCategory.id, qCategory.title, qCategory.poster, qCategory.describe, qCategory.sorted, qCategory.createdDate);
 		
 		
-		JPAQuery<Tuple> jpaQuery = query.select(categoryQBean, 
-				JPAExpressions.select(numberExpression)
+		JPAQuery<Tuple> jpaQuery = query.select(categoryQBean, JPAExpressions.select(numberExpression)
 					.from(qVideoCategory)
 					.where(qVideoCategory.categoryId.eq(qCategory.id)))
 				.from(qCategory);
-		
 	
-	# 结果集是否为Null检索
+	# exists 检索
+		QVideo qVideo = QVideo.video;
+		QVideoTag qVideoTag = QVideoTag.videoTag;
+
+		// 子查询
+		BooleanExpression exists = JPAExpressions.selectOne().from(qVideoTag).where(qVideoTag.videoId.eq(qVideo.id)).fetchAll().exists();
+
+		List<Tuple> tuples = this.jpaQueryFactory.select(qVideo, exists).from(qVideo).fetch();
+		for (Tuple tuple : tuples) {
+			// 获取子查询结果
+			boolean result = tuple.get(exists);
+		}
+
+		* 这种 exists 子查询，不能嵌套在 Projections.bean() 中，必须声明在 select 方法中
+			this.jpaQueryFactory.select(Projections.bean(VideoDTO.class, qVideo.id, qVideo.title, exists)).from(qVideo).fetch(); // 异常
+
+	
+	# 结果集是否为Null检索(算不上子查询)
 		QPayMode qPayMode = QPayMode.payMode;
 		QPayChannel qPayChannel = QPayChannel.payChannel;
 	
@@ -49,8 +75,3 @@
 			.orderBy(new OrderSpecifier<>(Order.DESC, qPayMode.sorted), new OrderSpecifier<>(Order.DESC, qPayMode.createdDate));
 		
 		List<PayModeDTO> payModes = jpaQuery.fetch();
-		
-
-	# 结果集子查询
-		//TODO
-	
