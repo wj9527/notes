@@ -28,6 +28,9 @@ swagger - springboot 整合
 			<version>2.9.2</version>
 		</dependency>
 	
+	# springfox 3 已经更新，文档可能有变化
+		* Spring Boot 支持 springfox-boot-starter 依赖性（零配置，自动配置支持）
+	
 	# 启用 swagger
 		@EnableSwagger2
 	
