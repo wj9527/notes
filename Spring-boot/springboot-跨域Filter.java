@@ -45,10 +45,11 @@ public class CorsFilter extends HttpFilter {
 			 * ¥¶¿Ì‘§ºÏ«Î«Û
 			 */
 			if (OPTIONS_METHOD.equalsIgnoreCase(req.getMethod())) {
-				res.addHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "30");
+				res.setStatus(HttpServletResponse.SC_NO_CONTENT);
 				res.setContentType(MediaType.TEXT_HTML_VALUE);
 				res.setCharacterEncoding("utf-8");
 				res.setContentLength(0);
+				res.addHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "30");
 				return ;
 			}
 		}
