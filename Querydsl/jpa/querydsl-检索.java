@@ -178,7 +178,8 @@ CASE 表达式, IF 语句, IFNULL 语句
 ----------------------------------------
 	QVideo qVideo = QVideo.video;
 	
-	// nullif 语句，在为空的情况下返回指定值
+	// nullif 语句，如果参数和值一样，就返回null，
+	// NULLIF(Expression1,Expression2):给定两个参数Expression1和Expression2，如果两个参数相等，则返回NULL；否则就返回第一个参数。
 	SimpleExpression<Integer> c2 = qVideo.playCount.nullif(22);
 	
 	// is null 语句，如果结果是NULL，返回1, 如果结果不是NULL，返回 0
