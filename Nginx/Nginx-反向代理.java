@@ -17,10 +17,10 @@ Nginx-具体配置			|
 
 	//日志文件配置
 	#access_log  logs/kevinblandy.com.access.log  main;
-	
+
 	//错误日志文件
 	#error_log  logs/kevinblandy.com.error.log;
-	
+
 
 	//转发客户端请求的时候携带的域名
 	proxy_set_header Host $host;
@@ -28,7 +28,7 @@ Nginx-具体配置			|
 	proxy_set_header X-Forwarded-Host $host;
 	proxy_set_header X-Forwarded-Server $host;
 	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	
+
 	//转发客户端真实IP(通过 request.getHeader("X-Requested-For")获取)
 	proxy_set_header X-Requested-For $remote_addr;
 	proxy_set_header REMOTE-HOST $remote_addr;

@@ -16,6 +16,7 @@ discourse			 |
 		https://community.jenkins-zh.cn/
 		https://forum.cocos.org/
 		https://developer.mongodb.com/community/forums/
+		https://community.letsencrypt.org/
 
 		https://discourse.mailinabox.email/
 		http://www.react-china.org/
