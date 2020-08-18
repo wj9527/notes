@@ -24,7 +24,6 @@ springfox mvc 的配置
 		}
 	}
 
-	* 要注意的是，如果有ContextPath，需要自己手动添加
 
 
 
