@@ -46,6 +46,14 @@ Optional-方法		  |
 
 	Stream<T> stream()
 		* 如果对象为 null, 返回空的 Stream
+		* 方法允许延迟地处理可选对象
+			long count = Stream.of(
+					Optional.of(1),
+					Optional.empty(),
+					Optional.of(2)
+				).flatMap(Optional::stream)
+				.count();
+				System.out.println(count);  // 2 （Optiona l 流中包含 3 个 元素，其中只有 2 个有值。在使用 flatMap 之后，结果流中包含了 2 个值）
 		* 源码
 			if (!isPresent()) {
 				return Stream.empty();

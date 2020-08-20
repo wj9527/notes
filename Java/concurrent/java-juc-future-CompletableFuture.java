@@ -25,6 +25,11 @@ CompletableFuture<T>			|
 		<U> CompletableFuture<U> completedFuture(U value)
 			* 返回一个已经是完成状态的 CompletableFuture
 		
+		<U> CompletionStage<U> completedStage(U value)
+		<U> CompletableFuture<U> failedFuture(Throwable ex)
+		<U> CompletionStage<U> failedStage(Throwable ex)
+
+		
 		CompletableFuture<Void> runAsync(Runnable runnable)
 		CompletableFuture<Void> runAsync(Runnable runnable, Executor executor)
 			* 异步执行某个任务，返回它的 CompletableFuture
@@ -34,6 +39,9 @@ CompletableFuture<T>			|
 		<U> CompletableFuture<U> supplyAsync(Supplier<U> supplier, Executor executor)
 			* 异步执行某个任务，返回它的 CompletableFuture
 			* 需要返回值
+
+		Executor delayedExecutor(long delay, TimeUnit unit, Executor executor)
+		Executor delayedExecutor(long delay, TimeUnit unit)
 	
 	# 实例方法
 		CompletableFuture<Void> acceptEither(CompletionStage<? extends T> other, Consumer<? super T> action)
@@ -105,7 +113,16 @@ CompletableFuture<T>			|
 		CompletableFuture<T> whenComplete(BiConsumer<? super T, ? super Throwable> action)
 		CompletableFuture<T> whenCompleteAsync(BiConsumer<? super T, ? super Throwable> action)
 		CompletableFuture<T> whenCompleteAsync(BiConsumer<? super T, ? super Throwable> action, Executor executor)
-
+		
+		
+		CompletableFuture<T> completeOnTimeout(T value, long timeout, TimeUnit unit)
+		CompletableFuture<T> orTimeout(long timeout, TimeUnit unit)
+		CompletableFuture<T> completeAsync(Supplier<? extends T> supplier)
+		CompletableFuture<T> completeAsync(Supplier<? extends T> supplier, Executor executor)
+		CompletionStage<T> minimalCompletionStage()
+		CompletableFuture<T> copy()
+		Executor defaultExecutor()
+		<U> CompletableFuture<U> newIncompleteFuture()
 
 		
 		* 没有指定 Executor 的方法会使用 ForkJoinPool.commonPool() 作为它的线程池执行异步代码
