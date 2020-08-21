@@ -127,7 +127,7 @@ redis-stream 阻塞消费   |
 						.builder()
 						// 一次最多拉取多少消息
 						.batchSize(10)
-						// 执行消费的线程池
+						// 执行轮询的线程（不是执行消费的线程池，异步消费消息需要自己实现）
 						.executor(this.threadPoolTaskExecutor)
 						// 异常处理器
 						.errorHandler(new ErrorHandler() {
