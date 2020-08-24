@@ -1,3 +1,24 @@
+----------------------------
+配置文件节点信息
+----------------------------
+	# root
+		* root的本质就是一个logger
+		* 它是所有logger的爹, 所有的logger都会继承它的属性
+
+	# logger
+		* 负责日志消息的接收, 过滤, 以及委托appender进行输出
+
+	# appender
+		* 负责对输出日志的控制(输出到标准IO, 输出到文件)
+
+	# encoder
+	# layout
+		* 对日志进行格式化
+
+
+----------------------------
+配置文件
+----------------------------
 <configuration>
 	
 	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
