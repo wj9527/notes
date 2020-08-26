@@ -57,52 +57,97 @@ public class TestController {
 			<version>1.4</version>
 		</dependency>
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
+import java.util.List;
 
-import org.apache.commons.fileupload.MultipartStream;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileItemHeaders;
+import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.RequestContext;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.portlet.PortletFileUpload;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriUtils;
 
-public class MultipartTest {
-	public static void main(String[] args) throws IOException {
-		
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Resource> responseEntity = restTemplate.getForEntity("http://localhost:8081/test", Resource.class);
-
-		MediaType mediaType = responseEntity.getHeaders().getContentType();
-		System.out.println(mediaType);
-		
-		System.out.println(mediaType.getParameters());
-		
-		MultipartStream multipartStream = new MultipartStream(responseEntity.getBody().getInputStream(), mediaType.getParameter("boundary").getBytes(), 4096, null);
-
-        boolean nextPart = multipartStream.skipPreamble();
-        
-        while (nextPart) {
-        	
-            String header = multipartStream.readHeaders();
-            System.out.println("Headers:==================");
-            
-            System.out.println(header);
-            System.out.println("Body:==================");
-            
-            ByteArrayOutputStream byteArrayOutputStream =  new ByteArrayOutputStream();
-            multipartStream.readBodyData(byteArrayOutputStream);
-            
-            // 数据
-            byte[] data = byteArrayOutputStream.toByteArray();
-            
-            String r = UriUtils.decode(new String(data, StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-            
-            System.out.println(r);
-            
-            nextPart = multipartStream.readBoundary();
-        }
+class SimpleRequestContext implements RequestContext {
+	private final Charset charset;			// 编码
+	private final MediaType contentType;	// 类型
+	private final InputStream content;		// 数据
+	public SimpleRequestContext(Charset charset, MediaType contentType, InputStream content) {
+		this.charset = charset;
+		this.contentType = contentType;
+		this.content = content;
+	}
+	@Override
+	public String getCharacterEncoding() {
+		return this.charset.displayName();
+	}
+	@Override
+	public String getContentType() {
+		return this.contentType.toString();
+	}
+	@Override
+	public int getContentLength() {
+		try {
+			return this.content.available();
+		} catch (IOException e) {
+		}
+		return 0;
+	}
+	@Override
+	public InputStream getInputStream() throws IOException {
+		return this.content;
 	}
 }
 
+public class MultipartTest {
+	public static void main(String[] args) throws IOException, FileUploadException {
+
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Resource> responseEntity = restTemplate.getForEntity("http://localhost:8081/test", Resource.class);
+		
+
+		RequestContext requestContext = new SimpleRequestContext(StandardCharsets.UTF_8, responseEntity.getHeaders().getContentType(), responseEntity.getBody().getInputStream());
+		
+		FileUploadBase fileUploadBase = new PortletFileUpload();
+		
+		FileItemFactory fileItemFactory = new DiskFileItemFactory();
+		
+		fileUploadBase.setFileItemFactory(fileItemFactory);
+		fileUploadBase.setHeaderEncoding(StandardCharsets.UTF_8.displayName());
+		List<FileItem> fileItems = fileUploadBase.parseRequest(requestContext);
+		for (FileItem fileItem : fileItems) {
+			// 请求头
+			System.out.println("headers:==========================");
+			FileItemHeaders fileItemHeaders = fileItem.getHeaders();
+			Iterator<String> headerNamesIterator = fileItemHeaders.getHeaderNames();
+			while (headerNamesIterator.hasNext()) { // 迭代name
+				String headerName = headerNamesIterator.next();
+				Iterator<String> headerValueIterator =  fileItemHeaders.getHeaders(headerName);
+				while (headerValueIterator.hasNext()) {	// 迭代value
+					String headerValue = headerValueIterator.next();
+					System.out.println(headerName + ":" +  headerValue);
+				}
+			}
+			
+			// 请求体
+			System.out.println("body:==========================");
+			if(fileItem.isFormField()) { // 是普通表单项
+				byte[] data = fileItem.get();
+				System.out.println(new String(data, StandardCharsets.UTF_8));
+			} else {			// 是文件表单项
+				String fileName = fileItem.getName();
+				InputStream inputStream = fileItem.getInputStream();
+				System.out.println("fileName=" + fileName + ", size=" +  inputStream.available());
+			}
+		}
+	}
+}
