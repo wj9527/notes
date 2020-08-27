@@ -21,4 +21,31 @@ Expressions
 	# 静态方法
 		<T> SimplePath<T> path(Class<? extends T> type, String variable) 
 		<T> SimplePath<T> path(Class<? extends T> type, Path<?> parent, String property)
+		
+
+
 	
+--------------------------
+xxxTemplate
+--------------------------
+	# 有几种
+		template
+		stringTemplate
+		numberTemplate
+		enumTemplate
+		dslTemplate
+		dateTimeTemplate
+		dateTemplate
+		comparableTemplate
+		simpleTemplate
+		booleanTemplate
+		TimeTemplate
+		
+		* 它们都有一些类似的重载方法
+			BooleanTemplate booleanTemplate(String template, Object... args)
+			BooleanTemplate booleanTemplate(String template, List<?> args)
+			BooleanTemplate booleanTemplate(Template template, Object... args)
+			BooleanTemplate booleanTemplate(Template template, List<?> args)
+	
+
+		
