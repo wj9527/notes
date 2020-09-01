@@ -323,3 +323,14 @@ Array-分片上传文件
 	        let chunk = file.slice(start, end);
 		}
 	}
+
+
+----------------------------------------
+js触发下载
+----------------------------------------
+function download (content, fileName){
+	  const donwLoadLink = document.createElement('a');
+	  donwLoadLink.download = fileName;
+	  donwLoadLink.href = URL.createObjectURL(new Blob([content]));
+	  donwLoadLink.click();
+}
