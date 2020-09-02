@@ -278,3 +278,13 @@ redis-stream apis			|
 		Long trim(K key, long count)
 
 		<V> HashMapper<V, HK, HV> getHashMapper(Class<V> targetType)
+		
+		
+		XInfoConsumers consumers(K key, String group);
+		XInfoGroups groups(K key);
+		XInfoStream info(K key);
+
+		PendingMessagesSummary pending(K key, String group);
+		PendingMessages pending(K key, Consumer consumer)
+		PendingMessages pending(K key, String group, Range<?> range, long count)
+		PendingMessages pending(K key, String group, Range<?> range, long count)
