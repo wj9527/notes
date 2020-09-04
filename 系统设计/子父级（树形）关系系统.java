@@ -91,3 +91,45 @@
 	# 查询指定节点所处的等级
 
 	# 删除指定的节点
+
+
+------------------------------
+使用队列遍历
+------------------------------
+	class Node {
+		private Integer id;
+		private String name;
+		private Integer parentId;
+		private Collection<Node> childNodes;
+	}
+
+	public static List<Node> tree (Collection<Node> nodes, Integer parentId) {
+		
+		// 最顶级的节点
+		List<Node> retVal = nodes.stream()
+			.filter(node -> node.getParentId().equals(parentId))
+			.collect(Collectors.toList());
+		
+		if (!retVal.isEmpty()) {
+			// 使用队列遍历
+			LinkedList<Node> queue = new LinkedList<Node>();
+			
+			queue.addAll(retVal);
+			
+			while (!queue.isEmpty()) {
+				
+				Node lastNode = queue.removeLast();
+				
+				// 检索子节点
+				List<Node> childNodes = nodes.stream()
+					.filter(node -> node.getParentId().equals(lastNode.getId()))
+					.collect(Collectors.toList());
+				
+				if (!childNodes.isEmpty()) {
+					lastNode.setChildNodes(childNodes);
+					queue.addAll(childNodes);
+				}
+			}
+		}
+		return retVal;
+	}
