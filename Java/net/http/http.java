@@ -46,4 +46,63 @@ http - POST
 ------------------------
 http - 文件表单体
 -----------------------
-	难搞, 没得现成的api
+	# 没有现成的mutipart编码api，需要依赖
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+		</dependency>
+
+	# 实现
+		import java.io.ByteArrayOutputStream;
+		import java.io.File;
+		import java.net.URI;
+		import java.net.http.HttpClient;
+		import java.net.http.HttpRequest;
+		import java.net.http.HttpRequest.BodyPublishers;
+		import java.net.http.HttpResponse;
+		import java.net.http.HttpResponse.BodyHandler;
+		import java.net.http.HttpResponse.BodyHandlers;
+		import java.nio.charset.StandardCharsets;
+
+		import org.apache.http.HttpEntity;
+		import org.apache.http.entity.ContentType;
+		import org.apache.http.entity.mime.MultipartEntityBuilder;
+		import org.apache.http.entity.mime.content.StringBody;
+		import org.springframework.web.util.UriUtils;
+
+
+		public class MainTest {
+			public static void main(String[] args) throws Exception {
+				
+				
+				HttpEntity httpEntity = MultipartEntityBuilder.create()
+						.addPart("name", new StringBody(UriUtils.encode("SpringBoot中文社区", StandardCharsets.UTF_8), ContentType.APPLICATION_FORM_URLENCODED))
+						.addPart("info", new StringBody("{\"site\": \"https://springboot.io\", \"year\": 2019}", ContentType.APPLICATION_JSON))
+						.addBinaryBody("logo", new File("D:\\logo.png"), ContentType.IMAGE_PNG, "logo.png")
+						.build();
+				
+				// 如果内容过大，可以考虑IO到磁盘而不是内存
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream((int) httpEntity.getContentLength());
+				httpEntity.writeTo(byteArrayOutputStream);
+				
+				HttpClient httpClient = HttpClient.newHttpClient();
+				
+				// 创建请求和请求体
+				HttpRequest request = HttpRequest
+							.newBuilder(new URI("http://localhost/upload"))
+							// 设置ContentType
+							.header("Content-Type", httpEntity.getContentType().getValue())
+							.header("Accept", "application/json")   
+							.POST(BodyPublishers.ofByteArray(byteArrayOutputStream.toByteArray()))
+							.build();
+				
+				// 创建响应处理器
+				BodyHandler<String> bodyHandler = BodyHandlers.ofString(StandardCharsets.UTF_8);
+				
+				// 执行请求，获取响应
+				HttpResponse<String> responseBody = httpClient.send(request, bodyHandler);
+				
+				System.out.println(responseBody);
+			}
+		}
