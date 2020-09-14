@@ -54,7 +54,7 @@ XMLHttpRequest				|
 			* 超时时间,单位(ms)
 			* 默认 120 s
 		
-		responseTyper	
+		responseType	
 			* 声明服务端响应的数据类型
 			* 可选值
 				arraybuffer,
@@ -75,7 +75,7 @@ XMLHttpRequest				|
 			* 该属性可以监听一个上传事件:progress
 				if(xhr.upload){
 					//监听上传属性的上传事件,每次上传事件都会执行 progressHandlingFunction
-					xhr.upload.addEventListener('progress',progressHandlingFunction, false);
+					xhr.addEventListener('progress',progressHandlingFunction, false);
 					//xhr.upload.onprogress = function(){}			也可以
 				}
 			* Event属性
@@ -145,17 +145,50 @@ XMLHttpRequest-POST			|
 ---------------------------
 XMLHttpRequest-二进制		|
 ---------------------------
-		var oReq = new XMLHttpRequest();
-		oReq.open("GET", "/common/get/captcha", true);
-		//响应体为二进制的blob
-		oReq.responseType = "blob";
-		oReq.onreadystatechange = function () {
-				if (oReq.readyState == oReq.DONE) {
-				//获取二进制数据
-				var blob = oReq.response;
-				var obj = {};
-				obj.imgSrc = URL.createObjectURL(blob);
-				console.log(obj.imgSrc);
+			// 打开加载动画
+			const index = layer.load(1, {
+  				shade: [0.1,'#fff']
+			});
+			
+			const xhr = new XMLHttpRequest();
+			xhr.open('GET', '/download?file=' + encodeURIComponent(file));
+			xhr.send(null);
+			// 设置服务端的响应类型
+			xhr.responseType = "blob";
+			// 监听下载
+			xhr.addEventListener('progress', event => {
+				// 计算出百分比
+				const percent  = ((event.loaded / event.total) * 100).toFixed(2);
+				console.log(`下载进度：${percent}`);
+			}, false);
+			xhr.onreadystatechange = event => {
+				if(xhr.readyState == 4){
+					if (xhr.status == 200){
+						
+						// 获取ContentType
+						const contentType = xhr.getResponseHeader('Content-Type');
+						
+						// 文件名称
+						const fileName = xhr.getResponseHeader('Content-Disposition').split(';')[1].split('=')[1];
+						
+						// 创建一个a标签用于下载
+						const donwLoadLink = document.createElement('a');
+						donwLoadLink.download = fileName;
+						donwLoadLink.href = URL.createObjectURL(xhr.response);
+						
+						// 触发下载事件，IO到磁盘
+						donwLoadLink.click();
+						
+						// 释放内存中的资源
+						URL.revokeObjectURL(donwLoadLink.href);
+						
+						// 关闭加载动画
+						layer.close(index);
+					} else if (response.status == 404){
+						alert(`文件：${file} 不存在`);
+					} else if (response.status == 500){
+						alert('系统异常');
+					}
+				}
 			}
 		}
-		oReq.send(); 
