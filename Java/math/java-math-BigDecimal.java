@@ -120,3 +120,12 @@ BigDecimal-实例方法		|
 		* 有必要时使用工程计数法
 		* 工程记数法是一种工程计算中经常使用的记录数字的方法, 与科学技术法类似. 但要求10的幂必须是3的倍数
  
+
+-------------------
+要点
+-------------------
+	# BigDecimal 比较相等用 compareTo
+		BigDecimal v1 = new BigDecimal("5.0");
+		BigDecimal v2 = new BigDecimal("5");
+		System.out.println(v1.equals(v2));			// false
+		System.out.println(v1.compareTo(v2));		// 0
