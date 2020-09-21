@@ -30,6 +30,10 @@ FormData	方法		|
 		filename 
 			* 可以省略, 表示传给服务器的文件名称
 			* 当一个 Blob 或 File 被作为第二个参数的时候, Blob 对象的默认文件名是 "blob", File 对象的默认文件名是该文件的名称。
+		
+			* blob对象可以设置ContentType
+				const json = JSON.stringify({'name': 'KeviniBlandy'});
+				formData.append('json', new Blob([json], {type: "application/json"}));
 
 	set(key,value);
 		* 跟 append一样

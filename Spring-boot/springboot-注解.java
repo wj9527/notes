@@ -111,3 +111,12 @@ Spring-Boot 注解			|
 
 			// 判断当前环境, 是否在指定的运行环境中
 			boolean accept = environment.acceptsProfiles(profiles);
+	
+	@RequestPart
+		# 在mutipart请求中，代理 @RequestParam 标识mutipart中的请求项
+		# 它可以自动的根据ContentType封装数据为对象
+			test (@RequestPart("file") MultipartFile file,  @RequestPart("json") RequestBody jsonBody)
+			
+		String value() default "";
+		String name() default "";
+		boolean required() default true;
